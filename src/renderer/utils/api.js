@@ -27,7 +27,7 @@ export default {
      * @param params {userGuid}
      * @returns {Promise<unknown>}
      */
-    getUserAvatar(params){
+    getUserAvatar(params) {
         return fetchGet(`/as/user/avatar/${params.userGuid}`);
     },
     /**
@@ -36,7 +36,7 @@ export default {
      * @returns {Promise<unknown>}
      * @constructor
      */
-    Logout(params){
+    Logout(params) {
         return fetchGet('/as/user/logout');
     },
     /**
@@ -44,7 +44,22 @@ export default {
      * @param params {kbServer,kbGuid}
      * @returns {Promise<unknown>}
      */
-    getFolders(params){
+    getFolders(params) {
         return fetchGet(`${params.kbServer}/ks/category/all/${params.kbGuid}`);
+    },
+    /**
+     * 获取文件夹下的笔记
+     * @param params {kbServer,kbGuid,data:{start,count,category,orderBy}}
+     * @returns {Promise<unknown>}
+     */
+    getFolderNotes(params) {
+        return fetchGet(`${params.kbServer}/ks/note/list/category/${params.kbGuid}`, params.data);
+    },
+    /**
+     * 获取笔记内容--下载笔记
+     * @param params {kbServer,kbGuid,data:{downloadInfo,downloadData}}
+     */
+    getNoteContent(params) {
+        return fetchGet(`/ks/note/download/${params.kbGuid}/${params.docGuid}`, params.data);
     }
 };

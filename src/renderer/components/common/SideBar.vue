@@ -35,12 +35,16 @@
 <script>
     import api from "../../utils/api";
     import bus from "./Bus";
+
     export default {
         name: "SideBar",
         data() {
             return {
                 isLogin: false,
-                loginForm: {},
+                loginForm: {
+                    userId: 'nee@neeto.cn',
+                    password: '451000'
+                },
                 dialogFormVisible: false,
                 userAvatar: 'https://tankneeimg.oss-cn-shenzhen.aliyuncs.com/profile/girlavatar.jpg'
             };
