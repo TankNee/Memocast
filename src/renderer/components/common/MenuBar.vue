@@ -25,12 +25,15 @@
 </template>
 
 <script>
+    import bus from "./Bus";
+
     export default {
         name: "MenuBar",
         data() {
             return {
                 currentWindow: {},
-                mainProcess: {}
+                mainProcess: {},
+                fileTitle: ''
             };
         },
         methods: {
@@ -53,6 +56,9 @@
         },
         mounted() {
             this.currentWindow = this.$electron.remote.getCurrentWindow();
+            bus.$on('Note Opened', title => {
+                this.fileTitle = title;
+            });
         }
     };
 </script>

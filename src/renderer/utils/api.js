@@ -2,6 +2,8 @@ import req from './request';
 
 let fetchPost = req.fetchPost;
 let fetchGet = req.fetchGet;
+let fetchPut = req.fetchPut;
+let fetchDelete = req.fetchDelete;
 let setBaseUrl = req.setBaseUrl;
 let getBaseUrl = req.getBaseUrl;
 export default {
@@ -55,7 +57,7 @@ export default {
      * @returns {Promise<unknown>}
      */
     getFolders(params) {
-        return fetchGet(`${params.kbServer}/ks/category/all/${params.kbGuid}`);
+        return fetchGet(`/ks/category/all/${params.kbGuid}`);
     },
     /**
      * 获取文件夹下的笔记
@@ -63,7 +65,7 @@ export default {
      * @returns {Promise<unknown>}
      */
     getFolderNotes(params) {
-        return fetchGet(`${params.kbServer}/ks/note/list/category/${params.kbGuid}`, params.data);
+        return fetchGet(`/ks/note/list/category/${params.kbGuid}`, params.data);
     },
     /**
      * 获取笔记内容--下载笔记
@@ -71,6 +73,22 @@ export default {
      */
     getNoteContent(params) {
         return fetchGet(`/ks/note/download/${params.kbGuid}/${params.docGuid}`, params.data);
+    },
+    /**
+     * 更新修改笔记内容
+     * @param params
+     * @returns {Promise<unknown>}
+     */
+    updateNote(params) {
+        return fetchPut(`/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`, params.data);
+    },
+    /**
+     * 删除笔记
+     * @param params
+     * @returns {Promise<unknown>}
+     */
+    deleteNote(params) {
+        return fetchDelete(`/ks/note/delete/${params.kbGuid}/${params.docGuid}`);
     },
     /**
      * 延长token有效期

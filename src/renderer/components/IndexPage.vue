@@ -4,8 +4,9 @@
 * @Date: 2/23/2020 8:47 AM
 **/
 <template>
-    <div class="main">
+    <div class="main" id="box">
         <el-tree
+                id="tree"
                 class="file-tree"
                 :data="fileTree"
                 :props="defaultProps"
@@ -13,17 +14,20 @@
                 v-loading="isLoading"
                 @node-expand="handleEx"
                 @node-collapse="handleColl"
+                @node-contextmenu="handleRightMouse"
                 node-key="id"
                 accordion
                 ref="ft"
+                :highlight-current="true"
         >
             <span slot-scope="{ node, data }">
                 <i :class="getNodeIcon(node,data)"></i>
                 <span style="padding-left: 4px;">{{node.label}}</span>
             </span>
-
         </el-tree>
+        <div id="resize"></div>
         <mavon-editor
+                id="editor"
                 v-model="content"
                 :preview="preview"
                 ref=md
@@ -31,6 +35,7 @@
                 style="box-shadow: none;border-left: 1px solid rgb(237,237,237);"
                 :navigation="showNav"
                 placeholder="Write your ideas"
+                @save="handleSave"
         />
     </div>
 
@@ -66,18 +71,14 @@
                 fileTree: [],
                 folderPathsArray: [],
                 treeId: 1,
+                resources: [],
+                noteInfo: {}
             };
         },
         methods: {
             handleFileClick(data, Node) {
                 var node = data;
                 console.log(Node);
-                // if (node.type.indexOf('file') !== -1 && node.type.indexOf('-opened') === -1) {
-                //     node.type = node.type + '-opened';
-                //     console.log(node.type);
-                // } else if (node.type.indexOf('file') !== -1) {
-                //     node.type = node.type.replace('-opened', '');
-                // }
                 if (node.isLoaded && node.type.indexOf('folder') !== -1) {
                     return;
                 }
@@ -131,6 +132,7 @@
                         this.isLoading = false;
                     });
                 } else {
+                    bus.$emit('Note Opened', node.title);
                     api.getNoteContent({
                         kbGuid: node.kbGuid,
                         docGuid: node.docGuid,
@@ -143,10 +145,17 @@
                         }
                     }).then(res => {
                         const re1 = new RegExp("<.+?>", "g");//匹配html标签的正则表达式，"g"是搜索匹配多个符合的内容
-                        const patten = /(<body).*(<\/body>)/g;
+                        const patten = /<body[^>]*>([\s\S]*)<\/body>/g;
                         const patten2 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size:\s10\.5pt;">/g;
                         const patten3 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size: 0\.875rem;">/g;
-                        const body = patten.exec(res.html)[0];//执行替换成空字符
+                        var body;
+                        if (res.html.indexOf(`<body`) === -1) {
+                            body = `<html><head></head><body>${res.html}</body></html>`;
+                        } else {
+                            body = patten.exec(res.html)[0];//提取body里的内容
+                        }
+                        this.resources = res.resources;
+                        this.noteInfo = res.info;
                         let text = html2markdown(body, {
                             imgBaseUrl: `${api.getBaseUrl()}/ks/note/view/${node.kbGuid}/${node.docGuid}/`,
                             resources: res.resources
@@ -162,6 +171,7 @@
                     });
                 }
             },
+            // data-节点的自定义对象，Node节点对象
             handleEx(data, Node) {
                 if (data.type.indexOf('-opened') === -1) {
                     data.type = data.type + '-opened';
@@ -170,6 +180,53 @@
             handleColl(data, Node) {
                 console.log(data);
                 data.type = data.type.replace('-opened', '');
+            },
+            handleRightMouse(e, data, Node) {
+                this.$contextmenu({
+                    items: [
+                        {
+                            label: "返回(B)",
+                            onClick: () => {
+                                this.message = "返回(B)";
+                                console.log("返回(B)");
+                            }
+                        },
+                        {label: "前进(F)", disabled: true},
+                        {label: "重新加载(R)", divided: true, icon: "el-icon-refresh"},
+                        {label: "另存为(A)..."},
+                        {label: "打印(P)...", icon: "el-icon-printer"},
+                        {label: "投射(C)...", divided: true},
+                        {
+                            label: "使用网页翻译(T)",
+                            divided: true,
+                            minWidth: 0,
+                            children: [{label: "翻译成简体中文"}, {label: "翻译成繁体中文"}]
+                        },
+                        {
+                            label: "截取网页(R)",
+                            minWidth: 0,
+                            children: [
+                                {
+                                    label: "截取可视化区域",
+                                    onClick: () => {
+                                        this.message = "截取可视化区域";
+                                        console.log("截取可视化区域");
+                                    }
+                                },
+                                {label: "截取全屏"}
+                            ]
+                        },
+                        {label: "查看网页源代码(V)", icon: "el-icon-view"},
+                        {label: "检查(N)"}
+                    ],
+                    e,
+                    //x: event.clientX,
+                    //y: event.clientY,
+                    customClass: "class-a",
+                    zIndex: 99999,
+                    minWidth: 230
+                });
+                return false;
             },
             /**
              * 处理文件夹路径
@@ -270,7 +327,66 @@
                 }
                 console.log(icon);
                 return icon;
+            },
+            //响应保存操作
+            handleSave(markdown, html) {
+                console.log(this.noteInfo);
+                api.updateNote({
+                    kbGuid: this.noteInfo.kbGuid,
+                    docGuid: this.noteInfo.docGuid,
+                    data: {
+                        category: this.noteInfo.category,
+                        kbGuid: this.noteInfo.kbGuid,
+                        docGuid: this.noteInfo.docGuid,
+                        html: `<html><head></head><body>${html}</body></html>`,
+                        resources: this.resources,
+                        title: this.noteInfo.title
+                    }
+                }).then(res => {
+                    if (res.returnCode !== 200) {
+                        this.$message({
+                            message: `${res.returnMessage}`,
+                            type: 'error'
+                        });
+                    } else {
+                        this.$message({
+                            message: `保存成功`,
+                            type: 'success'
+                        });
+                    }
+                });
+            },
+            dragControllerDiv: function () {
+                let resize = document.getElementById('resize');
+                let left = document.getElementById('tree');
+                let right = document.getElementById('editor');
+                let box = document.getElementById('box');
+                resize.onmousedown = function (e) {
+                    console.log(e);
+                    let startX = e.clientX;
+                    resize.left = resize.offsetLeft;
+                    document.onmousemove = function (e) {
+                        let endX = e.clientX;
+                        let moveLen = resize.left + (endX - startX);
+                        let maxT = box.clientWidth - resize.offsetWidth;
+                        if (moveLen < 150) moveLen = 360;
+                        if (moveLen > maxT - 800) moveLen = maxT - 800;
+                        resize.style.left = moveLen;
+                        left.style.width = moveLen + 'px';
+                        right.style.width = (box.clientWidth - moveLen - 5) + 'px';
+                    };
+                    document.onmouseup = function () {
+                        document.onmousemove = null;
+                        document.onmouseup = null;
+                        resize.releaseCapture && resize.releaseCapture();
+                    };
+                    resize.setCapture && resize.setCapture();
+                    return false;
+                };
             }
+        },
+        mounted() {
+            this.dragControllerDiv();
         },
         created() {
             //登陆成功
@@ -314,10 +430,16 @@
     }
 
     .file-tree {
-        width: 200px;
+        overflow: hidden;
+        min-width: 200px;
     }
 
     .markdown {
         width: calc(100% - 200px);
+    }
+
+    #resize {
+        /*border: 5px solid black;*/
+        cursor: col-resize;
     }
 </style>

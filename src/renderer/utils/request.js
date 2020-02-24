@@ -51,9 +51,9 @@ export function fetchPost(url, params) {
 }
 
 //返回一个Promise(发送get请求)
-export function fetchGet(url, param) {
+export function fetchGet(url, params) {
     var token, config;
-    config = {params: param};
+    config = {params: params};
     if (localStorage.getItem('userSettings')) {
         token = JSON.parse(localStorage.getItem('userSettings')).token;
         config['headers'] = {
@@ -73,10 +73,56 @@ export function fetchGet(url, param) {
             });
     });
 }
+
+// 更新操作
+export function fetchPut(url, params) {
+    let token, config;
+    config = {};
+    if (localStorage.getItem('userSettings')) {
+        token = JSON.parse(localStorage.getItem('userSettings')).token;
+        config['headers'] = {
+            'X-Wiz-Token': token
+        };
+    }
+    console.log(token);
+    return new Promise((resolve, reject) => {
+        axios.put(url, params, config)
+            .then(response => {
+                resolve(response);
+            }, err => {
+                reject(err);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+//删除操作
+export function fetchDelete(url, params) {
+    var token;
+    if (localStorage.getItem('userSettings')) {
+        token = JSON.parse(localStorage.getItem('userSettings')).token;
+        axios.defaults.headers.post['X-Wiz-Token'] = token;
+    }
+    return new Promise((resolve, reject) => {
+        axios.delete(url, params)
+            .then(response => {
+                resolve(response);
+            }, err => {
+                reject(err);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
 // 设置基础url地址
 export function setBaseUrl(url) {
     axios.defaults.baseURL = url;
 }
+
 // 获取基础url地址
 export function getBaseUrl() {
     return axios.defaults.baseURL;
@@ -85,6 +131,8 @@ export function getBaseUrl() {
 export default {
     fetchPost,
     fetchGet,
+    fetchPut,
+    fetchDelete,
     setBaseUrl,
     getBaseUrl,
     baseUrl

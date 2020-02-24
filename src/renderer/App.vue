@@ -23,6 +23,7 @@
 
 <style>
     body, html {
+        overflow: hidden;
         padding: 0;
         margin: 0;
         height: 100%;
