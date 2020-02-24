@@ -73,10 +73,19 @@ export function fetchGet(url, param) {
             });
     });
 }
-
+// 设置基础url地址
+export function setBaseUrl(url) {
+    axios.defaults.baseURL = url;
+}
+// 获取基础url地址
+export function getBaseUrl() {
+    return axios.defaults.baseURL;
+}
 
 export default {
     fetchPost,
     fetchGet,
+    setBaseUrl,
+    getBaseUrl,
     baseUrl
 };

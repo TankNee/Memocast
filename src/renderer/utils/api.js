@@ -2,9 +2,19 @@ import req from './request';
 
 let fetchPost = req.fetchPost;
 let fetchGet = req.fetchGet;
-let baseUrl = req.baseUrl;
+let setBaseUrl = req.setBaseUrl;
+let getBaseUrl = req.getBaseUrl;
 export default {
-    baseUrl,
+    getBaseUrl() {
+        return getBaseUrl();
+    },
+    /**
+     * 设置基础url地址
+     * @param url
+     */
+    setBaseUrl(url) {
+        setBaseUrl(url);
+    },
     /**
      * 用户登录接口
      * @param params {userId,password}
@@ -61,5 +71,13 @@ export default {
      */
     getNoteContent(params) {
         return fetchGet(`/ks/note/download/${params.kbGuid}/${params.docGuid}`, params.data);
+    },
+    /**
+     * 延长token有效期
+     * @param params
+     * @returns {Promise<unknown>}
+     */
+    keepTokenAlive(params) {
+        return fetchGet('/as/user/keep');
     }
 };

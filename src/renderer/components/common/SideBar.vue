@@ -15,8 +15,11 @@
             </div>
             <button class="btn settings-btn"></button>
         </div>
-        <el-dialog title="登录账户" :visible.sync="dialogFormVisible">
+        <el-dialog title="登录账户" :visible.sync="dialogFormVisible" v-loading="isLoading">
             <el-form :model="loginForm">
+                <el-form-item label="服务器地址">
+                    <el-input v-model="loginForm.url" autocomplete="off"></el-input>
+                </el-form-item>
                 <el-form-item label="账户">
                     <el-input v-model="loginForm.userId" autocomplete="off"></el-input>
                 </el-form-item>
@@ -43,8 +46,10 @@
                 isLogin: false,
                 loginForm: {
                     userId: 'nee@neeto.cn',
-                    password: '451000'
+                    password: '451000',
+                    url: 'https://oj.tanknee.cn'
                 },
+                isLoading: false,
                 dialogFormVisible: false,
                 userAvatar: 'https://tankneeimg.oss-cn-shenzhen.aliyuncs.com/profile/girlavatar.jpg'
             };
@@ -71,6 +76,7 @@
                                     type: 'success',
                                     message: '登出成功!'
                                 });
+                                bus.$emit('Logout Successfully');
                                 this.isLogin = false;
                                 this.userAvatar = 'https://tankneeimg.oss-cn-shenzhen.aliyuncs.com/profile/girlavatar.jpg';
                             }
@@ -84,7 +90,9 @@
                 }
             },
             login() {
+                this.isLoading = true;
                 console.log(this.loginForm.userId, this.loginForm.password);
+                api.setBaseUrl(this.loginForm.url);
                 api.Login({
                     userId: this.loginForm.userId,
                     password: this.loginForm.password
@@ -107,7 +115,8 @@
                         type: 'error'
                     });
                 }).then(() => {
-                    this.userAvatar = `${api.baseUrl}/as/user/avatar/${JSON.parse(localStorage.getItem('userSettings')).userGuid}`;
+                    this.isLoading = false;
+                    this.userAvatar = `${api.getBaseUrl()}/as/user/avatar/${JSON.parse(localStorage.getItem('userSettings')).userGuid}`;
                     this.isLogin = true;
                     this.dialogFormVisible = false;
                     bus.$emit('Login Successfully');

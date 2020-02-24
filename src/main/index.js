@@ -1,5 +1,5 @@
 import {app, BrowserWindow} from 'electron';
-
+var schedule = require('node-schedule');
 
 /**
  * Set `__static` path to static files in production

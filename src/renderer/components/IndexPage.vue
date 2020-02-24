@@ -11,16 +11,24 @@
                 :props="defaultProps"
                 @node-click="handleFileClick"
                 v-loading="isLoading"
+                @node-expand="handleEx"
+                @node-collapse="handleColl"
                 node-key="id"
+                accordion
                 ref="ft"
-        ></el-tree>
+        >
+            <span slot-scope="{ node, data }">
+                <i :class="getNodeIcon(node,data)"></i>
+                <span style="padding-left: 4px;">{{node.label}}</span>
+            </span>
+
+        </el-tree>
         <mavon-editor
                 v-model="content"
                 :preview="preview"
                 ref=md
                 class="markdown"
                 style="box-shadow: none;border-left: 1px solid rgb(237,237,237);"
-                :toolbarsFlag="false"
                 :navigation="showNav"
                 placeholder="Write your ideas"
         />
@@ -35,6 +43,8 @@
     import {mavonEditor} from 'mavon-editor';
     import 'mavon-editor/dist/css/index.css';
 
+    const he = require('he');
+    const html2markdown = require('../utils/lib/html2markdown/index');
     export default {
         name: 'IndexPage',
         components: {
@@ -59,9 +69,16 @@
             };
         },
         methods: {
-            handleFileClick(node) {
-                console.log(node);
-                if (node.isLoaded && node.type === 'folder') {
+            handleFileClick(data, Node) {
+                var node = data;
+                console.log(Node);
+                // if (node.type.indexOf('file') !== -1 && node.type.indexOf('-opened') === -1) {
+                //     node.type = node.type + '-opened';
+                //     console.log(node.type);
+                // } else if (node.type.indexOf('file') !== -1) {
+                //     node.type = node.type.replace('-opened', '');
+                // }
+                if (node.isLoaded && node.type.indexOf('folder') !== -1) {
                     return;
                 }
                 node.isLoaded = true;
@@ -79,7 +96,7 @@
                 });
                 var userSettings = JSON.parse(localStorage.getItem('userSettings'));
                 //如果点击的是文件夹，就加载这个文件夹的笔记
-                if (node.type === 'folder') {
+                if (node.type.indexOf('folder') !== -1) {
                     this.isLoading = true;
                     api.getFolderNotes({
                         kbServer: userSettings.kbServer,
@@ -125,32 +142,34 @@
                             lang: 'zh-cn',
                         }
                     }).then(res => {
-                        // if (document.body.createTextRange) {
-                        //     var range = document.body.createTextRange();
-                        //     range.moveToElementText(htmlView);
-                        //     range.select();
-                        // } else if (window.getSelection) {
-                        //     var selection = window.getSelection();
-                        //     var range = document.createRange();
-                        //     range.selectNodeContents(htmlView);
-                        //     selection.removeAllRanges();
-                        //     selection.addRange(range);
-                        // } else {
-                        //     console.warn("none");
-                        // }
-                        // document.execCommand("Copy");
-                        // window.getSelection().empty();
-                        var re1 = new RegExp("<.+?>", "g");//匹配html标签的正则表达式，"g"是搜索匹配多个符合的内容
-                        var patten = /(<body).*(<\/body>)/g;
-                        var msg = patten.exec(res.html)[0].replace(re1, '');//执行替换成空字符
-                        console.log(msg);
-                        this.content = msg;
-                        console.log(this.preview);
-                        console.log(res);
+                        const re1 = new RegExp("<.+?>", "g");//匹配html标签的正则表达式，"g"是搜索匹配多个符合的内容
+                        const patten = /(<body).*(<\/body>)/g;
+                        const patten2 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size:\s10\.5pt;">/g;
+                        const patten3 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size: 0\.875rem;">/g;
+                        const body = patten.exec(res.html)[0];//执行替换成空字符
+                        let text = html2markdown(body, {
+                            imgBaseUrl: `${api.getBaseUrl()}/ks/note/view/${node.kbGuid}/${node.docGuid}/`,
+                            resources: res.resources
+                        });
+                        text = text.replace(/&nbsp;/g, '\u0020'); // 将空格统一为转化成半角空格
+                        text = he.decode(text); // 处理其他实体字符
+                        text = text.replace(patten2, '');
+                        text = text.replace(patten3, '');
+                        console.log(text.indexOf('data-wiz-span'));
+                        this.content = text;
                     }).catch(err => {
                         console.log(err);
                     });
                 }
+            },
+            handleEx(data, Node) {
+                if (data.type.indexOf('-opened') === -1) {
+                    data.type = data.type + '-opened';
+                }
+            },
+            handleColl(data, Node) {
+                console.log(data);
+                data.type = data.type.replace('-opened', '');
             },
             /**
              * 处理文件夹路径
@@ -231,6 +250,27 @@
                     }
                 });
             },
+            /**
+             * 获取节点的图标
+             * @param node
+             * @param data
+             * @returns {string}
+             */
+            getNodeIcon(node, data) {
+                var icon;
+                console.log(data.type);
+                if (data.type === 'folder') {
+                    icon = 'el-icon-folder';
+                } else if (data.type === 'folder-opened') {
+                    icon = 'el-icon-folder-opened';
+                } else if (data.type === 'file') {
+                    icon = 'el-icon-notebook-1';
+                } else if (data.type === 'file-opened') {
+                    icon = 'el-icon-notebook-2';
+                }
+                console.log(icon);
+                return icon;
+            }
         },
         created() {
             //登陆成功
@@ -253,6 +293,12 @@
                         this.isLoading = false;
                     }
                 });
+            });
+            // 退出成功
+            bus.$on('Logout Successfully', () => {
+                this.fileTree = [];
+                this.content = '';
+                this.isLogin = false;
             });
         }
     };
