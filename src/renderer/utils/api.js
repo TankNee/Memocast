@@ -83,6 +83,22 @@ export default {
         return fetchPut(`/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`, params.data);
     },
     /**
+     * 创建新笔记
+     * @param params
+     * @returns {Promise | Promise<unknown>}
+     */
+    createNote(params) {
+        return fetchPost(`/ks/note/create/${params.kbGuid}`, params.data);
+    },
+    /**
+     * 新建文件夹
+     * @param params
+     * @returns {Promise<unknown>}
+     */
+    createCategory(params) {
+        return fetchPost(`/ks/category/create/${params.kbGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`, params.data);
+    },
+    /**
      * 删除笔记
      * @param params
      * @returns {Promise<unknown>}
@@ -91,11 +107,28 @@ export default {
         return fetchDelete(`/ks/note/delete/${params.kbGuid}/${params.docGuid}`);
     },
     /**
+     * 删除文件夹
+     * @param params
+     * @returns {Promise<unknown>}
+     */
+    deleteCategory(params) {
+        return fetchDelete(`/ks/category/delete/${params.kbGuid}`, params.data);
+    },
+    /**
+     * 上传图片
+     * @param params
+     * @returns {Promise | Promise<unknown>}
+     */
+    uploadImage(params) {
+        return fetchPost(`/ks/resource/upload/${params.kbGuid}/${params.docGuid}`, params.formData);
+    },
+    /**
      * 延长token有效期
      * @param params
      * @returns {Promise<unknown>}
      */
     keepTokenAlive(params) {
         return fetchGet('/as/user/keep');
-    }
+    },
+
 };

@@ -9,7 +9,6 @@
                 id="tree"
                 class="file-tree"
                 :data="fileTree"
-                :props="defaultProps"
                 @node-click="handleFileClick"
                 v-loading="isLoading"
                 @node-expand="handleEx"
@@ -37,6 +36,19 @@
                 placeholder="Write your ideas"
                 @save="handleSave"
         />
+        <div v-show="menuVisible">
+            <ul id="menu">
+                <li
+                        v-for="item in menuItems"
+                        class="menu-item"
+                        :style="item === '删除' ? 'color: red':''"
+                        @click="handleMenuClick(item)"
+                        :data-type="item"
+                >
+                    {{ item }}
+                </li>
+            </ul>
+        </div>
     </div>
 
 </template>
@@ -60,11 +72,11 @@
             return {
                 value1: 30,
                 showNav: false,
-                defaultProps: [],
                 content: '',
                 preview: '',
                 isLogin: false,
                 isLoading: false,
+                menuVisible: false,
                 configs: {
                     spellChecker: false // 禁用拼写检查
                 },
@@ -72,11 +84,21 @@
                 folderPathsArray: [],
                 treeId: 1,
                 resources: [],
-                noteInfo: {}
+                noteInfo: {},
+                menuItems: ['新建', '移动', '复制', '删除'],
+                selectedNodeData: {},
+                selectedNode: {}
             };
         },
         methods: {
+            handleClick(vm, event) {
+                console.log(vm, event);
+            },
+            handleSubmenuShow(vm, placement) {
+                console.log(vm, placement);
+            },
             handleFileClick(data, Node) {
+                this.menuVisible = false;
                 var node = data;
                 console.log(Node);
                 if (node.isLoaded && node.type.indexOf('folder') !== -1) {
@@ -84,9 +106,7 @@
                 }
                 node.isLoaded = true;
                 console.log(node);
-                // this.$refs.ft.updateKeyChildren(node.id, node);
-                var path = '';
-                console.log(this.folderPathsArray);
+                let path = '';
                 this.folderPathsArray.forEach(fpa => {
                     if (fpa[fpa.length - 1] === node.label) {
                         path = fpa[0];
@@ -181,52 +201,19 @@
                 console.log(data);
                 data.type = data.type.replace('-opened', '');
             },
-            handleRightMouse(e, data, Node) {
-                this.$contextmenu({
-                    items: [
-                        {
-                            label: "返回(B)",
-                            onClick: () => {
-                                this.message = "返回(B)";
-                                console.log("返回(B)");
-                            }
-                        },
-                        {label: "前进(F)", disabled: true},
-                        {label: "重新加载(R)", divided: true, icon: "el-icon-refresh"},
-                        {label: "另存为(A)..."},
-                        {label: "打印(P)...", icon: "el-icon-printer"},
-                        {label: "投射(C)...", divided: true},
-                        {
-                            label: "使用网页翻译(T)",
-                            divided: true,
-                            minWidth: 0,
-                            children: [{label: "翻译成简体中文"}, {label: "翻译成繁体中文"}]
-                        },
-                        {
-                            label: "截取网页(R)",
-                            minWidth: 0,
-                            children: [
-                                {
-                                    label: "截取可视化区域",
-                                    onClick: () => {
-                                        this.message = "截取可视化区域";
-                                        console.log("截取可视化区域");
-                                    }
-                                },
-                                {label: "截取全屏"}
-                            ]
-                        },
-                        {label: "查看网页源代码(V)", icon: "el-icon-view"},
-                        {label: "检查(N)"}
-                    ],
-                    e,
-                    //x: event.clientX,
-                    //y: event.clientY,
-                    customClass: "class-a",
-                    zIndex: 99999,
-                    minWidth: 230
-                });
-                return false;
+            handleRightMouse(e, data, Node, element) {
+                this.menuVisible = false;
+                if (data.type.indexOf('file') !== -1) {
+                    this.menuItems = ['移动', '复制', '删除'];
+                } else {
+                    this.menuItems = ['新建文件夹', '新建笔记', '移动', '复制', '删除'];
+                }
+                this.menuVisible = true;
+                let menu = document.querySelector("#menu");
+                menu.style.left = e.clientX - 70 + "px";
+                menu.style.top = e.clientY - 35 + "px";
+                this.selectedNodeData = data;
+                this.selectedNode = Node;
             },
             /**
              * 处理文件夹路径
@@ -356,6 +343,136 @@
                     }
                 });
             },
+            handleMenuClick(item) {
+                let originNode = this.selectedNode;
+                let node = this.selectedNodeData;
+                let settings = JSON.parse(localStorage.getItem('userSettings'));
+                let path = '';
+                this.folderPathsArray.forEach(fpa => {
+                    if (fpa[fpa.length - 1] === node.label) {
+                        path = fpa[0];
+                        for (let i = 1; i < fpa.length; i++) {
+                            path = `${path}/${fpa[i]}`;
+                        }
+                    }
+                });
+                console.log(Math.floor(Date.now() / 1000).toFixed(0));
+                switch (item) {
+                    case '新建文件夹':
+                        api.createCategory({
+                            kbGuid: settings.kbGuid,
+                            data: {
+                                parent: `/${path}/`,
+                                child: '新文件夹',
+                                pos: Math.floor(Date.now() / 1000).toFixed(0)
+                            }
+                        }).then(res => {
+                            if (res.returnCode !== 200) {
+                                this.$message({
+                                    message: `${res.returnMessage}`,
+                                    type: 'error'
+                                });
+                            } else {
+                                this.content = 'Hello World';
+                                this.isLoading = false;
+                                const newChild = {
+                                    label: res.folder.name,
+                                    type: 'folder',
+                                    id: this.treeId++,
+                                    isLoaded: false
+                                };
+                                this.$refs.ft.append(newChild, node.id);
+                            }
+                        }).catch(err => {
+                            this.$message({
+                                message: `${err}`,
+                                type: 'error'
+                            });
+                        });
+                        break;
+                    case '新建笔记':
+                        api.createNote({
+                            kbGuid: settings.kbGuid,
+                            data: {
+                                kbGuid: settings.kbGuid,
+                                html: `<html><head></head><body><p>${'Hello World'}</p></body></html>`,
+                                category: `/${path}/`,
+                                owner: settings.userId,
+                                title: '无标题.md',
+                                params: null,
+                                appInfo: null,
+                                tags: ""
+                            }
+                        }).then(res => {
+                            if (res.returnCode !== 200) {
+                                this.$message({
+                                    message: `${res.returnMessage}`,
+                                    type: 'error'
+                                });
+                            } else {
+                                this.content = 'Hello World';
+                                this.isLoading = false;
+                                const newChild = {
+                                    label: res.result.title,
+                                    type: 'file',
+                                    id: this.treeId++,
+                                    docGuid: res.result.docGuid,
+                                    kbGuid: res.result.kbGuid
+                                };
+                                this.$refs.ft.append(newChild, node.id);
+                            }
+                        }).catch(err => {
+                            this.$message({
+                                message: `${err}`,
+                                type: 'error'
+                            });
+                        });
+                        break;
+                    case '移动':
+                        break;
+                    case '复制':
+                        break;
+                    case '删除':
+                        if (node.type.indexOf('file') !== -1) {
+                            api.deleteNote({
+                                kbGuid: settings.kbGuid,
+                                docGuid: node.docGuid
+                            }).then(res => {
+                                if (res.returnCode !== 200) {
+                                    this.$message({
+                                        message: `${res.returnMessage}`,
+                                        type: 'error'
+                                    });
+                                } else {
+                                    this.$refs.ft.remove(node.id);
+                                }
+                            });
+                        } else {
+                            api.deleteCategory({
+                                kbGuid: settings.kbGuid,
+                                data: {
+                                    category: `/${path}/`,
+                                    clientType: 'web',
+                                    clientVersion: '4.0',
+                                    lang: 'zh-cn',
+                                }
+                            }).then(res => {
+                                if (res.returnCode !== 200) {
+                                    this.$message({
+                                        message: `${res.returnMessage}`,
+                                        type: 'error'
+                                    });
+                                } else {
+                                    this.$refs.ft.remove(node.id);
+                                }
+                            });
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+            },
             dragControllerDiv: function () {
                 let resize = document.getElementById('resize');
                 let left = document.getElementById('tree');
@@ -387,6 +504,9 @@
         },
         mounted() {
             this.dragControllerDiv();
+            bus.$on('Close ContextMenu', () => {
+                this.menuVisible = false;
+            });
         },
         created() {
             //登陆成功
@@ -416,6 +536,7 @@
                 this.content = '';
                 this.isLogin = false;
             });
+
         }
     };
 </script>
@@ -441,5 +562,37 @@
     #resize {
         /*border: 5px solid black;*/
         cursor: col-resize;
+    }
+
+    #menu {
+        position: absolute;
+        z-index: 99999999;
+        border-radius: 4px;
+        border: 1px solid #ebeef5;
+        background-color: #fff;
+        list-style: none;
+        margin: 0;
+        padding: 4px 0;
+        transition: .3s;
+        transition-property: all;
+        transition-duration: 0.3s;
+        transition-timing-function: ease;
+        transition-delay: 0s;
+        /*transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;*/
+        font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        -webkit-tap-highlight-color: transparent;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+        font-size: 14px;
+    }
+
+    .menu-item {
+        padding: 4px 16px;
+        cursor: pointer;
+    }
+
+    .menu-item:hover {
+        background-color: rgba(179, 216, 255, 0.3);
     }
 </style>

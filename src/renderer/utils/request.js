@@ -100,13 +100,16 @@ export function fetchPut(url, params) {
 
 //删除操作
 export function fetchDelete(url, params) {
-    var token;
+    var token, config;
+    config = {params: params};
     if (localStorage.getItem('userSettings')) {
         token = JSON.parse(localStorage.getItem('userSettings')).token;
-        axios.defaults.headers.post['X-Wiz-Token'] = token;
+        config['headers'] = {
+            'X-Wiz-Token': token
+        };
     }
     return new Promise((resolve, reject) => {
-        axios.delete(url, params)
+        axios.delete(url, config)
             .then(response => {
                 resolve(response);
             }, err => {

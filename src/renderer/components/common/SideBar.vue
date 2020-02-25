@@ -10,8 +10,15 @@
         </div>
         <div class="bottom-items">
             <div @click="attendTologin" style="cursor: pointer">
-                <el-avatar style="border: 2px solid white"
-                           :src="userAvatar"></el-avatar>
+                <el-popover
+                        placement="top-start"
+                        :title="`${userInfo.displayName}(${userInfo.userId})`"
+                        width="200"
+                        trigger="hover"
+                        :content="`创建时间：${userInfo.created}`">
+                    <el-avatar style="border: 2px solid white"
+                               :src="userAvatar" slot="reference"></el-avatar>
+                </el-popover>
             </div>
             <button class="btn settings-btn"></button>
         </div>
@@ -51,6 +58,9 @@
                 },
                 isLoading: false,
                 dialogFormVisible: false,
+                userInfo: {
+                    displayName: '您还未登录'
+                },
                 userAvatar: 'https://tankneeimg.oss-cn-shenzhen.aliyuncs.com/profile/girlavatar.jpg'
             };
         },
@@ -107,6 +117,7 @@
                             message: '登录成功',
                             type: 'success'
                         });
+                        this.userInfo = res.result.user;
                         localStorage.setItem('userSettings', JSON.stringify(res.result));
                     }
                 }).catch(err => {
@@ -133,6 +144,7 @@
         align-items: center;
         justify-content: space-between;
         background-color: rgb(247, 247, 247);
+        overflow: hidden;
     }
 
     .top-items, .bottom-items {

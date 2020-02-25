@@ -1,9 +1,13 @@
 <template>
     <div id="app">
         <el-container style="height: 100%;margin: 0;padding: 0;">
-            <el-header style="height: 35px;padding: 0; border-bottom: 1px solid rgb(237,237,237);"><MenuBar style="height: 100%;width: 100%"/></el-header>
+            <el-header style="height: 35px;padding: 0; border-bottom: 1px solid rgb(237,237,237);">
+                <MenuBar style="height: 100%;width: 100%"/>
+            </el-header>
             <el-container>
-                <el-aside width="75px"><SideBar style="height: 100%;width: 100%"/></el-aside>
+                <el-aside width="75px">
+                    <SideBar style="height: 100%;width: 100%"/>
+                </el-aside>
                 <el-main style="padding: 0;">
                     <router-view></router-view>
                 </el-main>
@@ -15,9 +19,16 @@
 <script>
     import MenuBar from "./components/common/MenuBar";
     import SideBar from "./components/common/SideBar";
+    import bus from "./components/common/Bus";
+
     export default {
         name: 'neeto-vue',
-        components: {SideBar, MenuBar}
+        components: {SideBar, MenuBar},
+        mounted() {
+            document.querySelector('#app').addEventListener('click', (e) => {
+                bus.$emit('Close ContextMenu');
+            });
+        }
     };
 </script>
 
