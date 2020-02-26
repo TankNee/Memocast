@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import axios from 'axios';
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 
+import 'element-ui/lib/theme-chalk/index.css';
 
 
 var schedule = require('node-schedule');
@@ -14,6 +14,7 @@ import api from "./utils/api";
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 
 Vue.use(ElementUI);
+
 // Vue.prototype.$contextmenu = Contextmenu;
 Vue.http = Vue.prototype.$http = axios;
 Vue.config.productionTip = false;

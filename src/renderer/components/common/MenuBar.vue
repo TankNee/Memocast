@@ -6,14 +6,12 @@
 <template>
     <div class="nee-header" style="-webkit-app-region: drag;">
         <div class="left-items">
-            <el-dropdown class="menu-item">
-                <span class="el-dropdown-link" style="color: black">
-                    文件
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>打开</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+            <span class="menu-item">文件</span>
+            <span class="menu-item">编辑</span>
+            <span class="menu-item">视图</span>
+        </div>
+        <div class="middle-items">
+            <span>{{fileTitle}}</span>
         </div>
         <div class="right-items">
             <button class="action-btn mini-btn" @click="shrink"></button>
@@ -31,9 +29,11 @@
         name: "MenuBar",
         data() {
             return {
+                dataSource: ['mail'],
                 currentWindow: {},
                 mainProcess: {},
-                fileTitle: ''
+                fileTitle: 'NeetoEditor',
+                searchWord: '',
             };
         },
         methods: {
@@ -57,6 +57,7 @@
         mounted() {
             this.currentWindow = this.$electron.remote.getCurrentWindow();
             bus.$on('Note Opened', title => {
+                console.log(title);
                 this.fileTitle = title;
             });
         }
@@ -76,13 +77,23 @@
         border-bottom: 1px;
     }
 
+    .left-items {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 99999;
+    }
+
     .el-dropdown-link {
         cursor: pointer;
         color: #409EFF;
     }
 
     .menu-item {
-        margin-left: 10px;
+        margin-left: 23px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
     }
 
     .action-btn {
@@ -107,5 +118,10 @@
 
     .close-btn {
         background-image: url("../../assets/images/close.png");
+    }
+
+    .search-input {
+        border-radius: 5px;
+        height: 50px;
     }
 </style>

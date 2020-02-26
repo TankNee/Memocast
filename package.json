@@ -21,7 +21,27 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": ""
   },
+  "build": {
+    "productName": "Neeto",
+    "appId": "0704",
+    "copyright": "TankNee",
+    "compression": "store",
+    "directories": {
+      "output": "out"
+    },
+    "win": {
+      "icon": "build/icons/icon.ico"
+    },
+    "asar": false,
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "htto://feedback.neeto.cn/release"
+      }
+    ]
+  },
   "dependencies": {
+    "ant-design-vue": "^1.4.11",
     "axios": "^0.18.0",
     "element-ui": "^2.13.0",
     "he": "^1.2.0",

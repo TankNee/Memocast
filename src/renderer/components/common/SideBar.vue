@@ -22,15 +22,20 @@
             </div>
             <button class="btn settings-btn"></button>
         </div>
-        <el-dialog title="登录账户" :visible.sync="dialogFormVisible" v-loading="isLoading">
+        <el-dialog
+                title="登录账户"
+                :visible.sync="dialogFormVisible"
+                v-loading="isLoading"
+                destroy-on-close
+        >
             <el-form :model="loginForm">
-                <el-form-item label="服务器地址">
+                <el-form-item label="服务器地址" class="form-item">
                     <el-input v-model="loginForm.url" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="账户">
+                <el-form-item label="账户" class="form-item">
                     <el-input v-model="loginForm.userId" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="密码">
+                <el-form-item label="密码" class="form-item">
                     <el-input v-model="loginForm.password" autocomplete="off" show-password></el-input>
                 </el-form-item>
             </el-form>
@@ -107,6 +112,8 @@
                     userId: this.loginForm.userId,
                     password: this.loginForm.password
                 }).then(res => {
+                    this.isLoading = false;
+                    this.dialogFormVisible = false;
                     if (res.returnCode !== 200) {
                         this.$message({
                             message: `登录失败 :${res.returnMessage}`,
@@ -119,18 +126,15 @@
                         });
                         this.userInfo = res.result.user;
                         localStorage.setItem('userSettings', JSON.stringify(res.result));
+                        this.userAvatar = `${api.getBaseUrl()}/as/user/avatar/${JSON.parse(localStorage.getItem('userSettings')).userGuid}`;
+                        this.isLogin = true;
+                        bus.$emit('Login Successfully');
                     }
                 }).catch(err => {
                     this.$message({
                         message: `登录失败,请检查网络`,
                         type: 'error'
                     });
-                }).then(() => {
-                    this.isLoading = false;
-                    this.userAvatar = `${api.getBaseUrl()}/as/user/avatar/${JSON.parse(localStorage.getItem('userSettings')).userGuid}`;
-                    this.isLogin = true;
-                    this.dialogFormVisible = false;
-                    bus.$emit('Login Successfully');
                 });
             }
         }
@@ -171,5 +175,9 @@
 
     .settings-btn {
         background-image: url("../../assets/images/settings.png");
+    }
+
+    .form-item {
+
     }
 </style>

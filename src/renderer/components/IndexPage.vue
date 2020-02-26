@@ -24,7 +24,6 @@
                 <span style="padding-left: 4px;">{{node.label}}</span>
             </span>
         </el-tree>
-        <div id="resize"></div>
         <mavon-editor
                 id="editor"
                 v-model="content"
@@ -35,6 +34,8 @@
                 :navigation="showNav"
                 placeholder="Write your ideas"
                 @save="handleSave"
+                codeStyle="googlecode"
+                v-loading="isLoading"
         />
         <div v-show="menuVisible">
             <ul id="menu">
@@ -84,7 +85,7 @@
                 folderPathsArray: [],
                 treeId: 1,
                 resources: [],
-                noteInfo: {},
+                noteInfo: null,
                 menuItems: ['新建', '移动', '复制', '删除'],
                 selectedNodeData: {},
                 selectedNode: {}
@@ -104,6 +105,7 @@
                 if (node.isLoaded && node.type.indexOf('folder') !== -1) {
                     return;
                 }
+                this.isLoading = true;
                 node.isLoaded = true;
                 console.log(node);
                 let path = '';
@@ -147,12 +149,16 @@
                             console.log(note);
                         });
                     }).catch(err => {
-                        console.log(err);
+                        this.$message({
+                            message: `${err}`,
+                            type: 'error'
+                        });
                     }).then(() => {
                         this.isLoading = false;
                     });
                 } else {
-                    bus.$emit('Note Opened', node.title);
+                    this.selectedNodeData = node;
+                    bus.$emit('Note Opened', node.label);
                     api.getNoteContent({
                         kbGuid: node.kbGuid,
                         docGuid: node.docGuid,
@@ -168,6 +174,7 @@
                         const patten = /<body[^>]*>([\s\S]*)<\/body>/g;
                         const patten2 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size:\s10\.5pt;">/g;
                         const patten3 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size: 0\.875rem;">/g;
+                        const patten4 = /\s<img\ssrc="data.*>/g;
                         var body;
                         if (res.html.indexOf(`<body`) === -1) {
                             body = `<html><head></head><body>${res.html}</body></html>`;
@@ -184,11 +191,12 @@
                         text = he.decode(text); // 处理其他实体字符
                         text = text.replace(patten2, '');
                         text = text.replace(patten3, '');
+                        text = text.replace(patten4, '- [ ] ');
                         console.log(text.indexOf('data-wiz-span'));
                         this.content = text;
                     }).catch(err => {
                         console.log(err);
-                    });
+                    }).then(() => this.isLoading = false);
                 }
             },
             // data-节点的自定义对象，Node节点对象
@@ -204,9 +212,15 @@
             handleRightMouse(e, data, Node, element) {
                 this.menuVisible = false;
                 if (data.type.indexOf('file') !== -1) {
-                    this.menuItems = ['移动', '复制', '删除'];
+                    this.menuItems = ['重命名', '移动', '复制', '删除'];
+                    api.getNoteInfo({
+                        kbGuid: data.kbGuid,
+                        docGuid: data.docGuid
+                    }).then(res => {
+                        this.noteInfo = res.info;
+                    });
                 } else {
-                    this.menuItems = ['新建文件夹', '新建笔记', '移动', '复制', '删除'];
+                    this.menuItems = ['新建文件夹', '新建笔记', '重命名文件夹', '移动', '复制', '删除'];
                 }
                 this.menuVisible = true;
                 let menu = document.querySelector("#menu");
@@ -325,7 +339,7 @@
                         category: this.noteInfo.category,
                         kbGuid: this.noteInfo.kbGuid,
                         docGuid: this.noteInfo.docGuid,
-                        html: `<html><head></head><body>${html}</body></html>`,
+                        html: `<html><head></head><body>${markdown}</body></html>`,
                         resources: this.resources,
                         title: this.noteInfo.title
                     }
@@ -428,6 +442,28 @@
                             });
                         });
                         break;
+                    case '重命名文件夹':
+                        this.$prompt('请输入文件夹名', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            inputValue:this.selectedNodeData.label
+                        }).then(({value}) => {
+                            bus.$emit('Rename Folder', `/${path}/`, value);
+                            this.selectedNodeData.label = value;
+                        }).catch(() => {
+                        });
+                        break;
+                    case '重命名':
+                        this.$prompt('请输入文件名', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            inputValue:this.selectedNodeData.label
+                        }).then(({value}) => {
+                            bus.$emit('Rename File', value);
+                            this.selectedNodeData.label = value;
+                        }).catch(() => {
+                        });
+                        break;
                     case '移动':
                         break;
                     case '复制':
@@ -474,32 +510,6 @@
                 }
             },
             dragControllerDiv: function () {
-                let resize = document.getElementById('resize');
-                let left = document.getElementById('tree');
-                let right = document.getElementById('editor');
-                let box = document.getElementById('box');
-                resize.onmousedown = function (e) {
-                    console.log(e);
-                    let startX = e.clientX;
-                    resize.left = resize.offsetLeft;
-                    document.onmousemove = function (e) {
-                        let endX = e.clientX;
-                        let moveLen = resize.left + (endX - startX);
-                        let maxT = box.clientWidth - resize.offsetWidth;
-                        if (moveLen < 150) moveLen = 360;
-                        if (moveLen > maxT - 800) moveLen = maxT - 800;
-                        resize.style.left = moveLen;
-                        left.style.width = moveLen + 'px';
-                        right.style.width = (box.clientWidth - moveLen - 5) + 'px';
-                    };
-                    document.onmouseup = function () {
-                        document.onmousemove = null;
-                        document.onmouseup = null;
-                        resize.releaseCapture && resize.releaseCapture();
-                    };
-                    resize.setCapture && resize.setCapture();
-                    return false;
-                };
             }
         },
         mounted() {
@@ -536,6 +546,65 @@
                 this.content = '';
                 this.isLogin = false;
             });
+            // 文件夹重命名
+            bus.$on('Rename Folder', (oldName, newName) => {
+                const settings = JSON.parse(localStorage.getItem('userSettings'));
+                api.renameCategory({
+                    kbGuid: settings.kbGuid,
+                    data: {
+                        from: oldName,
+                        to: newName
+                    }
+                }).then(res => {
+                    if (res.returnCode !== 200) {
+                        this.$message({
+                            message: `${res.returnMessage}`,
+                            type: 'error'
+                        });
+                    } else {
+                        this.$message({
+                            message: `保存成功`,
+                            type: 'success'
+                        });
+                    }
+                });
+            });
+            //文件重命名
+            bus.$on('Rename File', (name) => {
+                console.log(this.noteInfo);
+                api.getNoteContent({
+                    kbGuid: this.selectedNodeData.kbGuid,
+                    docGuid: this.selectedNodeData.docGuid,
+                    data: {
+                        downloadInfo: 1,
+                        downloadData: 0,
+                        clientType: 'web',
+                        clientVersion: 4.0,
+                        lang: 'zh-cn',
+                    }
+                }).then(res => {
+                    this.noteInfo = res.info;
+                    console.log(res);
+                    this.noteInfo.title = name;
+                    api.updateNoteInfo({
+                        kbGuid: this.noteInfo.kbGuid,
+                        docGuid: this.noteInfo.docGuid,
+                        data: this.noteInfo
+                    }).then(res => {
+                        if (res.returnCode !== 200) {
+                            this.$message({
+                                message: `${res.returnMessage}`,
+                                type: 'error'
+                            });
+                        } else {
+                            this.$message({
+                                message: `保存成功`,
+                                type: 'success'
+                            });
+                        }
+                    });
+                });
+            });
 
         }
     };
@@ -551,17 +620,24 @@
     }
 
     .file-tree {
-        overflow: hidden;
-        min-width: 200px;
+        overflow: scroll;
+        width: 200px;
+    }
+
+    .file-tree::-webkit-scrollbar {
+        display: none;
     }
 
     .markdown {
         width: calc(100% - 200px);
     }
 
-    #resize {
-        /*border: 5px solid black;*/
-        cursor: col-resize;
+    .markdown::-webkit-scrollbar {
+        display: none;
+    }
+
+    .auto-textarea-input::-webkit-scrollbar {
+        display: none;
     }
 
     #menu {

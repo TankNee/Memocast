@@ -75,12 +75,28 @@ export default {
         return fetchGet(`/ks/note/download/${params.kbGuid}/${params.docGuid}`, params.data);
     },
     /**
+     * 获取笔记信息
+     * @param params
+     * @returns {Promise | Promise<unknown>}
+     */
+    getNoteInfo(params) {
+        return fetchGet(`/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`);
+    },
+    /**
      * 更新修改笔记内容
      * @param params
      * @returns {Promise<unknown>}
      */
     updateNote(params) {
         return fetchPut(`/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`, params.data);
+    },
+    /**
+     * 更新笔记信息
+     * @param params
+     * @returns {Promise | Promise<unknown>}
+     */
+    updateNoteInfo(params) {
+        return fetchPost(`/ks/note/upload/${params.kbGuid}/${params.docGuid}`, params.data);
     },
     /**
      * 创建新笔记
@@ -113,6 +129,14 @@ export default {
      */
     deleteCategory(params) {
         return fetchDelete(`/ks/category/delete/${params.kbGuid}`, params.data);
+    },
+    /**
+     * 重命名文件夹
+     * @param params
+     * @returns {Promise | Promise<unknown>}
+     */
+    renameCategory(params) {
+        return fetchPut(`/ks/category/rename/${params.kbGuid}`, params.data);
     },
     /**
      * 上传图片
