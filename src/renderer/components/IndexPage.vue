@@ -98,7 +98,7 @@
             handleSubmenuShow(vm, placement) {
                 console.log(vm, placement);
             },
-            handleFileClick(data, Node) {
+            async handleFileClick(data, Node) {
                 this.menuVisible = false;
                 var node = data;
                 console.log(Node);
@@ -121,23 +121,24 @@
                 //如果点击的是文件夹，就加载这个文件夹的笔记
                 if (node.type.indexOf('folder') !== -1) {
                     this.isLoading = true;
-                    api.getFolderNotes({
-                        kbServer: userSettings.kbServer,
-                        kbGuid: userSettings.kbGuid,
-                        data: {
-                            start: 0,
-                            count: 100,
-                            category: `/${path}/`,
-                            orderBy: 'modified',
-                            ascending: 'desc',
-                            withAbstract: 'true',
-                            clientType: 'web',
-                            clientVersion: 4.0,
-                            lang: 'zh-cn',
-                        }
-                    }).then(res => {
-                        console.log(res);
-                        res.result.forEach(note => {
+                    try {
+                        const result = await api.KnowledgeBaseApi.getFolderNotes({
+                            kbServer: userSettings.kbServer,
+                            kbGuid: userSettings.kbGuid,
+                            data: {
+                                start: 0,
+                                count: 100,
+                                category: `/${path}/`,
+                                orderBy: 'modified',
+                                ascending: 'desc',
+                                withAbstract: 'true',
+                                clientType: 'web',
+                                clientVersion: 4.0,
+                                lang: 'zh-cn',
+                            }
+                        });
+                        console.log(result);
+                        result.forEach(note => {
                             const newChild = {
                                 label: note.title,
                                 type: 'file',
@@ -148,44 +149,46 @@
                             this.$refs.ft.append(newChild, node.id);
                             console.log(note);
                         });
-                    }).catch(err => {
+                    } catch(err) {
                         this.$message({
-                            message: `${err}`,
+                            message: `获取笔记列表失败：${err.message}`,
                             type: 'error'
                         });
-                    }).then(() => {
+                    } finally {
                         this.isLoading = false;
-                    });
+                    }
                 } else {
                     this.selectedNodeData = node;
                     bus.$emit('Note Opened', node.label);
-                    api.getNoteContent({
-                        kbGuid: node.kbGuid,
-                        docGuid: node.docGuid,
-                        data: {
-                            downloadInfo: 1,
-                            downloadData: 1,
-                            clientType: 'web',
-                            clientVersion: 4.0,
-                            lang: 'zh-cn',
-                        }
-                    }).then(res => {
+                    try {
+                        const result = await api.KnowledgeBaseApi.getNoteContent({
+                            kbGuid: node.kbGuid,
+                            docGuid: node.docGuid,
+                            data: {
+                                downloadInfo: 1,
+                                downloadData: 1,
+                                clientType: 'web',
+                                clientVersion: 4.0,
+                                lang: 'zh-cn',
+                            }
+                        });
+                        console.log(result);
                         const re1 = new RegExp("<.+?>", "g");//匹配html标签的正则表达式，"g"是搜索匹配多个符合的内容
                         const patten = /<body[^>]*>([\s\S]*)<\/body>/g;
                         const patten2 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size:\s10\.5pt;">/g;
                         const patten3 = /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size: 0\.875rem;">/g;
                         const patten4 = /\s<img\ssrc="data.*>/g;
                         var body;
-                        if (res.html.indexOf(`<body`) === -1) {
-                            body = `<html><head></head><body>${res.html}</body></html>`;
+                        if (result.html.indexOf(`<body`) === -1) {
+                            body = `<html><head></head><body>${result.html}</body></html>`;
                         } else {
-                            body = patten.exec(res.html)[0];//提取body里的内容
+                            body = patten.exec(result.html)[0];//提取body里的内容
                         }
-                        this.resources = res.resources;
-                        this.noteInfo = res.info;
+                        this.resources = result.resources;
+                        this.noteInfo = result.info;
                         let text = html2markdown(body, {
-                            imgBaseUrl: `${api.getBaseUrl()}/ks/note/view/${node.kbGuid}/${node.docGuid}/`,
-                            resources: res.resources
+                            imgBaseUrl: `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${node.kbGuid}/${node.docGuid}/`,
+                            resources: result.resources
                         });
                         text = text.replace(/&nbsp;/g, '\u0020'); // 将空格统一为转化成半角空格
                         text = he.decode(text); // 处理其他实体字符
@@ -194,9 +197,15 @@
                         text = text.replace(patten4, '- [ ] ');
                         console.log(text.indexOf('data-wiz-span'));
                         this.content = text;
-                    }).catch(err => {
+                    } catch (err) {
                         console.log(err);
-                    }).then(() => this.isLoading = false);
+                        this.$message({
+                            type: 'error',
+                            message: `无法获取笔记内容：${err.message}`
+                        })
+                    } finally {
+                        this.isLoading = false;
+                    }
                 }
             },
             // data-节点的自定义对象，Node节点对象
@@ -209,16 +218,22 @@
                 console.log(data);
                 data.type = data.type.replace('-opened', '');
             },
-            handleRightMouse(e, data, Node, element) {
+            async handleRightMouse(e, data, Node, element) {
                 this.menuVisible = false;
                 if (data.type.indexOf('file') !== -1) {
                     this.menuItems = ['重命名', '移动', '复制', '删除'];
-                    api.getNoteInfo({
-                        kbGuid: data.kbGuid,
-                        docGuid: data.docGuid
-                    }).then(res => {
-                        this.noteInfo = res.info;
-                    });
+                    try {
+                        const result = await api.KnowledgeBaseApi.getNoteInfo({
+                            kbGuid: data.kbGuid,
+                            docGuid: data.docGuid
+                        });
+                        this.noteInfo = result.info;
+                    } catch (err) {
+                        this.$message({
+                            type: 'error',
+                            message: `无法获取笔记信息：${err.message}`
+                        })
+                    }
                 } else {
                     this.menuItems = ['新建文件夹', '新建笔记', '重命名文件夹', '移动', '复制', '删除'];
                 }
@@ -330,34 +345,34 @@
                 return icon;
             },
             //响应保存操作
-            handleSave(markdown, html) {
+            async handleSave(markdown, html) {
                 console.log(this.noteInfo);
-                api.updateNote({
-                    kbGuid: this.noteInfo.kbGuid,
-                    docGuid: this.noteInfo.docGuid,
-                    data: {
-                        category: this.noteInfo.category,
+                try {
+                    await api.KnowledgeBaseApi.updateNote({
                         kbGuid: this.noteInfo.kbGuid,
                         docGuid: this.noteInfo.docGuid,
-                        html: `<html><head></head><body>${markdown}</body></html>`,
-                        resources: this.resources,
-                        title: this.noteInfo.title
-                    }
-                }).then(res => {
-                    if (res.returnCode !== 200) {
-                        this.$message({
-                            message: `${res.returnMessage}`,
-                            type: 'error'
-                        });
-                    } else {
-                        this.$message({
-                            message: `保存成功`,
-                            type: 'success'
-                        });
-                    }
-                });
+                        data: {
+                            category: this.noteInfo.category,
+                            kbGuid: this.noteInfo.kbGuid,
+                            docGuid: this.noteInfo.docGuid,
+                            html: `<html><head></head><body>${markdown}</body></html>`,
+                            resources: this.resources,
+                            title: this.noteInfo.title
+                        }
+                    });
+
+                    this.$message({
+                        message: `保存成功`,
+                        type: 'success'
+                    });
+                } catch (err) {
+                    this.$message({
+                        message: `保存失败：${err.message}`,
+                        type: 'error'
+                    });
+                }
             },
-            handleMenuClick(item) {
+            async handleMenuClick(item) {
                 let originNode = this.selectedNode;
                 let node = this.selectedNodeData;
                 let settings = JSON.parse(localStorage.getItem('userSettings'));
@@ -373,75 +388,67 @@
                 console.log(Math.floor(Date.now() / 1000).toFixed(0));
                 switch (item) {
                     case '新建文件夹':
-                        api.createCategory({
-                            kbGuid: settings.kbGuid,
-                            data: {
-                                parent: `/${path}/`,
-                                child: '新文件夹',
-                                pos: Math.floor(Date.now() / 1000).toFixed(0)
-                            }
-                        }).then(res => {
-                            if (res.returnCode !== 200) {
-                                this.$message({
-                                    message: `${res.returnMessage}`,
-                                    type: 'error'
-                                });
-                            } else {
-                                this.content = 'Hello World';
-                                this.isLoading = false;
-                                const newChild = {
-                                    label: res.folder.name,
-                                    type: 'folder',
-                                    id: this.treeId++,
-                                    isLoaded: false
-                                };
-                                this.$refs.ft.append(newChild, node.id);
-                            }
-                        }).catch(err => {
-                            this.$message({
-                                message: `${err}`,
-                                type: 'error'
-                            });
-                        });
-                        break;
-                    case '新建笔记':
-                        api.createNote({
-                            kbGuid: settings.kbGuid,
-                            data: {
+                    {
+                        try {
+                            const result = await api.KnowledgeBaseApi.createCategory({
                                 kbGuid: settings.kbGuid,
-                                html: `<html><head></head><body><p>${'Hello World'}</p></body></html>`,
-                                category: `/${path}/`,
-                                owner: settings.userId,
-                                title: '无标题.md',
-                                params: null,
-                                appInfo: null,
-                                tags: ""
-                            }
-                        }).then(res => {
-                            if (res.returnCode !== 200) {
-                                this.$message({
-                                    message: `${res.returnMessage}`,
-                                    type: 'error'
-                                });
-                            } else {
-                                this.content = 'Hello World';
-                                this.isLoading = false;
-                                const newChild = {
-                                    label: res.result.title,
-                                    type: 'file',
-                                    id: this.treeId++,
-                                    docGuid: res.result.docGuid,
-                                    kbGuid: res.result.kbGuid
-                                };
-                                this.$refs.ft.append(newChild, node.id);
-                            }
-                        }).catch(err => {
+                                data: {
+                                    parent: `/${path}/`,
+                                    child: '新文件夹',
+                                    pos: Math.floor(Date.now() / 1000).toFixed(0)
+                                }
+                            });
+                            this.content = 'Hello World';
+                            this.isLoading = false;
+                            const newChild = {
+                                label: result.folder.name,
+                                type: 'folder',
+                                id: this.treeId++,
+                                isLoaded: false
+                            };
+                            this.$refs.ft.append(newChild, node.id);
+                        } catch (err) {
                             this.$message({
-                                message: `${err}`,
+                                message: `新建文件夹失败：${err.message}`,
                                 type: 'error'
                             });
-                        });
+                        }
                         break;
+                    }
+                    case '新建笔记':
+                    {
+                        try {
+                            const result = await api.KnowledgeBaseApi.createNote({
+                                kbGuid: settings.kbGuid,
+                                data: {
+                                    kbGuid: settings.kbGuid,
+                                    html: `<html><head></head><body><p>${'Hello World'}</p></body></html>`,
+                                    category: `/${path}/`,
+                                    owner: settings.userId,
+                                    title: '无标题.md',
+                                    params: null,
+                                    appInfo: null,
+                                    tags: ""
+                                }
+                            });
+                            this.content = 'Hello World';
+                            this.isLoading = false;
+                            const newChild = {
+                                label: result.title,
+                                type: 'file',
+                                id: this.treeId++,
+                                docGuid: result.docGuid,
+                                kbGuid: result.kbGuid
+                            };
+                            this.$refs.ft.append(newChild, node.id);
+                        } catch (err) {
+                            this.$message({
+                                message: `新建笔记失败：${err.message}`,
+                                type: 'error'
+                            });
+                        }
+                        break;
+                    }
                     case '重命名文件夹':
                         this.$prompt('请输入文件夹名', '提示', {
                             confirmButtonText: '确定',
@@ -469,42 +476,41 @@
                     case '复制':
                         break;
                     case '删除':
+                    {
                         if (node.type.indexOf('file') !== -1) {
-                            api.deleteNote({
-                                kbGuid: settings.kbGuid,
-                                docGuid: node.docGuid
-                            }).then(res => {
-                                if (res.returnCode !== 200) {
-                                    this.$message({
-                                        message: `${res.returnMessage}`,
-                                        type: 'error'
-                                    });
-                                } else {
-                                    this.$refs.ft.remove(node.id);
-                                }
-                            });
+                            try {
+                                await api.KnowledgeBaseApi.deleteNote({
+                                    kbGuid: settings.kbGuid,
+                                    docGuid: node.docGuid
+                                });
+                                this.$refs.ft.remove(node.id);
+                            } catch (err) {
+                                this.$message({
+                                    message: `删除文件失败：${err.message}`,
+                                    type: 'error'
+                                });
+                            }
                         } else {
-                            api.deleteCategory({
-                                kbGuid: settings.kbGuid,
-                                data: {
-                                    category: `/${path}/`,
-                                    clientType: 'web',
-                                    clientVersion: '4.0',
-                                    lang: 'zh-cn',
-                                }
-                            }).then(res => {
-                                if (res.returnCode !== 200) {
-                                    this.$message({
-                                        message: `${res.returnMessage}`,
-                                        type: 'error'
-                                    });
-                                } else {
-                                    this.$refs.ft.remove(node.id);
-                                }
-                            });
+                            try {
+                                await api.KnowledgeBaseApi.deleteCategory({
+                                    kbGuid: settings.kbGuid,
+                                    data: {
+                                        category: `/${path}/`,
+                                        clientType: 'web',
+                                        clientVersion: '4.0',
+                                        lang: 'zh-cn',
+                                    }
+                                });
+                                this.$refs.ft.remove(node.id);
+                            } catch (err) {
+                                this.$message({
+                                    message: `删除文件夹失败：${err.message}`,
+                                    type: 'error'
+                                });
+                            }
                         }
-
                         break;
+                    }
                     default:
                         break;
                 }
@@ -520,25 +526,24 @@
         },
         created() {
             //登陆成功
-            bus.$on('Login Successfully', () => {
+            bus.$on('Login Successfully', async () => {
                 this.isLoading = true;
                 this.isLogin = true;
                 var settings = JSON.parse(localStorage.getItem('userSettings'));
                 console.log(settings);
-                api.getFolders({
-                    kbServer: settings.kbServer,
-                    kbGuid: settings.kbGuid,
-                }).then(res => {
-                    if (res.returnCode !== 200) {
-                        this.$message({
-                            message: `${res.returnMessage}`,
-                            type: 'warning'
-                        });
-                    } else {
-                        this.dealFileFolder(res.result);
-                        this.isLoading = false;
-                    }
-                });
+                try {
+                    const result = await api.KnowledgeBaseApi.getFolders({
+                        kbServer: settings.kbServer,
+                        kbGuid: settings.kbGuid,
+                    });
+                    this.dealFileFolder(result);
+                    this.isLoading = false;
+                } catch (err) {
+                    this.$message({
+                        message: `获取文件夹列表失败：${err.message}`,
+                        type: 'warning'
+                    });
+                }
             });
             // 退出成功
             bus.$on('Logout Successfully', () => {
@@ -547,63 +552,61 @@
                 this.isLogin = false;
             });
             // 文件夹重命名
-            bus.$on('Rename Folder', (oldName, newName) => {
+            bus.$on('Rename Folder', async (oldName, newName) => {
+                console.log("Rename Folder", oldName, "=>", newName);
                 const settings = JSON.parse(localStorage.getItem('userSettings'));
-                api.renameCategory({
-                    kbGuid: settings.kbGuid,
-                    data: {
-                        from: oldName,
-                        to: newName
-                    }
-                }).then(res => {
-                    if (res.returnCode !== 200) {
-                        this.$message({
-                            message: `${res.returnMessage}`,
-                            type: 'error'
-                        });
-                    } else {
-                        this.$message({
-                            message: `保存成功`,
-                            type: 'success'
-                        });
-                    }
-                });
+                try {
+                    await api.KnowledgeBaseApi.renameCategory({
+                        kbGuid: settings.kbGuid,
+                        data: {
+                            from: oldName,
+                            to: newName
+                        }
+                    });
+                    this.$message({
+                        message: `保存成功`,
+                        type: 'success'
+                    });
+                } catch (err) {
+                    this.$message({
+                        message: `重命名文件夹失败：${err.message}`,
+                        type: 'error'
+                    });
+                }
             });
             //文件重命名
-            bus.$on('Rename File', (name) => {
+            bus.$on('Rename File', async (name) => {
                 console.log(this.noteInfo);
-                api.getNoteContent({
-                    kbGuid: this.selectedNodeData.kbGuid,
-                    docGuid: this.selectedNodeData.docGuid,
-                    data: {
-                        downloadInfo: 1,
-                        downloadData: 0,
-                        clientType: 'web',
-                        clientVersion: 4.0,
-                        lang: 'zh-cn',
-                    }
-                }).then(res => {
-                    this.noteInfo = res.info;
-                    console.log(res);
+                try {
+                    const result = await api.KnowledgeBaseApi.getNoteContent({
+                        kbGuid: this.selectedNodeData.kbGuid,
+                        docGuid: this.selectedNodeData.docGuid,
+                        data: {
+                            downloadInfo: 1,
+                            downloadData: 0,
+                            clientType: 'web',
+                            clientVersion: 4.0,
+                            lang: 'zh-cn',
+                        }
+                    });
+                    this.noteInfo = result.info;
+                    console.log(result);
                     this.noteInfo.title = name;
-                    api.updateNoteInfo({
+                    await api.KnowledgeBaseApi.updateNoteInfo({
                         kbGuid: this.noteInfo.kbGuid,
                         docGuid: this.noteInfo.docGuid,
                         data: this.noteInfo
-                    }).then(res => {
-                        if (res.returnCode !== 200) {
-                            this.$message({
-                                message: `${res.returnMessage}`,
-                                type: 'error'
-                            });
-                        } else {
-                            this.$message({
-                                message: `保存成功`,
-                                type: 'success'
-                            });
-                        }
                     });
-                });
+                    this.$message({
+                        message: `保存成功`,
+                        type: 'success'
+                    });
+                } catch (err) {
+                    this.$message({
+                        message: `重命名文件失败：${err.message}`,
+                        type: 'error'
+                    });
+                }
             });
 
         }
