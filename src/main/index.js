@@ -37,6 +37,8 @@ function createWindow() {
 	});
 }
 
+app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {

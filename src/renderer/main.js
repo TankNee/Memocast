@@ -20,7 +20,7 @@ Vue.http = Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 
 schedule.scheduleJob(`30 * * * * *`, () => {
-    api.keepTokenAlive().then(res => {
+    api.AccountServerApi.keepTokenAlive().then(res => {
         console.log(res);
     }).catch(err => {
         console.log(err);

@@ -55,76 +55,69 @@ export default {
 		};
 	},
 	methods: {
-		attendTologin() {
+		async attendTologin() {
 			if (!this.isLogin) {
 				this.dialogFormVisible = true;
 			} else {
-				this.$confirm('确认登出？', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning',
-					center: true,
-				})
-					.then(() => {
-						api.Logout().then((res) => {
-							if (res.returnCode !== 200) {
-								this.$message({
-									message: `${res.returnMessage}`,
-									type: 'warning',
-								});
-							} else {
-								this.$message({
-									type: 'success',
-									message: '登出成功!',
-								});
-								bus.$emit('Logout Successfully');
-								this.isLogin = false;
-								this.userAvatar = 'https://tankneeimg.oss-cn-shenzhen.aliyuncs.com/profile/girlavatar.jpg';
-							}
-						});
+				try {
+					const logout = await this.$confirm('确认登出？', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning',
+						center: true,
 					})
-					.catch(() => {
-						this.$message({
-							type: 'info',
-							message: '已取消登出',
-						});
-					});
+
+					if (logout) {
+						try {
+							const result = await api.AccountServerApi.Logout();
+							this.$message({
+								type: 'success',
+								message: '登出成功!',
+							});
+							bus.$emit('Logout Successfully');
+							this.isLogin = false;
+							this.userAvatar = 'https://tankneeimg.oss-cn-shenzhen.aliyuncs.com/profile/girlavatar.jpg';
+						} catch(err) {
+							this.$message({
+								type: 'error',
+								message: `登出失败，已取消登出：${err.message}`,
+							});
+						}
+					}
+				} catch(err) {
+					// Cancelled
+				}
+
 			}
 		},
-		login() {
+		async login() {
 			this.isLoading = true;
 			console.log(this.loginForm.userId, this.loginForm.password);
-			api.setBaseUrl(this.loginForm.url);
-			api.Login({
-				userId: this.loginForm.userId,
-				password: this.loginForm.password,
-			})
-				.then((res) => {
-					this.isLoading = false;
-					this.dialogFormVisible = false;
-					if (res.returnCode !== 200) {
-						this.$message({
-							message: `登录失败 :${res.returnMessage}`,
-							type: 'warning',
-						});
-					} else {
-						this.$message({
-							message: '登录成功',
-							type: 'success',
-						});
-						this.userInfo = res.result.user;
-						localStorage.setItem('userSettings', JSON.stringify(res.result));
-						this.userAvatar = `${api.getBaseUrl()}/as/user/avatar/${JSON.parse(localStorage.getItem('userSettings')).userGuid}`;
-						this.isLogin = true;
-						bus.$emit('Login Successfully');
-					}
-				})
-				.catch((err) => {
-					this.$message({
-						message: `登录失败,请检查网络`,
-						type: 'error',
-					});
+			api.AccountServerApi.setBaseUrl(this.loginForm.url);
+			try {
+				const result = await api.AccountServerApi.Login({
+					userId: this.loginForm.userId,
+					password: this.loginForm.password,
 				});
+
+				this.isLoading = false;
+				this.dialogFormVisible = false;
+				this.$message({
+					message: '登录成功',
+					type: 'success',
+				});
+				this.userInfo = result.user;
+				localStorage.setItem('userSettings', JSON.stringify(result));
+				this.userAvatar = `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${JSON.parse(localStorage.getItem('userSettings')).userGuid}`;
+				this.isLogin = true;
+				bus.$emit('Login Successfully');
+			} catch (err) {
+				this.isLoading = false;
+				this.$message({
+					message: `登录失败：${err.message}`,
+					type: 'error',
+				});
+			}
 		},
 	},
 };
