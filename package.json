@@ -7,15 +7,17 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "dev": "quasar dev -m electron -t mat"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
+    "electron-window-state": "^5.0.3",
     "quasar": "^1.0.0",
     "vditor": "^3.5.1",
-    "vue-i18n": "^8.0.0"
+    "vue-i18n": "^8.0.0",
+    "vue2-perfect-scrollbar": "^1.5.0"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

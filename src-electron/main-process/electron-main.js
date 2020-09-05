@@ -1,5 +1,6 @@
 import { app, BrowserWindow, nativeTheme } from 'electron'
-
+import windowStateKeeper from 'electron-window-state'
+// const windowStateKeeper = require('electron-window-state')
 try {
   if (
     process.platform === 'win32' &&
@@ -22,12 +23,18 @@ if (process.env.PROD) {
 let mainWindow
 
 function createWindow () {
+  const mainWindowState = windowStateKeeper({
+    defaultWidth: 1024,
+    defaultHeight: 640
+  })
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
     useContentSize: true,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
