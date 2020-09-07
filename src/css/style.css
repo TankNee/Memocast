@@ -26,3 +26,6 @@ body{
   margin: 0;
   overflow: hidden;
 }
+tooltip{
+  font-size: 17px;
+}
