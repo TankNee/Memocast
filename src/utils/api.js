@@ -72,7 +72,7 @@ const KnowledgeBaseApi = {
 
   /**
    * 获取用户文件夹
-   * @param params {kbServer,kbGuid}
+   * @param params {{kbGuid: String}}
    * @returns {Promise<unknown>}
    */
   async getFolders (params) {

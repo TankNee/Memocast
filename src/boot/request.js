@@ -1,4 +1,7 @@
 import axios from 'axios'
+import bus from 'components/bus'
+import events from 'src/constants/events'
+import fileStorage from 'src/utils/fileStorage'
 
 axios.defaults.timeout = 5000 // 响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8' // 配置请求头
@@ -18,9 +21,9 @@ export async function execRequest (method, url, body, token, extraConfig) {
     config.headers = {
       'X-Wiz-Token': token
     }
-  } else if (localStorage.getItem('userSettings')) {
+  } else if (fileStorage.isKeyExists('token')) {
     config.headers = {
-      'X-Wiz-Token': JSON.parse(localStorage.getItem('userSettings')).token
+      'X-Wiz-Token': fileStorage.getValueFromLocalStorage('token')
     }
   }
 
@@ -30,9 +33,10 @@ export async function execRequest (method, url, body, token, extraConfig) {
   const data = res.data
 
   if (data.returnCode !== 200) {
-    console.error(`request error: ${data.returnMessage}`)
-    const err = new Error(data.returnMessage)
-    err.code = data.returnCode
+    const { returnMessage, returnCode } = data
+    bus.$emit(events.REQUEST_ERROR, returnMessage)
+    const err = new Error(returnMessage)
+    err.code = returnCode
     err.externCode = data.externCode
     throw err
   }

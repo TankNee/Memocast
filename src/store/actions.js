@@ -1,6 +1,7 @@
-import types from 'src/store/user/types'
-import api from 'src/utils/api'
 import helper from 'src/utils/helper'
+import api from 'src/utils/api'
+import types from 'src/store/user/types'
+
 export default {
   async login ({ commit }, payload) {
     const { url } = payload
@@ -9,5 +10,6 @@ export default {
     }
     const result = await api.AccountServerApi.Login(payload)
     commit(types.LOGIN, result)
+    return result
   }
 }

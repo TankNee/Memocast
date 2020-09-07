@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lff">
-    <q-header class="text-white header" elevated>
+  <q-layout view="hHh Lpr lff">
+    <q-header class="text-white header">
       <q-bar class="q-electron-drag  header">
         <div>Neeto Vue</div>
         <q-space/>

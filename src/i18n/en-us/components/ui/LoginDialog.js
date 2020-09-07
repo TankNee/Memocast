@@ -6,5 +6,6 @@ export default {
   selfHostDisable: 'Disable Self Host Server',
   selfHostServer: 'Self Host Server',
   submit: 'Submit',
-  cancel: 'Cancel'
+  cancel: 'Cancel',
+  fieldIsRequired: 'Field is required'
 }

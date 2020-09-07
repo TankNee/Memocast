@@ -3,21 +3,46 @@
     <q-card class="q-dialog login-dialog">
       <q-toolbar>
         <q-toolbar-title
-          ><span class="text-weight-bold">{{$t('login')}}</span></q-toolbar-title
+          ><span class="text-weight-bold">{{
+            $t('login')
+          }}</span></q-toolbar-title
         >
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
 
       <q-card-section class="q-pt-none">
         <q-form @submit.prevent.stop="submitHandler" class="q-gutter-md">
-          <q-input dense v-model="username" ref="username" autofocus :label="$t('username')" />
-          <q-input dense v-model="password" ref="password" :label="$t('password')" type="password" />
-          <q-toggle v-model="isSelfHost" :label="isSelfHost ? $t('selfHostDisable') : $t('selfHostEnable')" class="login-toggle"/>
           <q-input
+            dense
+            debounce="500"
+            v-model="username"
+            ref="username"
+            autofocus
+            :label="$t('username')"
+            :rules="[val => !!val || $t('fieldIsRequired')]"
+          />
+          <q-input
+            dense
+            clearable
+            debounce="500"
+            v-model="password"
+            ref="password"
+            :label="$t('password')"
+            type="password"
+            :rules="[val => !!val || $t('fieldIsRequired')]"
+          />
+          <q-toggle
+            v-model="isSelfHost"
+            :label="isSelfHost ? $t('selfHostDisable') : $t('selfHostEnable')"
+            class="login-toggle"
+          />
+          <q-input
+            debounce="500"
             v-if="isSelfHost"
             dense
             v-model="selfHostServer"
             :label="$t('selfHostServer')"
+            :rules="[val => isSelfHost&&!!val || $t('fieldIsRequired')]"
           />
 
           <div>
@@ -32,33 +57,45 @@
           </div>
         </q-form>
       </q-card-section>
+      <Loading :visible="isLoading"/>
     </q-card>
   </q-dialog>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-const { mapActions } = createNamespacedHelpers('user')
+import Loading from './Loading'
+import bus from '../bus'
+import events from '../../constants/events'
+const { mapActions: mapServerActions } = createNamespacedHelpers('server')
 export default {
   name: 'LoginDialog',
+  components: { Loading },
   data () {
     return {
       username: '',
       password: '',
       selfHostServer: '',
-      isSelfHost: false
+      isSelfHost: false,
+      isLoading: false
     }
   },
   methods: {
     submitHandler: async function () {
-      // this.$refs.username.validate()
+      this.isLoading = true
       const loginPayload = {
         userId: this.username,
         password: this.password,
         url: this.isSelfHost ? this.selfHostServer : ''
       }
-      const result = await this.login(loginPayload)
-      console.log(result)
+      try {
+        const result = await this.login(loginPayload)
+        await this.getCurrentFolderNotes({ category: '', kbGuid: result.kbGuid })
+        this.toggle()
+        bus.$emit(events.LOGIN_SUCCESSFULLY)
+      } finally {
+        this.isLoading = false
+      }
     },
     beforeHideHandler: function () {
       this.username = null
@@ -68,17 +105,17 @@ export default {
     toggle: function () {
       return this.$refs.dialog.toggle()
     },
-    ...mapActions(['login'])
+    ...mapServerActions(['login', 'getCurrentFolderNotes'])
   }
 }
 </script>
 
 <style scoped>
-  .login-dialog{
-    width: 500px !important;
-    max-width: 50vw;
-  }
-  .login-toggle{
-    margin-left: 4px;
-  }
+.login-dialog {
+  width: 500px !important;
+  max-width: 50vw;
+}
+.login-toggle {
+  margin-left: 4px;
+}
 </style>

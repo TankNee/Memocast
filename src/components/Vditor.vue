@@ -7,9 +7,6 @@ import Vditor from 'vditor'
 import 'vditor/dist/index.css'
 export default {
   name: 'Vditor',
-  props: {
-    dark: Boolean
-  },
   data () {
     return {
       contentEditor: ''
@@ -23,8 +20,12 @@ export default {
       },
       icon: 'material',
       mode: 'wysiwyg',
-      theme: this.dark ? 'dark' : 'classic'
-      // toolbar: []
+      theme: this.$q.dark.isActive ? 'dark' : 'classic',
+      preview: {
+        theme: {
+          current: this.$q.dark.isActive ? 'dark' : 'light'
+        }
+      }
     })
   }
 }

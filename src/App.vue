@@ -4,7 +4,12 @@
   </div>
 </template>
 <script>
+import ErrorHandler from './ErrorHandler'
+const { RegisterErrorHandler } = ErrorHandler
 export default {
-  name: 'App'
+  name: 'App',
+  mounted () {
+    RegisterErrorHandler()
+  }
 }
 </script>

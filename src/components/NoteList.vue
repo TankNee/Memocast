@@ -5,15 +5,21 @@
     <q-scroll-area
       :thumb-style="thumbStyle"
       :bar-style="barStyle"
-      class="note-list exclude-header"
+      class="exclude-header"
     >
-      <q-intersection
-        v-for="({ title, summary }, index) in data"
-        :key="index"
-        transition="scale"
-      >
-        <NoteItem :title="title" :summary="summary" v-ripple />
-      </q-intersection>
+      <q-list padding>
+        <q-item
+          clickable
+          v-ripple
+          v-for="({ title, summary }, index) in data"
+          :key="index"
+          class="note-item"
+        >
+          <q-item-section>
+            <NoteItem :title="title" :summary="summary" />
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-scroll-area>
     <q-fab
       color="secondary"
@@ -29,7 +35,7 @@
           self="center left"
           :offset="[20, 10]"
           content-class="bg-primary text-white shadow-4"
-        >{{ $t('addNote') }}</q-tooltip
+          >{{ $t('addNote') }}</q-tooltip
         >
       </q-fab-action>
       <q-fab-action color="primary" icon="create_new_folder" flat>
@@ -38,7 +44,7 @@
           self="center left"
           :offset="[20, 10]"
           content-class="bg-primary text-white shadow-4"
-        >{{ $t('addFolder') }}</q-tooltip
+          >{{ $t('addFolder') }}</q-tooltip
         >
       </q-fab-action>
     </q-fab>
@@ -74,10 +80,10 @@ export default {
 </script>
 
 <style scoped>
-.note-list {
-  padding: 0 10px 0px 10px;
-}
 .fab-btn {
   margin: 10px;
+}
+.note-item {
+  border-bottom: 1px solid #dddddd;
 }
 </style>

@@ -1,16 +1,13 @@
-/**
-* @Description: Wiz Note Item designed for NoteList
-* @Author: TankNee
-* @Date: 9/5/2020 6:26 PM
-**/
+/** * @Description: Wiz Note Item designed for NoteList * @Author: TankNee *
+@Date: 9/5/2020 6:26 PM **/
 <template>
-  <q-card bordered :dark="dark" class="note-card cursor-pointer">
+  <q-card flat class="note-card bg-transparent">
     <q-card-section>
       <div class="text-h6">
         {{ title }}
       </div>
     </q-card-section>
-    <q-separator :dark="dark" inset/>
+    <q-separator inset />
 
     <q-card-section>
       {{ summary }}
@@ -24,15 +21,14 @@ export default {
   props: {
     title: String,
     summary: String,
-    markdown: Boolean,
-    dark: Boolean
+    markdown: Boolean
   }
 }
 </script>
 
 <style scoped>
-  .note-card {
-    width: 100%;
-    margin: 1rem 0rem;
-  }
+.note-card {
+  width: 100%;
+  margin: 1rem 0rem;
+}
 </style>

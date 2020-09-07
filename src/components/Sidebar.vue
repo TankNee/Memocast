@@ -6,23 +6,20 @@
     :breakpoint="400"
     :mini="true"
   >
-    <q-img
+    <div
       class="absolute-top"
-      src="https://img.tanknee.cn/blogpicbed/2020/06/20200601a55d4871b02bf.png/imgzip"
-      height="150px"
+      style="height: 150px;border-right: 1px solid #DDDDDD"
     >
       <div class="bg-transparent user-avatar">
         <q-avatar
-          size="46px"
-          class="q-mb-sm cursor-pointer "
+          size="43px"
+          class="q-mb-sm cursor-pointer bg-primary text-white "
           @click="handleLogin"
         >
-          <img
-            src="https://img.tanknee.cn/blogpicbed/2020/06/2020060186bc451656937.png/imgzip"
-          />
+          <img v-if="!!avatarUrl" :src="avatarUrl" />
         </q-avatar>
       </div>
-    </q-img>
+    </div>
     <q-scroll-area
       style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd"
     >
@@ -99,9 +96,15 @@
 
 <script>
 import LoginDialog from './ui/LoginDialog'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapGetters } = createNamespacedHelpers('server')
 export default {
   name: 'Sidebar',
   components: { LoginDialog },
+  computed: {
+    ...mapState(['user']),
+    ...mapGetters(['avatarUrl'])
+  },
   data () {
     return {
       drawer: false,
