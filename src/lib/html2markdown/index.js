@@ -1,5 +1,5 @@
-var html2markdown = require('./html2markdown');
-var htmlParser = require('./markdown_html_parser');
+const html2markdown = require('./html2markdown')
+const htmlParser = require('./markdown_html_parser')
 
 module.exports = function(html, opts) {
   opts = opts || {};

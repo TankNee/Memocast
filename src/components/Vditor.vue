@@ -5,8 +5,16 @@
 <script>
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
+import bus from './bus'
+import events from '../constants/events'
 export default {
   name: 'Vditor',
+  props: {
+    data: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       contentEditor: ''
@@ -26,6 +34,9 @@ export default {
           current: this.$q.dark.isActive ? 'dark' : 'light'
         }
       }
+    })
+    bus.$on(events.UPDATE_CURRENT_NOTE, (payload) => {
+      this.contentEditor.setValue(payload)
     })
   }
 }

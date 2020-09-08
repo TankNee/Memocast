@@ -75,7 +75,7 @@ const KnowledgeBaseApi = {
    * @param params {{kbGuid: String}}
    * @returns {Promise<unknown>}
    */
-  async getFolders (params) {
+  async getCategories (params) {
     return await execRequest('GET', `${KnowledgeBaseBaseUrl}/ks/category/all/${params.kbGuid}`)
   },
 
@@ -84,7 +84,7 @@ const KnowledgeBaseApi = {
    * @param params {kbServer,kbGuid,data:{start,count,category,orderBy}}
    * @returns {Promise<unknown>}
    */
-  async getFolderNotes (params) {
+  async getCategoryNotes (params) {
     return await execRequest(
       'GET', `${KnowledgeBaseBaseUrl}/ks/note/list/category/${params.kbGuid}`,
       null, null, { params: params.data })

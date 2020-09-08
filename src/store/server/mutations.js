@@ -20,5 +20,8 @@ export default {
   [types.UPDATE_CURRENT_NOTES] (state, payload) {
     state.currentNotes = payload
     return state
+  },
+  [types.UPDATE_CURRENT_NOTE] (state, payload) {
+    state.currentNote = payload
   }
 }

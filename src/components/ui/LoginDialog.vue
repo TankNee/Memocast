@@ -90,7 +90,7 @@ export default {
       }
       try {
         const result = await this.login(loginPayload)
-        await this.getCurrentFolderNotes({ category: '', kbGuid: result.kbGuid })
+        await this.getCategoryNotes({ category: '', kbGuid: result.kbGuid })
         this.toggle()
         bus.$emit(events.LOGIN_SUCCESSFULLY)
       } finally {
@@ -105,7 +105,7 @@ export default {
     toggle: function () {
       return this.$refs.dialog.toggle()
     },
-    ...mapServerActions(['login', 'getCurrentFolderNotes'])
+    ...mapServerActions(['login', 'getCategoryNotes'])
   }
 }
 </script>

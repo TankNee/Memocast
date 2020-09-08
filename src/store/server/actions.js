@@ -11,14 +11,35 @@ export default {
     commit(types.LOGIN, result)
     return result
   },
-  async getCurrentFolderNotes ({ commit, state }, payload) {
+  async getCategoryNotes ({ commit, state }, payload) {
     const { kbGuid } = state
-    const { category } = payload
-    const result = await api.KnowledgeBaseApi.getFolderNotes({ kbGuid, data: { category, start: 0, count: 100 } })
+    const { category, start, count } = payload
+    const result = await api.KnowledgeBaseApi.getCategoryNotes({
+      kbGuid,
+      data: {
+        category,
+        start: start || 0,
+        count: count || 100,
+        withAbstract: true
+      }
+    })
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
-  async getAllFolders ({ commit, state }) {
+  async getAllCategories ({ commit, state }) {
     const { kbGuid } = state
-    await api.KnowledgeBaseApi.getFolders({ kbGuid })
+    await api.KnowledgeBaseApi.getCategories({ kbGuid })
+  },
+  async getNoteContent ({ commit, state }, payload) {
+    const { kbGuid } = state
+    const { docGuid } = payload
+    const result = await api.KnowledgeBaseApi.getNoteContent({
+      kbGuid,
+      docGuid,
+      data: {
+        downloadInfo: 1,
+        downloadData: 1
+      }
+    })
+    commit(types.UPDATE_CURRENT_NOTE, result)
   }
 }

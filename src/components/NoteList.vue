@@ -11,12 +11,12 @@
         <q-item
           clickable
           v-ripple
-          v-for="({ title, summary }, index) in data"
+          v-for="(noteField, index) in data"
           :key="index"
           class="note-item"
         >
           <q-item-section>
-            <NoteItem :title="title" :summary="summary" />
+            <NoteItem :data="noteField" />
           </q-item-section>
         </q-item>
       </q-list>
