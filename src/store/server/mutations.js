@@ -16,5 +16,9 @@ export default {
     const data = { kbGuid, kbServer, lang, email, displayName, userGuid }
     Object.assign(state, data)
     return state
+  },
+  [types.UPDATE_CURRENT_NOTES] (state, payload) {
+    state.currentNotes = payload
+    return state
   }
 }

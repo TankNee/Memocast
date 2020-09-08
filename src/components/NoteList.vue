@@ -53,7 +53,6 @@
 
 <script>
 import NoteItem from './ui/NoteItem'
-
 export default {
   name: 'NoteList',
   components: { NoteItem },

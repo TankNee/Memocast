@@ -2,7 +2,7 @@
   <q-page class="flex">
     <q-splitter v-model="splitterModel" :limits="[15, 50]" class="full-width">
       <template v-slot:before>
-        <NoteList :data="notes" />
+        <NoteList :data="currentNotes" />
       </template>
 
       <template v-slot:after>
@@ -15,9 +15,14 @@
 <script>
 import Vditor from '../components/Vditor'
 import NoteList from '../components/NoteList'
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters } = createNamespacedHelpers('server')
 export default {
   name: 'PageIndex',
   components: { Vditor, NoteList },
+  computed: {
+    ...mapGetters(['currentNotes'])
+  },
   data () {
     return {
       splitterModel: 30,

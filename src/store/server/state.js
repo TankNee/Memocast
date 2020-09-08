@@ -5,6 +5,8 @@ export default function () {
     lang: '',
     email: '',
     displayName: '',
-    userGuid: ''
+    userGuid: '',
+    currentNotes: [], // current notes summary information,
+    currentNote: {} // current note which will be rendered on vditor
   }
 }

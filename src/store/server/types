@@ -1,3 +1,4 @@
 export default {
-  LOGIN: 'login'
+  LOGIN: 'login',
+  UPDATE_CURRENT_NOTES: 'update_current_notes'
 }

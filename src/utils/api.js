@@ -1,5 +1,5 @@
 import { execRequest } from '../boot/request'
-let AccountServerBaseUrl = 'https://note.tanknee.cn'
+let AccountServerBaseUrl = 'https://as.wiz.cn'
 let KnowledgeBaseBaseUrl = 'https://kshttps0.wiz.cn'
 
 const AccountServerApi = {
