@@ -1,23 +1,33 @@
 <template>
-  <div id="vditor" class="fit"></div>
+  <div id="vditor" class="fit">
+    <Loading :visible="isLoading" />
+  </div>
 </template>
 
 <script>
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
-import bus from './bus'
-import events from '../constants/events'
+import Loading from './ui/Loading'
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters } = createNamespacedHelpers('server')
+const { mapState } = createNamespacedHelpers('client')
 export default {
   name: 'Vditor',
+  components: { Loading },
   props: {
     data: {
       type: String,
       default: ''
     }
   },
+  computed: {
+    ...mapGetters(['currentNote']),
+    ...mapState(['darkMode'])
+  },
   data () {
     return {
-      contentEditor: ''
+      contentEditor: '',
+      isLoading: false
     }
   },
   mounted () {
@@ -35,9 +45,14 @@ export default {
         }
       }
     })
-    bus.$on(events.UPDATE_CURRENT_NOTE, (payload) => {
-      this.contentEditor.setValue(payload)
-    })
+  },
+  watch: {
+    currentNote: function (currentData) {
+      this.contentEditor.setValue(currentData(false))
+    },
+    darkMode: function (darkMode) {
+      this.contentEditor.setTheme(darkMode ? 'dark' : 'classic', darkMode ? 'dark' : 'light')
+    }
   }
 }
 </script>

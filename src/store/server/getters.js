@@ -1,17 +1,20 @@
 import api from 'src/utils/api'
 import _ from 'lodash'
 import helper from 'src/utils/helper'
-import bus from 'components/bus'
-import events from 'src/constants/events'
 export default {
   avatarUrl: ({ userGuid }) => {
-    return userGuid ? `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${userGuid}` : ''
+    return userGuid ? `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${userGuid}` : null
   },
-  currentNotes: ({ currentNotes }) => {
+  currentNotes: ({ currentNotes }, getters, rootState) => {
     if (_.isArray(currentNotes)) {
       return currentNotes.map((note) => {
         const { title, abstractText, docGuid } = note
         return { title: title, summary: abstractText, docGuid: docGuid }
+      }).filter(note => {
+        if (rootState.client.markdownOnly) {
+          return _.endsWith(note.title, '.md')
+        }
+        return true
       })
     }
     return []
@@ -26,7 +29,6 @@ export default {
     } else {
       result = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
     }
-
-    bus.$emit(events.UPDATE_CURRENT_NOTE, result)
+    return result
   }
 }

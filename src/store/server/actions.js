@@ -1,14 +1,18 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import helper from 'src/utils/helper'
+import fileStorage from 'src/utils/fileStorage'
 export default {
+  initServerStore ({ commit, state }) {
+    const localStore = fileStorage.getItemsFromStore(state)
+    commit(types.INIT, localStore)
+  },
   async login ({ commit }, payload) {
     const { url } = payload
-    if (!helper.isNullOrEmpty(url)) {
-      api.AccountServerApi.setBaseUrl(url)
-    }
+    api.AccountServerApi.setBaseUrl(url)
     const result = await api.AccountServerApi.Login(payload)
-    commit(types.LOGIN, result)
+    const { userId, password } = payload
+    fileStorage.setItemsInStore({ userId, password })
+    commit(types.LOGIN, { ...result, isLogin: true })
     return result
   },
   async getCategoryNotes ({ commit, state }, payload) {
@@ -32,6 +36,7 @@ export default {
   async getNoteContent ({ commit, state }, payload) {
     const { kbGuid } = state
     const { docGuid } = payload
+
     const result = await api.KnowledgeBaseApi.getNoteContent({
       kbGuid,
       docGuid,

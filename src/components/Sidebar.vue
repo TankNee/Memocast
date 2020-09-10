@@ -13,10 +13,10 @@
       <div class="bg-transparent user-avatar">
         <q-avatar
           size="43px"
-          class="q-mb-sm cursor-pointer bg-primary text-white "
+          class="q-mb-sm cursor-pointer text-white "
           @click="handleLogin"
         >
-          <img v-if="!!avatarUrl" :src="avatarUrl" />
+          <img :src="avatarUrl ? avatarUrl : 'https://avatars0.githubusercontent.com/u/62432902?s=200&v=4'" />
         </q-avatar>
       </div>
     </div>
@@ -76,7 +76,7 @@
           >
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple @click="handleSettings">
           <q-item-section avatar>
             <q-icon name="settings" />
           </q-item-section>
@@ -91,16 +91,18 @@
       </q-list>
     </q-scroll-area>
     <LoginDialog ref="loginDialog" />
+    <SettingsDialog ref="settingsDialog" />
   </q-drawer>
 </template>
 
 <script>
 import LoginDialog from './ui/LoginDialog'
 import { createNamespacedHelpers } from 'vuex'
+import SettingsDialog from './ui/SettingsDialog'
 const { mapState, mapGetters } = createNamespacedHelpers('server')
 export default {
   name: 'Sidebar',
-  components: { LoginDialog },
+  components: { SettingsDialog, LoginDialog },
   computed: {
     ...mapState(['user']),
     ...mapGetters(['avatarUrl'])
@@ -114,6 +116,9 @@ export default {
   methods: {
     handleLogin: function () {
       this.$refs.loginDialog.toggle()
+    },
+    handleSettings: function () {
+      this.$refs.settingsDialog.toggle()
     }
   }
 }

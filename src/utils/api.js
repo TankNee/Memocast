@@ -8,7 +8,7 @@ const AccountServerApi = {
   },
 
   setBaseUrl (url) {
-    AccountServerBaseUrl = url
+    AccountServerBaseUrl = url || 'https://as.wiz.cn'
   },
 
   /**
@@ -53,10 +53,9 @@ const AccountServerApi = {
 
   /**
    * 延长token有效期
-   * @param params
    * @returns {Promise<unknown>}
    */
-  async keepTokenAlive (params) {
+  async keepTokenAlive () {
     return await execRequest('GET', `${AccountServerBaseUrl}/as/user/keep`)
   }
 }

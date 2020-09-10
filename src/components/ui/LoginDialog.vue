@@ -20,6 +20,7 @@
             autofocus
             :label="$t('username')"
             :rules="[val => !!val || $t('fieldIsRequired')]"
+            spellcheck="false"
           />
           <q-input
             dense
@@ -30,6 +31,7 @@
             :label="$t('password')"
             type="password"
             :rules="[val => !!val || $t('fieldIsRequired')]"
+            spellcheck="false"
           />
           <q-toggle
             v-model="isSelfHost"
@@ -43,6 +45,7 @@
             v-model="selfHostServer"
             :label="$t('selfHostServer')"
             :rules="[val => isSelfHost&&!!val || $t('fieldIsRequired')]"
+            spellcheck="false"
           />
 
           <div>
@@ -67,6 +70,7 @@ import { createNamespacedHelpers } from 'vuex'
 import Loading from './Loading'
 import bus from '../bus'
 import events from '../../constants/events'
+import fileStorage from '../../utils/fileStorage'
 const { mapActions: mapServerActions } = createNamespacedHelpers('server')
 export default {
   name: 'LoginDialog',
@@ -106,6 +110,11 @@ export default {
       return this.$refs.dialog.toggle()
     },
     ...mapServerActions(['login', 'getCategoryNotes'])
+  },
+  created () {
+    const [userId, password] = fileStorage.getItemsFromStore(['userId', 'password'])
+    this.username = userId
+    this.password = password
   }
 }
 </script>

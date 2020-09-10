@@ -6,7 +6,7 @@
       </template>
 
       <template v-slot:after>
-        <Vditor class="exclude-header overflow-hidden" :data="currentNote(false)" />
+        <Vditor class="exclude-header overflow-hidden" />
       </template>
     </q-splitter>
   </q-page>
@@ -21,7 +21,7 @@ export default {
   name: 'PageIndex',
   components: { Vditor, NoteList },
   computed: {
-    ...mapGetters(['currentNotes', 'currentNote'])
+    ...mapGetters(['currentNotes'])
   },
   data () {
     return {

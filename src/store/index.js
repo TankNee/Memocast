@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import server from './server'
+import client from './client'
 Vue.use(Vuex)
 
 /*
@@ -16,7 +17,8 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      server: server
+      server: server,
+      client: client
     },
 
     // enable strict mode (adds overhead!)

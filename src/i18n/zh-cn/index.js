@@ -1,6 +1,6 @@
-// This is just an example,
-// so you can safely delete all default props below
-
+import components from './components'
+import errors from 'src/i18n/zh-cn/errors'
 export default {
-
+  ...components,
+  ...errors
 }

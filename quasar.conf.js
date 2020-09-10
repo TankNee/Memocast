@@ -174,6 +174,10 @@ module.exports = function (/* ctx */) {
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
+        // productName: 'neeto-vue',
+        // mac: {
+        //   target: ['dmg']
+        // }
 
         // OS X / Mac App Store
         // appBundleId: '',
@@ -188,7 +192,28 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'neeto.vue'
+        // https://www.electron.build/configuration/configuration
+
+        appId: 'cn.tanknee.neeto.vue',
+        copyright: 'Copyright © 2020 TankNee',
+        productName: 'Awesome WizNote Client',
+        asar: true,
+        linux: {
+          category: 'Editor.Client',
+          target: [
+            {
+              target: 'AppImage',
+              arch: [
+                'x64'
+              ]
+            }
+          ]
+        },
+        win: {
+          legalTrademarks: 'Copyright © 2020 TankNee',
+          publisherName: 'TankNee'
+        }
+
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
