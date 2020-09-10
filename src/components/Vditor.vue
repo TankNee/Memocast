@@ -38,7 +38,7 @@ export default {
         enable: false
       },
       icon: 'material',
-      mode: 'wysiwyg',
+      mode: 'ir',
       theme: this.$q.dark.isActive ? 'dark' : 'classic',
       preview: {
         theme: {

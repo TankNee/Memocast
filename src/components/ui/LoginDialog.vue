@@ -35,11 +35,7 @@
           />
           <q-toggle
             :value="enableSelfHostServer"
-            :label="
-              enableSelfHostServer
-                ? $t('selfHostDisable')
-                : $t('selfHostEnable')
-            "
+            :label="$t('selfHostEnable')"
             class="login-toggle"
             @input="
               v => toggleChanged({ key: 'enableSelfHostServer', value: v })

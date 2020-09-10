@@ -8,7 +8,7 @@
   >
     <div
       class="absolute-top"
-      style="height: 150px;border-right: 1px solid #DDDDDD"
+      style="height: 150px;"
     >
       <div class="bg-transparent user-avatar">
         <q-avatar
@@ -21,7 +21,7 @@
       </div>
     </div>
     <q-scroll-area
-      style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd"
+      style="height: calc(100% - 150px); margin-top: 150px;"
     >
       <q-list padding>
         <q-item clickable v-ripple>
