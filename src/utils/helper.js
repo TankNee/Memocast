@@ -26,7 +26,7 @@ function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
  * @returns {*}
  */
 function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources) {
-  const pattern = /<body.*<\/body>/
+  const pattern = /<body[\d\D]*<\/body>/
   if (!pattern.test(html)) {
     return html
   } else {

@@ -7,7 +7,7 @@
       :bar-style="barStyle"
       class="exclude-header"
     >
-      <q-list padding>
+      <q-list>
         <q-item
           clickable
           v-ripple
@@ -62,7 +62,6 @@ export default {
   computed: {
     thumbStyle () {
       return {
-        borderRadius: '5px',
         backgroundColor: '#E8ECF1',
         width: '7px',
         opacity: 0.75
@@ -81,8 +80,5 @@ export default {
 <style scoped>
 .fab-btn {
   margin: 10px;
-}
-.note-item {
-  border-bottom: 1px solid #dddddd;
 }
 </style>

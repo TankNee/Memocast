@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import messages from 'src/i18n'
 import fileStorage from 'src/utils/fileStorage'
-const local = fileStorage.getItemFromStore('language')
+const local = fileStorage.getItemFromStore('language') || 'en-us'
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
