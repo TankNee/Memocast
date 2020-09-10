@@ -1,12 +1,11 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
 import fileStorage from 'src/utils/fileStorage'
-import bus from 'components/bus'
-import events from 'src/constants/events'
 export default {
-  initServerStore ({ commit, state, rootState }) {
+  initServerStore ({ commit, state }) {
     const localStore = fileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
+    fileStorage.removeItemFromLocalStorage('token')
     const [
       autoLogin,
       userId,
@@ -43,7 +42,6 @@ export default {
     commit(types.LOGIN, { ...result, isLogin: true })
 
     this.dispatch('server/getCategoryNotes', { category: '', kbGuid: result.kbGuid })
-    bus.$emit(events.LOGIN_SUCCESSFULLY)
 
     return result
   },

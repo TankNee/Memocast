@@ -191,29 +191,6 @@ module.exports = function (/* ctx */) {
       },
 
       builder: {
-        // https://www.electron.build/configuration/configuration
-
-        // https://www.electron.build/configuration/configuration
-
-        appId: 'cn.tanknee.neeto.vue',
-        copyright: 'Copyright © 2020 TankNee',
-        productName: 'Awesome WizNote Client',
-        asar: true,
-        linux: {
-          category: 'Editor.Client',
-          target: [
-            {
-              target: 'AppImage',
-              arch: [
-                'x64'
-              ]
-            }
-          ]
-        },
-        win: {
-          legalTrademarks: 'Copyright © 2020 TankNee',
-          publisherName: 'TankNee'
-        }
 
       },
 
