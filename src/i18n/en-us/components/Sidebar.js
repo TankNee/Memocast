@@ -3,5 +3,7 @@ export default {
   tags: 'Tags',
   noteCategory: 'Note Category',
   search: 'Search',
-  settings: 'Settings'
+  settings: 'Settings',
+  logout: 'Logout',
+  logoutHint: 'Do you want to log out right now ?'
 }

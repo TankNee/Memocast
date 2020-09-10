@@ -7,5 +7,7 @@ export default {
   selfHostServer: 'Self Host Server',
   submit: 'Submit',
   cancel: 'Cancel',
-  fieldIsRequired: 'Field is required'
+  fieldIsRequired: 'Field is required',
+  rememberPassword: 'Remember Password',
+  autoLogin: 'Auto Login'
 }

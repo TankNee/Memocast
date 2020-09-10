@@ -4,7 +4,7 @@ import fileStorage from 'src/utils/fileStorage'
 import ServerStore from './store/server'
 const refreshWizToken = () => {
   schedule.scheduleJob('30 * * * * *', async () => {
-    if (!ServerStore.state.isLogin || !fileStorage.isKeyExists('token')) return
+    if (!ServerStore.state.isLogin || !fileStorage.isKeyExistsInLocalStorage('token')) return
     await api.AccountServerApi.keepTokenAlive()
   })
 }

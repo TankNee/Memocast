@@ -17,8 +17,8 @@ export default {
     Dark.set(darkMode)
     commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['darkMode', darkMode])
   },
-  toggleMarkdownOnly ({ commit }, markdownOnly) {
-    commit(types.TOGGLE_MARKDOWN_ONLY, markdownOnly)
-    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['markdownOnly', markdownOnly])
+  toggleChanged ({ commit }, { key, value }) {
+    commit(types.TOGGLE_CHANGED, { key, value })
+    commit(types.SAVE_TO_LOCAL_STORE_SYNC, [key, value])
   }
 }

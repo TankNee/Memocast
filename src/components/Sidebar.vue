@@ -99,12 +99,12 @@
 import LoginDialog from './ui/LoginDialog'
 import { createNamespacedHelpers } from 'vuex'
 import SettingsDialog from './ui/SettingsDialog'
-const { mapState, mapGetters } = createNamespacedHelpers('server')
+const { mapState, mapGetters, mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'Sidebar',
   components: { SettingsDialog, LoginDialog },
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'isLogin']),
     ...mapGetters(['avatarUrl'])
   },
   data () {
@@ -115,11 +115,27 @@ export default {
   },
   methods: {
     handleLogin: function () {
-      this.$refs.loginDialog.toggle()
+      if (!this.isLogin) {
+        this.$refs.loginDialog.toggle()
+      } else {
+        this.$q.dialog({
+          title: this.$t('logout'),
+          message: this.$t('logoutHint'),
+          cancel: {
+            label: this.$t('cancel')
+          },
+          ok: {
+            label: this.$t('logout')
+          }
+        }).onOk(() => {
+          this.logout()
+        })
+      }
     },
     handleSettings: function () {
       this.$refs.settingsDialog.toggle()
-    }
+    },
+    ...mapActions(['logout'])
   }
 }
 </script>

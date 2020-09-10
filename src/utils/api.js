@@ -43,11 +43,10 @@ const AccountServerApi = {
 
   /**
    * 用户登出
-   * @param params {none}
    * @returns {Promise<unknown>}
    * @constructor
    */
-  async Logout (params) {
+  async Logout () {
     return await execRequest('GET', `${AccountServerBaseUrl}/as/user/logout`)
   },
 

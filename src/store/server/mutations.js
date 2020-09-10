@@ -22,7 +22,14 @@ export default {
     }
     const data = { kbGuid, kbServer, lang, email, displayName, userGuid, isLogin }
     Object.assign(state, data)
+    state.currentNote = {}
     return state
+  },
+  [types.LOGOUT] (state) {
+    for (const key in state) {
+      state[key] = null
+    }
+    state.isLogin = false
   },
   [types.UPDATE_CURRENT_NOTES] (state, payload) {
     state.currentNotes = payload

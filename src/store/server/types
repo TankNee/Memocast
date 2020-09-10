@@ -1,5 +1,6 @@
 export default {
   LOGIN: 'login',
+  LOGOUT: 'logout',
   UPDATE_CURRENT_NOTES: 'update_current_notes',
   UPDATE_CURRENT_NOTE: 'update_current_note',
   INIT: 'init',

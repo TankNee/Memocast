@@ -3,5 +3,6 @@ export default {
   INIT: 'init',
   TOGGLE_DARK_MODE: 'toggle_dark_mode',
   TOGGLE_MARKDOWN_ONLY: 'toggle_markdown_only',
-  SAVE_TO_LOCAL_STORE_SYNC: 'save_to_local_store_sync'
+  SAVE_TO_LOCAL_STORE_SYNC: 'save_to_local_store_sync',
+  TOGGLE_CHANGED: 'toggle_changed'
 }
