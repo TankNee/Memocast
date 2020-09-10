@@ -34,19 +34,42 @@
             spellcheck="false"
           />
           <q-toggle
-            v-model="isSelfHost"
-            :label="isSelfHost ? $t('selfHostDisable') : $t('selfHostEnable')"
+            :value="enableSelfHostServer"
+            :label="
+              enableSelfHostServer
+                ? $t('selfHostDisable')
+                : $t('selfHostEnable')
+            "
             class="login-toggle"
+            @input="
+              v => toggleChanged({ key: 'enableSelfHostServer', value: v })
+            "
           />
           <q-input
             debounce="500"
-            v-if="isSelfHost"
+            v-if="enableSelfHostServer"
             dense
             v-model="selfHostServer"
             :label="$t('selfHostServer')"
-            :rules="[val => isSelfHost&&!!val || $t('fieldIsRequired')]"
+            :rules="[
+              val => (enableSelfHostServer && !!val) || $t('fieldIsRequired')
+            ]"
             spellcheck="false"
           />
+          <div class="no-margin">
+            <q-toggle
+              :value="rememberPassword"
+              :label="$t('rememberPassword')"
+              class="login-toggle"
+              @input="v => toggleChanged({ key: 'rememberPassword', value: v })"
+            />
+            <q-toggle
+              :value="autoLogin"
+              :label="$t('autoLogin')"
+              class="login-toggle"
+              @input="v => toggleChanged({ key: 'autoLogin', value: v })"
+            />
+          </div>
 
           <div>
             <q-btn :label="$t('submit')" type="submit" color="primary" />
@@ -60,7 +83,7 @@
           </div>
         </q-form>
       </q-card-section>
-      <Loading :visible="isLoading"/>
+      <Loading :visible="isLoading" />
     </q-card>
   </q-dialog>
 </template>
@@ -68,10 +91,12 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Loading from './Loading'
-import bus from '../bus'
-import events from '../../constants/events'
 import fileStorage from '../../utils/fileStorage'
 const { mapActions: mapServerActions } = createNamespacedHelpers('server')
+const {
+  mapState: mapClientState,
+  mapActions: mapClientActions
+} = createNamespacedHelpers('client')
 export default {
   name: 'LoginDialog',
   components: { Loading },
@@ -80,9 +105,11 @@ export default {
       username: '',
       password: '',
       selfHostServer: '',
-      isSelfHost: false,
       isLoading: false
     }
+  },
+  computed: {
+    ...mapClientState(['rememberPassword', 'autoLogin', 'enableSelfHostServer'])
   },
   methods: {
     submitHandler: async function () {
@@ -90,13 +117,11 @@ export default {
       const loginPayload = {
         userId: this.username,
         password: this.password,
-        url: this.isSelfHost ? this.selfHostServer : ''
+        url: this.enableSelfHostServer ? this.selfHostServer : null
       }
       try {
-        const result = await this.login(loginPayload)
-        await this.getCategoryNotes({ category: '', kbGuid: result.kbGuid })
+        await this.login(loginPayload)
         this.toggle()
-        bus.$emit(events.LOGIN_SUCCESSFULLY)
       } finally {
         this.isLoading = false
       }
@@ -109,12 +134,18 @@ export default {
     toggle: function () {
       return this.$refs.dialog.toggle()
     },
-    ...mapServerActions(['login', 'getCategoryNotes'])
+    ...mapServerActions(['login', 'getCategoryNotes']),
+    ...mapClientActions(['toggleChanged'])
   },
   created () {
-    const [userId, password] = fileStorage.getItemsFromStore(['userId', 'password'])
+    const [userId, password, url] = fileStorage.getItemsFromStore([
+      'userId',
+      'password',
+      'url'
+    ])
     this.username = userId
     this.password = password
+    this.selfHostServer = url
   }
 }
 </script>
@@ -125,6 +156,6 @@ export default {
   max-width: 50vw;
 }
 .login-toggle {
-  margin-left: 4px;
+  margin-left: 10px;
 }
 </style>

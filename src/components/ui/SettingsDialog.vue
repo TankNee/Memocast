@@ -65,7 +65,11 @@
                 <div>
                   <div class="text-h6 q-mb-md setting-item">
                     <span>{{ $t('darkMode') }}</span>
-                    <q-toggle :value="darkMode" color="black" @input="(v) => toggleDarkMode(v)" />
+                    <q-toggle
+                      :value="darkMode"
+                      color="black"
+                      @input="v => toggleDarkMode(v)"
+                    />
                   </div>
                 </div>
               </q-tab-panel>
@@ -81,7 +85,13 @@
                 <div>
                   <div class="text-h6 q-mb-md setting-item">
                     <span>{{ $t('markdownOnly') }}</span>
-                    <q-toggle :value="markdownOnly" color="primary" @input="(v) => toggleMarkdownOnly(v)" />
+                    <q-toggle
+                      :value="markdownOnly"
+                      color="primary"
+                      @input="
+                        v => toggleChanged({ key: 'markdownOnly', value: v })
+                      "
+                    />
                   </div>
                 </div>
               </q-tab-panel>
@@ -123,7 +133,7 @@ export default {
       this.setLanguage(lan)
       i18n.locale = lan
     },
-    ...mapActions(['setLanguage', 'toggleDarkMode', 'toggleMarkdownOnly'])
+    ...mapActions(['setLanguage', 'toggleDarkMode', 'toggleChanged'])
   }
 }
 </script>

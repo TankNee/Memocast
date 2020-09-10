@@ -16,10 +16,10 @@ export default {
   [types.TOGGLE_DARK_MODE] (state, darkMode) {
     state.darkMode = darkMode
   },
-  [types.TOGGLE_MARKDOWN_ONLY] (state, markdownOnly) {
-    state.markdownOnly = markdownOnly
-  },
   [types.SAVE_TO_LOCAL_STORE_SYNC] (state, [key, value]) {
     fileStorage.setItemInStore(key, value)
+  },
+  [types.TOGGLE_CHANGED] (state, { key, value }) {
+    state[key] = value
   }
 }

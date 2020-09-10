@@ -7,5 +7,7 @@ export default {
   selfHostServer: '私有部署服务器地址',
   submit: '登录',
   cancel: '取消',
-  fieldIsRequired: '该字段必须填写'
+  fieldIsRequired: '该字段必须填写',
+  rememberPassword: '记住密码',
+  autoLogin: '自动登录'
 }

@@ -9,6 +9,7 @@ import Vditor from 'vditor'
 import 'vditor/dist/index.css'
 import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
+import debugLogger from '../utils/debugLogger'
 const { mapGetters } = createNamespacedHelpers('server')
 const { mapState } = createNamespacedHelpers('client')
 export default {
@@ -48,7 +49,12 @@ export default {
   },
   watch: {
     currentNote: function (currentData) {
-      this.contentEditor.setValue(currentData(false))
+      try {
+        this.contentEditor.setValue(currentData(false))
+      } catch (e) {
+        if (e.message.indexOf('Md2V') !== -1) return
+        debugLogger.Error(e.message)
+      }
     },
     darkMode: function (darkMode) {
       this.contentEditor.setTheme(darkMode ? 'dark' : 'classic', darkMode ? 'dark' : 'light')

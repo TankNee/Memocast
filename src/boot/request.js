@@ -21,7 +21,7 @@ export async function execRequest (method, url, body, token, extraConfig) {
     config.headers = {
       'X-Wiz-Token': token
     }
-  } else if (fileStorage.isKeyExists('token')) {
+  } else if (fileStorage.isKeyExistsInLocalStorage('token')) {
     config.headers = {
       'X-Wiz-Token': fileStorage.getValueFromLocalStorage('token')
     }

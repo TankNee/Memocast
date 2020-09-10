@@ -22,7 +22,7 @@ class FileStorage {
     return JSON.parse(localStorage.getItem(key))
   }
 
-  isKeyExists (key) {
+  isKeyExistsInLocalStorage (key) {
     return !!this.getValueFromLocalStorage(key)
   }
 
@@ -44,7 +44,8 @@ class FileStorage {
       debugLogger.Error(i18n.t('updateSettingsWithNullObject'))
       return
     }
-    Object.keys(settings).map(key => {
+    Object.keys(settings).forEach(key => {
+      if (helper.isNullOrEmpty(settings[key])) return null
       this.setItemInStore(key, settings[key])
     })
   }
@@ -77,6 +78,14 @@ class FileStorage {
       }
     }
     return result
+  }
+
+  isKeyExistInStore (key) {
+    return this._store.has(key)
+  }
+
+  removeItemFromStore (key) {
+    return this._store.delete(key)
   }
 }
 export default new FileStorage()
