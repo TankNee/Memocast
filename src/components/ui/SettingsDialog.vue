@@ -65,7 +65,7 @@
                 <div>
                   <div class="text-h6 q-mb-md setting-item">
                     <span>{{ $t('darkMode') }}</span>
-                    <q-toggle v-model="darkMode" color="black" @input="(v) => toggleDarkMode(v)" />
+                    <q-toggle :value="darkMode" color="black" @input="(v) => toggleDarkMode(v)" />
                   </div>
                 </div>
               </q-tab-panel>
@@ -81,7 +81,7 @@
                 <div>
                   <div class="text-h6 q-mb-md setting-item">
                     <span>{{ $t('markdownOnly') }}</span>
-                    <q-toggle v-model="markdownOnly" color="primary" @input="(v) => toggleMarkdownOnly(v)" />
+                    <q-toggle :value="markdownOnly" color="primary" @input="(v) => toggleMarkdownOnly(v)" />
                   </div>
                 </div>
               </q-tab-panel>

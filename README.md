@@ -1,26 +1,18 @@
-# Quasar App (quasar.spa.test)
+## Neeto Vue
+An Awesome Wiz Note Client
 
-A Quasar Framework app
+### ScreenShot
 
-## Install the dependencies
-```bash
-npm install
-```
+![](https://img.tanknee.cn/img/20200910133411.png)
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+![](https://img.tanknee.cn/img/20200910133430.png)
 
-### Lint the files
-```bash
-npm run lint
-```
+### Feature
 
-### Build the app for production
-```bash
-quasar build
-```
+- More Beautiful
 
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+- More Powerful
+
+- Lighter Size
+
+- Better Dark Mode In Desktop Platform

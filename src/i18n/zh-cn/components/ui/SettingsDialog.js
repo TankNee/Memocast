@@ -5,5 +5,6 @@ export default {
   language: '语言',
   'en-us': '英语 (美国)',
   'zh-cn': '中文 (简体)',
-  darkMode: '暗黑模式'
+  darkMode: '暗黑模式',
+  markdownOnly: '只显示markdown笔记'
 }
