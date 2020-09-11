@@ -42,6 +42,7 @@ export default {
     commit(types.LOGIN, { ...result, isLogin: true })
 
     this.dispatch('server/getCategoryNotes', { category: '', kbGuid: result.kbGuid })
+    this.dispatch('server/getAllCategories')
 
     return result
   },
@@ -65,7 +66,8 @@ export default {
   },
   async getAllCategories ({ commit, state }) {
     const { kbGuid } = state
-    await api.KnowledgeBaseApi.getCategories({ kbGuid })
+    const result = await api.KnowledgeBaseApi.getCategories({ kbGuid })
+    commit(types.UPDATE_ALL_CATEGORIES, result)
   },
   async getNoteContent ({ commit, state }, payload) {
     const { kbGuid } = state

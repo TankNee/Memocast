@@ -8,6 +8,7 @@ export default function () {
     userGuid: '',
     isLogin: false,
     currentNotes: [], // current notes summary information,
-    currentNote: {} // current note which will be rendered on vditor
+    currentNote: {}, // current note which will be rendered on vditor,
+    categories: []
   }
 }

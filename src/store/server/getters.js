@@ -30,5 +30,8 @@ export default {
       result = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
     }
     return result
+  },
+  categories: ({ categories }) => {
+    return helper.generateCategoryNodeTree(categories)
   }
 }

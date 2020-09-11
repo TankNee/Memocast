@@ -40,5 +40,9 @@ export default {
   },
   [types.SAVE_TO_LOCAL_STORE_SYNC] (state, [key, value]) {
     fileStorage.setItemInStore(key, value)
+  },
+  [types.UPDATE_ALL_CATEGORIES] (state, payload) {
+    state.categories = payload
+    return state
   }
 }

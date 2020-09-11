@@ -50,7 +50,7 @@
           >
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple @click="$refs.categoryDialog.toggle()">
           <q-item-section avatar>
             <q-icon name="account_tree" />
           </q-item-section>
@@ -63,7 +63,7 @@
           >
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple @click="$refs.searchDialog.toggle()">
           <q-item-section avatar>
             <q-icon name="search" />
           </q-item-section>
@@ -76,7 +76,7 @@
           >
         </q-item>
 
-        <q-item clickable v-ripple @click="handleSettings">
+        <q-item clickable v-ripple @click="$refs.settingsDialog.toggle()">
           <q-item-section avatar>
             <q-icon name="settings" />
           </q-item-section>
@@ -92,6 +92,8 @@
     </q-scroll-area>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
+    <SearchDialog ref="searchDialog" />
+    <CategoryDialog ref="categoryDialog" />
   </q-drawer>
 </template>
 
@@ -99,10 +101,12 @@
 import LoginDialog from './ui/LoginDialog'
 import { createNamespacedHelpers } from 'vuex'
 import SettingsDialog from './ui/SettingsDialog'
+import SearchDialog from './ui/SearchDialog'
+import CategoryDialog from './ui/CategoryDialog'
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'Sidebar',
-  components: { SettingsDialog, LoginDialog },
+  components: { CategoryDialog, SearchDialog, SettingsDialog, LoginDialog },
   computed: {
     ...mapState(['user', 'isLogin']),
     ...mapGetters(['avatarUrl'])
@@ -131,9 +135,6 @@ export default {
           this.logout()
         })
       }
-    },
-    handleSettings: function () {
-      this.$refs.settingsDialog.toggle()
     },
     ...mapActions(['logout'])
   }
