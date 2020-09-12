@@ -1,6 +1,7 @@
 <template>
-  <div id="vditor" class="fit">
-    <Loading :visible="isLoading" />
+  <div>
+    <div id="vditor" class="fit" v-show="!isCurrentNoteLoading && currentNote(false)"></div>
+    <Loading :visible="isCurrentNoteLoading" />
   </div>
 </template>
 
@@ -10,8 +11,8 @@ import 'vditor/dist/index.css'
 import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from '../utils/debugLogger'
-const { mapGetters } = createNamespacedHelpers('server')
-const { mapState } = createNamespacedHelpers('client')
+const { mapGetters: mapServerGetters, mapState: mapServerState } = createNamespacedHelpers('server')
+const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'Vditor',
   components: { Loading },
@@ -22,13 +23,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentNote']),
-    ...mapState(['darkMode'])
+    ...mapServerGetters(['currentNote']),
+    ...mapServerState(['isCurrentNoteLoading']),
+    ...mapClientState(['darkMode'])
   },
   data () {
     return {
-      contentEditor: '',
-      isLoading: false
+      contentEditor: ''
     }
   },
   mounted () {
@@ -44,7 +45,8 @@ export default {
         theme: {
           current: this.$q.dark.isActive ? 'dark' : 'light'
         }
-      }
+      },
+      toolbar: []
     })
   },
   watch: {
@@ -57,7 +59,10 @@ export default {
       }
     },
     darkMode: function (darkMode) {
-      this.contentEditor.setTheme(darkMode ? 'dark' : 'classic', darkMode ? 'dark' : 'light')
+      this.contentEditor.setTheme(
+        darkMode ? 'dark' : 'classic',
+        darkMode ? 'dark' : 'light'
+      )
     }
   }
 }

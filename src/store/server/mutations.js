@@ -10,6 +10,7 @@ export default {
         state[key] = payload[key]
       }
     }
+    return state
   },
   [types.LOGIN] (state, payload) {
     // replace the old state
@@ -30,6 +31,7 @@ export default {
       state[key] = null
     }
     state.isLogin = false
+    return state
   },
   [types.UPDATE_CURRENT_NOTES] (state, payload) {
     state.currentNotes = payload
@@ -37,8 +39,26 @@ export default {
   },
   [types.UPDATE_CURRENT_NOTE] (state, payload) {
     state.currentNote = payload
+    return state
   },
   [types.SAVE_TO_LOCAL_STORE_SYNC] (state, [key, value]) {
     fileStorage.setItemInStore(key, value)
+    return state
+  },
+  [types.UPDATE_ALL_CATEGORIES] (state, payload) {
+    state.categories = payload
+    return state
+  },
+  [types.UPDATE_CURRENT_CATEGORY] (state, category) {
+    state.currentCategory = category
+    return state
+  },
+  [types.UPDATE_CURRENT_NOTE_LOADING_STATE] (state, loadingState) {
+    state.isCurrentNoteLoading = loadingState
+    return state
+  },
+  [types.UPDATE_CURRENT_NOTES_LOADING_STATE] (state, loadingState) {
+    state.isCurrentNotesLoading = loadingState
+    return state
   }
 }

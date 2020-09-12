@@ -1,25 +1,24 @@
-/**
- * @Description:
- * @Author: TankNee
- * @Date: 9/8/2020 1:24 PM
- **/
+/** * @Description: * @Author: TankNee * @Date: 9/8/2020 1:24 PM **/
 <template>
-  <q-card flat class="note-card bg-transparent" @click="getNoteContent({docGuid})">
-    <q-card-section>
-      <div class="text-h6">
-        {{ title }}
-      </div>
-    </q-card-section>
-    <q-separator inset />
+  <q-card
+    flat
+    :class="`note-card${darkMode ? '-dark' : ''} bg-transparent`"
+    @click="getNoteContent({ docGuid })"
+  >
+    <div :class="`note-item-title${darkMode ? '-dark' : ''}`">
+      {{ title }}
+    </div>
 
-    <q-card-section>
+    <div :class="`note-item-summary${darkMode ? '-dark' : ''}`">
       {{ summary }}
-    </q-card-section>
+    </div>
+    <NoteItemContextMenu/>
   </q-card>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import NoteItemContextMenu from './NoteItemContextMenu'
 const { mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'NoteItem',
@@ -40,9 +39,11 @@ export default {
     },
     markdown: Boolean
   },
+  components: { NoteItemContextMenu },
   computed: {
     summary () {
-      return this.data.summary.length > this.maxSummaryLength
+      return this.data.summary &&
+        this.data.summary.length > this.maxSummaryLength
         ? this.data.summary.substring(0, this.maxSummaryLength) + '...'
         : this.data.summary
     },
@@ -51,6 +52,9 @@ export default {
     },
     docGuid () {
       return this.data.docGuid
+    },
+    darkMode () {
+      return this.$q.dark.isActive
     }
   },
   methods: {
@@ -60,8 +64,5 @@ export default {
 </script>
 
 <style scoped>
-.note-card {
-  width: 100%;
-  margin: 1rem 0rem;
-}
+
 </style>

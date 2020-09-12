@@ -10,7 +10,7 @@ function Info (payload) {
   consola.info(payload)
 }
 function Debug (payload) {
-  consola.debug(payload)
+  consola.warn(payload)
 }
 export default {
   Log,

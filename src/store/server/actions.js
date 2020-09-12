@@ -42,6 +42,7 @@ export default {
     commit(types.LOGIN, { ...result, isLogin: true })
 
     this.dispatch('server/getCategoryNotes', { category: '', kbGuid: result.kbGuid })
+    this.dispatch('server/getAllCategories')
 
     return result
   },
@@ -64,10 +65,14 @@ export default {
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
   async getAllCategories ({ commit, state }) {
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
-    await api.KnowledgeBaseApi.getCategories({ kbGuid })
+    const result = await api.KnowledgeBaseApi.getCategories({ kbGuid })
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+    commit(types.UPDATE_ALL_CATEGORIES, result)
   },
   async getNoteContent ({ commit, state }, payload) {
+    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
     const { kbGuid } = state
     const { docGuid } = payload
 
@@ -79,6 +84,11 @@ export default {
         downloadData: 1
       }
     })
+    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTE, result)
+  },
+  async updateCurrentCategory ({ commit }, category) {
+    await this.dispatch('server/getCategoryNotes', { category })
+    commit(types.UPDATE_CURRENT_CATEGORY, category)
   }
 }
