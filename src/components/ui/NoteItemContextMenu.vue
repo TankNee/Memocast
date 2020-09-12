@@ -1,7 +1,7 @@
 <template>
   <q-menu touch-position context-menu>
     <q-list dense style="min-width: 100px">
-      <q-item clickable v-close-popup v-ripple>
+      <q-item clickable v-close-popup v-ripple @click="rename">
         <q-item-section>{{$t('rename')}}</q-item-section>
       </q-item>
       <q-item clickable v-close-popup v-ripple>
@@ -24,13 +24,16 @@
 <script>
 export default {
   name: 'NoteItemContextMenu',
+  props: {
+    rename: {
+      types: Function,
+      default: () => {}
+    }
+  },
   data () {
     return {
       visible: false
     }
-  },
-  methods: {
-    openContextMenu: function (e) {}
   }
 }
 </script>

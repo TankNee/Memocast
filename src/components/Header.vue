@@ -53,7 +53,7 @@
       v-ripple
       @click="$refs.categoryDialog.toggle()"
     >
-      <q-icon name="account_tree" />
+      <q-icon name="account_tree" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-accent text-white shadow-4"

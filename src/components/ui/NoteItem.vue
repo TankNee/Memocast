@@ -12,7 +12,7 @@
     <div :class="`note-item-summary${darkMode ? '-dark' : ''}`">
       {{ summary }}
     </div>
-    <NoteItemContextMenu/>
+    <NoteItemContextMenu :rename="handleRename"/>
   </q-card>
 </template>
 
@@ -42,10 +42,10 @@ export default {
   components: { NoteItemContextMenu },
   computed: {
     summary () {
-      return this.data.summary &&
-        this.data.summary.length > this.maxSummaryLength
-        ? this.data.summary.substring(0, this.maxSummaryLength) + '...'
-        : this.data.summary
+      return this.data.abstractText &&
+        this.data.abstractText.length > this.maxSummaryLength
+        ? this.data.abstractText.substring(0, this.maxSummaryLength) + '...'
+        : this.data.abstractText
     },
     title () {
       return this.data.title
@@ -58,7 +58,22 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getNoteContent'])
+    handleRename: function () {
+      this.$q.dialog({
+        title: this.$t('renameNote'),
+        prompt: {
+          model: this.title.substring(0, this.title.length - 3),
+          type: 'text'
+        },
+        cancel: true
+      }).onOk(data => {
+        const info = JSON.parse(JSON.stringify(this.data))
+        info.title = `${data}.md`
+        info.infoModified = new Date().getTime()
+        this.updateNoteInfo(info)
+      })
+    },
+    ...mapActions(['getNoteContent', 'updateNoteInfo'])
   }
 }
 </script>
