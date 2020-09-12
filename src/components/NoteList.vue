@@ -5,7 +5,7 @@
     <q-scroll-area
       :thumb-style="thumbStyle"
       :bar-style="barStyle"
-      class="exclude-header"
+      :class="`exclude-header note-list${$q.dark.isActive ? '-dark' : ''}`"
     >
       <q-list>
         <q-item
@@ -13,7 +13,9 @@
           v-ripple
           v-for="(noteField, index) in data"
           :key="index"
-          class="note-item"
+          :class="`note-item${$q.dark.isActive ? '-dark' : ''} no-padding`"
+          :active="activeNote(noteField)"
+          :active-class="`active-note-item${$q.dark.isActive ? '-dark' : ''}`"
         >
           <q-item-section>
             <NoteItem :data="noteField" />
@@ -29,7 +31,7 @@
       flat
       class="absolute-bottom-right fab-btn"
     >
-      <q-fab-action color="primary" icon="note_add" flat>
+      <q-fab-action color="primary" icon="note_add" >
         <q-tooltip
           anchor="center right"
           self="center left"
@@ -38,7 +40,7 @@
           >{{ $t('addNote') }}</q-tooltip
         >
       </q-fab-action>
-      <q-fab-action color="primary" icon="create_new_folder" flat>
+      <q-fab-action color="primary" icon="create_new_folder" >
         <q-tooltip
           anchor="center right"
           self="center left"
@@ -48,14 +50,18 @@
         >
       </q-fab-action>
     </q-fab>
+    <Loading :visible="isCurrentNotesLoading" />
   </div>
 </template>
 
 <script>
 import NoteItem from './ui/NoteItem'
+import { createNamespacedHelpers } from 'vuex'
+import Loading from './ui/Loading'
+const { mapGetters, mapState } = createNamespacedHelpers('server')
 export default {
   name: 'NoteList',
-  components: { NoteItem },
+  components: { Loading, NoteItem },
   props: {
     data: Array
   },
@@ -72,7 +78,9 @@ export default {
       return {
         width: '7px'
       }
-    }
+    },
+    ...mapGetters(['activeNote']),
+    ...mapState(['isCurrentNotesLoading'])
   }
 }
 </script>
@@ -81,4 +89,5 @@ export default {
 .fab-btn {
   margin: 10px;
 }
+
 </style>

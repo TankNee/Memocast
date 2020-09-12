@@ -99,10 +99,11 @@
 
 <script>
 import LoginDialog from './ui/LoginDialog'
-import { createNamespacedHelpers } from 'vuex'
+
 import SettingsDialog from './ui/SettingsDialog'
 import SearchDialog from './ui/SearchDialog'
 import CategoryDialog from './ui/CategoryDialog'
+import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'Sidebar',

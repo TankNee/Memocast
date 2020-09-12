@@ -1,3 +1,6 @@
+/*Import third part stylesheet*/
+
+/*Base CSS*/
 ::-webkit-scrollbar {
   width: 7px;
   height: 1px;
@@ -20,7 +23,7 @@
 .exclude-header{
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  height: 95vh !important;
+  height: 93.5vh !important;
 }
 body{
   margin: 0;
@@ -28,4 +31,53 @@ body{
 }
 tooltip{
   font-size: 17px;
+}
+
+
+/*Note Item CSS*/
+.note-item,
+.note-item-dark {
+  background-color: #fafafa;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.note-item-dark {
+  background-color: #282828;
+}
+.active-note-item {
+  background-color: #e4e4e4;
+}
+.active-note-item-dark {
+  background-color: #212121;
+}
+.note-list {
+  background-color: #fafafa;
+}
+.note-list-dark {
+  background-color: #282828;
+}
+/*Note List CSS*/
+.note-card,.note-card-dark {
+  width: 100%;
+  padding: 19px;
+  border-bottom: 1px solid #E6E6E6;
+  border-radius: 0px;
+}
+.note-card-dark{
+  border-bottom: 1px solid #262626;
+}
+.note-item-title,.note-item-title-dark {
+  color: #343a40;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+.note-item-summary,.note-item-summary-dark {
+  color: #acacac;
+  font-size: 14px;
+}
+.note-item-title-dark {
+  color: #dadada;
+}
+.note-item-summary-dark {
+  color: #919191;
 }

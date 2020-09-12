@@ -2,25 +2,11 @@ import _ from 'lodash'
 import he from 'he'
 import html2markdown from '../lib/html2markdown'
 import api from 'src/utils/api'
+import wizMarkdownParser from '@altairwei/wiz-markdown'
+
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
   return _.isNull(obj) || _.isEmpty(obj)
-}
-/**
- * 生成随机的UUID
- * 32位字符,数字和小写英文混杂
- * 例子: d330d7c9d64087419f88672cf421e81d
- */
-const generateUUID = () => {
-  const s = []
-  const hexDigits = '0123456789abcdef'
-  for (let i = 0; i < 32; i++) {
-    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
-  }
-  s[14] = '4'
-  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
-  const uuid = s.join('')
-  return uuid
 }
 function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
   html = html2markdown(html, {
@@ -41,33 +27,11 @@ function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
  * @param {[Object]} resources
  * @returns {*}
  */
-function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources) {
-  // const pattern = /<body[\d\D]*<\/body>/
-  // if (!pattern.test(html)) {
-  //   return html
-  // }
-  // const matches = pattern.exec(html)
-  // if (isNullOrEmpty(matches)) return html
-  // html = html2markdown(matches[0], {
-  //   imgBaseUrl: `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/`,
-  //   resources: resources,
-  //   imageUrlInLine: true
-  // })
-  // html = he.decode(html)
-  // html = removeDeprecatedTags(html)
-  // const $ = cheerio.load(html)
-  // const markdown = $('body').text()
-  // return markdown
-  const domParser = new DOMParser()
-  const doc = domParser.parseFromString(html, 'text/html')
-  html = html2markdown(doc.body.innerHTML, {
-    imgBaseUrl: `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/`,
-    resources: resources,
-    imageUrlInLine: true
+function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
+  resources.forEach(resource => {
+    html = html.replace(`index_files/${resource.name}`, resource.url)
   })
-  html = he.decode(html)
-  html = removeDeprecatedTags(html)
-  return html
+  return wizMarkdownParser.extract(html, { convertImgTag: true })
 }
 
 /**
@@ -82,15 +46,32 @@ function removeDeprecatedTags (html) {
   patterns.forEach(pattern => {
     html = html.replace(pattern, '')
   })
-  html = html.replace(/\s<img\ssrc="data.*>/g, '- [ ]')
+  // html = html.replace(/\s<img\ssrc="data.*>/g, '- [ ]')
+  html = html.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&')
   return html
+}
+
+/**
+ * remove markdown tags while rendering note list
+ * @param {string} markdown
+ */
+function removeMarkdownTag (markdown) {
+  const patterns = [
+    /#/g,
+    /!?\[.*\]\(.*\)/g,
+    />/g,
+    /\\+/g,
+    /\\-/g
+  ]
+  patterns.forEach(pattern => (markdown = markdown.replace(pattern, '')))
+  return markdown
 }
 
 /**
  * generate categories tree
  * @param {string[] | string[][]} categories
  */
-function generateCategoryNodeTree (categories) {
+function generateCategoryNodeTree (categories = []) {
   const result = []
   categories = categories.map(category => {
     return _.isString(category) ? category.split('/').filter(c => !isNullOrEmpty(c)) : category
@@ -102,13 +83,13 @@ function generateCategoryNodeTree (categories) {
         label: category[0],
         children: [],
         selectable: true,
-        key: generateUUID()
+        key: `/${category[0]}/`
       })
       continue
     }
     const rootNodeIndex = result.findIndex(c => c.label === category[0])
     let rootNode = result[rootNodeIndex]
-    // let lastNode = result[rootNodeIndex]
+    const nodeKey = `/${category.join('/')}/`
     let lastNodeLabel = category.shift()
     while (category.length > 0) {
       const children = rootNode.children
@@ -119,7 +100,7 @@ function generateCategoryNodeTree (categories) {
       label: lastNodeLabel,
       children: [],
       selectable: true,
-      key: generateUUID()
+      key: nodeKey
     })
   }
   return result
@@ -128,5 +109,6 @@ export default {
   isNullOrEmpty,
   convertHtml2Markdown,
   extractMarkdownFromMDNote,
-  generateCategoryNodeTree
+  generateCategoryNodeTree,
+  removeMarkdownTag
 }

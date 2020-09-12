@@ -1,15 +1,8 @@
 <template>
   <q-layout view="hHh Lpr lff">
-    <q-header class="text-white header bg-black">
-      <q-bar class="q-electron-drag  header">
-        <div>Neeto Vue</div>
-        <q-space/>
-        <q-btn dense flat icon="minimize" @click="minimize"/>
-        <q-btn dense flat icon="crop_square" @click="maximize"/>
-        <q-btn dense flat icon="close" @click="closeApp"/>
-      </q-bar>
+    <q-header class="text-white header bg-transparent shadow-3">
+      <Header/>
     </q-header>
-    <Sidebar/>
     <q-page-container>
       <router-view/>
     </q-page-container>
@@ -17,8 +10,8 @@
 </template>
 
 <script>
-import Sidebar from '../components/Sidebar'
-
+// import Sidebar from '../components/Sidebar'
+import Header from '../components/Header'
 export default {
   name: 'MainLayout',
   data () {
@@ -27,7 +20,7 @@ export default {
       miniState: false
     }
   },
-  components: { Sidebar },
+  components: { Header },
   methods: {
     minimize () {
       if (process.env.MODE === 'electron') {
@@ -57,7 +50,7 @@ export default {
 </script>
 <style scoped>
   .header{
-    height: 5vh;
+    height: 6.5vh;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }

@@ -3,7 +3,7 @@
     <q-card>
       <q-toolbar>
         <q-avatar>
-          <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
+          <img src="statics/wiz.png" />
         </q-avatar>
 
         <q-toolbar-title

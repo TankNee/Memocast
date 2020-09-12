@@ -9,6 +9,9 @@ export default function () {
     isLogin: false,
     currentNotes: [], // current notes summary information,
     currentNote: {}, // current note which will be rendered on vditor,
-    categories: []
+    isCurrentNoteLoading: false, // current notes list loading state,
+    isCurrentNotesLoading: false, // current notes loading state,
+    categories: [],
+    currentCategory: ''
   }
 }

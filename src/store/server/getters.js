@@ -8,7 +8,10 @@ export default {
   currentNotes: ({ currentNotes }, getters, rootState) => {
     if (_.isArray(currentNotes)) {
       return currentNotes.map((note) => {
-        const { title, abstractText, docGuid } = note
+        let { title, abstractText, docGuid } = note
+        if (rootState.client.markdownOnly) {
+          abstractText = helper.removeMarkdownTag(abstractText)
+        }
         return { title: title, summary: abstractText, docGuid: docGuid }
       }).filter(note => {
         if (rootState.client.markdownOnly) {
@@ -33,5 +36,8 @@ export default {
   },
   categories: ({ categories }) => {
     return helper.generateCategoryNodeTree(categories)
+  },
+  activeNote: ({ currentNote }) => ({ title }) => {
+    return currentNote.info && currentNote.info.title === title
   }
 }

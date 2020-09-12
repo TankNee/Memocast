@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex">
-    <q-splitter v-model="splitterModel" :limits="[15, 50]" class="full-width">
+    <q-splitter v-model="splitterModel" :limits="[270, 600]" class="full-width" unit="px">
       <template v-slot:before>
         <NoteList :data="currentNotes" />
       </template>
@@ -25,15 +25,7 @@ export default {
   },
   data () {
     return {
-      splitterModel: 30,
-      notes: [
-        { title: '测试一', summary: '测试' },
-        { title: '测试一', summary: '测试' },
-        { title: '测试一', summary: '测试' },
-        { title: '测试一', summary: '测试' },
-        { title: '测试一', summary: '测试' },
-        { title: '测试一', summary: '测试' },
-        { title: '测试一', summary: '测试' }]
+      splitterModel: 280
     }
   }
 }

@@ -17,11 +17,13 @@
 
       <q-card-section class="scroll" style="height: 70vh;width: 70vw">
         <q-tree
+          ref="categoryTree"
           :nodes="categories"
           node-key="key"
           selected-color="primary"
           accordion
-          :selected.sync="selected"
+          :selected="currentCategory"
+          @update:selected="v => updateCurrentCategory(v)"
         />
       </q-card-section>
       <Loading :visible="isLoading" />
@@ -32,23 +34,24 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Loading from './Loading'
-const { mapGetters: mapServerGetters } = createNamespacedHelpers('server')
+const { mapGetters: mapServerGetters, mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
 export default {
   name: 'CategoryDialog',
   components: { Loading },
   computed: {
-    ...mapServerGetters(['categories'])
+    ...mapServerGetters(['categories']),
+    ...mapServerState(['currentCategory'])
   },
   data () {
     return {
-      isLoading: false,
-      selected: null
+      isLoading: false
     }
   },
   methods: {
     toggle: function () {
       this.$refs.dialog.toggle()
-    }
+    },
+    ...mapServerActions(['updateCurrentCategory'])
   }
 }
 </script>
