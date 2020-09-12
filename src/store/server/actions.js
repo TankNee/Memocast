@@ -51,6 +51,7 @@ export default {
     commit(types.LOGOUT)
   },
   async getCategoryNotes ({ commit, state }, payload) {
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
     const { category, start, count } = payload
     const result = await api.KnowledgeBaseApi.getCategoryNotes({
@@ -62,14 +63,15 @@ export default {
         withAbstract: true
       }
     })
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
   async getAllCategories ({ commit, state }) {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
     const result = await api.KnowledgeBaseApi.getCategories({ kbGuid })
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
     commit(types.UPDATE_ALL_CATEGORIES, result)
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
   },
   async getNoteContent ({ commit, state }, payload) {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
@@ -84,11 +86,18 @@ export default {
         downloadData: 1
       }
     })
-    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
+
     commit(types.UPDATE_CURRENT_NOTE, result)
+    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
   },
   async updateCurrentCategory ({ commit }, category) {
     await this.dispatch('server/getCategoryNotes', { category })
     commit(types.UPDATE_CURRENT_CATEGORY, category)
+  },
+  async updateNoteInfo ({ commit, state }, payload) {
+    const { currentCategory } = state
+    const { docGuid, kbGuid } = payload
+    await api.KnowledgeBaseApi.updateNoteInfo({ kbGuid, docGuid, data: payload })
+    this.dispatch('server/getCategoryNotes', { category: currentCategory, kbGuid: kbGuid })
   }
 }

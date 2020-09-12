@@ -1,10 +1,10 @@
 <template>
   <q-layout view="hHh Lpr lff">
-    <q-header class="text-white header bg-transparent shadow-3">
-      <Header/>
+    <q-header class="text-white header bg-transparent">
+      <Header />
     </q-header>
     <q-page-container>
-      <router-view/>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
@@ -49,9 +49,10 @@ export default {
 }
 </script>
 <style scoped>
-  .header{
-    height: 6.5vh;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-  }
+.header {
+  height: 6.5vh;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  background: none !important;
+}
 </style>

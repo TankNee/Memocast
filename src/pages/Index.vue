@@ -1,10 +1,9 @@
 <template>
   <q-page class="flex">
-    <q-splitter v-model="splitterModel" :limits="[270, 600]" class="full-width" unit="px">
+    <q-splitter v-model="splitterModel" :limits="[270, 600]" class="full-width" unit="px" separator-class="bg-transparent">
       <template v-slot:before>
         <NoteList :data="currentNotes" />
       </template>
-
       <template v-slot:after>
         <Vditor class="exclude-header overflow-hidden" />
       </template>
@@ -25,7 +24,7 @@ export default {
   },
   data () {
     return {
-      splitterModel: 280
+      splitterModel: 300
     }
   }
 }

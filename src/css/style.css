@@ -20,24 +20,32 @@
   /* border-radius: 10px; */
   background: transparent;
 }
-.exclude-header{
+.exclude-header {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   height: 93.5vh !important;
 }
-body{
+body {
   margin: 0;
   overflow: hidden;
 }
-tooltip{
+body.body {
+  background: #ffffff !important;
+}
+body.body--dark {
+  background: #282828 !important;
+}
+tooltip {
   font-size: 17px;
 }
-
+.vditor-toolbar {
+  border: none !important;
+}
 
 /*Note Item CSS*/
 .note-item,
 .note-item-dark {
-  background-color: #fafafa;
+  background-color: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .note-item-dark {
@@ -50,28 +58,30 @@ tooltip{
   background-color: #212121;
 }
 .note-list {
-  background-color: #fafafa;
+  background-color: #ffffff;
 }
 .note-list-dark {
   background-color: #282828;
 }
 /*Note List CSS*/
-.note-card,.note-card-dark {
+.note-card,
+.note-card-dark {
   width: 100%;
   padding: 19px;
-  border-bottom: 1px solid #E6E6E6;
   border-radius: 0px;
 }
-.note-card-dark{
+.note-card-dark {
   border-bottom: 1px solid #262626;
 }
-.note-item-title,.note-item-title-dark {
+.note-item-title,
+.note-item-title-dark {
   color: #343a40;
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 3px;
 }
-.note-item-summary,.note-item-summary-dark {
+.note-item-summary,
+.note-item-summary-dark {
   color: #acacac;
   font-size: 14px;
 }

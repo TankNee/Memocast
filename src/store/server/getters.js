@@ -8,11 +8,11 @@ export default {
   currentNotes: ({ currentNotes }, getters, rootState) => {
     if (_.isArray(currentNotes)) {
       return currentNotes.map((note) => {
-        let { title, abstractText, docGuid } = note
         if (rootState.client.markdownOnly) {
-          abstractText = helper.removeMarkdownTag(abstractText)
+          note.abstractText = helper.removeMarkdownTag(note.abstractText)
         }
-        return { title: title, summary: abstractText, docGuid: docGuid }
+        // return { title: title, summary: abstractText, docGuid: docGuid, info: note }
+        return note
       }).filter(note => {
         if (rootState.client.markdownOnly) {
           return _.endsWith(note.title, '.md')

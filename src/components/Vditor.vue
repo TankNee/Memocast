@@ -7,7 +7,7 @@
 
 <script>
 import Vditor from 'vditor'
-import 'vditor/dist/index.css'
+import 'src/css/vditor.css'
 import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from '../utils/debugLogger'
