@@ -9,14 +9,18 @@ function isNullOrEmpty (obj) {
   return _.isNull(obj) || _.isEmpty(obj)
 }
 function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
-  html = html2markdown(html, {
-    imgBaseUrl: `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/`,
-    resources: resources,
-    imageUrlInLine: true
-  })
-  html = he.decode(html)
-  html = removeDeprecatedTags(html)
-  return html
+  try {
+    html = html2markdown(html, {
+      imgBaseUrl: `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/`,
+      resources: resources,
+      imageUrlInLine: true
+    })
+    html = he.decode(html)
+    html = removeDeprecatedTags(html)
+    return html
+  } catch (e) {
+    return html
+  }
 }
 
 /**
@@ -32,6 +36,10 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
     html = html.replace(`index_files/${resource.name}`, resource.url)
   })
   return wizMarkdownParser.extract(html, { convertImgTag: true })
+}
+
+function embedMDNote (markdown) {
+  return wizMarkdownParser.embed(markdown)
 }
 
 /**
@@ -56,6 +64,7 @@ function removeDeprecatedTags (html) {
  * @param {string} markdown
  */
 function removeMarkdownTag (markdown) {
+  markdown = markdown || ''
   const patterns = [
     /#/g,
     /!?\[.*\]\(.*\)/g,
@@ -71,8 +80,9 @@ function removeMarkdownTag (markdown) {
  * generate categories tree
  * @param {string[] | string[][]} categories
  */
-function generateCategoryNodeTree (categories = []) {
+function generateCategoryNodeTree (categories) {
   const result = []
+  categories = categories || []
   categories = categories.map(category => {
     return _.isString(category) ? category.split('/').filter(c => !isNullOrEmpty(c)) : category
   })
@@ -110,5 +120,6 @@ export default {
   convertHtml2Markdown,
   extractMarkdownFromMDNote,
   generateCategoryNodeTree,
-  removeMarkdownTag
+  removeMarkdownTag,
+  embedMDNote
 }

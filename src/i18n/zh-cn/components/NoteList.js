@@ -1,4 +1,7 @@
 export default {
-  addNote: '添加笔记',
-  addFolder: '添加文件夹'
+  createNote: '创建笔记',
+  createCategory: '创建文件夹',
+  noteTitle: '笔记标题',
+  categoryName: '文件夹名',
+  deleteCategory: '删除此文件夹'
 }

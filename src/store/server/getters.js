@@ -6,12 +6,12 @@ export default {
     return userGuid ? `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${userGuid}` : null
   },
   currentNotes: ({ currentNotes }, getters, rootState) => {
-    if (_.isArray(currentNotes)) {
-      return currentNotes.map((note) => {
+    const _currentNotes = _.cloneDeep(currentNotes)
+    if (_.isArray(_currentNotes)) {
+      return _currentNotes.map((note) => {
         if (rootState.client.markdownOnly) {
           note.abstractText = helper.removeMarkdownTag(note.abstractText)
         }
-        // return { title: title, summary: abstractText, docGuid: docGuid, info: note }
         return note
       }).filter(note => {
         if (rootState.client.markdownOnly) {
@@ -22,13 +22,14 @@ export default {
     }
     return []
   },
-  currentNote: ({ currentNote }) => (isHtml = false) => {
+  currentNote: ({ currentNote }) => {
     if (helper.isNullOrEmpty(currentNote) || Object.keys(currentNote).length === 0) return ''
+    const isHtml = !_.endsWith(currentNote.info.title, '.md')
 
     const { html, info: { docGuid, kbGuid }, resources } = currentNote
     let result = ''
     if (isHtml) {
-      result = currentNote.html
+      result = helper.convertHtml2Markdown(currentNote.html, kbGuid, docGuid, resources)
     } else {
       result = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
     }
@@ -37,7 +38,7 @@ export default {
   categories: ({ categories }) => {
     return helper.generateCategoryNodeTree(categories)
   },
-  activeNote: ({ currentNote }) => ({ title }) => {
-    return currentNote.info && currentNote.info.title === title
+  activeNote: ({ currentNote }) => ({ docGuid }) => {
+    return currentNote.info && currentNote.info.docGuid === docGuid
   }
 }

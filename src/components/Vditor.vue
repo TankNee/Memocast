@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="vditor" class="fit" v-show="!isCurrentNoteLoading && currentNote(false)"></div>
+    <div id="vditor" class="fit" v-show="!isCurrentNoteLoading"></div>
     <Loading :visible="isCurrentNoteLoading" />
   </div>
 </template>
@@ -11,7 +11,11 @@ import 'src/css/vditor.css'
 import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from '../utils/debugLogger'
-const { mapGetters: mapServerGetters, mapState: mapServerState } = createNamespacedHelpers('server')
+const {
+  mapGetters: mapServerGetters,
+  mapState: mapServerState,
+  mapActions: mapServerActions
+} = createNamespacedHelpers('server')
 const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'Vditor',
@@ -33,6 +37,7 @@ export default {
     }
   },
   mounted () {
+    const that = this
     this.contentEditor = new Vditor('vditor', {
       width: '100%',
       cache: {
@@ -48,11 +53,22 @@ export default {
       },
       toolbar: []
     })
+    document.onkeydown = function (e) {
+      // register ctrl+s key
+      const key = window.event.keyCode ? window.event.keyCode : window.event.which
+      const { ctrlKey } = e
+      if (ctrlKey && key === 83) {
+        that.updateNote(that.contentEditor.getValue())
+      }
+    }
+  },
+  methods: {
+    ...mapServerActions(['updateNote'])
   },
   watch: {
     currentNote: function (currentData) {
       try {
-        this.contentEditor.setValue(currentData(false))
+        this.contentEditor.setValue(currentData)
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
         debugLogger.Error(e.message)
