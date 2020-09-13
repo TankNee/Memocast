@@ -46,7 +46,7 @@ tooltip {
 .note-item,
 .note-item-dark {
   background-color: #ffffff;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, 黑体;
 }
 .note-item-dark {
   background-color: #282828;

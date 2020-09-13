@@ -60,5 +60,8 @@ export default {
   [types.UPDATE_CURRENT_NOTES_LOADING_STATE] (state, loadingState) {
     state.isCurrentNotesLoading = loadingState
     return state
+  },
+  [types.CLEAR_CURRENT_NOTE] (state) {
+    state.currentNote = {}
   }
 }

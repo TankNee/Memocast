@@ -1,7 +1,9 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
 import fileStorage from 'src/utils/fileStorage'
+import { Notify } from 'quasar'
 import helper from 'src/utils/helper'
+import { i18n } from 'boot/i18n'
 export default {
   /**
    * 从本地缓存中读取数据，初始化状态树
@@ -176,6 +178,11 @@ export default {
         html: helper.embedMDNote(markdown)
       }
     })
+    Notify.create({
+      color: 'primary',
+      message: i18n.t('saveNoteSuccessfully'),
+      icon: 'check'
+    })
     await this.dispatch('server/getCategoryNotes', { category })
   },
   /**
@@ -196,16 +203,17 @@ export default {
         kbGuid,
         title,
         owner: userId,
-        html: helper.embedMDNote('')
+        html: helper.embedMDNote(`# ${title}`)
       }
     })
-    this.dispatch('server/getCategoryNotes', {
+    await this.dispatch('server/getNoteContent', result)
+    await this.dispatch('server/getCategoryNotes', {
       category: currentCategory,
       kbGuid: kbGuid
     })
-    if (/\.md$/.test(title) && rootState.client.markdownOnly) {
-      commit(types.UPDATE_CURRENT_NOTE, result)
-    }
+    // if (/\.md$/.test(title) && rootState.client.markdownOnly) {
+    //   commit(types.UPDATE_CURRENT_NOTE, result)
+    // }
   },
   /**
    * 删除笔记
@@ -213,9 +221,18 @@ export default {
    * @param payload
    * @returns {Promise<void>}
    */
-  async deleteNote ({ commit }, payload) {
+  async deleteNote ({ commit, state }, payload) {
     const { kbGuid, docGuid, category } = payload
     await api.KnowledgeBaseApi.deleteNote({ kbGuid, docGuid })
+    Notify.create({
+      color: 'red-10',
+      message: i18n.t('deleteNoteSuccessfully'),
+      icon: 'delete'
+    })
+    const { currentNote } = state
+    if (currentNote && currentNote.info.docGuid === docGuid) {
+      commit(types.CLEAR_CURRENT_NOTE)
+    }
     this.dispatch('server/getCategoryNotes', {
       category: category,
       kbGuid: kbGuid
@@ -231,10 +248,18 @@ export default {
         child: childCategoryName
       }
     })
-    await this.dispatch('server/updateCurrentCategory', helper.isNullOrEmpty(currentCategory) ? `/${childCategoryName}/` : `${currentCategory}/${childCategoryName}/`)
+    await this.dispatch('server/getAllCategories')
+    await this.dispatch('server/updateCurrentCategory', helper.isNullOrEmpty(currentCategory) ? `/${childCategoryName}/` : `${currentCategory}${childCategoryName}/`)
   },
   async deleteCategory ({ commit, state }, category) {
     const { kbGuid } = state
     await api.KnowledgeBaseApi.deleteCategory({ kbGuid, data: { category } })
+    await this.dispatch('server/getAllCategories')
+    await this.dispatch('server/updateCurrentCategory', '')
+    Notify.create({
+      color: 'red-10',
+      message: i18n.t('deleteCategorySuccessfully'),
+      icon: 'delete'
+    })
   }
 }
