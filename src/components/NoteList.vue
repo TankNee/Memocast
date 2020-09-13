@@ -25,7 +25,7 @@
         </q-list>
       </q-scroll-area>
       <q-card
-        class="absolute-bottom full-width no-shadow no-padding no-border-radius note-list-bottom text-center"
+        class="absolute-bottom bg-transparent full-width no-shadow no-padding no-border-radius note-list-bottom text-center"
         v-ripple
       >
         <span>{{category}}</span>
@@ -190,5 +190,8 @@ export default {
   padding: 4px !important;
   color: #9B9B9B;
   user-select: none;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, 黑体;
 }
 </style>
