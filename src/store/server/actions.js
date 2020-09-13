@@ -1,17 +1,18 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
 import fileStorage from 'src/utils/fileStorage'
+import helper from 'src/utils/helper'
 export default {
+  /**
+   * 从本地缓存中读取数据，初始化状态树
+   * @param commit
+   * @param state
+   */
   initServerStore ({ commit, state }) {
     const localStore = fileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
     fileStorage.removeItemFromLocalStorage('token')
-    const [
-      autoLogin,
-      userId,
-      password,
-      url
-    ] = fileStorage.getItemsFromStore([
+    const [autoLogin, userId, password, url] = fileStorage.getItemsFromStore([
       'autoLogin',
       'userId',
       'password',
@@ -21,6 +22,13 @@ export default {
       this.dispatch('server/login', { userId, password, url })
     }
   },
+  /**
+   * 用户登录接口
+   * @param commit
+   * @param rootState
+   * @param payload
+   * @returns {Promise<*>}
+   */
   async login ({ commit, rootState }, payload) {
     const { url } = payload
     api.AccountServerApi.setBaseUrl(url)
@@ -35,13 +43,19 @@ export default {
       }
       fileStorage.setItemsInStore({ userId, url })
     }
-    if (!rootState.client.enableSelfHostServer && fileStorage.isKeyExistInStore('url')) {
+    if (
+      !rootState.client.enableSelfHostServer &&
+      fileStorage.isKeyExistInStore('url')
+    ) {
       fileStorage.removeItemFromStore('url')
     }
 
     commit(types.LOGIN, { ...result, isLogin: true })
 
-    this.dispatch('server/getCategoryNotes', { category: '', kbGuid: result.kbGuid })
+    this.dispatch('server/getCategoryNotes', {
+      category: '',
+      kbGuid: result.kbGuid
+    })
     this.dispatch('server/getAllCategories')
 
     return result
@@ -50,6 +64,13 @@ export default {
     await api.AccountServerApi.Logout()
     commit(types.LOGOUT)
   },
+  /**
+   * 获取指定文件夹下的笔记
+   * @param commit
+   * @param state
+   * @param payload
+   * @returns {Promise<void>}
+   */
   async getCategoryNotes ({ commit, state }, payload) {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
@@ -66,6 +87,12 @@ export default {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
+  /**
+   * 获取所有的笔记
+   * @param commit
+   * @param state
+   * @returns {Promise<void>}
+   */
   async getAllCategories ({ commit, state }) {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
@@ -73,6 +100,13 @@ export default {
     commit(types.UPDATE_ALL_CATEGORIES, result)
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
   },
+  /**
+   * 获取笔记内容
+   * @param commit
+   * @param state
+   * @param payload
+   * @returns {Promise<void>}
+   */
   async getNoteContent ({ commit, state }, payload) {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
     const { kbGuid } = state
@@ -90,14 +124,94 @@ export default {
     commit(types.UPDATE_CURRENT_NOTE, result)
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
   },
+  /**
+   * 设置当前显示的笔记文件夹，并在显示之前从网络刷新文件夹的内容
+   * @param commit
+   * @param category
+   * @returns {Promise<void>}
+   */
   async updateCurrentCategory ({ commit }, category) {
     await this.dispatch('server/getCategoryNotes', { category })
     commit(types.UPDATE_CURRENT_CATEGORY, category)
   },
+  /**
+   * 更新笔记信息，例如笔记title等
+   * @param commit
+   * @param state
+   * @param payload
+   * @returns {Promise<void>}
+   */
   async updateNoteInfo ({ commit, state }, payload) {
     const { currentCategory } = state
     const { docGuid, kbGuid } = payload
-    await api.KnowledgeBaseApi.updateNoteInfo({ kbGuid, docGuid, data: payload })
-    this.dispatch('server/getCategoryNotes', { category: currentCategory, kbGuid: kbGuid })
+    await api.KnowledgeBaseApi.updateNoteInfo({
+      kbGuid,
+      docGuid,
+      data: payload
+    })
+    this.dispatch('server/getCategoryNotes', {
+      category: currentCategory,
+      kbGuid: kbGuid
+    })
+  },
+  async updateNote ({ commit, state }, markdown) {
+    const { kbGuid, docGuid, category, title } = state.currentNote.info
+    const { resources } = state.currentNote
+    await api.KnowledgeBaseApi.updateNote({
+      kbGuid,
+      docGuid,
+      data: {
+        title,
+        kbGuid,
+        docGuid,
+        category,
+        resources,
+        html: helper.embedMDNote(markdown)
+      }
+    })
+    await this.dispatch('server/getCategoryNotes', { category })
+  },
+  /**
+   * 创建笔记
+   * @param commit
+   * @param state
+   * @param rootState
+   * @param title
+   * @returns {Promise<void>}
+   */
+  async createNote ({ commit, state, rootState }, title) {
+    const { kbGuid, currentCategory } = state
+    const userId = fileStorage.getItemFromStore('userId')
+    const result = await api.KnowledgeBaseApi.createNote({
+      kbGuid,
+      data: {
+        category: currentCategory,
+        kbGuid,
+        title,
+        owner: userId,
+        html: helper.embedMDNote('')
+      }
+    })
+    this.dispatch('server/getCategoryNotes', {
+      category: currentCategory,
+      kbGuid: kbGuid
+    })
+    if (/\.md$/.test(title) && rootState.client.markdownOnly) {
+      commit(types.UPDATE_CURRENT_NOTE, result)
+    }
+  },
+  /**
+   * 删除笔记
+   * @param commit
+   * @param payload
+   * @returns {Promise<void>}
+   */
+  async deleteNote ({ commit }, payload) {
+    const { kbGuid, docGuid, category } = payload
+    await api.KnowledgeBaseApi.deleteNote({ kbGuid, docGuid })
+    this.dispatch('server/getCategoryNotes', {
+      category: category,
+      kbGuid: kbGuid
+    })
   }
 }

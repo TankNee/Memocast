@@ -12,7 +12,7 @@
     <div :class="`note-item-summary${darkMode ? '-dark' : ''}`">
       {{ summary }}
     </div>
-    <NoteItemContextMenu :rename="handleRename"/>
+    <NoteItemContextMenu :rename="handleRename" :del="handleDelete"/>
   </q-card>
 </template>
 
@@ -62,18 +62,29 @@ export default {
       this.$q.dialog({
         title: this.$t('renameNote'),
         prompt: {
-          model: this.title.substring(0, this.title.length - 3),
-          type: 'text'
+          model: this.title,
+          type: 'text',
+          attrs: {
+            spellcheck: false
+          }
         },
         cancel: true
       }).onOk(data => {
         const info = JSON.parse(JSON.stringify(this.data))
-        info.title = `${data}.md`
+        info.title = data
         info.infoModified = new Date().getTime()
         this.updateNoteInfo(info)
       })
     },
-    ...mapActions(['getNoteContent', 'updateNoteInfo'])
+    handleDelete: function () {
+      this.$q.dialog({
+        title: this.$t('deleteNote'),
+        cancel: true
+      }).onOk(data => {
+        this.deleteNote(this.data)
+      })
+    },
+    ...mapActions(['getNoteContent', 'updateNoteInfo', 'deleteNote'])
   }
 }
 </script>

@@ -69,6 +69,7 @@ tooltip {
   width: 100%;
   padding: 19px;
   border-radius: 0px;
+  user-select: none;
 }
 .note-card-dark {
   border-bottom: 1px solid #262626;

@@ -3,5 +3,7 @@ export default {
   copyTo: 'Copy To',
   moveTo: 'Move To',
   share: 'Share',
-  delete: 'Delete'
+  delete: 'Delete',
+  renameNote: 'Rename Note',
+  deleteNote: 'Delete Note'
 }
