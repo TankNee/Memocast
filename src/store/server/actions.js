@@ -154,6 +154,13 @@ export default {
       kbGuid: kbGuid
     })
   },
+  /**
+   * 更新笔记内容
+   * @param commit
+   * @param state
+   * @param markdown
+   * @returns {Promise<void>}
+   */
   async updateNote ({ commit, state }, markdown) {
     const { kbGuid, docGuid, category, title } = state.currentNote.info
     const { resources } = state.currentNote
@@ -213,5 +220,21 @@ export default {
       category: category,
       kbGuid: kbGuid
     })
+  },
+  async createCategory ({ commit, state }, childCategoryName) {
+    const { kbGuid, currentCategory } = state
+    await api.KnowledgeBaseApi.createCategory({
+      kbGuid,
+      data: {
+        parent: helper.isNullOrEmpty(currentCategory) ? '/' : currentCategory,
+        pos: Math.floor(Date.now() / 1000).toFixed(0),
+        child: childCategoryName
+      }
+    })
+    await this.dispatch('server/updateCurrentCategory', helper.isNullOrEmpty(currentCategory) ? `/${childCategoryName}/` : `${currentCategory}/${childCategoryName}/`)
+  },
+  async deleteCategory ({ commit, state }, category) {
+    const { kbGuid } = state
+    await api.KnowledgeBaseApi.deleteCategory({ kbGuid, data: { category } })
   }
 }
