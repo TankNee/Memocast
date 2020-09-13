@@ -1,14 +1,14 @@
 {
   "name": "neeto.vue.elctron",
   "version": "0.0.2",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "An Awesome WizNote Desktop Application",
+  "productName": "Neeto-Vue",
   "author": "tanknee <nee@tanknee.cn>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "dev": "quasar dev -m electron -t mat",
-    "build-win": "quasar build -m electron"
+    "build": "quasar build -m electron"
   },
   "dependencies": {
     "@altairwei/wiz-markdown": "^1.0.9",
