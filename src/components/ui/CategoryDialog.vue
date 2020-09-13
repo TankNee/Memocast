@@ -24,6 +24,7 @@
           accordion
           :selected="currentCategory"
           @update:selected="v => updateCurrentCategory(v)"
+          v-close-popup
         />
       </q-card-section>
       <Loading :visible="isLoading" />

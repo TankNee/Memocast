@@ -69,6 +69,7 @@ export default {
     currentNote: function (currentData) {
       try {
         this.contentEditor.setValue(currentData)
+        this.contentEditor.focus()
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
         debugLogger.Error(e.message)

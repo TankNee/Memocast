@@ -24,6 +24,12 @@
           </q-item>
         </q-list>
       </q-scroll-area>
+      <q-card
+        class="absolute-bottom full-width no-shadow no-padding no-border-radius note-list-bottom text-center"
+        v-ripple
+      >
+        <span>{{category}}</span>
+      </q-card>
       <q-fab
         color="secondary"
         push
@@ -32,13 +38,18 @@
         flat
         class="absolute-bottom-right fab-btn"
       >
-        <q-fab-action color="red-7" v-if="showDeleteCategoryFab" icon="delete_forever" @click="handleDeleteCategory">
+        <q-fab-action
+          color="red-7"
+          v-if="showDeleteCategoryFab"
+          icon="delete_forever"
+          @click="handleDeleteCategory"
+        >
           <q-tooltip
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
             content-class="bg-red-10 text-white shadow-4"
-          >{{ $t('deleteCategory') }}</q-tooltip
+            >{{ $t('deleteCategory') }}</q-tooltip
           >
         </q-fab-action>
         <q-fab-action color="primary" icon="note_add" @click="handleAddNote">
@@ -50,7 +61,11 @@
             >{{ $t('createNote') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action color="primary" icon="create_new_folder" @click="handleAddCategory">
+        <q-fab-action
+          color="primary"
+          icon="create_new_folder"
+          @click="handleAddCategory"
+        >
           <q-tooltip
             anchor="center right"
             self="center left"
@@ -93,6 +108,15 @@ export default {
     },
     showDeleteCategoryFab: function () {
       return !helper.isNullOrEmpty(this.currentCategory)
+    },
+    category: function () {
+      if (helper.isNullOrEmpty(this.currentCategory)) return ''
+      try {
+        const categoryList = this.currentCategory.split('/')
+        return categoryList[categoryList.length - 2]
+      } catch (e) {
+        return ''
+      }
     },
     ...mapGetters(['activeNote']),
     ...mapState(['isCurrentNotesLoading', 'currentCategory'])
@@ -147,7 +171,12 @@ export default {
       await this.getCategoryNotes({ category: this.currentCategory })
       done()
     },
-    ...mapActions(['createNote', 'createCategory', 'deleteCategory', 'getCategoryNotes'])
+    ...mapActions([
+      'createNote',
+      'createCategory',
+      'deleteCategory',
+      'getCategoryNotes'
+    ])
   }
 }
 </script>
@@ -155,5 +184,11 @@ export default {
 <style scoped>
 .fab-btn {
   margin: 10px;
+}
+.note-list-bottom {
+  max-height: 4.5vh;
+  padding: 4px !important;
+  color: #9B9B9B;
+  user-select: none;
 }
 </style>
