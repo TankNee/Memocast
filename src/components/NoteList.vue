@@ -11,7 +11,7 @@
         <q-list>
           <q-item
             clickable
-            v-ripple
+            v-ripple="{ color: '#212121' }"
             v-for="(noteField, index) in data"
             :key="index"
             :class="`note-item${$q.dark.isActive ? '-dark' : ''} no-padding`"
