@@ -51,11 +51,12 @@ tooltip {
 .note-item-dark {
   background-color: #282828;
 }
-.active-note-item {
+.active-note-item, .active-note-item-dark {
+  color: #212121;
   background-color: #e4e4e4;
 }
 .active-note-item-dark {
-  background-color: #212121;
+  background-color: #393939;
 }
 .note-list {
   background-color: #ffffff;

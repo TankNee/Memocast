@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="vditor" class="fit" v-show="!isCurrentNoteLoading"></div>
+    <div id="vditor" class="fit" v-show="!isCurrentNoteLoading && dataLoaded"></div>
     <Loading :visible="isCurrentNoteLoading" />
   </div>
 </template>
@@ -11,6 +11,7 @@ import 'src/css/vditor.css'
 import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from '../utils/debugLogger'
+import helper from '../utils/helper'
 const {
   mapGetters: mapServerGetters,
   mapState: mapServerState,
@@ -27,6 +28,9 @@ export default {
     }
   },
   computed: {
+    dataLoaded: function () {
+      return !helper.isNullOrEmpty(this.currentNote)
+    },
     ...mapServerGetters(['currentNote']),
     ...mapServerState(['isCurrentNoteLoading']),
     ...mapClientState(['darkMode'])
@@ -55,10 +59,29 @@ export default {
     })
     document.onkeydown = function (e) {
       // register ctrl+s key
-      const key = window.event.keyCode ? window.event.keyCode : window.event.which
+      const key = window.event.keyCode
+        ? window.event.keyCode
+        : window.event.which
       const { ctrlKey } = e
-      if (ctrlKey && key === 83) {
-        that.updateNote(that.contentEditor.getValue())
+      if (ctrlKey) {
+        switch (key) {
+          case 87:
+            that.contentEditor.updateValue(
+              '\n```\n' + `${that.contentEditor.getSelection()}` + '\n```\n'
+            )
+            break
+          case 83:
+            that.updateNote(that.contentEditor.getValue())
+            break
+          case 66:
+            that.contentEditor.updateValue(
+              `**${that.contentEditor.getSelection()}**`
+            )
+            break
+          default:
+            break
+        }
+        console.log(key)
       }
     }
   },
@@ -69,16 +92,19 @@ export default {
     currentNote: function (currentData) {
       try {
         this.contentEditor.setValue(currentData)
+        this.contentEditor.clearStack()
         this.contentEditor.focus()
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
         debugLogger.Error(e.message)
       }
+      this.contentEditor.enable()
     },
     darkMode: function (darkMode) {
       this.contentEditor.setTheme(
         darkMode ? 'dark' : 'classic',
-        darkMode ? 'dark' : 'light'
+        darkMode ? 'dark' : 'light',
+        darkMode ? 'dracula' : 'friendly'
       )
     }
   }

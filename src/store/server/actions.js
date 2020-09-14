@@ -183,7 +183,7 @@ export default {
       message: i18n.t('saveNoteSuccessfully'),
       icon: 'check'
     })
-    await this.dispatch('server/getCategoryNotes', { category })
+    await this.dispatch('server/getCategoryNotes', { category: state.currentCategory })
   },
   /**
    * 创建笔记

@@ -1,6 +1,19 @@
 <template>
   <q-bar dark class="q-electron-drag header text-grey">
     <q-avatar
+      size="36px"
+      class="cursor-pointer q-electron-drag--exception"
+      v-ripple
+      @click="$refs.categoryDrawer.toggle()"
+    >
+      <q-icon name="account_tree" color="#16A2B8" />
+      <q-tooltip
+        :offset="[20, 10]"
+        content-class="bg-accent text-white shadow-4"
+      >{{ $t('noteCategory') }}
+      </q-tooltip>
+    </q-avatar>
+    <q-avatar
       size="26px"
       class="cursor-pointer q-electron-drag--exception "
       @click="handleLogin"
@@ -47,19 +60,6 @@
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
-    <q-avatar
-      size="36px"
-      class="cursor-pointer q-electron-drag--exception"
-      v-ripple
-      @click="$refs.categoryDialog.toggle()"
-    >
-      <q-icon name="account_tree" color="#16A2B8" />
-      <q-tooltip
-        :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4"
-        >{{ $t('noteCategory') }}
-      </q-tooltip>
-    </q-avatar>
     <q-space />
     <q-avatar
       size="36px"
@@ -78,7 +78,7 @@
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
     <SearchDialog ref="searchDialog" />
-    <CategoryDialog ref="categoryDialog" />
+    <CategoryDrawer ref="categoryDrawer" />
   </q-bar>
 </template>
 
@@ -87,7 +87,7 @@ import LoginDialog from './ui/LoginDialog'
 
 import SettingsDialog from './ui/SettingsDialog'
 import SearchDialog from './ui/SearchDialog'
-import CategoryDialog from './ui/CategoryDialog'
+import CategoryDrawer from './ui/CategoryDrawer'
 import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers('server')
 const isElectron = process.env.MODE === 'electron'
@@ -100,7 +100,7 @@ export default {
       return this.$q.dark.isActive
     }
   },
-  components: { CategoryDialog, SearchDialog, SettingsDialog, LoginDialog },
+  components: { CategoryDrawer, SearchDialog, SettingsDialog, LoginDialog },
   data () {
     return {
       searchText: ''
