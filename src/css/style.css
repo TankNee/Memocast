@@ -93,3 +93,7 @@ tooltip {
 .note-item-summary-dark {
   color: #919191;
 }
+/*fab button*/
+.fab-btn {
+  margin: 10px;
+}

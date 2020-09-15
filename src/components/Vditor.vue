@@ -53,6 +53,9 @@ export default {
       preview: {
         theme: {
           current: this.$q.dark.isActive ? 'dark' : 'light'
+        },
+        hljs: {
+          style: this.$q.dark.isActive ? 'dracula' : 'friendly'
         }
       },
       toolbar: []

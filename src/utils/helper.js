@@ -38,8 +38,14 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
   return wizMarkdownParser.extract(html, { convertImgTag: true })
 }
 
-function embedMDNote (markdown) {
-  return wizMarkdownParser.embed(markdown)
+/**
+ * embed markdown source string to html string
+ * @param markdown
+ * @param options
+ * @returns {string}
+ */
+function embedMDNote (markdown, options) {
+  return wizMarkdownParser.embed(markdown, options)
 }
 
 /**

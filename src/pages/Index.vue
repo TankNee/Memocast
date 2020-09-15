@@ -8,16 +8,20 @@
       separator-class="bg-transparent"
     >
       <template v-slot:before>
-        <NoteList :data="currentNotes" />
+        <NoteList />
       </template>
       <template v-slot:after>
-        <q-scroll-area
-          :thumb-style="thumbStyle"
-          :bar-style="barStyle"
-          class="exclude-header overflow-hidden"
-        >
-          <Vditor />
-        </q-scroll-area>
+        <div>
+          <q-scroll-area
+            :thumb-style="thumbStyle"
+            :bar-style="barStyle"
+            class="exclude-header overflow-hidden"
+          >
+            <Vditor />
+          </q-scroll-area>
+<!--          <q-icon name="cached" class="absolute-bottom-right fab-btn cursor-pointer material-icons-round" v-touch-swipe size="lg" color="#26A69A" v-ripple/>-->
+        </div>
+
       </template>
     </q-splitter>
   </q-page>
@@ -26,8 +30,7 @@
 <script>
 import Vditor from '../components/Vditor'
 import NoteList from '../components/NoteList'
-import { createNamespacedHelpers } from 'vuex'
-const { mapGetters } = createNamespacedHelpers('server')
+// import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
   components: { Vditor, NoteList },
@@ -44,8 +47,7 @@ export default {
       return {
         width: '7px'
       }
-    },
-    ...mapGetters(['currentNotes'])
+    }
   },
   data () {
     return {

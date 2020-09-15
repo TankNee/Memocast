@@ -9,7 +9,7 @@ export default {
     const _currentNotes = _.cloneDeep(currentNotes)
     if (_.isArray(_currentNotes)) {
       return _currentNotes.map((note) => {
-        if (rootState.client.markdownOnly) {
+        if (_.endsWith(note.title, '.md')) {
           note.abstractText = helper.removeMarkdownTag(note.abstractText)
         }
         return note
