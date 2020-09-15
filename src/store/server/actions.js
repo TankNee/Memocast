@@ -55,8 +55,7 @@ export default {
     commit(types.LOGIN, { ...result, isLogin: true })
 
     this.dispatch('server/getCategoryNotes', {
-      category: '',
-      kbGuid: result.kbGuid
+      category: ''
     })
     this.dispatch('server/getAllCategories')
 
@@ -152,8 +151,7 @@ export default {
       data: payload
     })
     this.dispatch('server/getCategoryNotes', {
-      category: currentCategory,
-      kbGuid: kbGuid
+      category: currentCategory
     })
   },
   /**
@@ -166,6 +164,7 @@ export default {
   async updateNote ({ commit, state }, markdown) {
     const { kbGuid, docGuid, category, title } = state.currentNote.info
     const { resources } = state.currentNote
+    const isLite = category.replace(/\//g, '') === 'Lite'
     await api.KnowledgeBaseApi.updateNote({
       kbGuid,
       docGuid,
@@ -175,7 +174,8 @@ export default {
         docGuid,
         category,
         resources,
-        html: helper.embedMDNote(markdown)
+        html: helper.embedMDNote(markdown, { wrapWithPreTag: isLite }),
+        type: isLite ? 'lite/markdown' : 'document'
       }
     })
     Notify.create({
@@ -196,6 +196,7 @@ export default {
   async createNote ({ commit, state, rootState }, title) {
     const { kbGuid, currentCategory } = state
     const userId = fileStorage.getItemFromStore('userId')
+    const isLite = currentCategory.replace(/\//g, '') === 'Lite'
     const result = await api.KnowledgeBaseApi.createNote({
       kbGuid,
       data: {
@@ -203,13 +204,13 @@ export default {
         kbGuid,
         title,
         owner: userId,
-        html: helper.embedMDNote(`# ${title}`)
+        html: helper.embedMDNote(`# ${title}`, { wrapWithPreTag: isLite }),
+        type: isLite ? 'lite/markdown' : 'document'
       }
     })
     await this.dispatch('server/getNoteContent', result)
     await this.dispatch('server/getCategoryNotes', {
-      category: currentCategory,
-      kbGuid: kbGuid
+      category: currentCategory
     })
     // if (/\.md$/.test(title) && rootState.client.markdownOnly) {
     //   commit(types.UPDATE_CURRENT_NOTE, result)
@@ -222,20 +223,19 @@ export default {
    * @returns {Promise<void>}
    */
   async deleteNote ({ commit, state }, payload) {
-    const { kbGuid, docGuid, category } = payload
+    const { kbGuid, docGuid } = payload
     await api.KnowledgeBaseApi.deleteNote({ kbGuid, docGuid })
+    const { currentNote, currentCategory } = state
+    if (currentNote && currentNote.info.docGuid === docGuid) {
+      commit(types.CLEAR_CURRENT_NOTE)
+    }
+    await this.dispatch('server/getCategoryNotes', {
+      category: currentCategory
+    })
     Notify.create({
       color: 'red-10',
       message: i18n.t('deleteNoteSuccessfully'),
       icon: 'delete'
-    })
-    const { currentNote } = state
-    if (currentNote && currentNote.info.docGuid === docGuid) {
-      commit(types.CLEAR_CURRENT_NOTE)
-    }
-    this.dispatch('server/getCategoryNotes', {
-      category: category,
-      kbGuid: kbGuid
     })
   },
   async createCategory ({ commit, state }, childCategoryName) {

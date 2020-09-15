@@ -12,7 +12,7 @@
           <q-item
             clickable
             v-ripple="{ color: '#212121' }"
-            v-for="(noteField, index) in data"
+            v-for="(noteField, index) in currentNotes"
             :key="index"
             :class="`note-item${$q.dark.isActive ? '-dark' : ''} no-padding`"
             :active="activeNote(noteField)"
@@ -89,9 +89,6 @@ const { mapGetters, mapState, mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'NoteList',
   components: { Loading, NoteItem },
-  props: {
-    data: Array
-  },
   computed: {
     thumbStyle () {
       return {
@@ -118,7 +115,7 @@ export default {
         return ''
       }
     },
-    ...mapGetters(['activeNote']),
+    ...mapGetters(['activeNote', 'currentNotes']),
     ...mapState(['isCurrentNotesLoading', 'currentCategory'])
   },
   methods: {
@@ -182,9 +179,6 @@ export default {
 </script>
 
 <style scoped>
-.fab-btn {
-  margin: 10px;
-}
 .note-list-bottom {
   max-height: 4.5vh;
   padding: 4px !important;
