@@ -77,6 +77,20 @@
               <q-tab-panel name="editor">
                 <div class="text-h4 q-mb-md">{{ $t('editor') }}</div>
                 <q-separator />
+                <div>
+                  <div class="text-h6 q-mb-md setting-item">
+                    <span>{{ $t('imageUploadService') }}</span>
+                    <q-select
+                      :value="$t(imageUploadService)"
+                      :options="imageUploadServiceOptions"
+                      @input="imageUploadServiceChangeHandler"
+                    >
+                      <template v-slot:after>
+                        <q-btn v-if="imageUploadService === 'customWebUploadService'" round dense flat icon="settings" @click="$refs.imageUploadServiceDialog.toggle()" />
+                      </template>
+                    </q-select>
+                  </div>
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="server">
@@ -100,24 +114,37 @@
         </q-splitter>
       </q-card-section>
     </q-card>
+    <ImageUploadServiceDialog ref="imageUploadServiceDialog"/>
   </q-dialog>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import ImageUploadServiceDialog from './ImageUploadServiceDialog'
 import { i18n } from '../../boot/i18n'
 const { mapState, mapActions } = createNamespacedHelpers('client')
 
 export default {
   name: 'SettingsDialog',
+  components: { ImageUploadServiceDialog },
   data () {
     return {
       tab: 'general',
-      splitterModel: 20
+      splitterModel: 20,
+      imageUploadServiceOptions: [
+        this.$t('wizOfficialImageUploadService'),
+        this.$t('customWebUploadService'),
+        this.$t('smmsImageUploadService')
+      ],
+      imageUploadServiceOptionsPlain: [
+        'wizOfficialImageUploadService',
+        'customWebUploadService',
+        'smmsImageUploadService'
+      ]
     }
   },
   computed: {
-    ...mapState(['language', 'darkMode', 'markdownOnly']),
+    ...mapState(['language', 'darkMode', 'markdownOnly', 'imageUploadService']),
     languageOptions: function () {
       return i18n.availableLocales.map(l => i18n.t(l))
     }
@@ -130,10 +157,20 @@ export default {
       lan = i18n.availableLocales.find(l => {
         return i18n.t(l) === lan
       })
-      this.setLanguage(lan)
+      this.updateStateAndStore({ language: lan })
       i18n.locale = lan
     },
-    ...mapActions(['setLanguage', 'toggleDarkMode', 'toggleChanged'])
+    imageUploadServiceChangeHandler: function (service) {
+      const servicePlain = this.imageUploadServiceOptionsPlain.find(
+        i => this.$t(i) === service
+      )
+      this.updateStateAndStore({ imageUploadService: servicePlain })
+    },
+    ...mapActions([
+      'toggleDarkMode',
+      'toggleChanged',
+      'updateStateAndStore'
+    ])
   }
 }
 </script>

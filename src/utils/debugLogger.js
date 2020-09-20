@@ -1,16 +1,16 @@
 import consola from 'consola'
 
-function Log (payload) {
-  consola.log(payload)
+function Log () {
+  consola.log(...arguments)
 }
-function Error (payload) {
-  consola.error(payload)
+function Error () {
+  consola.error(...arguments)
 }
-function Info (payload) {
-  consola.info(payload)
+function Info () {
+  consola.info(...arguments)
 }
-function Debug (payload) {
-  consola.warn(payload)
+function Debug () {
+  consola.warn(...arguments)
 }
 export default {
   Log,

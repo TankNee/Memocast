@@ -5,6 +5,13 @@ export default function () {
     rememberPassword: true,
     darkMode: false,
     markdownOnly: true,
-    enableSelfHostServer: false
+    enableSelfHostServer: false,
+    imageUploadService: 'customWebUploadService',
+    imageUploadServiceParam: {},
+    apiServerUrl: '',
+    postParam: '',
+    jsonPath: '',
+    customHeader: '',
+    customBody: ''
   }
 }

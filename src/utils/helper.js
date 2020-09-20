@@ -35,7 +35,7 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
   resources.forEach(resource => {
     html = html.replace(`index_files/${resource.name}`, resource.url)
   })
-  return wizMarkdownParser.extract(html, { convertImgTag: true })
+  return wizMarkdownParser.extract(html, { convertImgTag: true, normalizeWhitespace: true })
 }
 
 /**

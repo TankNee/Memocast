@@ -1,6 +1,6 @@
 <template>
-  <q-dialog ref="dialog" @before-hide="beforeHideHandler" class="login-dialog">
-    <q-card class="q-dialog login-dialog">
+  <q-dialog ref="dialog" @before-hide="beforeHideHandler" class="base-dialog">
+    <q-card class="q-dialog base-dialog">
       <q-toolbar>
         <q-toolbar-title
           ><span class="text-weight-bold">{{
@@ -147,10 +147,6 @@ export default {
 </script>
 
 <style scoped>
-.login-dialog {
-  width: 500px !important;
-  max-width: 50vw;
-}
 .login-toggle {
   margin-left: 10px;
 }

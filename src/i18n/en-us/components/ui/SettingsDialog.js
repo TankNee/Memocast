@@ -6,5 +6,9 @@ export default {
   'en-us': 'English (US)',
   'zh-cn': 'Chinese (Simplified)',
   darkMode: 'Dark Mode',
-  markdownOnly: 'Only Show Markdown Note'
+  markdownOnly: 'Only Show Markdown Note',
+  imageUploadService: 'Image Upload Service',
+  wizOfficialImageUploadService: 'WizNote Official Image Upload Service',
+  customWebUploadService: 'Custom Web Image Upload Service',
+  smmsImageUploadService: 'SMMS Image Upload Service'
 }

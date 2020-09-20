@@ -44,7 +44,7 @@ class FileStorage {
       debugLogger.Error(i18n.t('updateSettingsWithNullObject'))
       return
     }
-    Object.keys(settings).forEach(key => {
+    Object.keys(settings).map(key => {
       if (helper.isNullOrEmpty(settings[key])) return null
       this.setItemInStore(key, settings[key])
     })

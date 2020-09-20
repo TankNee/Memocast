@@ -97,3 +97,9 @@ tooltip {
 .fab-btn {
   margin: 10px;
 }
+
+/*base dialog*/
+.base-dialog {
+  width: 500px !important;
+  max-width: 50vw;
+}
