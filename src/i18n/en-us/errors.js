@@ -6,7 +6,8 @@ export default {
   2000: 'Parameter errors, usually missing parameters, or parameter errors',
   31001: 'Invalid Username',
   31002: 'Invalid Password',
-  31004: 'Over Logging'
+  31004: 'Over Logging',
+  74001: 'Fail to upload image'
 }
 /**
  200: 请求成功

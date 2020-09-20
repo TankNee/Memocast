@@ -338,6 +338,8 @@ export default {
     }
 
     const result = await api.UploadImageApi(imageUploadService, data, options)
-    bus.$emit(events.INSERT_IMAGE, getters.imageUrl(result, imageUploadService))
+    if (result) {
+      bus.$emit(events.INSERT_IMAGE, getters.imageUrl(result, imageUploadService))
+    }
   }
 }

@@ -4,6 +4,9 @@
  * @Date: 9/20/2020 10:50 AM
  **/
 import FormData from 'form-data'
+import bus from 'components/bus'
+import events from 'src/constants/events'
+import NeetoError from 'app/share/error'
 /**
  * generate post header as well as body
  * @param {File} image
@@ -62,6 +65,6 @@ export async function UploadImageToCustomWebService (options, file, execRequest)
       }
     }
   } catch (e) {
-    //
+    bus.$emit(events.REQUEST_ERROR, new NeetoError(e.message, 74001))
   }
 }
