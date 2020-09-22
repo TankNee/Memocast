@@ -6,7 +6,7 @@
       v-show="!isCurrentNoteLoading && dataLoaded"
     ></div>
     <Loading :visible="isCurrentNoteLoading" />
-    <VditorContextMenu />
+<!--    <VditorContextMenu />-->
   </div>
 </template>
 
@@ -17,7 +17,7 @@ import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from '../utils/debugLogger'
 import helper from '../utils/helper'
-import VditorContextMenu from './ui/VditorContextMenu'
+// import VditorContextMenu from './ui/VditorContextMenu'
 import bus from './bus'
 import events from '../constants/events'
 const {
@@ -28,7 +28,7 @@ const {
 const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'Vditor',
-  components: { VditorContextMenu, Loading },
+  components: { Loading },
   props: {
     data: {
       type: String,
