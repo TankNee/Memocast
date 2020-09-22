@@ -8,10 +8,6 @@ export default {
     commit(types.INIT, localStore)
     Dark.set(state.darkMode)
   },
-  setLanguage ({ commit }, language) {
-    commit(types.SET_LANGUAGE, language)
-    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['language', language])
-  },
   toggleDarkMode ({ commit }, darkMode) {
     commit(types.TOGGLE_DARK_MODE, darkMode)
     Dark.set(darkMode)
@@ -20,5 +16,9 @@ export default {
   toggleChanged ({ commit }, { key, value }) {
     commit(types.TOGGLE_CHANGED, { key, value })
     commit(types.SAVE_TO_LOCAL_STORE_SYNC, [key, value])
+  },
+  updateStateAndStore ({ commit }, options) {
+    commit(types.UPDATE_STATES, options)
+    commit(types.SAVE_ITEMS_TO_LOCAL_STORE_SYNC, options)
   }
 }

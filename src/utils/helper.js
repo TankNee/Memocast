@@ -3,6 +3,7 @@ import he from 'he'
 import html2markdown from '../lib/html2markdown'
 import api from 'src/utils/api'
 import wizMarkdownParser from '@altairwei/wiz-markdown'
+import { i18n } from 'boot/i18n'
 
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
@@ -35,7 +36,7 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
   resources.forEach(resource => {
     html = html.replace(`index_files/${resource.name}`, resource.url)
   })
-  return wizMarkdownParser.extract(html, { convertImgTag: true })
+  return wizMarkdownParser.extract(html, { convertImgTag: true, normalizeWhitespace: true })
 }
 
 /**
@@ -83,6 +84,40 @@ function removeMarkdownTag (markdown) {
 }
 
 /**
+ * 友好时间表达
+ * @param {number} date 毫秒数
+ * @returns {string} 刚刚，十分钟前 .etc
+ */
+function displayDateElegantly (date) {
+  // 获取js 时间戳
+  let currentTime = new Date().getTime()
+  // 去掉 js 时间戳后三位，与php 时间戳保持一致
+  currentTime = (currentTime - date) / 1000
+
+  // 存储转换值
+  let simpleExpression
+  if (currentTime < 60 * 10) { // 十分钟内
+    return i18n.t('justNow')
+  } else if ((currentTime < 60 * 60) && (currentTime >= 60 * 10)) {
+    // 超过十分钟少于1小时
+    simpleExpression = Math.floor(currentTime / 60)
+    return i18n.t('minutesAgo', { num: simpleExpression, plural: simpleExpression > 1 ? 's' : '' })
+  } else if ((currentTime < 60 * 60 * 24) && (currentTime >= 60 * 60)) {
+    // 超过1小时少于24小时
+    simpleExpression = Math.floor(currentTime / 60 / 60)
+    return i18n.t('hoursAgo', { num: simpleExpression, plural: simpleExpression > 1 ? 's' : '' })
+  } else if ((currentTime < 60 * 60 * 24 * 7) && (currentTime >= 60 * 60 * 24)) {
+    // 超过1天少于7天内
+    simpleExpression = Math.floor(currentTime / 60 / 60 / 24)
+    return i18n.t('daysAgo', { num: simpleExpression, plural: simpleExpression > 1 ? 's' : '' })
+  } else {
+    // 超过3天
+    const result = new Date(date)
+    return result.getFullYear() + '/' + (result.getMonth() + 1) + '/' + result.getDate()
+  }
+}
+
+/**
  * generate categories tree
  * @param {string[] | string[][]} categories
  */
@@ -127,5 +162,6 @@ export default {
   extractMarkdownFromMDNote,
   generateCategoryNodeTree,
   removeMarkdownTag,
-  embedMDNote
+  embedMDNote,
+  displayDateElegantly
 }

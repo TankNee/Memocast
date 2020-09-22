@@ -1,4 +1,6 @@
 import { execRequest } from '../boot/request'
+import FormData from 'form-data'
+import { UploadImageToCustomWebService } from 'src/service/imageCustomWebUploadService'
 let AccountServerBaseUrl = 'https://as.wiz.cn'
 let KnowledgeBaseBaseUrl = 'https://kshttps0.wiz.cn'
 
@@ -18,7 +20,11 @@ const AccountServerApi = {
    * @constructor
    */
   async Login (params) {
-    const result = await execRequest('POST', `${AccountServerBaseUrl}/as/user/login`, params)
+    const result = await execRequest(
+      'POST',
+      `${AccountServerBaseUrl}/as/user/login`,
+      params
+    )
     KnowledgeBaseBaseUrl = result.kbServer
     return result
   },
@@ -29,7 +35,11 @@ const AccountServerApi = {
    * @returns {Promise<unknown>}
    */
   async getUserInfo (params) {
-    return await execRequest('POST', `${AccountServerBaseUrl}/as/user/login/token`, params)
+    return await execRequest(
+      'POST',
+      `${AccountServerBaseUrl}/as/user/login/token`,
+      params
+    )
   },
 
   /**
@@ -38,7 +48,10 @@ const AccountServerApi = {
    * @returns {Promise<unknown>}
    */
   async getUserAvatar (params) {
-    return await execRequest('GET', `${AccountServerBaseUrl}/as/user/avatar/${params.userGuid}`)
+    return await execRequest(
+      'GET',
+      `${AccountServerBaseUrl}/as/user/avatar/${params.userGuid}`
+    )
   },
 
   /**
@@ -74,7 +87,10 @@ const KnowledgeBaseApi = {
    * @returns {Promise<unknown>}
    */
   async getCategories (params) {
-    return await execRequest('GET', `${KnowledgeBaseBaseUrl}/ks/category/all/${params.kbGuid}`)
+    return await execRequest(
+      'GET',
+      `${KnowledgeBaseBaseUrl}/ks/category/all/${params.kbGuid}`
+    )
   },
 
   /**
@@ -84,8 +100,12 @@ const KnowledgeBaseApi = {
    */
   async getCategoryNotes (params) {
     return await execRequest(
-      'GET', `${KnowledgeBaseBaseUrl}/ks/note/list/category/${params.kbGuid}`,
-      null, null, { params: params.data })
+      'GET',
+      `${KnowledgeBaseBaseUrl}/ks/note/list/category/${params.kbGuid}`,
+      null,
+      null,
+      { params: params.data }
+    )
   },
 
   /**
@@ -94,8 +114,13 @@ const KnowledgeBaseApi = {
    */
   async getNoteContent (params) {
     return await execRequest(
-      'GET', `${KnowledgeBaseBaseUrl}/ks/note/download/${params.kbGuid}/${params.docGuid}`,
-      null, null, { params: params.data })
+      'GET',
+      `${KnowledgeBaseBaseUrl}/ks/note/download/${params.kbGuid}/${params.docGuid}`,
+      null,
+      null,
+      { params: params.data },
+      true
+    )
   },
 
   /**
@@ -105,7 +130,9 @@ const KnowledgeBaseApi = {
    */
   async getNoteInfo (params) {
     return await execRequest(
-      'GET', `${KnowledgeBaseBaseUrl}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`)
+      'GET',
+      `${KnowledgeBaseBaseUrl}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`
+    )
   },
 
   /**
@@ -115,7 +142,10 @@ const KnowledgeBaseApi = {
    */
   async updateNote (params) {
     return await execRequest(
-      'PUT', `${KnowledgeBaseBaseUrl}/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`, params.data)
+      'PUT',
+      `${KnowledgeBaseBaseUrl}/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`,
+      params.data
+    )
   },
 
   /**
@@ -124,7 +154,11 @@ const KnowledgeBaseApi = {
    * @returns {Promise | Promise<unknown>}
    */
   async updateNoteInfo (params) {
-    return await execRequest('POST', `${KnowledgeBaseBaseUrl}/ks/note/upload/${params.kbGuid}/${params.docGuid}`, params.data)
+    return await execRequest(
+      'POST',
+      `${KnowledgeBaseBaseUrl}/ks/note/upload/${params.kbGuid}/${params.docGuid}`,
+      params.data
+    )
   },
 
   /**
@@ -133,7 +167,11 @@ const KnowledgeBaseApi = {
    * @returns {Promise | Promise<unknown>}
    */
   async createNote (params) {
-    return await execRequest('POST', `${KnowledgeBaseBaseUrl}/ks/note/create/${params.kbGuid}`, params.data)
+    return await execRequest(
+      'POST',
+      `${KnowledgeBaseBaseUrl}/ks/note/create/${params.kbGuid}`,
+      params.data
+    )
   },
 
   /**
@@ -142,7 +180,11 @@ const KnowledgeBaseApi = {
    * @returns {Promise<unknown>}
    */
   async createCategory (params) {
-    return await execRequest('POST', `${KnowledgeBaseBaseUrl}/ks/category/create/${params.kbGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`, params.data)
+    return await execRequest(
+      'POST',
+      `${KnowledgeBaseBaseUrl}/ks/category/create/${params.kbGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`,
+      params.data
+    )
   },
 
   /**
@@ -151,7 +193,10 @@ const KnowledgeBaseApi = {
    * @returns {Promise<unknown>}
    */
   async deleteNote (params) {
-    return await execRequest('DELETE', `${KnowledgeBaseBaseUrl}/ks/note/delete/${params.kbGuid}/${params.docGuid}`)
+    return await execRequest(
+      'DELETE',
+      `${KnowledgeBaseBaseUrl}/ks/note/delete/${params.kbGuid}/${params.docGuid}`
+    )
   },
 
   /**
@@ -161,8 +206,12 @@ const KnowledgeBaseApi = {
    */
   async deleteCategory (params) {
     return await execRequest(
-      'DELETE', `${KnowledgeBaseBaseUrl}/ks/category/delete/${params.kbGuid}`,
-      null, null, { params: params.data })
+      'DELETE',
+      `${KnowledgeBaseBaseUrl}/ks/category/delete/${params.kbGuid}`,
+      null,
+      null,
+      { params: params.data }
+    )
   },
 
   /**
@@ -171,7 +220,11 @@ const KnowledgeBaseApi = {
    * @returns {Promise | Promise<unknown>}
    */
   async renameCategory (params) {
-    return await execRequest('PUT', `${KnowledgeBaseBaseUrl}/ks/category/rename/${params.kbGuid}`, params.data)
+    return await execRequest(
+      'PUT',
+      `${KnowledgeBaseBaseUrl}/ks/category/rename/${params.kbGuid}`,
+      params.data
+    )
   },
 
   /**
@@ -180,11 +233,62 @@ const KnowledgeBaseApi = {
    * @returns {Promise | Promise<unknown>}
    */
   async uploadImage (params) {
-    return await execRequest('POST', `${KnowledgeBaseBaseUrl}/ks/resource/upload/${params.kbGuid}/${params.docGuid}`, params.formData)
+    return await execRequest(
+      'POST',
+      `${KnowledgeBaseBaseUrl}/ks/resource/upload/${params.kbGuid}/${params.docGuid}`,
+      params.formData,
+      null,
+      params.config
+    )
   }
+}
+
+const ThirdPartApi = {
+  /**
+   * upload image to SMMS image bed
+   * @param {File} files
+   */
+  async uploadImageToSMMS (file) {
+    const formData = new FormData()
+    formData.append('smfile', file)
+    return await execRequest(
+      'POST',
+      'https://sm.ms/api/upload',
+      formData,
+      null,
+      null,
+      true
+    )
+  }
+}
+/**
+ * Upload image to image service
+ * @param type
+ * @param data
+ * @param options
+ * @constructor
+ */
+const UploadImageApi = async (type, data, options) => {
+  let result = {}
+  switch (type) {
+    case 'wizOfficialImageUploadService':
+      result = await KnowledgeBaseApi.uploadImage(data)
+      break
+    case 'smmsImageUploadService':
+      result = await ThirdPartApi.uploadImageToSMMS(data)
+      break
+    case 'customWebUploadService':
+      result = await UploadImageToCustomWebService(options, data, execRequest)
+      break
+    default:
+      break
+  }
+  return result
 }
 
 export default {
   AccountServerApi,
-  KnowledgeBaseApi
+  KnowledgeBaseApi,
+  ThirdPartApi,
+  UploadImageApi
 }

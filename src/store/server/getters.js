@@ -1,9 +1,25 @@
 import api from 'src/utils/api'
 import _ from 'lodash'
 import helper from 'src/utils/helper'
+import fileStorage from 'src/utils/fileStorage'
 export default {
   avatarUrl: ({ userGuid }) => {
     return userGuid ? `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${userGuid}` : null
+  },
+  imageUrl: ({ kbGuid, currentNote: { info: { docGuid } } }) => (url, imageUploadService) => {
+    let img = ''
+    switch (imageUploadService) {
+      case 'wizOfficialImageUploadService':
+        img = docGuid ? `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/${url}` : url
+        break
+      case 'smmsImageUploadService':
+      case 'customWebUploadService':
+        img = url
+        break
+      default:
+        break
+    }
+    return img
   },
   currentNotes: ({ currentNotes }, getters, rootState) => {
     const _currentNotes = _.cloneDeep(currentNotes)
@@ -40,5 +56,13 @@ export default {
   },
   activeNote: ({ currentNote }) => ({ docGuid }) => {
     return currentNote.info && currentNote.info.docGuid === docGuid
+  },
+  uploadImageUrl: ({ uploadImageUrl, kbGuid, currentNote }) => {
+    if (!helper.isNullOrEmpty(uploadImageUrl) || helper.isNullOrEmpty(currentNote.info)) return uploadImageUrl
+    const { info: { docGuid } } = currentNote
+    return `${api.KnowledgeBaseApi.getBaseUrl()}/ks/resource/upload/${kbGuid}/${docGuid}`
+  },
+  wizNoteToken: () => {
+    return fileStorage.getValueFromLocalStorage('token')
   }
 }

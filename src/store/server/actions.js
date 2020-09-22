@@ -4,6 +4,9 @@ import fileStorage from 'src/utils/fileStorage'
 import { Notify } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
+import bus from 'components/bus'
+import events from 'src/constants/events'
+const FormData = require('form-data')
 export default {
   /**
    * 从本地缓存中读取数据，初始化状态树
@@ -63,6 +66,7 @@ export default {
   },
   async logout ({ commit }) {
     await api.AccountServerApi.Logout()
+    fileStorage.removeItemFromLocalStorage('token')
     commit(types.LOGOUT)
   },
   /**
@@ -183,7 +187,9 @@ export default {
       message: i18n.t('saveNoteSuccessfully'),
       icon: 'check'
     })
-    await this.dispatch('server/getCategoryNotes', { category: state.currentCategory })
+    await this.dispatch('server/getCategoryNotes', {
+      category: state.currentCategory
+    })
   },
   /**
    * 创建笔记
@@ -238,6 +244,13 @@ export default {
       icon: 'delete'
     })
   },
+  /**
+   * 创建笔记目录
+   * @param commit
+   * @param state
+   * @param childCategoryName
+   * @returns {Promise<void>}
+   */
   async createCategory ({ commit, state }, childCategoryName) {
     const { kbGuid, currentCategory } = state
     await api.KnowledgeBaseApi.createCategory({
@@ -249,7 +262,12 @@ export default {
       }
     })
     await this.dispatch('server/getAllCategories')
-    await this.dispatch('server/updateCurrentCategory', helper.isNullOrEmpty(currentCategory) ? `/${childCategoryName}/` : `${currentCategory}${childCategoryName}/`)
+    await this.dispatch(
+      'server/updateCurrentCategory',
+      helper.isNullOrEmpty(currentCategory)
+        ? `/${childCategoryName}/`
+        : `${currentCategory}${childCategoryName}/`
+    )
   },
   async deleteCategory ({ commit, state }, category) {
     const { kbGuid } = state
@@ -261,5 +279,67 @@ export default {
       message: i18n.t('deleteCategorySuccessfully'),
       icon: 'delete'
     })
+  },
+  async uploadImage ({ commit, getters, state, rootState }, file) {
+    // TODO: 实现图片上传
+    const token = getters.wizNoteToken
+    const {
+      kbGuid,
+      currentNote: {
+        info: { docGuid }
+      }
+    } = state
+
+    const formData = new FormData()
+    const {
+      client: {
+        imageUploadService,
+        apiServerUrl,
+        postParam,
+        jsonPath,
+        customHeader,
+        customBody
+      }
+    } = rootState
+
+    let data = {}, options = {}
+    switch (imageUploadService) {
+      case 'wizOfficialImageUploadService':
+        formData.append('data', file)
+        formData.append('kbGuid', kbGuid)
+        formData.append('docGuid', docGuid)
+        data = {
+          kbGuid,
+          docGuid,
+          formData: formData,
+          config: {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-Wiz-Token': token
+            }
+          }
+        }
+        break
+      case 'smmsImageUploadService':
+        data = file
+        break
+      case 'customWebUploadService':
+        data = file
+        options = {
+          apiServerUrl,
+          postParam,
+          jsonPath,
+          customHeader,
+          customBody
+        }
+        break
+      default:
+        break
+    }
+
+    const result = await api.UploadImageApi(imageUploadService, data, options)
+    if (result) {
+      bus.$emit(events.INSERT_IMAGE, getters.imageUrl(result, imageUploadService))
+    }
   }
 }

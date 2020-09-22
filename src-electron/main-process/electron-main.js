@@ -24,8 +24,8 @@ let mainWindow
 
 function createWindow () {
   const mainWindowState = windowStateKeeper({
-    defaultWidth: 1024,
-    defaultHeight: 640
+    defaultWidth: 1500,
+    defaultHeight: 1000
   })
   /**
    * Initial window options
@@ -48,6 +48,8 @@ function createWindow () {
     },
     frame: false
   })
+  mainWindow.isMainWindow = true
+  mainWindowState.manage(mainWindow)
 
   mainWindow.loadURL(process.env.APP_URL)
 
@@ -69,5 +71,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
+  } else if (process.platform === 'darwin') {
+    mainWindow.show()
   }
 })

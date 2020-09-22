@@ -1,20 +1,15 @@
 import schedule from 'node-schedule'
 import api from 'src/utils/api'
 import fileStorage from 'src/utils/fileStorage'
-const refreshWizToken = () => {
+const refreshWizToken = (app) => {
   schedule.scheduleJob('30 * * * * *', async () => {
-    if (!fileStorage.isKeyExistsInLocalStorage('token')) return
+    if (!fileStorage.isKeyExistsInLocalStorage('token') || !app.isLogin) return
     await api.AccountServerApi.keepTokenAlive()
   })
 }
 
-// const initializeApplication = () => {
-//   ServerStore.actions('server/init')
-//   ClientStore.actions('client/init')
-// }
-
 export default {
-  RegisterScheduleJobs () {
-    refreshWizToken()
+  RegisterScheduleJobs (app) {
+    refreshWizToken(app)
   }
 }
