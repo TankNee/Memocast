@@ -2,15 +2,19 @@
 <template>
   <q-card
     flat
-    :class="`note-card${darkMode ? '-dark' : ''} bg-transparent`"
+    :class="`note-card${darkTag} bg-transparent`"
     @click="getNoteContent({ docGuid })"
   >
-    <div :class="`note-item-title${darkMode ? '-dark' : ''}`">
+    <div :class="`note-item-title${darkTag}`">
       {{ title }}
     </div>
 
-    <div :class="`note-item-summary${darkMode ? '-dark' : ''}`">
+    <div :class="`note-item-summary${darkTag}`">
       {{ summary }}
+    </div>
+    <div :class="`note-item-summary${darkTag} flex justify-between no-wrap overflow-hidden`">
+      <span class="text-left">{{ category }}</span>
+      <span class="text-right">{{ $t('modifiedAt',{date:modifiedDate})}}</span>
     </div>
     <NoteItemContextMenu :rename="handleRename" :del="handleDelete"/>
   </q-card>
@@ -19,6 +23,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import NoteItemContextMenu from './NoteItemContextMenu'
+import helper from 'src/utils/helper'
 const { mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'NoteItem',
@@ -27,8 +32,7 @@ export default {
       type: Object,
       default () {
         return {
-          title: '',
-          summary: '',
+          abstractText: '',
           docGuid: ''
         }
       }
@@ -55,6 +59,21 @@ export default {
     },
     darkMode () {
       return this.$q.dark.isActive
+    },
+    darkTag () {
+      return this.darkMode ? '-dark' : ''
+    },
+    modifiedDate () {
+      return helper.displayDateElegantly(this.data.dataModified)
+    },
+    category () {
+      if (helper.isNullOrEmpty(this.data.category)) return ''
+      try {
+        const categoryList = this.data.category.split('/')
+        return `/${categoryList[categoryList.length - 2]}/`
+      } catch (e) {
+        return ''
+      }
     }
   },
   methods: {

@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="flex justify-center" >
     <div
       id="vditor"
       class="fit"
+      style="max-width: 80%"
       v-show="!isCurrentNoteLoading && dataLoaded"
     ></div>
     <Loading :visible="isCurrentNoteLoading" />
@@ -135,8 +136,8 @@ export default {
           default:
             break
         }
-        console.log(key)
       }
+      console.log(key)
     },
     registerEventHandler: function () {
       bus.$on(events.INSERT_IMAGE, url => {
