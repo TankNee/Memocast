@@ -84,8 +84,13 @@ tooltip {
 }
 .note-item-summary,
 .note-item-summary-dark {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, Consolas;
   color: #acacac;
   font-size: 14px;
+}
+.note-item-summary,
+.note-item-summary-dark > span {
+  color: #8E8E8E;
 }
 .note-item-title-dark {
   color: #dadada;
