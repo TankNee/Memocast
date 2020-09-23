@@ -90,13 +90,20 @@ tooltip {
 }
 .note-item-summary,
 .note-item-summary-dark > span {
-  color: #8E8E8E;
+  color: #8f8f8f;
 }
 .note-item-title-dark {
   color: #dadada;
 }
 .note-item-summary-dark {
   color: #919191;
+}
+.note-info-tag {
+  display: flex;
+  align-items: center;
+}
+.note-info-tag > i {
+  padding-right: 3px;
 }
 /*fab button*/
 .fab-btn {
