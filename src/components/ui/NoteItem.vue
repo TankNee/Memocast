@@ -108,7 +108,7 @@ export default {
       this.$q.dialog({
         title: this.$t('deleteNote'),
         cancel: true
-      }).onOk(data => {
+      }).onOk(() => {
         this.deleteNote(this.data)
       })
     },
