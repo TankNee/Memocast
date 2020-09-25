@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
+import { app, BrowserWindow, nativeTheme, shell } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 // const windowStateKeeper = require('electron-window-state')
 try {
@@ -37,12 +37,14 @@ function createWindow () {
     width: mainWindowState.width,
     height: mainWindowState.height,
     useContentSize: true,
+    transparent: true,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: process.env.QUASAR_NODE_INTEGRATION,
       nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION,
-      webSecurity: false
+      webSecurity: false,
+      experimentalFeatures: true
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       // preload: path.resolve(__dirname, 'electron-preload.js')
@@ -57,6 +59,11 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+  })
+
+  mainWindow.webContents.on('new-window', (event, linkUrl) => {
+    event.preventDefault()
+    shell.openExternal(linkUrl)
   })
 }
 
@@ -77,3 +84,17 @@ app.on('activate', () => {
     mainWindow.show()
   }
 })
+
+if (!isMac) {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (!mainWindow.isVisible()) {
+        mainWindow.show()
+      }
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore()
+      }
+      mainWindow.focus()
+    }
+  })
+}

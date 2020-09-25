@@ -4,6 +4,7 @@ import html2markdown from '../lib/html2markdown'
 import api from 'src/utils/api'
 import wizMarkdownParser from '@altairwei/wiz-markdown'
 import { i18n } from 'boot/i18n'
+const { dialog, BrowserWindow } = require('electron').remote
 
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
@@ -156,6 +157,26 @@ function generateCategoryNodeTree (categories) {
   }
   return result
 }
+
+/**
+ * 开启一个图片选择弹窗
+ * @param options
+ * @returns {string[]}
+ */
+function createFileSelectDialog (options) {
+  return dialog.showOpenDialogSync(BrowserWindow.getFocusedWindow(), options)
+}
+
+/**
+ * 获取文件的拓展名
+ * @param filePath 文件路径
+ */
+function getFileNameWithExt (filePath) {
+  const index = filePath.lastIndexOf('/')
+  const fileName = filePath.substr(index + 1)
+
+  return fileName
+}
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
@@ -163,5 +184,7 @@ export default {
   generateCategoryNodeTree,
   removeMarkdownTag,
   embedMDNote,
-  displayDateElegantly
+  displayDateElegantly,
+  createFileSelectDialog,
+  getFileNameWithExt
 }

@@ -28,6 +28,7 @@
 body {
   margin: 0;
   overflow: hidden;
+  background: #ffffff !important;
 }
 body.body {
   background: #ffffff !important;
@@ -40,6 +41,7 @@ tooltip {
 }
 .vditor-toolbar {
   border: none !important;
+  display: none;
 }
 
 /*Note Item CSS*/
@@ -109,7 +111,9 @@ tooltip {
 .fab-btn {
   margin: 10px;
 }
-
+.fab-icon {
+  margin: 40px;
+}
 /*base dialog*/
 .base-dialog {
   width: 500px !important;

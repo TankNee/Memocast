@@ -100,7 +100,7 @@ export default {
             await files.map(async file => await that.uploadImage(file))
           }
         },
-        toolbar: [],
+        // toolbar: [],
         debugger: true
       })
     },
@@ -112,26 +112,8 @@ export default {
       const { ctrlKey } = e
       if (ctrlKey) {
         switch (key) {
-          case 87:
-            this.contentEditor.updateValue(
-              '\n```\n' + `${this.contentEditor.getSelection()}` + '\n```\n'
-            )
-            break
           case 83:
             this.updateNote(this.contentEditor.getValue())
-            break
-          case 66:
-            this.contentEditor.updateValue(
-              `**${this.contentEditor.getSelection()}**`
-            )
-            break
-          case 49:
-          case 50:
-          case 51:
-          case 52:
-          case 53:
-          case 54:
-            // TODO: 实现outline的快速添加
             break
           default:
             break
@@ -142,6 +124,9 @@ export default {
     registerEventHandler: function () {
       bus.$on(events.INSERT_IMAGE, url => {
         this.contentEditor.insertValue(`\n![](${url})`, true)
+      })
+      bus.$on(events.SAVE_NOTE, () => {
+        this.updateNote(this.contentEditor.getValue())
       })
     },
     ...mapServerActions(['updateNote', 'uploadImage'])
