@@ -12,11 +12,12 @@
     <div :class="`note-item-summary${darkTag}`">
       {{ summary }}
     </div>
-    <div :class="`note-item-summary${darkTag} flex justify-between no-wrap overflow-hidden`">
-      <span class="text-left">{{ category }}</span>
-      <span class="text-right">{{ $t('modifiedAt',{date:modifiedDate})}}</span>
+    <div :class="`note-item-summary${darkTag} flex justify-between no-wrap overflow-hidden fa-align-center`">
+      <span class="text-left note-info-tag"><q-icon name="category" size="17px"/> {{ category }}</span>
+      <span class="text-right note-info-tag"><q-icon name="timer" size="17px"/> {{ modifiedDate }}</span>
     </div>
-    <NoteItemContextMenu :rename="handleRename" :del="handleDelete"/>
+    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" />
+    <CategoryDialog ref="categoryDialog" :note-info="data" :label="categoryDialogLabel" :handler="categoryDialogHandler" />
   </q-card>
 </template>
 
@@ -24,6 +25,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import NoteItemContextMenu from './NoteItemContextMenu'
 import helper from 'src/utils/helper'
+import CategoryDialog from 'components/ui/CategoryDialog'
 const { mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'NoteItem',
@@ -33,7 +35,8 @@ export default {
       default () {
         return {
           abstractText: '',
-          docGuid: ''
+          docGuid: '',
+          category: ''
         }
       }
     },
@@ -43,7 +46,13 @@ export default {
     },
     markdown: Boolean
   },
-  components: { NoteItemContextMenu },
+  data () {
+    return {
+      categoryDialogLabel: '',
+      categoryDialogHandler: () => {}
+    }
+  },
+  components: { CategoryDialog, NoteItemContextMenu },
   computed: {
     summary () {
       return this.data.abstractText &&
@@ -70,14 +79,14 @@ export default {
       if (helper.isNullOrEmpty(this.data.category)) return ''
       try {
         const categoryList = this.data.category.split('/')
-        return `/${categoryList[categoryList.length - 2]}/`
+        return categoryList[categoryList.length - 2]
       } catch (e) {
         return ''
       }
     }
   },
   methods: {
-    handleRename: function () {
+    renameHandler: function () {
       this.$q.dialog({
         title: this.$t('renameNote'),
         prompt: {
@@ -95,15 +104,25 @@ export default {
         this.updateNoteInfo(info)
       })
     },
-    handleDelete: function () {
+    deleteHandler: function () {
       this.$q.dialog({
         title: this.$t('deleteNote'),
         cancel: true
-      }).onOk(data => {
+      }).onOk(() => {
         this.deleteNote(this.data)
       })
     },
-    ...mapActions(['getNoteContent', 'updateNoteInfo', 'deleteNote'])
+    copyToHandler: function () {
+      this.categoryDialogLabel = 'copyToAnotherCategory'
+      this.categoryDialogHandler = this.copyNote
+      this.$refs.categoryDialog.toggle()
+    },
+    moveToHandler: function () {
+      this.categoryDialogLabel = 'moveToAnotherCategory'
+      this.categoryDialogHandler = this.moveNote
+      this.$refs.categoryDialog.toggle()
+    },
+    ...mapActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote'])
   }
 }
 </script>

@@ -20,32 +20,7 @@ export default {
       miniState: false
     }
   },
-  components: { Header },
-  methods: {
-    minimize () {
-      if (process.env.MODE === 'electron') {
-        this.$q.electron.remote.BrowserWindow.getFocusedWindow().minimize()
-      }
-    },
-
-    maximize () {
-      if (process.env.MODE === 'electron') {
-        const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
-
-        if (win.isMaximized()) {
-          win.unmaximize()
-        } else {
-          win.maximize()
-        }
-      }
-    },
-
-    closeApp () {
-      if (process.env.MODE === 'electron') {
-        this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
-      }
-    }
-  }
+  components: { Header }
 }
 </script>
 <style scoped>

@@ -12,6 +12,7 @@ export default function () {
     postParam: '',
     jsonPath: '',
     customHeader: '',
-    customBody: ''
+    customBody: '',
+    shrinkInTray: false
   }
 }

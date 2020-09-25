@@ -1,3 +1,4 @@
 export default {
-  category: 'Category'
+  copyToAnotherCategory: 'Copy To Category',
+  moveToAnotherCategory: 'Move To Category'
 }

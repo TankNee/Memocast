@@ -76,14 +76,14 @@ export default {
    * @param payload
    * @returns {Promise<void>}
    */
-  async getCategoryNotes ({ commit, state }, payload) {
+  async getCategoryNotes ({ commit, state }, payload = {}) {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
-    const { kbGuid } = state
+    const { kbGuid, currentCategory } = state
     const { category, start, count } = payload
     const result = await api.KnowledgeBaseApi.getCategoryNotes({
       kbGuid,
       data: {
-        category,
+        category: category || currentCategory,
         start: start || 0,
         count: count || 100,
         withAbstract: true
@@ -147,16 +147,13 @@ export default {
    * @returns {Promise<void>}
    */
   async updateNoteInfo ({ commit, state }, payload) {
-    const { currentCategory } = state
     const { docGuid, kbGuid } = payload
     await api.KnowledgeBaseApi.updateNoteInfo({
       kbGuid,
       docGuid,
       data: payload
     })
-    this.dispatch('server/getCategoryNotes', {
-      category: currentCategory
-    })
+    this.dispatch('server/getCategoryNotes')
   },
   /**
    * 更新笔记内容
@@ -187,9 +184,7 @@ export default {
       message: i18n.t('saveNoteSuccessfully'),
       icon: 'check'
     })
-    await this.dispatch('server/getCategoryNotes', {
-      category: state.currentCategory
-    })
+    await this.dispatch('server/getCategoryNotes')
   },
   /**
    * 创建笔记
@@ -215,29 +210,26 @@ export default {
       }
     })
     await this.dispatch('server/getNoteContent', result)
-    await this.dispatch('server/getCategoryNotes', {
-      category: currentCategory
-    })
+    await this.dispatch('server/getCategoryNotes')
     // if (/\.md$/.test(title) && rootState.client.markdownOnly) {
-    //   commit(types.UPDATE_CURRENT_NOTE, result)
+    //   commit(types.js.UPDATE_CURRENT_NOTE, result)
     // }
   },
   /**
    * 删除笔记
    * @param commit
+   * @param state
    * @param payload
    * @returns {Promise<void>}
    */
   async deleteNote ({ commit, state }, payload) {
     const { kbGuid, docGuid } = payload
     await api.KnowledgeBaseApi.deleteNote({ kbGuid, docGuid })
-    const { currentNote, currentCategory } = state
+    const { currentNote } = state
     if (currentNote && currentNote.info.docGuid === docGuid) {
       commit(types.CLEAR_CURRENT_NOTE)
     }
-    await this.dispatch('server/getCategoryNotes', {
-      category: currentCategory
-    })
+    await this.dispatch('server/getCategoryNotes')
     Notify.create({
       color: 'red-10',
       message: i18n.t('deleteNoteSuccessfully'),
@@ -340,6 +332,41 @@ export default {
     const result = await api.UploadImageApi(imageUploadService, data, options)
     if (result) {
       bus.$emit(events.INSERT_IMAGE, getters.imageUrl(result, imageUploadService))
+    }
+  },
+  async moveNote ({ commit }, noteInfo) {
+    const { kbGuid, docGuid } = noteInfo
+    await api.KnowledgeBaseApi.updateNoteInfo({ kbGuid, docGuid, data: noteInfo })
+    await this.dispatch('server/getCategoryNotes')
+  },
+  async copyNote ({ commit, state }, noteInfo) {
+    const { kbGuid, docGuid, category, title, type } = noteInfo
+    const { currentCategory } = state
+    const userId = fileStorage.getItemFromStore('userId')
+
+    const noteContent = await api.KnowledgeBaseApi.getNoteContent({
+      kbGuid,
+      docGuid,
+      data: {
+        downloadInfo: 1,
+        downloadData: 1
+      }
+    })
+    const { html } = noteContent
+    const isCurrentCategory = category === noteContent.info.category
+    await api.KnowledgeBaseApi.createNote({
+      kbGuid,
+      data: {
+        category: category,
+        kbGuid,
+        title: isCurrentCategory ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${title.indexOf('.md') !== -1 ? '.md' : ''}` : title,
+        owner: userId,
+        html,
+        type
+      }
+    })
+    if (isCurrentCategory || helper.isNullOrEmpty(currentCategory)) {
+      await this.dispatch('server/getCategoryNotes')
     }
   }
 }

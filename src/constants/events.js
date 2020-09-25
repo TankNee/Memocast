@@ -3,5 +3,6 @@ export default {
   SETTINGS_EVENT: {
     SETTINGS_UPDATE: 'settings.update'
   },
-  INSERT_IMAGE: 'insert.image'
+  INSERT_IMAGE: 'insert.image',
+  SAVE_NOTE: 'save.note'
 }

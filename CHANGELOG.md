@@ -1,5 +1,14 @@
 # CHANGE LOG
 
+## 2020 09 25 Update 0.0.4
+
+1. 优化macos下的header显示
+2. 添加vditor快捷键，[快捷键查阅地址](https://ld246.com/guide/markdown)
+3. 优化图标
+4. 添加vditor右下角的保存按钮，右上角的outline按钮还没有实现
+5. 借鉴wizlite实现笔记中的链接外部打开
+6. 优化无效代码
+
 ## 2020 09 22 Update 0.0.3
 
 1. 版本更新至0.0.3
