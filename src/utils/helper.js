@@ -4,6 +4,7 @@ import html2markdown from '../lib/html2markdown'
 import api from 'src/utils/api'
 import wizMarkdownParser from '@altairwei/wiz-markdown'
 import { i18n } from 'boot/i18n'
+import { Platform } from 'quasar'
 const { dialog, BrowserWindow } = require('electron').remote
 
 function isNullOrEmpty (obj) {
@@ -37,7 +38,10 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
   resources.forEach(resource => {
     html = html.replace(`index_files/${resource.name}`, resource.url)
   })
-  return wizMarkdownParser.extract(html, { convertImgTag: true, normalizeWhitespace: true })
+  return wizMarkdownParser.extract(html, {
+    convertImgTag: true,
+    normalizeWhitespace: true
+  })
 }
 
 /**
@@ -63,7 +67,10 @@ function removeDeprecatedTags (html) {
     html = html.replace(pattern, '')
   })
   // html = html.replace(/\s<img\ssrc="data.*>/g, '- [ ]')
-  html = html.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&')
+  html = html
+    .replace(/&gt;/g, '>')
+    .replace(/&lt;/g, '<')
+    .replace(/&amp;/g, '&')
   return html
 }
 
@@ -73,13 +80,7 @@ function removeDeprecatedTags (html) {
  */
 function removeMarkdownTag (markdown) {
   markdown = markdown || ''
-  const patterns = [
-    /#/g,
-    /!?\[.*\]\(.*\)/g,
-    />/g,
-    /\\+/g,
-    /\\-/g
-  ]
+  const patterns = [/#/g, /!?\[.*\]\(.*\)/g, />/g, /\\+/g, /\\-/g]
   patterns.forEach(pattern => (markdown = markdown.replace(pattern, '')))
   return markdown
 }
@@ -97,24 +98,40 @@ function displayDateElegantly (date) {
 
   // 存储转换值
   let simpleExpression
-  if (currentTime < 60 * 10) { // 十分钟内
+  if (currentTime < 60 * 10) {
+    // 十分钟内
     return i18n.t('justNow')
-  } else if ((currentTime < 60 * 60) && (currentTime >= 60 * 10)) {
+  } else if (currentTime < 60 * 60 && currentTime >= 60 * 10) {
     // 超过十分钟少于1小时
     simpleExpression = Math.floor(currentTime / 60)
-    return i18n.t('minutesAgo', { num: simpleExpression, plural: simpleExpression > 1 ? 's' : '' })
-  } else if ((currentTime < 60 * 60 * 24) && (currentTime >= 60 * 60)) {
+    return i18n.t('minutesAgo', {
+      num: simpleExpression,
+      plural: simpleExpression > 1 ? 's' : ''
+    })
+  } else if (currentTime < 60 * 60 * 24 && currentTime >= 60 * 60) {
     // 超过1小时少于24小时
     simpleExpression = Math.floor(currentTime / 60 / 60)
-    return i18n.t('hoursAgo', { num: simpleExpression, plural: simpleExpression > 1 ? 's' : '' })
-  } else if ((currentTime < 60 * 60 * 24 * 7) && (currentTime >= 60 * 60 * 24)) {
+    return i18n.t('hoursAgo', {
+      num: simpleExpression,
+      plural: simpleExpression > 1 ? 's' : ''
+    })
+  } else if (currentTime < 60 * 60 * 24 * 7 && currentTime >= 60 * 60 * 24) {
     // 超过1天少于7天内
     simpleExpression = Math.floor(currentTime / 60 / 60 / 24)
-    return i18n.t('daysAgo', { num: simpleExpression, plural: simpleExpression > 1 ? 's' : '' })
+    return i18n.t('daysAgo', {
+      num: simpleExpression,
+      plural: simpleExpression > 1 ? 's' : ''
+    })
   } else {
     // 超过3天
     const result = new Date(date)
-    return result.getFullYear() + '/' + (result.getMonth() + 1) + '/' + result.getDate()
+    return (
+      result.getFullYear() +
+      '/' +
+      (result.getMonth() + 1) +
+      '/' +
+      result.getDate()
+    )
   }
 }
 
@@ -126,7 +143,9 @@ function generateCategoryNodeTree (categories) {
   const result = []
   categories = categories || []
   categories = categories.map(category => {
-    return _.isString(category) ? category.split('/').filter(c => !isNullOrEmpty(c)) : category
+    return _.isString(category)
+      ? category.split('/').filter(c => !isNullOrEmpty(c))
+      : category
   })
   for (let i = 0; i < categories.length; i++) {
     const category = categories[i]
@@ -177,6 +196,33 @@ function getFileNameWithExt (filePath) {
 
   return fileName
 }
+function isCtrl (event) {
+  if (Platform.is.mac) {
+    if (event.metaKey && !event.ctrlKey) {
+      return true
+    }
+    return false
+  }
+  if (!event.metaKey && event.ctrlKey) {
+    return true
+  }
+  return false
+}
+function filterParentElement (dom, root, filterFn, self = false) {
+  if (dom) {
+    let parent = self ? dom : dom.parentElement
+    while (parent) {
+      if (parent === root) {
+        break
+      }
+      if (filterFn(parent)) {
+        return parent
+      }
+      parent = parent.parentElement
+    }
+  }
+  return null
+}
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
@@ -186,5 +232,7 @@ export default {
   embedMDNote,
   displayDateElegantly,
   createFileSelectDialog,
-  getFileNameWithExt
+  getFileNameWithExt,
+  isCtrl,
+  filterParentElement
 }

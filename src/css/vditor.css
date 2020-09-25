@@ -53,12 +53,12 @@
 .vditor--dark {
   --border-color: #141414;
   --second-color: hsla(0, 0%, 72.5%, 0.36);
-  --panel-background-color: #282828;
+  --panel-background-color: #2d2d2d;
   --panel-shadow: 0 1px 2px hsla(0, 0%, 100%, 0.2);
   --toolbar-background-color: #1d2125;
   --toolbar-icon-color: #b9b9b9;
   --toolbar-icon-hover-color: #fff;
-  --textarea-background-color: #282828;
+  --textarea-background-color: #2d2d2d;
   --textarea-text-color: #d1d5da;
   --resize-icon-color: var(--border-color);
   --resize-background-color: var(--second-color);
@@ -792,14 +792,12 @@
   margin-right: 3px;
 }
 .vditor-reset {
-  color: #24292e;
+  color: #333333;
   font-variant-ligatures: no-common-ligatures;
-  font-family: Helvetica Neue, Luxi Sans, DejaVu Sans, Hiragino Sans GB,
-    Microsoft Yahei, sans-serif, Apple Color Emoji, Segoe UI Emoji,
-    Noto Color Emoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
+  font-family: 'Open Sans', 'Noto Sans SC', Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
   word-wrap: break-word;
   overflow: auto;
-  line-height: 1.5;
+  line-height: 28px;
   font-size: 16px;
   word-break: break-word;
 }

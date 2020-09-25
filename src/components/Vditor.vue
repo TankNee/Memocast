@@ -77,31 +77,21 @@ export default {
             current: this.$q.dark.isActive ? 'dark' : 'light'
           },
           hljs: {
-            style: this.$q.dark.isActive ? 'dracula' : 'github'
+            style: this.$q.dark.isActive ? 'monokai' : 'github'
           }
         },
         upload: {
           max: 5 * 1024 * 1024,
-          // accept: 'image/*',
-          // url: this.apiServerUrl,
-          // headers: JSON.parse(this.customHeader),
-          // format: function (files, text) {
-          //   const res = JSON.parse(text)
-          //   let url = res
-          //   if (that.jsonPath) {
-          //     for (const path of that.jsonPath.split('.')) {
-          //       url = url[path]
-          //     }
-          //   }
-          //   return url
-          // },
-          // fieldName: this.postParam
           async handler (files) {
             await files.map(async file => await that.uploadImage(file))
           }
         },
-        // toolbar: [],
-        debugger: true
+        debugger: true,
+        after: () => {
+          if (this.contentEditor?.vditor?.element) {
+            this.contentEditor.vditor.element.addEventListener('mousedown', that.linkClickHandler)
+          }
+        }
       })
     },
     registerKeyboardHotKey: function (e) {
@@ -128,6 +118,25 @@ export default {
       bus.$on(events.SAVE_NOTE, () => {
         this.updateNote(this.contentEditor.getValue())
       })
+    },
+    linkClickHandler: function (e) {
+      const LinkElement = helper.filterParentElement(e.target, this.contentEditor.vditor.element, (dom) => dom.getAttribute('data-type') === 'a', true)
+      if (LinkElement) {
+        const afterStyle = window.getComputedStyle(LinkElement, ':after')
+        if (helper.isCtrl(e) || (e.target === LinkElement && e.offsetX >= parseInt(afterStyle.getPropertyValue('left'), 10) && e.offsetY >= parseInt(afterStyle.getPropertyValue('top'), 10))) {
+          const urlElement = LinkElement.querySelector('.vditor-ir__marker--link')
+          if (urlElement.innerText) {
+            try {
+              window.open(urlElement.innerText)
+            } catch (err) {
+              console.error(err)
+            }
+            e.preventDefault()
+          }
+        }
+        return true
+      }
+      return false
     },
     ...mapServerActions(['updateNote', 'uploadImage'])
   },
