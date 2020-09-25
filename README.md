@@ -3,17 +3,11 @@ An Awesome Wiz Note Client
 
 ### ScreenShot
 
-![image-20200922222040214](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20200922222040214.png)
+![image-20200925170200202](./screenshot/image-20200925170200202.png)
 
-![image-20200922221940169](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20200922221940169.png)
+![image-20200925170301170](./screenshot/image-20200925170301170.png)
 
-![image-20200922222105635](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20200922222105635.png)
-
-![image-20200922222123091](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20200922222123091.png)
-
-![image-20200922222231243](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20200922222231243.png)
-
-![image-20200922222303311](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20200922222303311.png)
+![image-20200925170327136](./screenshot/image-20200925170327136.png)
 
 ### Feature
 

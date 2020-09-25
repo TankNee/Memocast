@@ -131,7 +131,7 @@ const KnowledgeBaseApi = {
   async getNoteInfo (params) {
     return await execRequest(
       'GET',
-      `${KnowledgeBaseBaseUrl}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`
+      `${KnowledgeBaseBaseUrl}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`
     )
   },
 
@@ -143,7 +143,7 @@ const KnowledgeBaseApi = {
   async updateNote (params) {
     return await execRequest(
       'PUT',
-      `${KnowledgeBaseBaseUrl}/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`,
+      `${KnowledgeBaseBaseUrl}/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
       params.data
     )
   },
@@ -182,7 +182,7 @@ const KnowledgeBaseApi = {
   async createCategory (params) {
     return await execRequest(
       'POST',
-      `${KnowledgeBaseBaseUrl}/ks/category/create/${params.kbGuid}?clientType=web&clientVersion=4.0&lang=zh-cn`,
+      `${KnowledgeBaseBaseUrl}/ks/category/create/${params.kbGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
       params.data
     )
   },

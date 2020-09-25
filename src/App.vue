@@ -16,7 +16,7 @@ const { mapActions: mapServerActions, mapState: mapServerState } = createNamespa
 export default {
   name: 'App',
   mounted () {
-    RegisterErrorHandler(this)
+    RegisterErrorHandler()
     RegisterScheduleJobs(this)
     this.initClientStore()
     this.initServerStore()

@@ -28,30 +28,33 @@
 body {
   margin: 0;
   overflow: hidden;
+  background: #ffffff !important;
 }
 body.body {
   background: #ffffff !important;
 }
 body.body--dark {
-  background: #282828 !important;
+  background: #2d2d2d !important;
 }
 tooltip {
   font-size: 17px;
 }
 .vditor-toolbar {
   border: none !important;
+  display: none;
 }
 
 /*Note Item CSS*/
 .note-item,
 .note-item-dark {
   background-color: #ffffff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, 黑体;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, 黑体;
 }
 .note-item-dark {
-  background-color: #282828;
+  background-color: #2d2d2d;
 }
-.active-note-item, .active-note-item-dark {
+.active-note-item,
+.active-note-item-dark {
   color: #212121;
   background-color: #e4e4e4;
 }
@@ -62,7 +65,7 @@ tooltip {
   background-color: #ffffff;
 }
 .note-list-dark {
-  background-color: #282828;
+  background-color: #2d2d2d;
 }
 /*Note List CSS*/
 .note-card,
@@ -84,13 +87,13 @@ tooltip {
 }
 .note-item-summary,
 .note-item-summary-dark {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, Consolas;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, Consolas;
   color: #acacac;
   font-size: 14px;
 }
 .note-item-summary,
 .note-item-summary-dark > span {
-  color: #8E8E8E;
+  color: #8f8f8f;
 }
 .note-item-title-dark {
   color: #dadada;
@@ -98,13 +101,38 @@ tooltip {
 .note-item-summary-dark {
   color: #919191;
 }
+.note-info-tag {
+  display: flex;
+  align-items: center;
+}
+.note-info-tag > i {
+  padding-right: 3px;
+}
 /*fab button*/
 .fab-btn {
   margin: 10px;
 }
-
+.fab-icon {
+  margin: 40px;
+}
 /*base dialog*/
 .base-dialog {
   width: 500px !important;
   max-width: 50vw;
+}
+span[data-type='a']:not(.vditor-ir__node--expand) {
+  padding-right: 25px;
+  position: relative;
+}
+span[data-type='a']:not(.vditor-ir__node--expand)::after {
+  display: block;
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: url(./link.svg) no-repeat center center;
+  background-size: 18px 18px;
+  position: absolute;
+  right: 3px;
+  bottom: 0;
+  cursor: pointer;
 }

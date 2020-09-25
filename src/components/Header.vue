@@ -1,5 +1,6 @@
 <template>
-  <q-bar dark class="q-electron-drag header text-grey">
+  <q-bar class="q-electron-drag header text-grey">
+    <q-space v-if="$q.platform.is.mac" />
     <q-avatar
       size="36px"
       class="cursor-pointer q-electron-drag--exception"
@@ -23,7 +24,7 @@
         :src="
           avatarUrl
             ? avatarUrl
-            : 'https://avatars0.githubusercontent.com/u/62432902?s=200&v=4'
+            : 'https://i.loli.net/2020/09/25/n3IphqrHxAJemSu.png'
         "
       />
     </q-avatar>
@@ -60,21 +61,23 @@
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
-    <q-space />
+    <q-space v-if="!$q.platform.is.mac" />
     <q-avatar
       size="36px"
       class="cursor-pointer q-electron-drag--exception "
       v-ripple
       @click="$refs.settingsDialog.toggle()"
     >
-      <q-icon name="format_list_bulleted" />
+      <q-icon name="settings" />
       <q-tooltip :offset="[20, 10]" content-class="text-white shadow-4"
         >{{ $t('settings') }}
       </q-tooltip>
     </q-avatar>
-    <q-btn dense flat icon="minimize" @click="minimize" />
-    <q-btn dense flat icon="crop_square" @click="maximize" />
-    <q-btn dense flat icon="close" @click="closeApp" />
+    <div v-if="!$q.platform.is.mac">
+      <q-btn dense flat icon="minimize" @click="minimize" />
+      <q-btn dense flat icon="crop_square" @click="maximize" />
+      <q-btn dense flat icon="close" @click="closeApp" />
+    </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
     <SearchDialog ref="searchDialog" />
@@ -89,13 +92,14 @@ import SettingsDialog from './ui/SettingsDialog'
 import SearchDialog from './ui/SearchDialog'
 import CategoryDrawer from './ui/CategoryDrawer'
 import { createNamespacedHelpers } from 'vuex'
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers('server')
-const isElectron = process.env.MODE === 'electron'
+const { mapState: mapServerState, mapGetters: mapServerGetters, mapActions: mapServerActions } = createNamespacedHelpers('server')
+const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'Header',
   computed: {
-    ...mapState(['user', 'isLogin']),
-    ...mapGetters(['avatarUrl']),
+    ...mapServerState(['user', 'isLogin']),
+    ...mapServerGetters(['avatarUrl']),
+    ...mapClientState(['shrinkInTray']),
     darkMode: function () {
       return this.$q.dark.isActive
     }
@@ -108,26 +112,20 @@ export default {
   },
   methods: {
     minimize () {
-      if (isElectron) {
-        this.$q.electron.remote.BrowserWindow.getFocusedWindow().minimize()
-      }
+      this.$q.electron.remote.BrowserWindow.getFocusedWindow().minimize()
     },
 
     maximize () {
-      if (isElectron) {
-        const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
-        if (win.isMaximized()) {
-          win.unmaximize()
-        } else {
-          win.maximize()
-        }
+      const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
+      if (win.isMaximized()) {
+        win.unmaximize()
+      } else {
+        win.maximize()
       }
     },
 
     closeApp () {
-      if (isElectron) {
-        this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
-      }
+      this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
     },
     handleLogin: function () {
       if (!this.isLogin) {
@@ -149,7 +147,7 @@ export default {
           })
       }
     },
-    ...mapActions(['logout'])
+    ...mapServerActions(['logout'])
   }
 }
 </script>
