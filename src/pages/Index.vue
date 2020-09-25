@@ -19,7 +19,7 @@
           >
             <Vditor />
           </q-scroll-area>
-<!--          <q-icon name="cached" class="absolute-bottom-right fab-btn cursor-pointer material-icons-round" v-touch-swipe size="lg" color="#26A69A" v-ripple/>-->
+          <q-icon name="cached" class="absolute-bottom-right fab-btn cursor-pointer material-icons-round" v-touch-swipe size="lg" color="#26A69A" v-ripple/>
         </div>
 
       </template>

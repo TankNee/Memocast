@@ -1,5 +1,6 @@
 <template>
-  <q-bar dark class="q-electron-drag header text-grey">
+  <q-bar class="q-electron-drag header text-grey">
+    <q-space v-if="$q.platform.is.mac" />
     <q-avatar
       size="36px"
       class="cursor-pointer q-electron-drag--exception"
@@ -23,7 +24,7 @@
         :src="
           avatarUrl
             ? avatarUrl
-            : 'https://avatars0.githubusercontent.com/u/62432902?s=200&v=4'
+            : 'https://i.loli.net/2020/09/25/n3IphqrHxAJemSu.png'
         "
       />
     </q-avatar>
@@ -60,7 +61,7 @@
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
-    <q-space />
+    <q-space v-if="!$q.platform.is.mac" />
     <q-avatar
       size="36px"
       class="cursor-pointer q-electron-drag--exception "
@@ -72,9 +73,11 @@
         >{{ $t('settings') }}
       </q-tooltip>
     </q-avatar>
-    <q-btn dense flat icon="minimize" @click="minimize" />
-    <q-btn dense flat icon="crop_square" @click="maximize" />
-    <q-btn dense flat icon="close" @click="closeApp" />
+    <div v-if="!$q.platform.is.mac">
+      <q-btn dense flat icon="minimize" @click="minimize" />
+      <q-btn dense flat icon="crop_square" @click="maximize" />
+      <q-btn dense flat icon="close" @click="closeApp" />
+    </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
     <SearchDialog ref="searchDialog" />

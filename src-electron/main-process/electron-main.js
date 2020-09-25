@@ -21,6 +21,7 @@ if (process.env.PROD) {
 }
 
 let mainWindow
+const isMac = process.platform === 'darwin'
 
 function createWindow () {
   const mainWindowState = windowStateKeeper({
@@ -46,7 +47,8 @@ function createWindow () {
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       // preload: path.resolve(__dirname, 'electron-preload.js')
     },
-    frame: false
+    frame: false,
+    titleBarStyle: 'hiddenInset'
   })
   mainWindow.isMainWindow = true
   mainWindowState.manage(mainWindow)
@@ -63,7 +65,7 @@ app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (!isMac) {
     app.quit()
   }
 })
@@ -71,7 +73,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
-  } else if (process.platform === 'darwin') {
+  } else if (isMac) {
     mainWindow.show()
   }
 })

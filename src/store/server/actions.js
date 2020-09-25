@@ -212,12 +212,13 @@ export default {
     await this.dispatch('server/getNoteContent', result)
     await this.dispatch('server/getCategoryNotes')
     // if (/\.md$/.test(title) && rootState.client.markdownOnly) {
-    //   commit(types.UPDATE_CURRENT_NOTE, result)
+    //   commit(types.js.UPDATE_CURRENT_NOTE, result)
     // }
   },
   /**
    * 删除笔记
    * @param commit
+   * @param state
    * @param payload
    * @returns {Promise<void>}
    */
