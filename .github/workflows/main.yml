@@ -32,3 +32,57 @@ jobs:
         run: |
          npm install
          npm run build-all
+      - name: Upload Win Package
+        uses: actions/upload-artifact@v1
+        with:
+          name: Linux_Dist
+          path: dist/electron/Neeto-Vue-win32-x64
+      - name: Upload Win Package
+        uses: actions/upload-artifact@v1
+        with:
+          name: Windows_Dist
+          path: dist/electron/Neeto-Vue-linux-x64
+      - name: Upload Win Package
+        uses: actions/upload-artifact@v1
+        with:
+          name: MacOS_Dist
+          path: dist/electron/Neeto-Vue-darwin-x64
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download pre-built packages for Linux
+        uses: actions/download-artifact@v1
+        with:
+          name: Linux_Dist
+          path: artifacts
+      - name: Download pre-built packages for Windows
+        uses: actions/download-artifact@v1
+        with:
+          name: Windows_Dist
+          path: artifacts
+      - name: Download pre-built packages for MacOS
+        uses: actions/download-artifact@v1
+        with:
+          name: MacOS_Dist
+          path: artifacts
+      - name: Create Release Notes
+        id: release_notes
+        run: |
+          version=0.0.5
+          notes_zh="CHANGELOG.md"
+          content=$(cat ${notes_zh})
+          printf "${content}\n" > dist/changes-${version}.md
+          echo "::set-output name=version::${version}"
+          echo "::set-output name=content_file::dist/changes-${version}.md"
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: Neeto-Vue v${{ steps.release_notes.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "artifacts/*"
+          bodyFile: ${{ steps.release_notes.outputs.content_file }}
+          draft: true
+          prerelease: true
