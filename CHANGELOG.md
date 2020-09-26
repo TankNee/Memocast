@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 2020 09 26 Update 0.0.5
+
+1. 添加github自动构建
+
+
 ## 2020 09 25 Update 0.0.4
 
 1. 优化macos下的header显示
