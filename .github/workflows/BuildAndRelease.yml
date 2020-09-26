@@ -65,22 +65,12 @@ jobs:
         with:
           name: MacOS_Dist
           path: artifacts
-      - name: Create Release Notes
-        id: release_notes
-        run: |
-          version=0.0.5
-          notes_zh="CHANGELOG.md"
-          content=$(cat ${notes_zh})
-          printf "${content}\n" > dist/changes-${version}.md
-          echo "::set-output name=version::${version}"
-          echo "::set-output name=content_file::${version}"
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
         with:
-          name: Neeto-Vue v${{ steps.release_notes.outputs.version }}
+          name: Neeto-Vue New Version
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "artifacts/*"
-          bodyFile: ${{ steps.release_notes.outputs.content_file }}
           draft: true
           prerelease: true
