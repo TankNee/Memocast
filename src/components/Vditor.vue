@@ -86,7 +86,7 @@ export default {
             await files.map(async file => await that.uploadImage(file))
           }
         },
-        debugger: true,
+        debugger: process.env.DEV,
         after: () => {
           if (this.contentEditor?.vditor?.element) {
             this.contentEditor.vditor.element.addEventListener('mousedown', that.linkClickHandler)
@@ -95,12 +95,10 @@ export default {
       })
     },
     registerKeyboardHotKey: function (e) {
-      // register ctrl+s key
       const key = window.event.keyCode
         ? window.event.keyCode
         : window.event.which
-      const { ctrlKey } = e
-      if (ctrlKey) {
+      if (helper.isCtrl(e)) {
         switch (key) {
           case 83:
             this.updateNote(this.contentEditor.getValue())
@@ -109,7 +107,6 @@ export default {
             break
         }
       }
-      console.log(key)
     },
     registerEventHandler: function () {
       bus.$on(events.INSERT_IMAGE, url => {
