@@ -7,8 +7,6 @@ name: Neeto-Vue Release Action
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -37,12 +35,12 @@ jobs:
         with:
           name: Linux_Dist
           path: dist/electron/Neeto-Vue-win32-x64
-      - name: Upload Win Package
+      - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
           name: Windows_Dist
           path: dist/electron/Neeto-Vue-linux-x64
-      - name: Upload Win Package
+      - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
