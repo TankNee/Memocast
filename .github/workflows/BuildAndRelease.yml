@@ -6,7 +6,10 @@ name: Neeto-Vue Release Action
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: 
+      - master
+    tags:
+      - v0.*
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -48,6 +51,7 @@ jobs:
   release:
     needs: [build]
     runs-on: ubuntu-latest
+    if: contains(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v1
       - name: Download pre-built packages for Linux
@@ -69,7 +73,7 @@ jobs:
         id: create_release
         uses: ncipollo/release-action@v1
         with:
-          name: Neeto-Vue New Version
+          name: Neeto-Vue New v0.0.6
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "artifacts/*"
           draft: true
