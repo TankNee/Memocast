@@ -138,6 +138,7 @@ export default {
   async updateCurrentCategory ({ commit }, category) {
     await this.dispatch('server/getCategoryNotes', { category })
     commit(types.UPDATE_CURRENT_CATEGORY, category)
+    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['currentCategory', category])
   },
   /**
    * 更新笔记信息，例如笔记title等
