@@ -75,7 +75,7 @@ jobs:
           content=$(cat ${notes_zh})
           printf "${content}\n" > dist/changes-${version}.md
           echo "::set-output name=version::${version}"
-          echo "::set-output name=content_file::dist/changes-${version}.md"
+          echo "::set-output name=content_file::${version}"
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
