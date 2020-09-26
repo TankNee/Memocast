@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 2020 09 26 Update 0.0.5
+
+1. 优化Ctrl键的逻辑
+
 ## 2020 09 25 Update 0.0.4
 
 1. 优化macos下的header显示
