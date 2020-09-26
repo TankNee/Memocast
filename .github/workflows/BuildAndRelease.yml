@@ -1,0 +1,86 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Neeto-Vue Release Action
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out branch
+        uses: actions/checkout@master
+        
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+        
+      - name: Build
+        run: |
+         npm install
+         npm run build-all
+      - name: Upload Win Package
+        uses: actions/upload-artifact@v1
+        with:
+          name: Linux_Dist
+          path: dist/electron/Neeto-Vue-win32-x64
+      - name: Upload Linux Package
+        uses: actions/upload-artifact@v1
+        with:
+          name: Windows_Dist
+          path: dist/electron/Neeto-Vue-linux-x64
+      - name: Upload Mac Package
+        uses: actions/upload-artifact@v1
+        with:
+          name: MacOS_Dist
+          path: dist/electron/Neeto-Vue-darwin-x64
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download pre-built packages for Linux
+        uses: actions/download-artifact@v1
+        with:
+          name: Linux_Dist
+          path: artifacts
+      - name: Download pre-built packages for Windows
+        uses: actions/download-artifact@v1
+        with:
+          name: Windows_Dist
+          path: artifacts
+      - name: Download pre-built packages for MacOS
+        uses: actions/download-artifact@v1
+        with:
+          name: MacOS_Dist
+          path: artifacts
+      - name: Create Release Notes
+        id: release_notes
+        run: |
+          version=0.0.5
+          notes_zh="CHANGELOG.md"
+          content=$(cat ${notes_zh})
+          printf "${content}\n" > dist/changes-${version}.md
+          echo "::set-output name=version::${version}"
+          echo "::set-output name=content_file::${version}"
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: Neeto-Vue v${{ steps.release_notes.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "artifacts/*"
+          bodyFile: ${{ steps.release_notes.outputs.content_file }}
+          draft: true
+          prerelease: true
