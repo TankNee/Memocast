@@ -36,12 +36,12 @@ jobs:
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
-          name: Linux_Dist
+          name: Windows_Dist
           path: dist/electron/Neeto-Vue-win32-x64
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
-          name: Windows_Dist
+          name: Linux_Dist
           path: dist/electron/Neeto-Vue-linux-x64
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
