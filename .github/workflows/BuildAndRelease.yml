@@ -33,21 +33,26 @@ jobs:
         run: |
          npm install
          npm run build-all
+      - name: Compress Bundle
+        run: |
+          zip -r Neeto-Vue-win32-x64.zip  dist/electron/Neeto-Vue-win32-x64
+          zip -r Neeto-Vue-linux-x64.zip  dist/electron/Neeto-Vue-linux-x64
+          zip -r Neeto-Vue-darwin-x64.zip  dist/electron/Neeto-Vue-darwin-x64
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
           name: Windows_Dist
-          path: dist/electron/Neeto-Vue-win32-x64
+          path: Neeto-Vue-win32-x64.zip
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
           name: Linux_Dist
-          path: dist/electron/Neeto-Vue-linux-x64
+          path: Neeto-Vue-linux-x64.zip
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
-          path: dist/electron/Neeto-Vue-darwin-x64
+          path: Neeto-Vue-darwin-x64.zip
   release:
     needs: [build]
     runs-on: ubuntu-latest
