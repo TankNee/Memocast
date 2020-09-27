@@ -23,9 +23,9 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import NoteItemContextMenu from './NoteItemContextMenu'
+import NoteItemContextMenu from './menu/NoteItemContextMenu'
 import helper from 'src/utils/helper'
-import CategoryDialog from 'components/ui/CategoryDialog'
+import CategoryDialog from 'components/ui/dialog/CategoryDialog'
 const { mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'NoteItem',

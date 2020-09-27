@@ -13,7 +13,7 @@ export default {
    * @param commit
    * @param state
    */
-  initServerStore ({ commit, state }) {
+  async initServerStore ({ commit, state }) {
     const localStore = fileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
     fileStorage.removeItemFromLocalStorage('token')
@@ -24,7 +24,7 @@ export default {
       'url'
     ])
     if (autoLogin) {
-      this.dispatch('server/login', { userId, password, url })
+      await this.dispatch('server/login', { userId, password, url })
     }
   },
   /**

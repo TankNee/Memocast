@@ -1,5 +1,10 @@
 <template>
-  <q-dialog ref="dialog" @before-hide="beforeHideHandler" class="base-dialog">
+  <q-dialog
+    ref="dialog"
+    @before-hide="beforeHideHandler"
+    class="base-dialog"
+    persistent
+  >
     <q-card class="q-dialog base-dialog">
       <q-toolbar>
         <q-toolbar-title
@@ -86,8 +91,8 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Loading from './Loading'
-import fileStorage from '../../utils/fileStorage'
+import Loading from '../Loading'
+import fileStorage from '../../../utils/fileStorage'
 const { mapActions: mapServerActions } = createNamespacedHelpers('server')
 const {
   mapState: mapClientState,
