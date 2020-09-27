@@ -37,6 +37,7 @@
         direction="up"
         flat
         class="absolute-bottom-right fab-btn"
+        v-if="isLogin"
       >
         <q-fab-action
           color="red-7"
@@ -48,7 +49,7 @@
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            content-class="bg-red-10 text-white shadow-4"
+            content-class="bg-red-10 text-white shadow-4  text-h7"
             >{{ $t('deleteCategory') }}</q-tooltip
           >
         </q-fab-action>
@@ -57,7 +58,7 @@
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            content-class="bg-primary text-white shadow-4"
+            content-class="bg-primary text-white shadow-4  text-h7"
             >{{ $t('createNote') }}</q-tooltip
           >
         </q-fab-action>
@@ -70,7 +71,7 @@
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            content-class="bg-primary text-white shadow-4"
+            content-class="bg-primary text-white shadow-4  text-h7"
             >{{ $t('createCategory') }}</q-tooltip
           >
         </q-fab-action>
@@ -116,7 +117,7 @@ export default {
       }
     },
     ...mapGetters(['activeNote', 'currentNotes']),
-    ...mapState(['isCurrentNotesLoading', 'currentCategory'])
+    ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin'])
   },
   methods: {
     handleAddNote: function () {

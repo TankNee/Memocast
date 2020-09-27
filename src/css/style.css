@@ -36,7 +36,11 @@ body.body {
 body.body--dark {
   background: #2d2d2d !important;
 }
-tooltip {
+.text-h7 {
+  font-size: 15px;
+  font-weight: bold;
+}
+.tooltip {
   font-size: 17px;
 }
 .vditor-toolbar {
