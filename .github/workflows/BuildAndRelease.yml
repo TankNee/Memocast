@@ -35,9 +35,10 @@ jobs:
          npm run build-all
       - name: Compress Bundle
         run: |
-          zip -r Neeto-Vue-win32-x64.zip  dist/electron/Neeto-Vue-win32-x64
-          zip -r Neeto-Vue-linux-x64.zip  dist/electron/Neeto-Vue-linux-x64
-          zip -r Neeto-Vue-darwin-x64.zip  dist/electron/Neeto-Vue-darwin-x64
+          npm install -g bestzip
+          bestzip -r Neeto-Vue-win32-x64.zip  dist/electron/Neeto-Vue-win32-x64
+          bestzip -r Neeto-Vue-linux-x64.zip  dist/electron/Neeto-Vue-linux-x64
+          bestzip -r Neeto-Vue-darwin-x64.zip  dist/electron/Neeto-Vue-darwin-x64
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
