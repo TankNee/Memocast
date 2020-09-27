@@ -97,7 +97,7 @@ jobs:
           name: MacOS_Dist
           path: Neeto-Vue-darwin-x64.zip
   release:
-    needs: [build-windows]
+    needs: [build-windows, build-linux, build-mac]
     runs-on: ubuntu-latest
     if: contains(github.ref, 'refs/tags/v')
     steps:
