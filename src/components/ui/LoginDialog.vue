@@ -1,5 +1,10 @@
 <template>
-  <q-dialog ref="dialog" @before-hide="beforeHideHandler" class="base-dialog">
+  <q-dialog
+    ref="dialog"
+    @before-hide="beforeHideHandler"
+    class="base-dialog"
+    persistent
+  >
     <q-card class="q-dialog base-dialog">
       <q-toolbar>
         <q-toolbar-title

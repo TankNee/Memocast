@@ -11,13 +11,13 @@
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-accent text-white shadow-4"
-      >{{ $t('noteCategory') }}
+        >{{ $t('noteCategory') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
       size="26px"
       class="cursor-pointer q-electron-drag--exception "
-      @click="handleLogin"
+      @click="loginHandler"
       v-ripple
     >
       <img
@@ -92,14 +92,18 @@ import SettingsDialog from './ui/SettingsDialog'
 import SearchDialog from './ui/SearchDialog'
 import CategoryDrawer from './ui/CategoryDrawer'
 import { createNamespacedHelpers } from 'vuex'
-const { mapState: mapServerState, mapGetters: mapServerGetters, mapActions: mapServerActions } = createNamespacedHelpers('server')
+const {
+  mapState: mapServerState,
+  mapGetters: mapServerGetters,
+  mapActions: mapServerActions
+} = createNamespacedHelpers('server')
 const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'Header',
   computed: {
     ...mapServerState(['user', 'isLogin']),
     ...mapServerGetters(['avatarUrl']),
-    ...mapClientState(['shrinkInTray']),
+    ...mapClientState(['shrinkInTray', 'autoLogin']),
     darkMode: function () {
       return this.$q.dark.isActive
     }
@@ -127,7 +131,7 @@ export default {
     closeApp () {
       this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
     },
-    handleLogin: function () {
+    loginHandler: function () {
       if (!this.isLogin) {
         this.$refs.loginDialog.toggle()
       } else {
@@ -148,6 +152,11 @@ export default {
       }
     },
     ...mapServerActions(['logout'])
+  },
+  mounted () {
+    if (!this.autoLogin && !this.isLogin) {
+      this.$refs.loginDialog.toggle()
+    }
   }
 }
 </script>
