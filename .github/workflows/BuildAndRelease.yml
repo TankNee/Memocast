@@ -14,7 +14,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  build-windows:
     # The type of runner that the job will run on
     runs-on: windows-latest
     if: contains(github.ref, 'refs/tags/v')
@@ -24,7 +24,7 @@ jobs:
       - name: Check out branch
         uses: actions/checkout@master
         
-      - name: Install Node.js, NPM and Yarn
+      - name: Install Node.js, NPM
         uses: actions/setup-node@v1
         with:
           node-version: 14
@@ -32,30 +32,72 @@ jobs:
       - name: Build
         run: |
          npm install
-         npm run build-all
+         npm run build-publish
       - name: Compress Bundle
         run: |
           npm install -g bestzip
           bestzip Neeto-Vue-win32-x64.zip  dist/electron/Neeto-Vue-win32-x64/*
-          bestzip Neeto-Vue-linux-x64.zip  dist/electron/Neeto-Vue-linux-x64/*
-          bestzip Neeto-Vue-darwin-x64.zip  dist/electron/Neeto-Vue-darwin-x64/*
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
           name: Windows_Dist
           path: Neeto-Vue-win32-x64.zip
+  build-linux:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'refs/tags/v')
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out branch
+        uses: actions/checkout@master
+        
+      - name: Install Node.js, NPM
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Build
+        run: |
+         npm install
+         npm run build-publish
+      - name: Compress Bundle
+        run: |
+          npm install -g bestzip
+          bestzip Neeto-Vue-linux-x64.zip  dist/electron/Neeto-Vue-linux-x64/*
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
           name: Linux_Dist
           path: Neeto-Vue-linux-x64.zip
+  build-mac:
+    # The type of runner that the job will run on
+    runs-on: macos-latest
+    if: contains(github.ref, 'refs/tags/v')
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out branch
+        uses: actions/checkout@master
+        
+      - name: Install Node.js, NPM
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Build
+        run: |
+         npm install
+         npm run build-publish
+      - name: Compress Bundle
+        run: |
+          npm install -g bestzip
+          bestzip Neeto-Vue-darwin-x64.zip  dist/electron/Neeto-Vue-darwin-x64/*
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
           path: Neeto-Vue-darwin-x64.zip
   release:
-    needs: [build]
+    needs: [build-windows]
     runs-on: ubuntu-latest
     if: contains(github.ref, 'refs/tags/v')
     steps:
