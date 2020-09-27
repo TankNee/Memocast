@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import debugLogger from '../../utils/debugLogger'
+import debugLogger from '../../../utils/debugLogger'
 export default {
   name: 'VditorContextMenu',
   data () {

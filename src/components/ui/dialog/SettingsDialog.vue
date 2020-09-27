@@ -121,7 +121,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import ImageUploadServiceDialog from './ImageUploadServiceDialog'
-import { i18n } from '../../boot/i18n'
+import { i18n } from 'boot/i18n'
 const { mapState, mapActions } = createNamespacedHelpers('client')
 
 export default {

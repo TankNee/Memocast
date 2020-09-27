@@ -5,18 +5,24 @@
       size="36px"
       class="cursor-pointer q-electron-drag--exception"
       v-ripple
-      @click="$refs.categoryDrawer.toggle()"
+      @click="
+        () => {
+          if (isLogin) {
+            $refs.categoryDrawer.toggle()
+          }
+        }
+      "
     >
       <q-icon name="account_tree" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4"
+        content-class="bg-accent text-white shadow-4  text-h7"
         >{{ $t('noteCategory') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
       size="26px"
-      class="cursor-pointer q-electron-drag--exception "
+      class="cursor-pointer q-electron-drag--exception"
       @click="loginHandler"
       v-ripple
     >
@@ -27,6 +33,11 @@
             : 'https://i.loli.net/2020/09/25/n3IphqrHxAJemSu.png'
         "
       />
+      <q-tooltip
+        :offset="[20, 10]"
+        content-class="bg-green-7 text-white shadow-4 text-h7"
+      >{{ $t('login') }}
+      </q-tooltip>
     </q-avatar>
     <q-input
       dark
@@ -57,7 +68,7 @@
       </template>
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-amber-2 text-black shadow-4"
+        content-class="bg-amber-2 text-black shadow-4  text-h7"
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
@@ -69,7 +80,7 @@
       @click="$refs.settingsDialog.toggle()"
     >
       <q-icon name="settings" />
-      <q-tooltip :offset="[20, 10]" content-class="text-white shadow-4"
+      <q-tooltip :offset="[20, 10]" content-class="text-white shadow-4  text-h7"
         >{{ $t('settings') }}
       </q-tooltip>
     </q-avatar>
@@ -86,10 +97,10 @@
 </template>
 
 <script>
-import LoginDialog from './ui/LoginDialog'
+import LoginDialog from './ui/dialog/LoginDialog'
 
-import SettingsDialog from './ui/SettingsDialog'
-import SearchDialog from './ui/SearchDialog'
+import SettingsDialog from './ui/dialog/SettingsDialog'
+import SearchDialog from './ui/dialog/SearchDialog'
 import CategoryDrawer from './ui/CategoryDrawer'
 import { createNamespacedHelpers } from 'vuex'
 const {

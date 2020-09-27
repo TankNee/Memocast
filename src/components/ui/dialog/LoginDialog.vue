@@ -91,8 +91,8 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Loading from './Loading'
-import fileStorage from '../../utils/fileStorage'
+import Loading from '../Loading'
+import fileStorage from '../../../utils/fileStorage'
 const { mapActions: mapServerActions } = createNamespacedHelpers('server')
 const {
   mapState: mapClientState,
