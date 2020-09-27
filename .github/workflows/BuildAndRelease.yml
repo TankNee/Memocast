@@ -79,7 +79,7 @@ jobs:
         id: create_release
         uses: ncipollo/release-action@v1
         with:
-          name: Neeto-Vue New v0.0.6
+          name: Neeto-Vue
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "artifacts/*"
           draft: true
