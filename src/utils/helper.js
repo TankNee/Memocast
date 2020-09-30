@@ -196,6 +196,12 @@ function getFileNameWithExt (filePath) {
 
   return fileName
 }
+
+/**
+ * 兼容Windows与MacOS的Ctrl键判断
+ * @param event
+ * @returns {boolean}
+ */
 function isCtrl (event) {
   if (Platform.is.mac) {
     if (event.metaKey && !event.ctrlKey) {
@@ -223,6 +229,78 @@ function filterParentElement (dom, root, filterFn, self = false) {
   }
   return null
 }
+
+/**
+ * 更新笔记目录数据结构
+ * @param {HTMLElement} editorRootElement
+ */
+function updateContentsList (editorRootElement) {
+  const list = []
+  for (let i = 0; i < editorRootElement.childElementCount; i++) {
+    const tagName = editorRootElement.children[i].tagName.toLowerCase()
+    if (/^h[1-6]$/.test(tagName)) {
+      const rank = parseInt(tagName[1], 10)
+      if (list.length) {
+        let target = list
+        for (let j = 1; j < rank; j++) {
+          if (target.length === 0) {
+            target.push({
+              key: `${i}-${rank}`,
+              children: [],
+              open: true
+            })
+          } else if (!target[target.length - 1].children) {
+            target[target.length - 1].children = []
+          }
+          target = target[target.length - 1].children
+        }
+        target.push({
+          key: `${i}-${rank}`,
+          label: editorRootElement.children[i].innerText.replace(/^#+\s/, ''),
+          element: editorRootElement.children[i],
+          open: true,
+          selectable: true
+        })
+      } else {
+        list.push({})
+        let item = list[list.length - 1]
+        for (let j = 0; j < rank; j++) {
+          if (j === rank - 1) {
+            item.key = `${i}-${j}`
+            item.label = editorRootElement.children[i].innerText.replace(
+              /^#+\s/,
+              ''
+            )
+            item.element = editorRootElement.children[i]
+          } else {
+            item.key = `${i}-${j}`
+            item.children = [{}]
+            item = item.children[0]
+          }
+          item.open = true
+          item.selectable = true
+        }
+      }
+    }
+  }
+  return list
+}
+
+/**
+ * 根据key查找node对象
+ * @param {node[]} nodeList
+ * @param {string} key
+ * @returns {null|*}
+ */
+function findNodeByNodeKey (nodeList, key) {
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i].key === key) return nodeList[i]
+    if (!nodeList[i].children) continue
+    const node = findNodeByNodeKey(nodeList[i].children, key)
+    if (node) return node
+  }
+  return null
+}
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
@@ -232,7 +310,9 @@ export default {
   embedMDNote,
   displayDateElegantly,
   createFileSelectDialog,
+  updateContentsList,
   getFileNameWithExt,
   isCtrl,
-  filterParentElement
+  filterParentElement,
+  findNodeByNodeKey
 }

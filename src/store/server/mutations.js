@@ -38,7 +38,13 @@ export default {
     return state
   },
   [types.UPDATE_CURRENT_NOTE] (state, payload) {
-    state.currentNote = payload
+    if (payload.html) {
+      state.currentNote = payload
+    } else {
+      const { currentNote } = state
+      currentNote.info = payload
+      state.currentNote = currentNote
+    }
     return state
   },
   [types.SAVE_TO_LOCAL_STORE_SYNC] (state, [key, value]) {
@@ -63,5 +69,8 @@ export default {
   },
   [types.CLEAR_CURRENT_NOTE] (state) {
     state.currentNote = {}
+  },
+  [types.UPDATE_CONTENTS_LIST] (state, list) {
+    state.contentsList = list
   }
 }

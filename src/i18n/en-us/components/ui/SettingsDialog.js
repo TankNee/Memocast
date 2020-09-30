@@ -8,7 +8,7 @@ export default {
   darkMode: 'Dark Mode',
   markdownOnly: 'Only Show Markdown Note',
   imageUploadService: 'Image Upload Service',
-  wizOfficialImageUploadService: 'WizNote Official Image Upload Service',
+  wizOfficialImageUploadService: 'WizNote Official Image Upload Service (unavailable)',
   customWebUploadService: 'Custom Web Image Upload Service',
-  smmsImageUploadService: 'SMMS Image Upload Service'
+  smmsImageUploadService: 'SMMS Image Upload Service (unavailable)'
 }

@@ -8,7 +8,7 @@ export default {
   darkMode: '暗黑模式',
   markdownOnly: '只显示markdown笔记',
   imageUploadService: '图片上传服务',
-  wizOfficialImageUploadService: '为知官方图片上传服务',
+  wizOfficialImageUploadService: '为知官方图片上传服务 （暂时不可用）',
   customWebUploadService: '自定义Web图片服务器',
-  smmsImageUploadService: 'SMMS图片上传服务'
+  smmsImageUploadService: 'SMMS图片上传服务 （暂时不可用）'
 }

@@ -13,6 +13,7 @@
       <template v-slot:after>
         <div>
           <q-scroll-area
+            ref="vditorScrollArea"
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
             class="exclude-header overflow-hidden"
@@ -30,10 +31,10 @@
           <q-icon
             name="format_align_center"
             class="absolute-top-right fab-icon cursor-pointer material-icons-round"
-            @click="refreshCurrentNote"
+            @click="() => $refs.outlineDrawer.toggle()"
             size="24px"
             color="#26A69A"
-            v-if="dataLoaded"
+            v-if="dataLoaded && contentsListLoaded"
             v-ripple
           />
           <q-icon
@@ -46,6 +47,7 @@
             v-ripple
           />
         </div>
+        <NoteOutline ref="outlineDrawer" />
       </template>
     </q-splitter>
   </q-page>
@@ -58,11 +60,12 @@ import bus from 'components/bus'
 import events from 'src/constants/events'
 import helper from 'src/utils/helper'
 import { createNamespacedHelpers } from 'vuex'
-const { mapGetters } = createNamespacedHelpers('server')
+import NoteOutline from 'components/NoteOutline'
+const { mapGetters, mapState } = createNamespacedHelpers('server')
 // import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
-  components: { Vditor, NoteList },
+  components: { NoteOutline, Vditor, NoteList },
   computed: {
     thumbStyle () {
       return {
@@ -78,10 +81,13 @@ export default {
       }
     },
     dataLoaded: function () {
-      console.log(this.currentNote)
       return !helper.isNullOrEmpty(this.currentNote)
     },
-    ...mapGetters(['currentNote'])
+    contentsListLoaded: function () {
+      return !!this.contentsList.length
+    },
+    ...mapGetters(['currentNote']),
+    ...mapState(['contentsList'])
   },
   data () {
     return {
@@ -92,6 +98,16 @@ export default {
     refreshCurrentNote: function () {
       bus.$emit(events.SAVE_NOTE)
     }
+  },
+  mounted () {
+    const that = this
+    bus.$on(events.SCROLL_TO_HEADER, (item) => {
+      if (!item.element) return
+      const rect = item.element.getBoundingClientRect()
+      const top = that.$refs.vditorScrollArea.getScrollPosition() +
+        rect.top - window.innerHeight * 0.065
+      that.$refs.vditorScrollArea.setScrollPosition(top, 300)
+    })
   }
 }
 </script>
