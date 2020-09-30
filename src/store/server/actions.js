@@ -167,7 +167,7 @@ export default {
     const { kbGuid, docGuid, category, title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
-    await api.KnowledgeBaseApi.updateNote({
+    const result = await api.KnowledgeBaseApi.updateNote({
       kbGuid,
       docGuid,
       data: {
@@ -186,6 +186,7 @@ export default {
       icon: 'check'
     })
     await this.dispatch('server/getCategoryNotes')
+    commit(types.UPDATE_CURRENT_NOTE, result)
   },
   /**
    * 创建笔记
@@ -369,5 +370,9 @@ export default {
     if (isCurrentCategory || helper.isNullOrEmpty(currentCategory)) {
       await this.dispatch('server/getCategoryNotes')
     }
+  },
+  updateContentsList ({ commit }, editorRootElement) {
+    const list = helper.updateContentsList(editorRootElement)
+    commit(types.UPDATE_CONTENTS_LIST, list)
   }
 }

@@ -12,7 +12,6 @@
       :class="`exclude-header note-list${$q.dark.isActive ? '-dark' : ''}`"
     >
       <q-tree
-        ref="categoryTree"
         :nodes="categories"
         node-key="key"
         selected-color="primary"

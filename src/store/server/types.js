@@ -9,5 +9,6 @@ export default {
   UPDATE_CURRENT_CATEGORY: 'update_current_category',
   UPDATE_CURRENT_NOTE_LOADING_STATE: 'update_current_note_loading_state',
   UPDATE_CURRENT_NOTES_LOADING_STATE: 'update_current_notes_loading_state',
-  CLEAR_CURRENT_NOTE: 'clear_current_note'
+  CLEAR_CURRENT_NOTE: 'clear_current_note',
+  UPDATE_CONTENTS_LIST: 'update_contents_list'
 }

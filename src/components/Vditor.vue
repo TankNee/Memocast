@@ -5,6 +5,7 @@
       class="fit"
       style="max-width: 80%"
       v-show="!isCurrentNoteLoading && dataLoaded"
+      v-close-popup
     ></div>
     <Loading :visible="isCurrentNoteLoading" />
 <!--    <VditorContextMenu />-->
@@ -135,13 +136,14 @@ export default {
       }
       return false
     },
-    ...mapServerActions(['updateNote', 'uploadImage'])
+    ...mapServerActions(['updateNote', 'uploadImage', 'updateContentsList'])
   },
   watch: {
     currentNote: function (currentData) {
       try {
         this.contentEditor.setValue(currentData, true)
         this.contentEditor.focus()
+        this.updateContentsList(this.contentEditor.vditor.ir.element)
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
         debugLogger.Error(e.message)
