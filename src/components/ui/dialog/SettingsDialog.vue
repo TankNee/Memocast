@@ -131,11 +131,11 @@ export default {
     return {
       tab: 'general',
       splitterModel: 20,
-      imageUploadServiceOptions: [
-        this.$t('wizOfficialImageUploadService'),
-        this.$t('customWebUploadService'),
-        this.$t('smmsImageUploadService')
-      ],
+      // imageUploadServiceOptions: [
+      //   this.$t('wizOfficialImageUploadService'),
+      //   this.$t('customWebUploadService'),
+      //   this.$t('smmsImageUploadService')
+      // ],
       imageUploadServiceOptionsPlain: [
         'wizOfficialImageUploadService',
         'customWebUploadService',
@@ -147,6 +147,13 @@ export default {
     ...mapState(['language', 'darkMode', 'markdownOnly', 'imageUploadService']),
     languageOptions: function () {
       return i18n.availableLocales.map(l => i18n.t(l))
+    },
+    imageUploadServiceOptions: function () {
+      return [
+        this.$t('wizOfficialImageUploadService'),
+        this.$t('customWebUploadService'),
+        this.$t('smmsImageUploadService')
+      ]
     }
   },
   methods: {
