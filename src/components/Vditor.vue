@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center" >
+  <div class="flex justify-center">
     <div
       id="vditor"
       class="fit"
@@ -7,15 +7,12 @@
       v-show="!isCurrentNoteLoading && dataLoaded"
       v-close-popup
     ></div>
-    <Loading :visible="isCurrentNoteLoading" />
-<!--    <VditorContextMenu />-->
   </div>
 </template>
 
 <script>
 import Vditor from 'vditor'
 import 'src/css/vditor.css'
-import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from '../utils/debugLogger'
 import helper from '../utils/helper'
@@ -30,7 +27,6 @@ const {
 const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'Vditor',
-  components: { Loading },
   props: {
     data: {
       type: String,
@@ -42,7 +38,7 @@ export default {
       return !helper.isNullOrEmpty(this.currentNote)
     },
     ...mapServerGetters(['currentNote', 'uploadImageUrl']),
-    ...mapServerState(['isCurrentNoteLoading']),
+    ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
     ...mapClientState([
       'darkMode',
       'apiServerUrl',
@@ -89,9 +85,15 @@ export default {
         },
         debugger: process.env.DEV,
         after: () => {
-          if (this.contentEditor?.vditor?.element) {
-            this.contentEditor.vditor.element.addEventListener('mousedown', that.linkClickHandler)
+          if (that.contentEditor?.vditor?.element) {
+            that.contentEditor.vditor.element.addEventListener(
+              'mousedown',
+              that.linkClickHandler
+            )
           }
+        },
+        input: () => {
+          that.updateContentsList(that.contentEditor.vditor.ir.element)
         }
       })
     },
@@ -118,14 +120,31 @@ export default {
       })
     },
     linkClickHandler: function (e) {
-      const LinkElement = helper.filterParentElement(e.target, this.contentEditor.vditor.element, (dom) => dom.getAttribute('data-type') === 'a', true)
+      const LinkElement = helper.filterParentElement(
+        e.target,
+        this.contentEditor.vditor.element,
+        dom => dom.getAttribute('data-type') === 'a',
+        true
+      )
       if (LinkElement) {
         const afterStyle = window.getComputedStyle(LinkElement, ':after')
-        if (helper.isCtrl(e) || (e.target === LinkElement && e.offsetX >= parseInt(afterStyle.getPropertyValue('left'), 10) && e.offsetY >= parseInt(afterStyle.getPropertyValue('top'), 10))) {
-          const urlElement = LinkElement.querySelector('.vditor-ir__marker--link')
+        if (
+          helper.isCtrl(e) ||
+          (e.target === LinkElement &&
+            e.offsetX >= parseInt(afterStyle.getPropertyValue('left'), 10) &&
+            e.offsetY >= parseInt(afterStyle.getPropertyValue('top'), 10))
+        ) {
+          const urlElement = LinkElement.querySelector(
+            '.vditor-ir__marker--link'
+          )
           if (urlElement.innerText) {
             try {
-              window.open(urlElement.innerText)
+              if (urlElement.innerText.indexOf('http') !== -1) {
+                window.open(urlElement.innerText)
+              } else if (urlElement.innerText.indexOf('#') === 0) {
+                const item = helper.findNodeByNodeLabel(this.contentsList, urlElement.innerText.replace('#', ''))
+                bus.$emit(events.SCROLL_TO_HEADER, item)
+              }
             } catch (err) {
               console.error(err)
             }

@@ -25,7 +25,7 @@
             class="absolute-center material-icons-round"
             size="128px"
             color="#494949"
-            v-if="!dataLoaded"
+            v-if="!isCurrentNoteLoading && !dataLoaded"
             v-ripple
           />
           <q-icon
@@ -48,6 +48,9 @@
           />
         </div>
         <NoteOutline ref="outlineDrawer" />
+        <q-inner-loading :showing="isCurrentNoteLoading">
+          <q-spinner size="80px" color="primary" />
+        </q-inner-loading>
       </template>
     </q-splitter>
   </q-page>
@@ -87,7 +90,7 @@ export default {
       return !!this.contentsList.length
     },
     ...mapGetters(['currentNote']),
-    ...mapState(['contentsList'])
+    ...mapState(['contentsList', 'isCurrentNoteLoading'])
   },
   data () {
     return {
@@ -101,11 +104,13 @@ export default {
   },
   mounted () {
     const that = this
-    bus.$on(events.SCROLL_TO_HEADER, (item) => {
-      if (!item.element) return
+    bus.$on(events.SCROLL_TO_HEADER, item => {
+      if (!item || !item.element || !that.$refs.vditorScrollArea) return
       const rect = item.element.getBoundingClientRect()
-      const top = that.$refs.vditorScrollArea.getScrollPosition() +
-        rect.top - window.innerHeight * 0.065
+      const top =
+        that.$refs.vditorScrollArea.getScrollPosition() +
+        rect.top -
+        window.innerHeight * 0.065
       that.$refs.vditorScrollArea.setScrollPosition(top, 300)
     })
   }

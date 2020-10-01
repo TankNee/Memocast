@@ -271,14 +271,16 @@ function updateContentsList (editorRootElement) {
               /^#+\s/,
               ''
             )
+            item.open = true
+            item.selectable = true
             item.element = editorRootElement.children[i]
           } else {
             item.key = `${i}-${j}`
+            item.open = true
+            item.selectable = true
             item.children = [{}]
             item = item.children[0]
           }
-          item.open = true
-          item.selectable = true
         }
       }
     }
@@ -301,6 +303,21 @@ function findNodeByNodeKey (nodeList, key) {
   }
   return null
 }
+/**
+ * 根据label查找node对象
+ * @param {node[]} nodeList
+ * @param {string} label
+ * @returns {null|*}
+ */
+function findNodeByNodeLabel (nodeList, label) {
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i].label.replace(/\s/g, '') === label) return nodeList[i]
+    if (!nodeList[i].children) continue
+    const node = findNodeByNodeLabel(nodeList[i].children, label)
+    if (node) return node
+  }
+  return null
+}
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
@@ -314,5 +331,6 @@ export default {
   getFileNameWithExt,
   isCtrl,
   filterParentElement,
-  findNodeByNodeKey
+  findNodeByNodeKey,
+  findNodeByNodeLabel
 }

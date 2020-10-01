@@ -125,6 +125,12 @@ body.body--dark {
   width: 500px !important;
   max-width: 50vw;
 }
+.neeto-icon {
+  color: #000000;
+}
+.neeto-icon-dark {
+  color: #ffffff;
+}
 span[data-type='a']:not(.vditor-ir__node--expand) {
   padding-right: 25px;
   position: relative;

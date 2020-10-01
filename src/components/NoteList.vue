@@ -27,6 +27,7 @@
       <q-card
         class="absolute-bottom bg-transparent full-width no-shadow no-padding no-border-radius note-list-bottom text-center"
         v-ripple
+        v-if="isLogin"
       >
         <span>{{category}}</span>
       </q-card>
