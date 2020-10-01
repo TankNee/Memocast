@@ -301,7 +301,22 @@ function findNodeByNodeKey (nodeList, key) {
     const node = findNodeByNodeKey(nodeList[i].children, key)
     if (node) return node
   }
-  return null
+  return {}
+}
+/**
+ * 根据label查找node对象
+ * @param {node[]} nodeList
+ * @param {string} label
+ * @returns {null|*}
+ */
+function findNodeByNodeLabel (nodeList, label) {
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i].label.replace(/\s/g, '') === label) return nodeList[i]
+    if (!nodeList[i].children) continue
+    const node = findNodeByNodeLabel(nodeList[i].children, label)
+    if (node) return node
+  }
+  return {}
 }
 export default {
   isNullOrEmpty,
@@ -316,5 +331,6 @@ export default {
   getFileNameWithExt,
   isCtrl,
   filterParentElement,
-  findNodeByNodeKey
+  findNodeByNodeKey,
+  findNodeByNodeLabel
 }
