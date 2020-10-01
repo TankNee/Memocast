@@ -9,6 +9,7 @@
         <NoteList/>
       </q-tab-panel>
       <q-tab-panel name="noteOutline" class="no-padding bg-transparent">
+        <NoteOutline />
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -16,9 +17,10 @@
 
 <script>
 import NoteList from './NoteList'
+import NoteOutline from 'components/NoteOutline'
 export default {
   name: 'Sidebar',
-  components: { NoteList },
+  components: { NoteOutline, NoteList },
   data () {
     return {
       tab: 'noteList'

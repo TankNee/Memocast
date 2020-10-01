@@ -7,15 +7,13 @@
       v-show="!isCurrentNoteLoading && dataLoaded"
       v-close-popup
     ></div>
-    <Loading :visible="isCurrentNoteLoading" />
-<!--    <VditorContextMenu />-->
+
   </div>
 </template>
 
 <script>
 import Vditor from 'vditor'
 import 'src/css/vditor.css'
-import Loading from './ui/Loading'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from '../utils/debugLogger'
 import helper from '../utils/helper'
@@ -30,7 +28,6 @@ const {
 const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'Vditor',
-  components: { Loading },
   props: {
     data: {
       type: String,
@@ -89,9 +86,12 @@ export default {
         },
         debugger: process.env.DEV,
         after: () => {
-          if (this.contentEditor?.vditor?.element) {
-            this.contentEditor.vditor.element.addEventListener('mousedown', that.linkClickHandler)
+          if (that.contentEditor?.vditor?.element) {
+            that.contentEditor.vditor.element.addEventListener('mousedown', that.linkClickHandler)
           }
+        },
+        input: () => {
+          that.updateContentsList(that.contentEditor.vditor.ir.element)
         }
       })
     },

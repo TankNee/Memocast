@@ -259,7 +259,8 @@ function updateContentsList (editorRootElement) {
           label: editorRootElement.children[i].innerText.replace(/^#+\s/, ''),
           element: editorRootElement.children[i],
           open: true,
-          selectable: true
+          selectable: true,
+          expandable: true
         })
       } else {
         list.push({})
@@ -279,6 +280,7 @@ function updateContentsList (editorRootElement) {
           }
           item.open = true
           item.selectable = true
+          item.expandable = true
         }
       }
     }

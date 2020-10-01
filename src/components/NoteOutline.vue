@@ -21,6 +21,7 @@
         selected-color="primary"
         class="non-selectable"
         :selected.sync="selected"
+        :expanded.sync="expanded"
         @update:selected="v => {
             $refs.drawer.hide()
             nodeClickHandler(v)
@@ -29,6 +30,14 @@
       />
 <!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
     </q-scroll-area>
+    <q-icon
+      name="close"
+      :class="`absolute-bottom-right fab-icon cursor-pointer material-icons-round neeto-icon${$q.dark.isActive ? '-dark' : ''}`"
+      @click="$refs.drawer.hide()"
+      size="24px"
+      color="#26A69A"
+      v-ripple
+    />
   </q-drawer>
 </template>
 
@@ -59,7 +68,8 @@ export default {
   },
   data () {
     return {
-      selected: ''
+      selected: '',
+      expanded: []
     }
   },
   methods: {
