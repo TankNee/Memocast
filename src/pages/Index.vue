@@ -104,11 +104,13 @@ export default {
   },
   mounted () {
     const that = this
-    bus.$on(events.SCROLL_TO_HEADER, (item) => {
-      if (!item.element || !that.$refs.vditorScrollArea) return
+    bus.$on(events.SCROLL_TO_HEADER, item => {
+      if (!item || !item.element || !that.$refs.vditorScrollArea) return
       const rect = item.element.getBoundingClientRect()
-      const top = that.$refs.vditorScrollArea.getScrollPosition() +
-        rect.top - window.innerHeight * 0.065
+      const top =
+        that.$refs.vditorScrollArea.getScrollPosition() +
+        rect.top -
+        window.innerHeight * 0.065
       that.$refs.vditorScrollArea.setScrollPosition(top, 300)
     })
   }

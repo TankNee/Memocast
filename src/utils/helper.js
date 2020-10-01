@@ -259,8 +259,7 @@ function updateContentsList (editorRootElement) {
           label: editorRootElement.children[i].innerText.replace(/^#+\s/, ''),
           element: editorRootElement.children[i],
           open: true,
-          selectable: true,
-          expandable: true
+          selectable: true
         })
       } else {
         list.push({})
@@ -272,15 +271,16 @@ function updateContentsList (editorRootElement) {
               /^#+\s/,
               ''
             )
+            item.open = true
+            item.selectable = true
             item.element = editorRootElement.children[i]
           } else {
             item.key = `${i}-${j}`
+            item.open = true
+            item.selectable = true
             item.children = [{}]
             item = item.children[0]
           }
-          item.open = true
-          item.selectable = true
-          item.expandable = true
         }
       }
     }
@@ -301,7 +301,7 @@ function findNodeByNodeKey (nodeList, key) {
     const node = findNodeByNodeKey(nodeList[i].children, key)
     if (node) return node
   }
-  return {}
+  return null
 }
 /**
  * 根据label查找node对象
@@ -316,7 +316,7 @@ function findNodeByNodeLabel (nodeList, label) {
     const node = findNodeByNodeLabel(nodeList[i].children, label)
     if (node) return node
   }
-  return {}
+  return null
 }
 export default {
   isNullOrEmpty,

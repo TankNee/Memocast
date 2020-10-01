@@ -23,7 +23,6 @@
         :selected.sync="selected"
         :expanded.sync="expanded"
         @update:selected="v => {
-            $refs.drawer.hide()
             nodeClickHandler(v)
           }"
         default-expand-all
