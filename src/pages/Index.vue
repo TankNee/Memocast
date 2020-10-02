@@ -31,10 +31,10 @@
           <q-icon
             name="format_align_center"
             class="absolute-top-right fab-icon cursor-pointer material-icons-round"
-            @click="() => $refs.outlineDrawer.toggle()"
+            @click="() => $refs.outlineDrawer.show()"
             size="24px"
             color="#26A69A"
-            v-if="dataLoaded && contentsListLoaded"
+            v-show="dataLoaded && contentsListLoaded && !isOutlineShow"
             v-ripple
           />
           <q-icon
@@ -43,11 +43,11 @@
             @click="refreshCurrentNote"
             size="24px"
             color="#26A69A"
-            v-if="dataLoaded"
+            v-show="dataLoaded && !isOutlineShow"
             v-ripple
           />
         </div>
-        <NoteOutline ref="outlineDrawer" />
+        <NoteOutline ref="outlineDrawer" :change="outlineDrawerChangeHandler" />
         <Loading :visible="isCurrentNoteLoading" />
       </template>
     </q-splitter>
@@ -93,12 +93,16 @@ export default {
   },
   data () {
     return {
-      splitterModel: 300
+      splitterModel: 300,
+      isOutlineShow: false
     }
   },
   methods: {
     refreshCurrentNote: function () {
       bus.$emit(events.SAVE_NOTE)
+    },
+    outlineDrawerChangeHandler: function (state) {
+      this.isOutlineShow = state
     }
   },
   mounted () {
