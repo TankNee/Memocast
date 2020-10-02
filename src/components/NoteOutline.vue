@@ -8,7 +8,7 @@
     overlay
     elevated
     side="right"
-    class="transparent"
+    class="bg-blur"
   >
     <q-scroll-area
       :thumb-style="thumbStyle"
@@ -18,22 +18,21 @@
       <q-tree
         :nodes="contentsList"
         node-key="key"
+        default-expand-all
         selected-color="primary"
-        class="non-selectable"
+        class="non-selectable z-max"
         :selected.sync="selected"
         :expanded.sync="expanded"
         @update:selected="v => {
             nodeClickHandler(v)
           }"
-        default-expand-all
-        no-connectors
       />
 <!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
     </q-scroll-area>
     <q-icon
       name="close"
-      :class="`absolute-bottom-right fab-icon cursor-pointer material-icons-round neeto-icon${$q.dark.isActive ? '-dark' : ''}`"
-      @click="$refs.drawer.hide()"
+      :class="`absolute-bottom-right fab-icon cursor-pointer material-icons-round neeto-icon${$q.dark.isActive ? '-dark' : ''} z-max`"
+      @click="hide"
       size="24px"
       color="#26A69A"
       v-ripple
@@ -49,18 +48,22 @@ import events from 'src/constants/events'
 const { mapGetters, mapState } = createNamespacedHelpers('server')
 export default {
   name: 'NoteOutline',
+  props: {
+    change: {
+      types: Function,
+      default: () => {}
+    }
+  },
   computed: {
     thumbStyle () {
       return {
-        backgroundColor: '#E8ECF1',
-        width: '7px',
-        opacity: 0.75
+        display: 'none'
       }
     },
 
     barStyle () {
       return {
-        width: '7px'
+        display: 'none'
       }
     },
     ...mapGetters(['currentNote']),
@@ -73,11 +76,13 @@ export default {
     }
   },
   methods: {
-    toggle: function () {
-      this.$refs.drawer.toggle()
+    show: function () {
+      this.$refs.drawer.show()
+      this.change(true)
     },
     hide: function () {
       this.$refs.drawer.hide()
+      this.change(false)
     },
     nodeClickHandler: function (v) {
       const node = helper.findNodeByNodeKey(this.contentsList, v)
