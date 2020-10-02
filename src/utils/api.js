@@ -226,6 +226,21 @@ const KnowledgeBaseApi = {
       params.data
     )
   },
+  /**
+   * 搜索笔记
+   * @returns {Promise<*>}
+   * @param {{data:String}} params
+   */
+  async searchNote (params) {
+    return await execRequest(
+      'GET',
+      `${KnowledgeBaseBaseUrl}/ks/note/search/${params.kbGuid}`,
+      null,
+      null,
+      { params: params.data },
+      true
+    )
+  },
 
   /**
    * 上传图片

@@ -49,6 +49,7 @@
       ref="searchInput"
       style="width: 100px"
       spellcheck="false"
+      @keydown.enter="searchNoteHandler"
     >
       <template v-slot:append>
         <q-icon
@@ -103,6 +104,7 @@ import SettingsDialog from './ui/dialog/SettingsDialog'
 import SearchDialog from './ui/dialog/SearchDialog'
 import CategoryDrawer from './ui/CategoryDrawer'
 import { createNamespacedHelpers } from 'vuex'
+import helper from 'src/utils/helper'
 const {
   mapState: mapServerState,
   mapGetters: mapServerGetters,
@@ -162,7 +164,11 @@ export default {
           })
       }
     },
-    ...mapServerActions(['logout'])
+    searchNoteHandler: function () {
+      if (helper.isNullOrEmpty(this.searchText)) return
+      this.searchNote(this.searchText)
+    },
+    ...mapServerActions(['logout', 'searchNote'])
   },
   mounted () {
     if (!this.autoLogin && !this.isLogin) {

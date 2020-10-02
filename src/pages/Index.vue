@@ -48,9 +48,7 @@
           />
         </div>
         <NoteOutline ref="outlineDrawer" />
-        <q-inner-loading :showing="isCurrentNoteLoading">
-          <q-spinner size="80px" color="primary" />
-        </q-inner-loading>
+        <Loading :visible="isCurrentNoteLoading" />
       </template>
     </q-splitter>
   </q-page>
@@ -64,11 +62,12 @@ import events from 'src/constants/events'
 import helper from 'src/utils/helper'
 import { createNamespacedHelpers } from 'vuex'
 import NoteOutline from 'components/NoteOutline'
+import Loading from 'components/ui/Loading'
 const { mapGetters, mapState } = createNamespacedHelpers('server')
 // import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
-  components: { NoteOutline, Vditor, NoteList },
+  components: { Loading, NoteOutline, Vditor, NoteList },
   computed: {
     thumbStyle () {
       return {

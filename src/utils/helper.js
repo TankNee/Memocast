@@ -238,20 +238,25 @@ function updateContentsList (editorRootElement) {
   const list = []
   for (let i = 0; i < editorRootElement.childElementCount; i++) {
     const tagName = editorRootElement.children[i].tagName.toLowerCase()
+    // 如果是标题类的标签，那么就进行解析
     if (/^h[1-6]$/.test(tagName)) {
+      // 解出标签的等级，h1到h6
       const rank = parseInt(tagName[1], 10)
       if (list.length) {
         let target = list
         for (let j = 1; j < rank; j++) {
           if (target.length === 0) {
-            target.push({
-              key: `${i}-${rank}`,
-              children: [],
-              open: true
-            })
+            // target.push({
+            //   key: `${i}-${j}`,
+            //   label: `${i}-${j}`,
+            //   children: [],
+            //   open: true
+            // })
+            break
           } else if (!target[target.length - 1].children) {
             target[target.length - 1].children = []
           }
+          // 放到最后一个元素的子元素集合中
           target = target[target.length - 1].children
         }
         target.push({
@@ -262,25 +267,28 @@ function updateContentsList (editorRootElement) {
           selectable: true
         })
       } else {
+        // 处理第一个标题元素
         list.push({})
-        let item = list[list.length - 1]
+        const item = list[list.length - 1]
         for (let j = 0; j < rank; j++) {
           if (j === rank - 1) {
+            // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
             item.key = `${i}-${j}`
-            item.label = editorRootElement.children[i].innerText.replace(
+            item.label = ' '.repeat(j) + editorRootElement.children[i].innerText.replace(
               /^#+\s/,
               ''
             )
             item.open = true
             item.selectable = true
             item.element = editorRootElement.children[i]
-          } else {
-            item.key = `${i}-${j}`
-            item.open = true
-            item.selectable = true
-            item.children = [{}]
-            item = item.children[0]
           }
+          // else {
+          //   item.key = `${i}-${j}`
+          //   item.label = item.key
+          //   item.open = true
+          //   item.children = [{}]
+          //   item = item.children[0]
+          // }
         }
       }
     }
