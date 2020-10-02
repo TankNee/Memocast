@@ -371,6 +371,18 @@ export default {
       await this.dispatch('server/getCategoryNotes')
     }
   },
+  async searchNote ({ commit, state }, searchText) {
+    const { kbGuid } = state
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    const result = await api.KnowledgeBaseApi.searchNote({
+      data: {
+        ss: searchText
+      },
+      kbGuid
+    })
+    commit(types.UPDATE_CURRENT_NOTES, result)
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+  },
   updateContentsList ({ commit }, editorRootElement) {
     const list = helper.updateContentsList(editorRootElement)
     commit(types.UPDATE_CONTENTS_LIST, list)

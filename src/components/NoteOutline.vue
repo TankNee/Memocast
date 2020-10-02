@@ -26,6 +26,7 @@
             nodeClickHandler(v)
           }"
         default-expand-all
+        no-connectors
       />
 <!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
     </q-scroll-area>

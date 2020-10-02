@@ -2,7 +2,7 @@
   <q-inner-loading :showing="visible">
     <q-spinner
       color="primary"
-      size="3em"
+      size="5em"
     />
   </q-inner-loading>
 </template>
