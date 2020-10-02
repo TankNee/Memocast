@@ -43,20 +43,15 @@ body.body--dark {
   font-weight: bold;
 }
 .bg-blur {
-  /*webkit-filter: blur(10px); !* Chrome, Opera *!*/
-  /*-moz-filter: blur(10px);*/
-  /*-ms-filter: blur(10px);*/
-  /*filter: blur(10px);*/
   position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
   z-index: 99;
   background-color: #fafafa;
-  backdrop-filter: blur(10px);
-  opacity: 0.8;
+  backdrop-filter: blur(8px);
+  opacity: 0.9;
   box-shadow: 0px 1px 16px 0px rgba(0, 0, 0, 0.31);
-  /*background: rgba(7, 7, 7, 0.6);*/
 }
 .tooltip {
   font-size: 17px;

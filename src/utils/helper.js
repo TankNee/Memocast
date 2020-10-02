@@ -245,12 +245,11 @@ function updateContentsList (editorRootElement) {
       if (list.length) {
         let target = list
         for (let j = 1; j < rank; j++) {
-          if (target.length === 0) {
+          if (target.length === 0 || rank === target[0].rank) {
             // target.push({
             //   key: `${i}-${j}`,
             //   label: `${i}-${j}`,
             //   children: [],
-            //   open: true
             // })
             break
           } else if (!target[target.length - 1].children) {
@@ -263,8 +262,8 @@ function updateContentsList (editorRootElement) {
           key: `${i}-${rank}`,
           label: editorRootElement.children[i].innerText.replace(/^#+\s/, ''),
           element: editorRootElement.children[i],
-          open: true,
-          selectable: true
+          selectable: true,
+          rank: rank
         })
       } else {
         // 处理第一个标题元素
@@ -274,12 +273,12 @@ function updateContentsList (editorRootElement) {
           if (j === rank - 1) {
             // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
             item.key = `${i}-${j}`
-            item.label = ' '.repeat(j) + editorRootElement.children[i].innerText.replace(
+            item.label = editorRootElement.children[i].innerText.replace(
               /^#+\s/,
               ''
             )
-            item.open = true
             item.selectable = true
+            item.rank = rank
             item.element = editorRootElement.children[i]
           }
           // else {
