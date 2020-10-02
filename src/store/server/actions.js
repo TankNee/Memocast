@@ -364,7 +364,7 @@ export default {
         title: isCurrentCategory ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${title.indexOf('.md') !== -1 ? '.md' : ''}` : title,
         owner: userId,
         html,
-        type: category === 'Lite' ? 'lite/markdown' : type
+        type: category === '/Lite/' ? 'lite/markdown' : type
       }
     })
     if (isCurrentCategory || helper.isNullOrEmpty(currentCategory)) {
