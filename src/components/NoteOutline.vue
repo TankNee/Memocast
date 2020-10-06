@@ -23,15 +23,21 @@
         class="non-selectable z-max"
         :selected.sync="selected"
         :expanded.sync="expanded"
-        @update:selected="v => {
+        @update:selected="
+          v => {
             nodeClickHandler(v)
-          }"
+          }
+        "
       />
-<!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
+      <!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
     </q-scroll-area>
     <q-icon
       name="close"
-      :class="`absolute-bottom-right fab-icon cursor-pointer material-icons-round neeto-icon${$q.dark.isActive ? '-dark' : ''} z-max`"
+      :class="
+        `absolute-bottom-right fab-icon cursor-pointer material-icons-round neeto-icon${
+          $q.dark.isActive ? '-dark' : ''
+        } z-max`
+      "
       @click="hide"
       size="24px"
       color="#26A69A"
@@ -88,6 +94,14 @@ export default {
       const node = helper.findNodeByNodeKey(this.contentsList, v)
       bus.$emit(events.SCROLL_TO_HEADER, node)
     }
+  },
+  mounted () {
+    const that = this
+    document.addEventListener('click', (e) => {
+      console.log(e)
+      if (e.path[1].className.indexOf('q-tree__node') !== -1) return
+      that.hide()
+    })
   }
 }
 </script>

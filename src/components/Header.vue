@@ -36,7 +36,7 @@
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-green-7 text-white shadow-4 text-h7"
-      >{{ $t('login') }}
+      >{{ isLogin ? $t('logout') : $t('login') }}
       </q-tooltip>
     </q-avatar>
     <q-input

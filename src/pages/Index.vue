@@ -20,6 +20,11 @@
           >
             <Vditor />
           </q-scroll-area>
+          <transition-group
+            appear
+            enter-active-class="animated fadeIn"
+            leave-active-class="animated fadeOut"
+          >
           <q-icon
             name="all_inbox"
             class="absolute-center material-icons-round"
@@ -27,15 +32,17 @@
             color="#494949"
             v-if="!isCurrentNoteLoading && !dataLoaded"
             v-ripple
+            key="all_inbox"
           />
           <q-icon
             name="format_align_center"
             class="absolute-top-right fab-icon cursor-pointer material-icons-round"
-            @click="() => $refs.outlineDrawer.show()"
+            @click.stop="$refs.outlineDrawer.show"
             size="24px"
             color="#26A69A"
             v-show="dataLoaded && contentsListLoaded && !isOutlineShow"
             v-ripple
+            key="format_align_center"
           />
           <q-icon
             name="cached"
@@ -45,7 +52,9 @@
             color="#26A69A"
             v-show="dataLoaded && !isOutlineShow"
             v-ripple
+            key="cached"
           />
+          </transition-group>
         </div>
         <NoteOutline ref="outlineDrawer" :change="outlineDrawerChangeHandler" />
         <Loading :visible="isCurrentNoteLoading" />

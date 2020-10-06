@@ -40,12 +40,7 @@ export default {
     ...mapServerGetters(['currentNote', 'uploadImageUrl']),
     ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
     ...mapClientState([
-      'darkMode',
-      'apiServerUrl',
-      'postParam',
-      'jsonPath',
-      'customHeader',
-      'customBody'
+      'darkMode'
     ])
   },
   data () {
