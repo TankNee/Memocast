@@ -798,6 +798,7 @@
   line-height: 28px;
   font-size: 16px;
   word-break: break-word;
+  padding-bottom: 30px;
 }
 .vditor-reset--anchor {
   padding-left: 20px;

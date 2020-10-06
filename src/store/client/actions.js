@@ -1,6 +1,7 @@
 import types from 'src/store/client/types'
 import fileStorage from 'src/utils/fileStorage'
 import { Dark } from 'quasar'
+import api from 'src/utils/api'
 
 export default {
   initClientStore ({ commit, state }) {
@@ -20,5 +21,8 @@ export default {
   updateStateAndStore ({ commit }, options) {
     commit(types.UPDATE_STATES, options)
     commit(types.SAVE_ITEMS_TO_LOCAL_STORE_SYNC, options)
+  },
+  async getLatestVersion () {
+    return await api.ThirdPartApi.getLatestVersion()
   }
 }

@@ -20,7 +20,7 @@ if (process.env.PROD) {
   global.__statics = __dirname
 }
 
-let mainWindow
+let mainWindow, forceQuit
 const isMac = process.platform === 'darwin'
 
 function createWindow () {
@@ -57,6 +57,16 @@ function createWindow () {
 
   mainWindow.loadURL(process.env.APP_URL)
 
+  // mainWindow.on('closed', () => {
+  //   mainWindow = null
+  // })
+  mainWindow.on('close', (event) => {
+    if (!forceQuit) {
+      event.preventDefault() // This will cancel the close
+      mainWindow.hide()
+    }
+  })
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -75,6 +85,10 @@ app.on('window-all-closed', () => {
   if (!isMac) {
     app.quit()
   }
+})
+
+app.on('before-quit', () => {
+  forceQuit = true
 })
 
 app.on('activate', () => {

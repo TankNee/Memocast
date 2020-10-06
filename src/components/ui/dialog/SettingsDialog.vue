@@ -72,6 +72,20 @@
                     />
                   </div>
                 </div>
+                <q-separator />
+                <div>
+                  <div class="text-h6 q-mb-md setting-item fa-align-center">
+                    <span>{{ $t('currentVersion', { version }) }}</span>
+                    <q-btn
+                      class="fab-btn"
+                      flat
+                      round
+                      color="primary"
+                      icon="cached"
+                      @click="checkUpdateHandler"
+                    />
+                  </div>
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="editor">
@@ -86,7 +100,14 @@
                       @input="imageUploadServiceChangeHandler"
                     >
                       <template v-slot:after>
-                        <q-btn v-if="imageUploadService === 'customWebUploadService'" round dense flat icon="settings" @click="$refs.imageUploadServiceDialog.toggle()" />
+                        <q-btn
+                          v-if="imageUploadService === 'customWebUploadService'"
+                          round
+                          dense
+                          flat
+                          icon="settings"
+                          @click="$refs.imageUploadServiceDialog.toggle()"
+                        />
                       </template>
                     </q-select>
                   </div>
@@ -114,7 +135,7 @@
         </q-splitter>
       </q-card-section>
     </q-card>
-    <ImageUploadServiceDialog ref="imageUploadServiceDialog"/>
+    <ImageUploadServiceDialog ref="imageUploadServiceDialog" />
   </q-dialog>
 </template>
 
@@ -122,6 +143,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import ImageUploadServiceDialog from './ImageUploadServiceDialog'
 import { i18n } from 'boot/i18n'
+import { version } from '../../../../package.json'
 const { mapState, mapActions } = createNamespacedHelpers('client')
 
 export default {
@@ -140,7 +162,8 @@ export default {
         'wizOfficialImageUploadService',
         'customWebUploadService',
         'smmsImageUploadService'
-      ]
+      ],
+      version: version
     }
   },
   computed: {
@@ -173,10 +196,38 @@ export default {
       )
       this.updateStateAndStore({ imageUploadService: servicePlain })
     },
+    checkUpdateHandler: async function () {
+      const result = await this.getLatestVersion()
+      const latestVersion = /Release Neeto-Vue v(.*\d) /.exec(result)[1]
+      const that = this
+      if (version !== latestVersion) {
+        this.$q.notify({
+          message: that.$t('getNewerVersion', { version: latestVersion }),
+          color: 'primary',
+          actions: [
+            {
+              label: that.$t('update'),
+              color: 'white',
+              handler: () => {
+                that.$q.electron.shell.openExternal(
+                  'https://github.com/TankNee/Neeto-Vue/releases'
+                )
+              }
+            }
+          ]
+        })
+      } else {
+        this.$q.notify({
+          message: that.$t('noNewerVersion'),
+          color: 'green'
+        })
+      }
+    },
     ...mapActions([
       'toggleDarkMode',
       'toggleChanged',
-      'updateStateAndStore'
+      'updateStateAndStore',
+      'getLatestVersion'
     ])
   }
 }
