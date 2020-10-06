@@ -72,6 +72,13 @@
                     />
                   </div>
                 </div>
+                <q-separator />
+                <div>
+                  <div class="text-h6 q-mb-md setting-item fa-align-center">
+                    <span>{{ $t('currentVersion',{version}) }}</span>
+                    <q-btn class="fab-btn" flat round color="primary" icon="cached" @click="checkUpdateHandler" />
+                  </div>
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="editor">
@@ -122,6 +129,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import ImageUploadServiceDialog from './ImageUploadServiceDialog'
 import { i18n } from 'boot/i18n'
+import { version } from '../../../../package.json'
 const { mapState, mapActions } = createNamespacedHelpers('client')
 
 export default {
@@ -140,7 +148,8 @@ export default {
         'wizOfficialImageUploadService',
         'customWebUploadService',
         'smmsImageUploadService'
-      ]
+      ],
+      version: version
     }
   },
   computed: {
@@ -172,6 +181,9 @@ export default {
         i => this.$t(i) === service
       )
       this.updateStateAndStore({ imageUploadService: servicePlain })
+    },
+    checkUpdateHandler: function () {
+      this.$q.electron.shell.openExternal('https://github.com/TankNee/Neeto-Vue/releases')
     },
     ...mapActions([
       'toggleDarkMode',

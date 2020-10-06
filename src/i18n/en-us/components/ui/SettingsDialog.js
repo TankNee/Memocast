@@ -10,5 +10,6 @@ export default {
   imageUploadService: 'Image Upload Service',
   wizOfficialImageUploadService: 'WizNote Official Image Upload Service (unavailable)',
   customWebUploadService: 'Custom Web Image Upload Service',
-  smmsImageUploadService: 'SMMS Image Upload Service (unavailable)'
+  smmsImageUploadService: 'SMMS Image Upload Service (unavailable)',
+  currentVersion: 'Current Version: {version}'
 }

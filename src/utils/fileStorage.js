@@ -87,5 +87,29 @@ class FileStorage {
   removeItemFromStore (key) {
     return this._store.delete(key)
   }
+
+  /**
+   * 获取缓存在本地的笔记数据
+   * @param dataModified 笔记修改的时间戳
+   * @param cacheKey 缓存key
+   */
+  getCachedNote ({ dataModified }, cacheKey) {
+    const note = this.getItemFromStore(cacheKey)
+    if (helper.isNullOrEmpty(note) || helper.isNullOrEmpty(note.info)) {
+      return null
+    }
+    if (note.info.dataModified === dataModified) return note
+    else this.removeItemFromStore(cacheKey)
+    return null
+  }
+
+  /**
+   * 设置笔记缓存
+   * @param note
+   * @param cacheKey
+   */
+  setCachedNote (note, cacheKey) {
+    this.setItemInStore(cacheKey, note)
+  }
 }
 export default new FileStorage()

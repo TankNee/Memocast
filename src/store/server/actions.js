@@ -116,15 +116,30 @@ export default {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
     const { kbGuid } = state
     const { docGuid } = payload
-
-    const result = await api.KnowledgeBaseApi.getNoteContent({
+    const { info } = await api.KnowledgeBaseApi.getNoteContent({
       kbGuid,
       docGuid,
       data: {
-        downloadInfo: 1,
-        downloadData: 1
+        downloadInfo: 1
       }
     })
+    // dataModified
+    const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
+    const note = fileStorage.getCachedNote(info, cacheKey)
+    let result
+    if (!helper.isNullOrEmpty(note)) {
+      result = note
+    } else {
+      result = await api.KnowledgeBaseApi.getNoteContent({
+        kbGuid,
+        docGuid,
+        data: {
+          downloadInfo: 1,
+          downloadData: 1
+        }
+      })
+      fileStorage.setCachedNote(result, cacheKey)
+    }
 
     commit(types.UPDATE_CURRENT_NOTE, result)
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
@@ -167,19 +182,21 @@ export default {
     const { kbGuid, docGuid, category, title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
+    const html = helper.embedMDNote(markdown, { wrapWithPreTag: isLite })
     const result = await api.KnowledgeBaseApi.updateNote({
       kbGuid,
       docGuid,
       data: {
+        html,
         title,
         kbGuid,
         docGuid,
         category,
         resources,
-        html: helper.embedMDNote(markdown, { wrapWithPreTag: isLite }),
         type: isLite ? 'lite/markdown' : 'document'
       }
     })
+    fileStorage.setCachedNote({ info: result, html }, api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid))
     Notify.create({
       color: 'primary',
       message: i18n.t('saveNoteSuccessfully'),
@@ -296,7 +313,8 @@ export default {
       }
     } = rootState
 
-    let data = {}, options = {}
+    let data = {},
+      options = {}
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
         formData.append('data', file)
@@ -333,12 +351,19 @@ export default {
 
     const result = await api.UploadImageApi(imageUploadService, data, options)
     if (result) {
-      bus.$emit(events.INSERT_IMAGE, getters.imageUrl(result, imageUploadService))
+      bus.$emit(
+        events.INSERT_IMAGE,
+        getters.imageUrl(result, imageUploadService)
+      )
     }
   },
   async moveNote ({ commit }, noteInfo) {
     const { kbGuid, docGuid } = noteInfo
-    await api.KnowledgeBaseApi.updateNoteInfo({ kbGuid, docGuid, data: noteInfo })
+    await api.KnowledgeBaseApi.updateNoteInfo({
+      kbGuid,
+      docGuid,
+      data: noteInfo
+    })
     await this.dispatch('server/getCategoryNotes')
   },
   async copyNote ({ commit, state }, noteInfo) {
@@ -361,7 +386,11 @@ export default {
       data: {
         category: category,
         kbGuid,
-        title: isCurrentCategory ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${title.indexOf('.md') !== -1 ? '.md' : ''}` : title,
+        title: isCurrentCategory
+          ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${
+              title.indexOf('.md') !== -1 ? '.md' : ''
+            }`
+          : title,
         owner: userId,
         html,
         type: category === '/Lite/' ? 'lite/markdown' : type

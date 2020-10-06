@@ -80,6 +80,15 @@ const KnowledgeBaseApi = {
   setBaseUrl (url) {
     KnowledgeBaseBaseUrl = url
   },
+  /**
+   * 根据ServerUrl,kbGuid和docGuid定位一篇笔记
+   * @param kbGuid
+   * @param docGuid
+   * @returns {string}
+   */
+  getCacheKey (kbGuid, docGuid) {
+    return `${this.getBaseUrl()}_${kbGuid}_${docGuid}`
+  },
 
   /**
    * 获取用户文件夹
@@ -131,7 +140,8 @@ const KnowledgeBaseApi = {
   async getNoteInfo (params) {
     return await execRequest(
       'GET',
-      `${KnowledgeBaseBaseUrl}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`
+      `${KnowledgeBaseBaseUrl}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
+      params.data
     )
   },
 
