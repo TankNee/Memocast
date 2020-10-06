@@ -98,7 +98,6 @@ export default {
   mounted () {
     const that = this
     document.addEventListener('click', (e) => {
-      console.log(e)
       if (e.path[1].className.indexOf('q-tree__node') !== -1) return
       that.hide()
     })

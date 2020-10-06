@@ -284,6 +284,18 @@ const ThirdPartApi = {
       null,
       true
     )
+  },
+  async getLatestVersion () {
+    return await execRequest(
+      'GET',
+      // 'https://cdn.jsdelivr.net/gh/TankNee/Neeto-Vue@latest/package.json',
+      'https://github.com/TankNee/Neeto-Vue/releases/latest',
+      null,
+      null,
+      null,
+      true,
+      true
+    )
   }
 }
 /**
