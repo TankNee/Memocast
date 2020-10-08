@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     ref="dialog"
-    @before-hide="beforeHideHandler"
     class="base-dialog"
     persistent
   >
@@ -12,7 +11,6 @@
             $t('login')
           }}</span></q-toolbar-title
         >
-        <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
 
       <q-card-section class="q-pt-none">
@@ -71,16 +69,9 @@
               @input="v => toggleChanged({ key: 'autoLogin', value: v })"
             />
           </div>
-
-          <div>
-            <q-btn :label="$t('submit')" type="submit" color="primary" />
-            <q-btn
-              :label="$t('cancel')"
-              color="primary"
-              flat
-              class="q-ml-sm"
-              v-close-popup
-            />
+          <div class="flex" style="flex-direction: column;">
+            <q-btn class="fab-btn" :label="$t('signIn')" type="submit" color="primary" />
+            <q-btn class="fab-btn" :label="$t('signUp')" @click="signUpHandler" color="green" />
           </div>
         </q-form>
       </q-card-section>
@@ -93,6 +84,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import Loading from '../Loading'
 import fileStorage from '../../../utils/fileStorage'
+import helper from '../../../utils/helper'
 const { mapActions: mapServerActions } = createNamespacedHelpers('server')
 const {
   mapState: mapClientState,
@@ -127,10 +119,8 @@ export default {
         this.isLoading = false
       }
     },
-    beforeHideHandler: function () {
-      this.username = null
-      this.password = null
-      this.selfHostServer = null
+    signUpHandler: function () {
+      this.$q.electron.shell.openExternal(!(helper.isNullOrEmpty(this.selfHostServer) || !this.enableSelfHostServer) ? this.selfHostServer : 'https://wiz.cn')
     },
     toggle: function () {
       return this.$refs.dialog.toggle()

@@ -1,10 +1,10 @@
 import ui from './ui'
-import Sidebar from 'src/i18n/en-us/components/Sidebar'
+import Header from 'src/i18n/en-us/components/Header'
 import NoteList from 'src/i18n/en-us/components/NoteList'
 import Vditor from 'src/i18n/en-us/components/Vditor'
 export default {
   ...ui,
-  ...Sidebar,
+  ...Header,
   ...NoteList,
   ...Vditor
 }

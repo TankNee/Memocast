@@ -4,8 +4,8 @@ export default {
   password: '密码',
   selfHostEnable: '启用私有部署服务器',
   selfHostServer: '私有部署服务器地址',
-  submit: '登录',
-  cancel: '取消',
+  signIn: '登录',
+  signUp: '注册',
   fieldIsRequired: '该字段必须填写',
   rememberPassword: '记住密码',
   autoLogin: '自动登录'
