@@ -1,10 +1,10 @@
 {
-  "name": "neeto.vue.elctron",
-  "version": "0.0.9",
+  "name": "neeto.vue.electron",
+  "version": "0.0.10",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Neeto-Vue",
   "author": "tanknee <nee@tanknee.cn>",
-  "private": true,
+  "private": false,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "dev": "quasar dev -m electron -t mat",
