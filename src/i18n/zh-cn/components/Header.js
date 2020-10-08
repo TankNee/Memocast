@@ -5,5 +5,6 @@ export default {
   search: '搜索',
   settings: '设置',
   logout: '登出',
-  logoutHint: '你确定要立刻注销登录吗？'
+  logoutHint: '你确定要立刻注销登录吗？',
+  cancel: '取消'
 }

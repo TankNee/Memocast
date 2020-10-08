@@ -55,6 +55,8 @@ export default {
   },
   methods: {
     initVditor: function () {
+      // const cdn = /^https?:\/\//i.test(window.location.origin) ? `${window.location.origin}/libs/vditor` : `${(window.location.origin + window.location.pathname).replace('/index.html', '')}/libs/vditor`
+      // console.log(cdn)
       const that = this
       return new Vditor('vditor', {
         width: '100%',

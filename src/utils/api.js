@@ -271,17 +271,22 @@ const KnowledgeBaseApi = {
 const ThirdPartApi = {
   /**
    * upload image to SMMS image bed
-   * @param {File} files
+   * @param {File} file
+   * @param {{Authorization}} options
    */
-  async uploadImageToSMMS (file) {
+  async uploadImageToSMMS (file, { Authorization }) {
     const formData = new FormData()
     formData.append('smfile', file)
+    const config = {
+      'Content-Type': 'multipart/form-data',
+      Authorization: Authorization
+    }
     return await execRequest(
       'POST',
       'https://sm.ms/api/upload',
       formData,
       null,
-      null,
+      config,
       true
     )
   },
@@ -312,7 +317,7 @@ const UploadImageApi = async (type, data, options) => {
       result = await KnowledgeBaseApi.uploadImage(data)
       break
     case 'smmsImageUploadService':
-      result = await ThirdPartApi.uploadImageToSMMS(data)
+      result = await ThirdPartApi.uploadImageToSMMS(data, options)
       break
     case 'customWebUploadService':
       result = await UploadImageToCustomWebService(options, data, execRequest)

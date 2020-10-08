@@ -5,5 +5,6 @@ export default {
   search: 'Search',
   settings: 'Settings',
   logout: 'Logout',
-  logoutHint: 'Do you want to log out right now ?'
+  logoutHint: 'Do you want to log out right now ?',
+  cancel: 'Cancel'
 }

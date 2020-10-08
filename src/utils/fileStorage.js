@@ -90,16 +90,20 @@ class FileStorage {
 
   /**
    * 获取缓存在本地的笔记数据
-   * @param dataModified 笔记修改的时间戳
+   * @param info 笔记信息
    * @param cacheKey 缓存key
    */
-  getCachedNote ({ dataModified }, cacheKey) {
+  getCachedNote (info, cacheKey) {
+    const { dataModified } = info
     const note = this.getItemFromStore(cacheKey)
     if (helper.isNullOrEmpty(note) || helper.isNullOrEmpty(note.info)) {
       return null
     }
-    if (note.info.dataModified === dataModified) return note
-    else this.removeItemFromStore(cacheKey)
+    if (note.info.dataModified === dataModified) {
+      note.info = info
+      this.setCachedNote(note, cacheKey)
+      return note
+    } else this.removeItemFromStore(cacheKey)
     return null
   }
 
