@@ -1,25 +1,34 @@
 import _ from 'lodash'
-import he from 'he'
-import html2markdown from '../lib/html2markdown'
-import api from 'src/utils/api'
 import wizMarkdownParser from '@altairwei/wiz-markdown'
 import { i18n } from 'boot/i18n'
 import { Platform } from 'quasar'
+import TurndownService from 'turndown'
+import cheerio from 'cheerio'
 const { dialog, BrowserWindow } = require('electron').remote
-
+const turndownService = new TurndownService({ codeBlockStyle: 'fenced' })
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
   return _.isNull(obj) || _.isEmpty(obj)
 }
+
+/**
+ * converter
+ * @param {string} html
+ * @param kbGuid
+ * @param docGuid
+ * @param resources
+ * @returns {*}
+ */
 function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
   try {
-    html = html2markdown(html, {
-      imgBaseUrl: `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/`,
-      resources: resources,
-      imageUrlInLine: true
+    resources.forEach(resource => {
+      html = html.replace(`index_files/${resource.name}`, resource.url)
     })
-    html = he.decode(html)
-    html = removeDeprecatedTags(html)
+    const $ = cheerio.load(html)
+    const $body = $('html').clone()
+    $body.find('style').remove()
+    $body.removeClass()
+    html = turndownService.turndown($body.html())
     return html
   } catch (e) {
     return html
@@ -334,6 +343,7 @@ export default {
   embedMDNote,
   displayDateElegantly,
   createFileSelectDialog,
+  removeDeprecatedTags,
   updateContentsList,
   getFileNameWithExt,
   isCtrl,
