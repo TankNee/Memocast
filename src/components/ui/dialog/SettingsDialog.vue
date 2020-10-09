@@ -197,29 +197,31 @@ export default {
       this.updateStateAndStore({ imageUploadService: servicePlain })
     },
     checkUpdateHandler: async function () {
-      const result = await this.getLatestVersion()
-      const latestVersion = /Release Neeto-Vue v(.*\d) /.exec(result)[1]
+      // eslint-disable-next-line camelcase
+      const { tag_name, html_url, body, author: { avatar_url } } = await this.getLatestVersion()
+      const latestVersion = tag_name.replace('v', '')
       const that = this
       if (version !== latestVersion) {
         this.$q.notify({
-          message: that.$t('getNewerVersion', { version: latestVersion }),
+          message: body,
           color: 'primary',
           actions: [
             {
               label: that.$t('update'),
               color: 'white',
               handler: () => {
-                that.$q.electron.shell.openExternal(
-                  'https://github.com/TankNee/Neeto-Vue/releases'
-                )
+                that.$q.electron.shell.openExternal(html_url)
               }
             }
-          ]
+          ],
+          caption: that.$t('getNewerVersion', { version: latestVersion }),
+          avatar: avatar_url
         })
       } else {
         this.$q.notify({
           message: that.$t('noNewerVersion'),
-          color: 'green'
+          color: 'green',
+          icon: 'check'
         })
       }
     },
