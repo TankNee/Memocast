@@ -39,9 +39,7 @@ export default {
     },
     ...mapServerGetters(['currentNote', 'uploadImageUrl']),
     ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
-    ...mapClientState([
-      'darkMode'
-    ])
+    ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme'])
   },
   data () {
     return {
@@ -71,7 +69,7 @@ export default {
             current: this.$q.dark.isActive ? 'dark' : 'light'
           },
           hljs: {
-            style: this.$q.dark.isActive ? 'monokai' : 'github'
+            style: this.$q.dark.isActive ? this.darkCodeTheme : this.lightCodeTheme
           }
         },
         upload: {
@@ -139,7 +137,10 @@ export default {
               if (urlElement.innerText.indexOf('http') !== -1) {
                 window.open(urlElement.innerText)
               } else if (urlElement.innerText.indexOf('#') === 0) {
-                const item = helper.findNodeByNodeLabel(this.contentsList, urlElement.innerText.replace('#', ''))
+                const item = helper.findNodeByNodeLabel(
+                  this.contentsList,
+                  urlElement.innerText.replace('#', '')
+                )
                 bus.$emit(events.SCROLL_TO_HEADER, item)
               }
             } catch (err) {
@@ -170,7 +171,21 @@ export default {
       this.contentEditor.setTheme(
         darkMode ? 'dark' : 'classic',
         darkMode ? 'dark' : 'light',
-        darkMode ? 'dracula' : 'github'
+        darkMode ? this.darkCodeTheme : this.lightCodeTheme
+      )
+    },
+    darkCodeTheme: function (currentData) {
+      this.contentEditor.setTheme(
+        this.darkMode ? 'dark' : 'classic',
+        this.darkMode ? 'dark' : 'light',
+        this.darkMode ? currentData : this.lightCodeTheme
+      )
+    },
+    lightCodeTheme: function (currentData) {
+      this.contentEditor.setTheme(
+        this.darkMode ? 'dark' : 'classic',
+        this.darkMode ? 'dark' : 'light',
+        this.darkMode ? this.darkCodeTheme : currentData
       )
     }
   }

@@ -13,6 +13,8 @@ export default function () {
     jsonPath: '',
     customHeader: '',
     customBody: '',
-    shrinkInTray: false
+    shrinkInTray: false,
+    lightCodeTheme: 'github',
+    darkCodeTheme: 'monokai'
   }
 }

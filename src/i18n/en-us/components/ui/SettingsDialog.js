@@ -14,5 +14,8 @@ export default {
   currentVersion: 'Current Version: {version}',
   getNewerVersion: 'New version detected: {version} !',
   update: 'Update',
-  noNewerVersion: 'This is the latest version!'
+  noNewerVersion: 'This is the latest version!',
+  codeTheme: 'Code Theme',
+  lightCodeTheme: 'Light Mode Code Theme',
+  darkCodeTheme: 'Dark Mode Code Theme'
 }
