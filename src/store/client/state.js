@@ -15,6 +15,7 @@ export default function () {
     customBody: '',
     shrinkInTray: false,
     lightCodeTheme: 'github',
-    darkCodeTheme: 'monokai'
+    darkCodeTheme: 'monokai',
+    noteListVisible: true
   }
 }

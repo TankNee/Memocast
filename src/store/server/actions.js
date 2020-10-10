@@ -1,11 +1,12 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import fileStorage from 'src/utils/fileStorage'
 import { Notify } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
+import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
+import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 const FormData = require('form-data')
 export default {
   /**
@@ -14,10 +15,10 @@ export default {
    * @param state
    */
   async initServerStore ({ commit, state }) {
-    const localStore = fileStorage.getItemsFromStore(state)
+    const localStore = ClientFileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
-    fileStorage.removeItemFromLocalStorage('token')
-    const [autoLogin, userId, password, url] = fileStorage.getItemsFromStore([
+    ServerFileStorage.removeItemFromLocalStorage('token')
+    const [autoLogin, userId, password, url] = ClientFileStorage.getItemsFromStore([
       'autoLogin',
       'userId',
       'password',
@@ -41,18 +42,18 @@ export default {
     const result = await api.AccountServerApi.Login(payload)
 
     if (rootState.client.rememberPassword) {
-      fileStorage.setItemsInStore({ userId, password, url })
+      ClientFileStorage.setItemsInStore({ userId, password, url })
     } else {
-      if (fileStorage.isKeyExistInStore('password')) {
-        fileStorage.removeItemFromStore('password')
+      if (ClientFileStorage.isKeyExistInStore('password')) {
+        ClientFileStorage.removeItemFromStore('password')
       }
-      fileStorage.setItemsInStore({ userId, url })
+      ClientFileStorage.setItemsInStore({ userId, url })
     }
     if (
       !rootState.client.enableSelfHostServer &&
-      fileStorage.isKeyExistInStore('url')
+      ClientFileStorage.isKeyExistInStore('url')
     ) {
-      fileStorage.removeItemFromStore('url')
+      ClientFileStorage.removeItemFromStore('url')
     }
 
     commit(types.LOGIN, { ...result, isLogin: true })
@@ -66,7 +67,7 @@ export default {
   },
   async logout ({ commit }) {
     await api.AccountServerApi.Logout()
-    fileStorage.removeItemFromLocalStorage('token')
+    ServerFileStorage.removeItemFromLocalStorage('token')
     commit(types.LOGOUT)
   },
   /**
@@ -125,7 +126,7 @@ export default {
     })
     // dataModified
     const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
-    const note = fileStorage.getCachedNote(info, cacheKey)
+    const note = ClientFileStorage.getCachedNote(info, cacheKey)
     let result
     if (!helper.isNullOrEmpty(note)) {
       result = note
@@ -138,7 +139,7 @@ export default {
           downloadData: 1
         }
       })
-      fileStorage.setCachedNote(result, cacheKey)
+      ClientFileStorage.setCachedNote(result, cacheKey)
     }
 
     commit(types.UPDATE_CURRENT_NOTE, result)
@@ -196,7 +197,7 @@ export default {
         type: isLite ? 'lite/markdown' : 'document'
       }
     })
-    fileStorage.setCachedNote({ info: result, html }, api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid))
+    ClientFileStorage.setCachedNote({ info: result, html }, api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid))
     Notify.create({
       color: 'primary',
       message: i18n.t('saveNoteSuccessfully'),
@@ -215,7 +216,7 @@ export default {
    */
   async createNote ({ commit, state, rootState }, title) {
     const { kbGuid, currentCategory } = state
-    const userId = fileStorage.getItemFromStore('userId')
+    const userId = ClientFileStorage.getItemFromStore('userId')
     const isLite = currentCategory.replace(/\//g, '') === 'Lite'
     const result = await api.KnowledgeBaseApi.createNote({
       kbGuid,
@@ -369,7 +370,7 @@ export default {
   async copyNote ({ commit, state }, noteInfo) {
     const { kbGuid, docGuid, category, title, type } = noteInfo
     const { currentCategory } = state
-    const userId = fileStorage.getItemFromStore('userId')
+    const userId = ClientFileStorage.getItemFromStore('userId')
 
     const noteContent = await api.KnowledgeBaseApi.getNoteContent({
       kbGuid,

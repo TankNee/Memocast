@@ -1,7 +1,7 @@
 import api from 'src/utils/api'
 import _ from 'lodash'
 import helper from 'src/utils/helper'
-import fileStorage from 'src/utils/fileStorage'
+import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 export default {
   avatarUrl: ({ userGuid }) => {
     return userGuid ? `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${userGuid}` : null
@@ -63,6 +63,6 @@ export default {
     return `${api.KnowledgeBaseApi.getBaseUrl()}/ks/resource/upload/${kbGuid}/${docGuid}`
   },
   wizNoteToken: () => {
-    return fileStorage.getValueFromLocalStorage('token')
+    return ServerFileStorage.getValueFromLocalStorage('token')
   }
 }

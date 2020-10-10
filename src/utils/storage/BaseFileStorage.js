@@ -1,37 +1,12 @@
-import Store from 'electron-store'
 import debugLogger from 'src/utils/debugLogger'
 import i18n from 'boot/i18n'
 import _ from 'lodash'
 import helper from 'src/utils/helper'
 
-class FileStorage {
+class BaseFileStorage {
   constructor () {
     // init electron store
-    this._store = new Store({
-      name: 'RenderThreadFileStorage',
-      encryptionKey: 'render.thread.file.storage'
-    })
-  }
-
-  // Chrome LocalStorage
-  saveToLocalStorage (key, value) {
-    localStorage.setItem(key, JSON.stringify(value))
-  }
-
-  getValueFromLocalStorage (key) {
-    return JSON.parse(localStorage.getItem(key))
-  }
-
-  isKeyExistsInLocalStorage (key) {
-    return !!this.getValueFromLocalStorage(key)
-  }
-
-  removeItemFromLocalStorage (key) {
-    return localStorage.removeItem(key)
-  }
-
-  clearUpLocalStorage () {
-    return localStorage.clear()
+    this._store = {}
   }
 
   // Electron Store
@@ -88,6 +63,10 @@ class FileStorage {
     return this._store.delete(key)
   }
 
+  get size () {
+    return this._store.size
+  }
+
   /**
    * 获取缓存在本地的笔记数据
    * @param info 笔记信息
@@ -116,4 +95,4 @@ class FileStorage {
     this.setItemInStore(cacheKey, note)
   }
 }
-export default new FileStorage()
+export default BaseFileStorage

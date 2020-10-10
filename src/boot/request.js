@@ -1,8 +1,8 @@
 import axios from 'axios'
 import bus from 'components/bus'
 import events from 'src/constants/events'
-import fileStorage from 'src/utils/fileStorage'
 import NeetoError from 'app/share/error'
+import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 
 axios.defaults.timeout = 50000 // 响应时间
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8' // 配置请求头
@@ -31,9 +31,9 @@ export async function execRequest (method, url, body, token, extraConfig, return
     config.headers = {
       'X-Wiz-Token': token
     }
-  } else if (fileStorage.isKeyExistsInLocalStorage('token')) {
+  } else if (ServerFileStorage.isKeyExistsInLocalStorage('token')) {
     config.headers = {
-      'X-Wiz-Token': fileStorage.getValueFromLocalStorage('token')
+      'X-Wiz-Token': ServerFileStorage.getValueFromLocalStorage('token')
     }
   }
 

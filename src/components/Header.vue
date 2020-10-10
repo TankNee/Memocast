@@ -36,7 +36,7 @@
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-green-7 text-white shadow-4 text-h7"
-      >{{ isLogin ? $t('logout') : $t('login') }}
+        >{{ isLogin ? $t('logout') : $t('login') }}
       </q-tooltip>
     </q-avatar>
     <q-input
@@ -64,7 +64,7 @@
           v-else
           name="clear"
           class="cursor-pointer text-grey"
-          @click="searchText = ''"
+          @click="clearInputHandler"
         />
       </template>
       <q-tooltip
@@ -78,10 +78,21 @@
       size="36px"
       class="cursor-pointer q-electron-drag--exception "
       v-ripple
+      @click="switchViewHandler"
+    >
+      <q-icon name="table_chart" />
+      <q-tooltip :offset="[20, 10]" content-class="bg-brown-4 text-white shadow-4 text-h7"
+        >{{ $t('switchView') }}
+      </q-tooltip>
+    </q-avatar>
+    <q-avatar
+      size="36px"
+      class="cursor-pointer q-electron-drag--exception "
+      v-ripple
       @click="$refs.settingsDialog.toggle()"
     >
       <q-icon name="settings" />
-      <q-tooltip :offset="[20, 10]" content-class="text-white shadow-4  text-h7"
+      <q-tooltip :offset="[20, 10]" content-class="text-white shadow-4 text-h7"
         >{{ $t('settings') }}
       </q-tooltip>
     </q-avatar>
@@ -92,7 +103,6 @@
     </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
-    <SearchDialog ref="searchDialog" />
     <CategoryDrawer ref="categoryDrawer" />
   </q-bar>
 </template>
@@ -101,7 +111,6 @@
 import LoginDialog from './ui/dialog/LoginDialog'
 
 import SettingsDialog from './ui/dialog/SettingsDialog'
-import SearchDialog from './ui/dialog/SearchDialog'
 import CategoryDrawer from './ui/CategoryDrawer'
 import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
@@ -110,18 +119,21 @@ const {
   mapGetters: mapServerGetters,
   mapActions: mapServerActions
 } = createNamespacedHelpers('server')
-const { mapState: mapClientState } = createNamespacedHelpers('client')
+const {
+  mapState: mapClientState,
+  mapActions: mapClientActions
+} = createNamespacedHelpers('client')
 export default {
   name: 'Header',
   computed: {
     ...mapServerState(['user', 'isLogin']),
     ...mapServerGetters(['avatarUrl']),
-    ...mapClientState(['shrinkInTray', 'autoLogin']),
+    ...mapClientState(['shrinkInTray', 'autoLogin', 'noteListVisible']),
     darkMode: function () {
       return this.$q.dark.isActive
     }
   },
-  components: { CategoryDrawer, SearchDialog, SettingsDialog, LoginDialog },
+  components: { CategoryDrawer, SettingsDialog, LoginDialog },
   data () {
     return {
       searchText: ''
@@ -168,7 +180,15 @@ export default {
       if (helper.isNullOrEmpty(this.searchText)) return
       this.searchNote(this.searchText)
     },
-    ...mapServerActions(['logout', 'searchNote'])
+    switchViewHandler: function () {
+      this.toggleChanged({ key: 'noteListVisible', value: !this.noteListVisible })
+    },
+    clearInputHandler: function () {
+      this.searchText = ''
+      this.getCategoryNotes({ category: this.currentCategory })
+    },
+    ...mapServerActions(['logout', 'searchNote', 'getCategoryNotes']),
+    ...mapClientActions(['toggleChanged'])
   },
   mounted () {
     if (!this.autoLogin && !this.isLogin) {
