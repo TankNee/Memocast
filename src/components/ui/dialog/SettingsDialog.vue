@@ -1,6 +1,6 @@
 <template>
   <q-dialog ref="dialog" persistent>
-    <q-card style="max-height: 90vh;min-height: 70vh;min-width: 70vw">
+    <q-card style="height: 70vh;min-width: 70vw">
       <q-toolbar>
         <q-avatar>
           <q-icon
@@ -16,7 +16,7 @@
       </q-toolbar>
 
       <q-card-section class="scroll">
-        <q-splitter v-model="splitterModel" style="min-height: 40vh">
+        <q-splitter v-model="splitterModel" style="height: 55vh">
           <template v-slot:before>
             <q-tabs v-model="tab" vertical class="text-teal no-border">
               <q-tab
@@ -53,7 +53,7 @@
                 <div class="text-h4 q-mb-md">{{ $t('general') }}</div>
                 <q-separator />
                 <div>
-                  <div class="text-h6 q-mb-md setting-item">
+                  <div class="text-h5 q-mb-md setting-item">
                     {{ $t('language') }}
                   </div>
                   <q-select
@@ -63,7 +63,7 @@
                   />
                 </div>
                 <div>
-                  <div class="text-h6 q-mb-md setting-item">
+                  <div class="text-h5 q-mb-md setting-item">
                     <span>{{ $t('darkMode') }}</span>
                     <q-toggle
                       :value="darkMode"
@@ -74,7 +74,7 @@
                 </div>
                 <q-separator />
                 <div>
-                  <div class="text-h6 q-mb-md setting-item fa-align-center">
+                  <div class="text-h5 q-mb-md setting-item fa-align-center">
                     <span>{{ $t('currentVersion', { version }) }}</span>
                     <q-btn
                       class="fab-btn"
@@ -92,7 +92,7 @@
                 <div class="text-h4 q-mb-md">{{ $t('editor') }}</div>
                 <q-separator />
                 <div>
-                  <div class="text-h6 q-mb-md setting-item">
+                  <div class="text-h5 q-mb-md setting-item">
                     <span>{{ $t('imageUploadService') }}</span>
                     <q-select
                       :value="$t(imageUploadService)"
@@ -111,6 +111,40 @@
                       </template>
                     </q-select>
                   </div>
+                  <div class="text-h5 q-mb-md setting-item">
+                    <span>{{ $t('codeTheme') }}</span>
+                    <q-icon
+                      name="launch"
+                      color="primary"
+                      style="margin-left: 5px"
+                      class="cursor-pointer"
+                      @click="
+                        () =>
+                          $q.electron.shell.openExternal(
+                            'https://xyproto.github.io/splash/docs/longer/all.html?utm_source=ld246.com'
+                          )
+                      "
+                    />
+                  </div>
+                  <q-separator />
+                  <div class="text-h6 q-mb-md setting-item">
+                    <span>{{ $t('lightCodeTheme') }}</span>
+                    <q-select
+                      :value="lightCodeTheme"
+                      :options="codethems"
+                      @input="v => codeThemeChangeHandler(v, true)"
+                    >
+                    </q-select>
+                  </div>
+                  <div class="text-h6 q-mb-md setting-item">
+                    <span>{{ $t('darkCodeTheme') }}</span>
+                    <q-select
+                      :value="darkCodeTheme"
+                      :options="codethems"
+                      @input="v => codeThemeChangeHandler(v, false)"
+                    >
+                    </q-select>
+                  </div>
                 </div>
               </q-tab-panel>
 
@@ -118,7 +152,7 @@
                 <div class="text-h4 q-mb-md">{{ $t('server') }}</div>
                 <q-separator />
                 <div>
-                  <div class="text-h6 q-mb-md setting-item">
+                  <div class="text-h5 q-mb-md setting-item">
                     <span>{{ $t('markdownOnly') }}</span>
                     <q-toggle
                       :value="markdownOnly"
@@ -144,6 +178,7 @@ import { createNamespacedHelpers } from 'vuex'
 import ImageUploadServiceDialog from './ImageUploadServiceDialog'
 import { i18n } from 'boot/i18n'
 import { version } from '../../../../package.json'
+import codethems from '../../../constants/codethems'
 const { mapState, mapActions } = createNamespacedHelpers('client')
 
 export default {
@@ -153,11 +188,6 @@ export default {
     return {
       tab: 'general',
       splitterModel: 20,
-      // imageUploadServiceOptions: [
-      //   this.$t('wizOfficialImageUploadService'),
-      //   this.$t('customWebUploadService'),
-      //   this.$t('smmsImageUploadService')
-      // ],
       imageUploadServiceOptionsPlain: [
         'wizOfficialImageUploadService',
         'customWebUploadService',
@@ -167,7 +197,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['language', 'darkMode', 'markdownOnly', 'imageUploadService']),
+    ...mapState([
+      'language',
+      'darkMode',
+      'markdownOnly',
+      'imageUploadService',
+      'lightCodeTheme',
+      'darkCodeTheme'
+    ]),
     languageOptions: function () {
       return i18n.availableLocales.map(l => i18n.t(l))
     },
@@ -177,6 +214,9 @@ export default {
         this.$t('customWebUploadService'),
         this.$t('smmsImageUploadService')
       ]
+    },
+    codethems: function () {
+      return codethems
     }
   },
   methods: {
@@ -196,30 +236,39 @@ export default {
       )
       this.updateStateAndStore({ imageUploadService: servicePlain })
     },
+    codeThemeChangeHandler: function (v, light) {
+      if (light) {
+        this.updateStateAndStore({ lightCodeTheme: v })
+      } else {
+        this.updateStateAndStore({ darkCodeTheme: v })
+      }
+    },
     checkUpdateHandler: async function () {
-      const result = await this.getLatestVersion()
-      const latestVersion = /Release Neeto-Vue v(.*\d) /.exec(result)[1]
+      // eslint-disable-next-line camelcase
+      const { tag_name, html_url, body, author: { avatar_url } } = await this.getLatestVersion()
+      const latestVersion = tag_name.replace('v', '')
       const that = this
       if (version !== latestVersion) {
         this.$q.notify({
-          message: that.$t('getNewerVersion', { version: latestVersion }),
+          message: body,
           color: 'primary',
           actions: [
             {
               label: that.$t('update'),
               color: 'white',
               handler: () => {
-                that.$q.electron.shell.openExternal(
-                  'https://github.com/TankNee/Neeto-Vue/releases'
-                )
+                that.$q.electron.shell.openExternal(html_url)
               }
             }
-          ]
+          ],
+          caption: that.$t('getNewerVersion', { version: latestVersion }),
+          avatar: avatar_url
         })
       } else {
         this.$q.notify({
           message: that.$t('noNewerVersion'),
-          color: 'green'
+          color: 'green',
+          icon: 'check'
         })
       }
     },

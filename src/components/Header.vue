@@ -5,7 +5,7 @@
       size="36px"
       class="cursor-pointer q-electron-drag--exception"
       v-ripple
-      @click="
+      @click.stop="
         () => {
           if (isLogin) {
             $refs.categoryDrawer.toggle()

@@ -32,11 +32,10 @@
         <span>{{category}}</span>
       </q-card>
       <q-fab
-        color="secondary"
-        push
-        icon="add"
+        color="primary"
+        icon="build"
         direction="up"
-        flat
+        padding="11px"
         class="absolute-bottom-right fab-btn"
         v-if="isLogin"
       >

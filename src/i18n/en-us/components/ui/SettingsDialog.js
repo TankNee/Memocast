@@ -12,7 +12,10 @@ export default {
   customWebUploadService: 'Custom Web Image Upload Service',
   smmsImageUploadService: 'SMMS Image Upload Service (unavailable)',
   currentVersion: 'Current Version: {version}',
-  getNewerVersion: 'Get Newer Version: {version} !',
+  getNewerVersion: 'New version detected: {version} !',
   update: 'Update',
-  noNewerVersion: 'No Newer Version !'
+  noNewerVersion: 'This is the latest version!',
+  codeTheme: 'Code Theme',
+  lightCodeTheme: 'Light Mode Code Theme',
+  darkCodeTheme: 'Dark Mode Code Theme'
 }

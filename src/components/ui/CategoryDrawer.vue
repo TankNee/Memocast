@@ -19,11 +19,9 @@
         :selected="currentCategory"
         @update:selected="
           v => {
-            $refs.drawer.hide()
             updateCurrentCategory(v)
           }
         "
-        v-close-popup
       />
     </q-scroll-area>
   </q-drawer>
@@ -42,15 +40,13 @@ export default {
   computed: {
     thumbStyle () {
       return {
-        backgroundColor: '#E8ECF1',
-        width: '7px',
-        opacity: 0.75
+        display: 'none'
       }
     },
 
     barStyle () {
       return {
-        width: '7px'
+        display: 'none'
       }
     },
 
@@ -61,7 +57,17 @@ export default {
     toggle: function () {
       this.$refs.drawer.toggle()
     },
+    hide: function () {
+      this.$refs.drawer.hide()
+    },
     ...mapServerActions(['updateCurrentCategory'])
+  },
+  mounted () {
+    const that = this
+    document.addEventListener('click', (e) => {
+      if (e.path[1].className.indexOf('q-tree__node') !== -1) return
+      that.hide()
+    })
   }
 }
 </script>
