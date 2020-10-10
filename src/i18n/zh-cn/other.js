@@ -1,3 +1,5 @@
 export default {
-  duplicate: '副本'
+  duplicate: '副本',
+  convertToMarkdownNote: '转置成Markdown笔记',
+  convertToMarkdownNoteHint: '是否要将网页摘录笔记 / 富文本笔记转置成Markdown笔记'
 }

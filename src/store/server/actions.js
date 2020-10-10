@@ -1,13 +1,14 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify } from 'quasar'
+import { Notify, Dialog } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
-const FormData = require('form-data')
+import _ from 'lodash'
+import FormData from 'form-data'
 export default {
   /**
    * 从本地缓存中读取数据，初始化状态树
@@ -180,31 +181,53 @@ export default {
    * @returns {Promise<void>}
    */
   async updateNote ({ commit, state }, markdown) {
-    const { kbGuid, docGuid, category, title } = state.currentNote.info
+    const { kbGuid, docGuid, category } = state.currentNote.info
+    let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
     const html = helper.embedMDNote(markdown, { wrapWithPreTag: isLite })
-    const result = await api.KnowledgeBaseApi.updateNote({
-      kbGuid,
-      docGuid,
-      data: {
-        html,
-        title,
+
+    const _updateNote = async (title) => {
+      const result = await api.KnowledgeBaseApi.updateNote({
         kbGuid,
         docGuid,
-        category,
-        resources,
-        type: isLite ? 'lite/markdown' : 'document'
-      }
-    })
-    ClientFileStorage.setCachedNote({ info: result, html }, api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid))
-    Notify.create({
-      color: 'primary',
-      message: i18n.t('saveNoteSuccessfully'),
-      icon: 'check'
-    })
-    await this.dispatch('server/getCategoryNotes')
-    commit(types.UPDATE_CURRENT_NOTE, result)
+        data: {
+          html,
+          title,
+          kbGuid,
+          docGuid,
+          category,
+          resources,
+          type: isLite ? 'lite/markdown' : 'document'
+        }
+      })
+
+      ClientFileStorage.setCachedNote({ info: result, html }, api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid))
+      Notify.create({
+        color: 'primary',
+        message: i18n.t('saveNoteSuccessfully'),
+        icon: 'check'
+      })
+      await this.dispatch('server/getCategoryNotes')
+      commit(types.UPDATE_CURRENT_NOTE, result)
+    }
+    if (!_.endsWith(title, '.md')) {
+      Dialog.create({
+        title: i18n.t('convertToMarkdownNote'),
+        message: i18n.t('convertToMarkdownNoteHint'),
+        ok: {
+          label: i18n.t('ok')
+        },
+        cancel: {
+          label: i18n.t('cancel')
+        }
+      }).onOk(async () => {
+        title = `${title}.md`
+        await _updateNote(title)
+      })
+    } else {
+      await _updateNote(title)
+    }
   },
   /**
    * 创建笔记
