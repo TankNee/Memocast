@@ -23,7 +23,7 @@ An Awesome Wiz Note Client
 
 You are also be able to check update in Neeto-Vue Settings Dialog
 
-![image-20201011103144579](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20201011103144579.png)
+![image-20201011103144579](./screenshot/image-20201011103144579.png)
 
 ### Feature
 
