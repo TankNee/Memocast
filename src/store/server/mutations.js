@@ -1,7 +1,8 @@
 import types from 'src/store/server/types'
 import helper from 'src/utils/helper'
 import api from 'src/utils/api'
-import fileStorage from 'src/utils/fileStorage'
+import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
+import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 
 export default {
   [types.INIT] (state, payload) {
@@ -19,7 +20,7 @@ export default {
       api.KnowledgeBaseApi.setBaseUrl(kbServer)
     }
     if (!helper.isNullOrEmpty(token)) {
-      fileStorage.saveToLocalStorage('token', token)
+      ServerFileStorage.saveToLocalStorage('token', token)
     }
     const data = { kbGuid, kbServer, lang, email, displayName, userGuid, isLogin }
     Object.assign(state, data)
@@ -48,7 +49,7 @@ export default {
     return state
   },
   [types.SAVE_TO_LOCAL_STORE_SYNC] (state, [key, value]) {
-    fileStorage.setItemInStore(key, value)
+    ClientFileStorage.setItemInStore(key, value)
     return state
   },
   [types.UPDATE_ALL_CATEGORIES] (state, payload) {

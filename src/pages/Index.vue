@@ -2,13 +2,19 @@
   <q-page class="flex">
     <q-splitter
       v-model="splitterModel"
-      :limits="[270, 600]"
+      :limits="splitterLimit"
       class="full-width"
       unit="px"
       separator-class="bg-transparent"
     >
       <template v-slot:before>
-        <NoteList />
+        <transition
+          appear
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
+        >
+          <NoteList v-if="noteListVisible" />
+        </transition>
       </template>
       <template v-slot:after>
         <div>
@@ -25,35 +31,35 @@
             enter-active-class="animated fadeIn"
             leave-active-class="animated fadeOut"
           >
-          <q-icon
-            name="all_inbox"
-            class="absolute-center material-icons-round"
-            size="128px"
-            color="#494949"
-            v-if="!isCurrentNoteLoading && !dataLoaded"
-            v-ripple
-            key="all_inbox"
-          />
-          <q-icon
-            name="format_align_center"
-            class="absolute-top-right fab-icon cursor-pointer material-icons-round"
-            @click.stop="$refs.outlineDrawer.show"
-            size="24px"
-            color="#26A69A"
-            v-show="dataLoaded && contentsListLoaded && !isOutlineShow"
-            v-ripple
-            key="format_align_center"
-          />
-          <q-icon
-            name="cached"
-            class="absolute-bottom-right fab-icon cursor-pointer material-icons-round"
-            @click="refreshCurrentNote"
-            size="24px"
-            color="#26A69A"
-            v-show="dataLoaded && !isOutlineShow"
-            v-ripple
-            key="cached"
-          />
+            <q-icon
+              name="all_inbox"
+              class="absolute-center material-icons-round"
+              size="128px"
+              color="#494949"
+              v-if="!isCurrentNoteLoading && !dataLoaded"
+              v-ripple
+              key="all_inbox"
+            />
+            <q-icon
+              name="format_align_center"
+              class="absolute-top-right fab-icon cursor-pointer material-icons-round"
+              @click.stop="$refs.outlineDrawer.show"
+              size="24px"
+              color="#26A69A"
+              v-show="dataLoaded && contentsListLoaded && !isOutlineShow"
+              v-ripple
+              key="format_align_center"
+            />
+            <q-icon
+              name="cached"
+              class="absolute-bottom-right fab-icon cursor-pointer material-icons-round"
+              @click="refreshCurrentNote"
+              size="24px"
+              color="#26A69A"
+              v-show="dataLoaded && !isOutlineShow"
+              v-ripple
+              key="cached"
+            />
           </transition-group>
         </div>
         <NoteOutline ref="outlineDrawer" :change="outlineDrawerChangeHandler" />
@@ -70,9 +76,13 @@ import bus from 'components/bus'
 import events from 'src/constants/events'
 import helper from 'src/utils/helper'
 import { createNamespacedHelpers } from 'vuex'
-import NoteOutline from 'components/NoteOutline'
+import NoteOutline from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
-const { mapGetters, mapState } = createNamespacedHelpers('server')
+const {
+  mapGetters: mapServerGetters,
+  mapState: mapServerState
+} = createNamespacedHelpers('server')
+const { mapState: mapClientState } = createNamespacedHelpers('client')
 // import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
@@ -97,8 +107,13 @@ export default {
     contentsListLoaded: function () {
       return !!this.contentsList.length
     },
-    ...mapGetters(['currentNote']),
-    ...mapState(['contentsList', 'isCurrentNoteLoading'])
+    splitterLimit: function () {
+      if (this.noteListVisible) return [300, 600]
+      return [0, 0]
+    },
+    ...mapServerGetters(['currentNote']),
+    ...mapServerState(['contentsList', 'isCurrentNoteLoading']),
+    ...mapClientState(['noteListVisible'])
   },
   data () {
     return {

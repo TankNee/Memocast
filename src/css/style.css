@@ -112,6 +112,13 @@ body.body--dark {
 .note-item-summary-dark > span {
   color: #8f8f8f;
 }
+.note-item-title > em,
+.note-item-title-dark > em,
+.note-item-summary > em,
+.note-item-summary-dark > em {
+  background-color: #f7c049;
+  color: #282828;
+}
 .note-item-title-dark {
   color: #dadada;
 }

@@ -17,7 +17,7 @@
 
 <script>
 import NoteList from './NoteList'
-import NoteOutline from 'components/NoteOutline'
+import NoteOutline from 'components/ui/NoteOutlineDrawer'
 export default {
   name: 'Sidebar',
   components: { NoteOutline, NoteList },

@@ -1,6 +1,20 @@
 import { app, BrowserWindow, nativeTheme, shell } from 'electron'
 import windowStateKeeper from 'electron-window-state'
-// const windowStateKeeper = require('electron-window-state')
+import unhandled from 'electron-unhandled'
+
+import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
+
+unhandled({
+  reportButton: error => {
+    openNewGitHubIssue({
+      user: 'TankNee',
+      repo: 'Neeto-Vue',
+      body: `\`\`\`\n${error.stack}\n\`\`\`\n\n---\n\n${debugInfo()}`
+    })
+  },
+  showDialog: true
+})
+
 try {
   if (
     process.platform === 'win32' &&
@@ -75,6 +89,9 @@ function createWindow () {
     event.preventDefault()
     shell.openExternal(linkUrl)
   })
+  if (isMac) {
+    enforceMacOSAppLocation()
+  }
 }
 
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')

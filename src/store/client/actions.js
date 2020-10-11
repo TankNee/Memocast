@@ -1,11 +1,11 @@
 import types from 'src/store/client/types'
-import fileStorage from 'src/utils/fileStorage'
 import { Dark } from 'quasar'
 import api from 'src/utils/api'
+import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 
 export default {
   initClientStore ({ commit, state }) {
-    const localStore = fileStorage.getItemsFromStore(state)
+    const localStore = ClientFileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
     Dark.set(state.darkMode)
   },

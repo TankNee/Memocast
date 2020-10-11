@@ -5,13 +5,10 @@
     :class="`note-card${darkTag} bg-transparent`"
     @click="getNoteContent({ docGuid })"
   >
-    <div :class="`note-item-title${darkTag}`">
-      {{ title }}
-    </div>
+    <div :class="`note-item-title${darkTag}`" v-html="title"></div>
 
-    <div :class="`note-item-summary${darkTag}`">
-      {{ summary }}
-    </div>
+    <div :class="`note-item-summary${darkTag}`" v-html="summary"></div>
+
     <div :class="`note-item-summary${darkTag} flex justify-between no-wrap overflow-hidden fa-align-center`">
       <span class="text-left note-info-tag"><q-icon name="category" size="17px"/> {{ category }}</span>
       <span class="text-right note-info-tag"><q-icon name="timer" size="17px"/> {{ modifiedDate }}</span>
@@ -55,12 +52,23 @@ export default {
   components: { CategoryDialog, NoteItemContextMenu },
   computed: {
     summary () {
+      if (helper.isNullOrEmpty(this.data.abstractText)) {
+        const { highlight: { text = [] } } = this.data
+        const summary = text.join('')
+        return summary.length > this.maxSummaryLength
+          ? summary.substring(0, this.maxSummaryLength) + '...'
+          : summary
+      }
       return this.data.abstractText &&
         this.data.abstractText.length > this.maxSummaryLength
         ? this.data.abstractText.substring(0, this.maxSummaryLength) + '...'
         : this.data.abstractText
     },
     title () {
+      if (!helper.isNullOrEmpty(this.data.highlight)) {
+        const { highlight: { title = [] } } = this.data
+        return title.join('')
+      }
       return this.data.title
     },
     docGuid () {

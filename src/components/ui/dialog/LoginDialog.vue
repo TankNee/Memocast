@@ -83,8 +83,8 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import Loading from '../Loading'
-import fileStorage from '../../../utils/fileStorage'
 import helper from '../../../utils/helper'
+import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 const { mapActions: mapServerActions } = createNamespacedHelpers('server')
 const {
   mapState: mapClientState,
@@ -129,7 +129,7 @@ export default {
     ...mapClientActions(['toggleChanged'])
   },
   created () {
-    const [userId, password, url] = fileStorage.getItemsFromStore([
+    const [userId, password, url] = ClientFileStorage.getItemsFromStore([
       'userId',
       'password',
       'url'
