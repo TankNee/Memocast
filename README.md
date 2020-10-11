@@ -3,7 +3,19 @@ An Awesome Wiz Note Client
 
 ### Status
 
-![Neeto-Vue Release Action](https://github.com/TankNee/Neeto-Vue/workflows/Neeto-Vue%20Release%20Action/badge.svg?branch=master)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge)
+
+![Neeto-Vue Commit](https://img.shields.io/github/commit-activity/m/TankNee/Neeto-Vue?style=for-the-badge)
+
+![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge)
+
+![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge)
+
+![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge)
+
+![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge)
+
+![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
 
 ### Introduction
 
@@ -17,6 +29,14 @@ An Awesome Wiz Note Client
 
 ![image-20200925170327136](./screenshot/image-20200925170327136.png)
 
+### Download
+
+[Releases](https://github.com/TankNee/Neeto-Vue/releases/latest)
+
+You are also be able to check update in Neeto-Vue Settings Dialog
+
+![image-20201011103144579](/Users/tanknee/Documents/LocalCodeRepo/Electron/Neeto/Neeto-Vue/screenshot/image-20201011103144579.png)
+
 ### Feature
 
 - More Beautiful
@@ -26,3 +46,7 @@ An Awesome Wiz Note Client
 - Lighter Size
 
 - Better Dark Mode In Desktop Platform
+
+### Attention
+
+- There's another problem with copying notes, Since I haven't handled the transfer of note resources, I don't recommend copying notes for the time being
