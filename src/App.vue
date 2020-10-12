@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     ...mapClientActions(['initClientStore']),
-    ...mapServerActions(['initServerStore']),
+    ...mapServerActions(['initServerStore', 'reLogin']),
     ...mapServerState(['isLogin'])
   }
 }

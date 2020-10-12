@@ -51,6 +51,14 @@ export default {
     }
     return helper.isNullOrEmpty(result) ? `# ${currentNote.info.title}` : result
   },
+  currentNoteResources: ({ currentNote }) => {
+    const { resources } = currentNote
+    return resources
+  },
+  currentNoteResourceUrl: ({ currentNote }) => {
+    const { info: { docGuid, kbGuid } } = currentNote
+    return `${api.KnowledgeBaseApi.getBaseUrl()}/${kbGuid}/${docGuid}`
+  },
   categories: ({ categories }) => {
     return helper.generateCategoryNodeTree(categories)
   },

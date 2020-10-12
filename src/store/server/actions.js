@@ -19,7 +19,12 @@ export default {
     const localStore = ClientFileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
     ServerFileStorage.removeItemFromLocalStorage('token')
-    const [autoLogin, userId, password, url] = ClientFileStorage.getItemsFromStore([
+    const [
+      autoLogin,
+      userId,
+      password,
+      url
+    ] = ClientFileStorage.getItemsFromStore([
       'autoLogin',
       'userId',
       'password',
@@ -66,10 +71,32 @@ export default {
 
     return result
   },
+  /**
+   * 登出
+   * @param commit
+   * @returns {Promise<void>}
+   */
   async logout ({ commit }) {
     await api.AccountServerApi.Logout()
     ServerFileStorage.removeItemFromLocalStorage('token')
     commit(types.LOGOUT)
+  },
+  /**
+   * 重新登录
+   * @param commit
+   * @returns {Promise<void>}
+   */
+  async reLogin ({ commit }) {
+    const [userId, password, url] = ClientFileStorage.getItemsFromStore([
+      'userId',
+      'password',
+      'url'
+    ])
+    await this.dispatch('server/login', {
+      userId,
+      password,
+      url
+    })
   },
   /**
    * 获取指定文件夹下的笔记
@@ -185,9 +212,9 @@ export default {
     let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
-    const html = helper.embedMDNote(markdown, { wrapWithPreTag: isLite })
+    const html = helper.embedMDNote(markdown, resources, { wrapWithPreTag: isLite })
 
-    const _updateNote = async (title) => {
+    const _updateNote = async title => {
       const result = await api.KnowledgeBaseApi.updateNote({
         kbGuid,
         docGuid,
@@ -197,12 +224,15 @@ export default {
           kbGuid,
           docGuid,
           category,
-          resources,
+          resources: resources.map(r => r.name),
           type: isLite ? 'lite/markdown' : 'document'
         }
       })
 
-      ClientFileStorage.setCachedNote({ info: result, html }, api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid))
+      ClientFileStorage.setCachedNote(
+        { info: result, html },
+        api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
+      )
       Notify.create({
         color: 'primary',
         message: i18n.t('saveNoteSuccessfully'),
@@ -238,7 +268,7 @@ export default {
    * @returns {Promise<void>}
    */
   async createNote ({ commit, state, rootState }, title) {
-    const { kbGuid, currentCategory } = state
+    const { kbGuid, currentCategory = '' } = state
     const userId = ClientFileStorage.getItemFromStore('userId')
     const isLite = currentCategory.replace(/\//g, '') === 'Lite'
     const result = await api.KnowledgeBaseApi.createNote({
@@ -248,7 +278,7 @@ export default {
         kbGuid,
         title,
         owner: userId,
-        html: helper.embedMDNote(`# ${title}`, { wrapWithPreTag: isLite }),
+        html: helper.embedMDNote(`# ${title}`, [], { wrapWithPreTag: isLite }),
         type: isLite ? 'lite/markdown' : 'document'
       }
     })

@@ -16,7 +16,11 @@ class ServerFileStorage extends BaseFileStorage {
   }
 
   getValueFromLocalStorage (key) {
-    return JSON.parse(localStorage.getItem(key))
+    try {
+      return JSON.parse(localStorage.getItem(key))
+    } catch (e) {
+      return localStorage.getItem(key)
+    }
   }
 
   isKeyExistsInLocalStorage (key) {

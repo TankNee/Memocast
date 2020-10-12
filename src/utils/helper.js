@@ -56,10 +56,18 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
 /**
  * embed markdown source string to html string
  * @param markdown
+ * @param resources
  * @param options
  * @returns {string}
  */
-function embedMDNote (markdown, options) {
+function embedMDNote (markdown, resources, options) {
+  resources.forEach(resource => {
+    const imgReg = new RegExp(`!\\[.*\\]\\(${resource.name}\\)`, 'g')
+    markdown = markdown.replace(resource.url, resource.name)
+    const result = imgReg.exec(markdown)
+    console.log(result)
+    markdown = markdown.replace(imgReg, `![](index_files/${resource.name})`)
+  })
   return wizMarkdownParser.embed(markdown, options)
 }
 

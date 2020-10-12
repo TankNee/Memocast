@@ -37,7 +37,7 @@ export default {
     dataLoaded: function () {
       return !helper.isNullOrEmpty(this.currentNote)
     },
-    ...mapServerGetters(['currentNote', 'uploadImageUrl']),
+    ...mapServerGetters(['currentNote', 'uploadImageUrl', 'currentNoteResources', 'currentNoteResourceUrl']),
     ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
     ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme'])
   },
@@ -71,6 +71,12 @@ export default {
           hljs: {
             style: this.$q.dark.isActive ? this.darkCodeTheme : this.lightCodeTheme
           }
+          // transform: (html) => {
+          //   const imgReg = /(<img\s+([^>]*\s+)?(data-src|src)=")index_files(\/[^"]*")/ig
+          //   const newHtml = imgReg.exec(html)
+          //   console.log(newHtml)
+          //   return newHtml
+          // }
         },
         upload: {
           max: 5 * 1024 * 1024,
