@@ -10,7 +10,8 @@ export default {
     let img = ''
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
-        img = docGuid ? `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/${url}` : url
+        img = url.url
+        // img = docGuid ? `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/${url.url}` : url
         break
       case 'smmsImageUploadService':
       case 'customWebUploadService':

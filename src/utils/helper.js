@@ -45,7 +45,7 @@ function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
  */
 function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
   resources.forEach(resource => {
-    html = html.replace(`index_files/${resource.name}`, resource.url)
+    html = html.replace(new RegExp(`index_files/${resource.name}`, 'g'), resource.url)
   })
   return wizMarkdownParser.extract(html, {
     convertImgTag: true,

@@ -410,6 +410,7 @@ export default {
         getters.imageUrl(result, imageUploadService)
       )
     }
+    if (imageUploadService === 'wizOfficialImageUploadService') commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
   },
   async moveNote ({ commit }, noteInfo) {
     const { kbGuid, docGuid } = noteInfo
