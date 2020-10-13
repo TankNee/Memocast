@@ -48,6 +48,15 @@ export default {
     }
     return state
   },
+  [types.UPDATE_CURRENT_NOTE_RESOURCE] (state, newResource) {
+    if (state.currentNote && state.currentNote.resources) {
+      if (Array.isArray(newResource)) {
+        newResource.forEach(nr => state.currentNote.resources.push({ name: nr.name }))
+      } else {
+        state.currentNote.resources.push({ name: newResource.name })
+      }
+    }
+  },
   [types.SAVE_TO_LOCAL_STORE_SYNC] (state, [key, value]) {
     ClientFileStorage.setItemInStore(key, value)
     return state

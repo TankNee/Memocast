@@ -10,7 +10,8 @@ export default {
     let img = ''
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
-        img = docGuid ? `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/${url}` : url
+        img = url.url
+        // img = docGuid ? `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/${url.url}` : url
         break
       case 'smmsImageUploadService':
       case 'customWebUploadService':
@@ -50,6 +51,14 @@ export default {
       result = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
     }
     return helper.isNullOrEmpty(result) ? `# ${currentNote.info.title}` : result
+  },
+  currentNoteResources: ({ currentNote }) => {
+    const { resources } = currentNote
+    return resources
+  },
+  currentNoteResourceUrl: ({ currentNote }) => {
+    const { info: { docGuid, kbGuid } } = currentNote
+    return `${api.KnowledgeBaseApi.getBaseUrl()}/${kbGuid}/${docGuid}`
   },
   categories: ({ categories }) => {
     return helper.generateCategoryNodeTree(categories)

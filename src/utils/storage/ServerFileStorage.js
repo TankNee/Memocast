@@ -1,5 +1,6 @@
 import BaseFileStorage from 'src/utils/storage/BaseFileStorage'
 import Store from 'electron-store'
+// import { session } from 'electron'
 class ServerFileStorage extends BaseFileStorage {
   constructor () {
     super()
@@ -8,6 +9,7 @@ class ServerFileStorage extends BaseFileStorage {
       name: 'ServerFileStorage',
       encryptionKey: 'server.file.storage'
     })
+    // this._cookie = session.defaultSession.cookies
   }
 
   // Chrome LocalStorage
@@ -16,7 +18,11 @@ class ServerFileStorage extends BaseFileStorage {
   }
 
   getValueFromLocalStorage (key) {
-    return JSON.parse(localStorage.getItem(key))
+    try {
+      return JSON.parse(localStorage.getItem(key))
+    } catch (e) {
+      return localStorage.getItem(key)
+    }
   }
 
   isKeyExistsInLocalStorage (key) {
@@ -29,6 +35,15 @@ class ServerFileStorage extends BaseFileStorage {
 
   clearUpLocalStorage () {
     return localStorage.clear()
+  }
+
+  /**
+   * 设置cookie
+   * @param name
+   * @param value
+   */
+  setCookie (name, value) {
+    this._cookie.set({ name, value })
   }
 }
 export default new ServerFileStorage()

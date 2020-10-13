@@ -52,7 +52,7 @@ export default {
   components: { CategoryDialog, NoteItemContextMenu },
   computed: {
     summary () {
-      if (helper.isNullOrEmpty(this.data.abstractText)) {
+      if (helper.isNullOrEmpty(this.data.abstractText) && !helper.isNullOrEmpty(this.data.highlight)) {
         const { highlight: { text = [] } } = this.data
         const summary = text.join('')
         return summary.length > this.maxSummaryLength
