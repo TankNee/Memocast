@@ -839,6 +839,9 @@
 }
 .vditor-reset img {
   max-width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 .vditor-reset img.emoji {
   cursor: auto;
@@ -1353,6 +1356,17 @@
   min-width: 1px;
   position: relative;
   width: 100%;
+}
+.vditor-reset span[data-type=img] > span,
+.vditor-reset span[data-type=a] > span{
+  font-family: Monaco, Consolas, "Courier New", monospace;
+}
+.vditor-reset span[data-type=img] > img{
+  cursor: default;
+}
+.vditor-ir__node[data-type='img']:not(.vditor-ir__node--expand) {
+  display: flex;
+  justify-content: center;
 }
 .vditor-ir__node[data-type='code-block']:after,
 .vditor-ir__node[data-type='code-block']:before,

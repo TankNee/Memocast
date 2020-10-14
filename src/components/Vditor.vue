@@ -3,7 +3,7 @@
     <div
       id="vditor"
       class="fit"
-      style="max-width: 80%"
+      style="max-width: 80%;min-width: 80vh;"
       v-show="!isCurrentNoteLoading && dataLoaded"
       v-close-popup
     ></div>

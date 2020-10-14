@@ -1,5 +1,5 @@
 <template>
-  <q-bar class="q-electron-drag header text-grey">
+  <q-bar class="q-electron-drag header text-grey" @dblclick="macDoubleClickHandler">
     <q-space v-if="$q.platform.is.mac" />
     <q-avatar
       size="36px"
@@ -186,6 +186,11 @@ export default {
     clearInputHandler: function () {
       this.searchText = ''
       this.getCategoryNotes({ category: this.currentCategory })
+    },
+    macDoubleClickHandler: function () {
+      if (this.$q.platform.is.mac) {
+        this.maximize()
+      }
     },
     ...mapServerActions(['logout', 'searchNote', 'getCategoryNotes']),
     ...mapClientActions(['toggleChanged'])
