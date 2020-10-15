@@ -413,11 +413,12 @@ export default {
     if (imageUploadService === 'wizOfficialImageUploadService') commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
   },
   async moveNote ({ commit }, noteInfo) {
-    const { kbGuid, docGuid } = noteInfo
+    const { kbGuid, docGuid, category, type } = noteInfo
+    const isLite = category === '/Lite/' ? 'lite/markdown' : type
     await api.KnowledgeBaseApi.updateNoteInfo({
       kbGuid,
       docGuid,
-      data: noteInfo
+      data: { ...noteInfo, type: isLite ? 'lite/markdown' : type }
     })
     await this.dispatch('server/getCategoryNotes')
   },
