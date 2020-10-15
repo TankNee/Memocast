@@ -51,7 +51,7 @@
               key="format_align_center"
             />
             <q-icon
-              name="cached"
+              name="save"
               class="absolute-bottom-right fab-icon cursor-pointer material-icons-round"
               @click="refreshCurrentNote"
               size="24px"

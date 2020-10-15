@@ -1,10 +1,15 @@
 {
   "name": "neeto.vue.electron",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Neeto-Vue",
   "author": "tanknee <nee@tanknee.cn>",
   "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/TankNee/Neeto-Vue"
+  },
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "dev": "quasar dev -m electron -t mat",
@@ -19,6 +24,7 @@
     "axios": "^0.18.1",
     "cheerio": "^1.0.0-rc.3",
     "core-js": "^3.6.5",
+    "electron-serve": "^1.0.0",
     "electron-store": "^6.0.0",
     "electron-unhandled": "^3.0.2",
     "electron-util": "^0.14.2",

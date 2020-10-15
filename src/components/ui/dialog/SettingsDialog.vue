@@ -179,6 +179,8 @@ import ImageUploadServiceDialog from './ImageUploadServiceDialog'
 import { i18n } from 'boot/i18n'
 import { version } from '../../../../package.json'
 import codethems from '../../../constants/codethems'
+import VditorPreview from 'vditor/dist/method.min'
+
 const { mapState, mapActions } = createNamespacedHelpers('client')
 
 export default {
@@ -248,21 +250,45 @@ export default {
       const { tag_name, html_url, body, author: { avatar_url } } = await this.getLatestVersion()
       const latestVersion = tag_name.replace('v', '')
       const that = this
+
       if (version !== latestVersion) {
-        this.$q.notify({
-          message: body,
-          color: 'primary',
-          actions: [
-            {
-              label: that.$t('update'),
-              color: 'white',
-              handler: () => {
-                that.$q.electron.shell.openExternal(html_url)
+        VditorPreview.md2html(body).then(bodyContent => {
+          this.$q.notify({
+            message: bodyContent,
+            color: 'primary',
+            actions: [
+              {
+                label: that.$t('update'),
+                color: 'white',
+                handler: () => {
+                  that.$q.electron.shell.openExternal(html_url)
+                }
               }
-            }
-          ],
-          caption: that.$t('getNewerVersion', { version: latestVersion }),
-          avatar: avatar_url
+            ],
+            caption: that.$t('getNewerVersion', { version: latestVersion }),
+            avatar: avatar_url,
+            html: true,
+            multiLine: true
+          })
+        }).catch(err => {
+          console.log(err)
+          this.$q.notify({
+            message: body,
+            color: 'primary',
+            actions: [
+              {
+                label: that.$t('update'),
+                color: 'white',
+                handler: () => {
+                  that.$q.electron.shell.openExternal(html_url)
+                }
+              }
+            ],
+            caption: that.$t('getNewerVersion', { version: latestVersion }),
+            avatar: avatar_url,
+            html: true,
+            multiLine: true
+          })
         })
       } else {
         this.$q.notify({
