@@ -86,7 +86,7 @@
     </q-input>
     <q-space v-if="!$q.platform.is.mac" />
     <div
-      v-if="$q.platform.is.mac && dataLoaded"
+      v-if="!$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
     >
       <q-icon key="icon" name="book" size="19px" />
@@ -155,7 +155,10 @@ export default {
     },
     title: function () {
       if (this.currentNote.info) {
-        const { title } = this.currentNote.info
+        let { title } = this.currentNote.info
+        if (title.length > 30) {
+          title = `${title.substr(0, 9)}...${title.substring(title.length - 12)}`
+        }
         if (this.noteState !== 'default') {
           return `${title} —— ${this.$t(this.noteState)}`
         }
