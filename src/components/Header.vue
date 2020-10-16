@@ -4,9 +4,12 @@
     @dblclick="macDoubleClickHandler"
   >
     <q-space v-if="$q.platform.is.mac" />
-    <div v-if="$q.platform.is.mac && dataLoaded" class="header-note-title animated fadeIn">
-        <q-icon key="icon" name="book" size="19px" />
-        <span key="title">{{ title }}</span>
+    <div
+      v-if="$q.platform.is.mac && dataLoaded"
+      class="header-note-title animated fadeIn"
+    >
+      <q-icon key="icon" name="book" size="19px" />
+      <span key="title">{{ title }}</span>
     </div>
     <q-space v-if="$q.platform.is.mac" />
     <q-avatar
@@ -81,6 +84,14 @@
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
+    <q-space v-if="!$q.platform.is.mac" />
+    <div
+      v-if="$q.platform.is.mac && dataLoaded"
+      class="header-note-title animated fadeIn"
+    >
+      <q-icon key="icon" name="book" size="19px" />
+      <span key="title">{{ title }}</span>
+    </div>
     <q-space v-if="!$q.platform.is.mac" />
     <q-avatar
       size="36px"
