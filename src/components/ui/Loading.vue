@@ -1,9 +1,6 @@
 <template>
   <q-inner-loading :showing="visible">
-    <q-spinner
-      color="primary"
-      size="5em"
-    />
+    <q-spinner :color="$q.dark.isActive ? 'warning' : 'primary'" size="5em" />
   </q-inner-loading>
 </template>
 
@@ -16,6 +13,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

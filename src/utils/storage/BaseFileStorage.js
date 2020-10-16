@@ -63,6 +63,10 @@ class BaseFileStorage {
     return this._store.delete(key)
   }
 
+  clearStore () {
+    return this._store.clear()
+  }
+
   get size () {
     return this._store.size
   }

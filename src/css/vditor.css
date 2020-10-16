@@ -90,6 +90,7 @@
     opacity: 1;
   }
 }
+
 .vditor-tooltipped {
   position: relative;
   cursor: pointer;
@@ -798,7 +799,7 @@
   line-height: 28px;
   font-size: 19px;
   word-break: break-word;
-  padding-bottom: 30px;
+  padding: 0px !important;
 }
 .vditor-reset--anchor {
   padding-left: 20px;
@@ -1000,7 +1001,7 @@
 .vditor-reset blockquote:last-child,
 .vditor-reset hr:last-child,
 .vditor-reset ol:last-child,
-.vditor-reset p:last-child,
+.vditor-reset p:last-child
 .vditor-reset pre:last-child,
 .vditor-reset ul:last-child {
   margin-bottom: 0;

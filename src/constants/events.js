@@ -5,5 +5,5 @@ export default {
   },
   INSERT_IMAGE: 'insert.image',
   SAVE_NOTE: 'save.note',
-  SCROLL_TO_HEADER: 'scroll_to_header'
+  SCROLL_TO_HEADER: 'scroll.to.header'
 }

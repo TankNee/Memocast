@@ -32,7 +32,7 @@
         <span>{{category}}</span>
       </q-card>
       <q-fab
-        color="primary"
+        :color="$q.dark.isActive ? 'warning' : 'primary'"
         icon="build"
         direction="up"
         padding="11px"
@@ -53,17 +53,17 @@
             >{{ $t('deleteCategory') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action color="primary" icon="note_add" @click="handleAddNote">
+        <q-fab-action :color="$q.dark.isActive ? 'warning' : 'primary'" icon="note_add" @click="handleAddNote">
           <q-tooltip
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            content-class="bg-primary text-white shadow-4  text-h7"
+            :content-class="`bg-${$q.dark.isActive ? 'warning' : 'primary'} text-white shadow-4  text-h7`"
             >{{ $t('createNote') }}</q-tooltip
           >
         </q-fab-action>
         <q-fab-action
-          color="primary"
+          :color="$q.dark.isActive ? 'warning' : 'primary'"
           icon="create_new_folder"
           @click="handleAddCategory"
         >
@@ -71,7 +71,7 @@
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            content-class="bg-primary text-white shadow-4  text-h7"
+            :content-class="`bg-${$q.dark.isActive ? 'warning' : 'primary'} text-white shadow-4  text-h7`"
             >{{ $t('createCategory') }}</q-tooltip
           >
         </q-fab-action>
