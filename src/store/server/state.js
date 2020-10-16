@@ -14,6 +14,7 @@ export default function () {
     categories: [],
     currentCategory: '',
     uploadImageUrl: '',
-    contentsList: []
+    contentsList: [],
+    noteState: 'default'
   }
 }

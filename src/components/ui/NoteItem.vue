@@ -3,7 +3,7 @@
   <q-card
     flat
     :class="`note-card${darkTag} bg-transparent`"
-    @click="getNoteContent({ docGuid })"
+    @click="noteItemClickHandler"
   >
     <div :class="`note-item-title${darkTag}`" v-html="title"></div>
 
@@ -23,7 +23,7 @@ import { createNamespacedHelpers } from 'vuex'
 import NoteItemContextMenu from './menu/NoteItemContextMenu'
 import helper from 'src/utils/helper'
 import CategoryDialog from 'components/ui/dialog/CategoryDialog'
-const { mapActions } = createNamespacedHelpers('server')
+const { mapActions, mapState } = createNamespacedHelpers('server')
 export default {
   name: 'NoteItem',
   props: {
@@ -91,7 +91,8 @@ export default {
       } catch (e) {
         return ''
       }
-    }
+    },
+    ...mapState(['noteState'])
   },
   methods: {
     renameHandler: function () {
@@ -129,6 +130,22 @@ export default {
       this.categoryDialogLabel = 'moveToAnotherCategory'
       this.categoryDialogHandler = this.moveNote
       this.$refs.categoryDialog.toggle()
+    },
+    noteItemClickHandler: function () {
+      if (this.noteState !== 'default') {
+        this.$q.dialog({
+          title: this.$t('discardNote'),
+          cancel: {
+            label: this.$t('cancel')
+          },
+          ok: {
+            label: this.$t('ok')
+          },
+          message: this.$t('discardNoteHint')
+        }).onOk(() => this.getNoteContent({ docGuid: this.docGuid }))
+      } else {
+        this.getNoteContent({ docGuid: this.docGuid })
+      }
     },
     ...mapActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote'])
   }

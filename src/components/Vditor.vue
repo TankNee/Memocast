@@ -70,13 +70,14 @@ export default {
           },
           hljs: {
             style: this.$q.dark.isActive ? this.darkCodeTheme : this.lightCodeTheme
+          },
+          transform: (html) => {
+            // console.log('transform', html)
+            // const imgReg = /(<img\s+([^>]*\s+)?(data-src|src)=")index_files(\/[^"]*")/ig
+            // const newHtml = imgReg.exec(html)
+            // console.log(newHtml)
+            // return newHtml
           }
-          // transform: (html) => {
-          //   const imgReg = /(<img\s+([^>]*\s+)?(data-src|src)=")index_files(\/[^"]*")/ig
-          //   const newHtml = imgReg.exec(html)
-          //   console.log(newHtml)
-          //   return newHtml
-          // }
         },
         upload: {
           max: 5 * 1024 * 1024,
@@ -93,7 +94,10 @@ export default {
             )
           }
         },
-        input: () => {
+        input: (value) => {
+          if (value !== that.currentNote) {
+            that.updateNoteState('changed')
+          }
           that.updateContentsList(that.contentEditor.vditor.ir.element)
         }
       })
@@ -159,7 +163,7 @@ export default {
       }
       return false
     },
-    ...mapServerActions(['updateNote', 'uploadImage', 'updateContentsList'])
+    ...mapServerActions(['updateNote', 'uploadImage', 'updateContentsList', 'updateNoteState'])
   },
   watch: {
     currentNote: function (currentData) {

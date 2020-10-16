@@ -7,5 +7,6 @@ export default {
   logout: '登出',
   logoutHint: '你确定要立刻注销登录吗？',
   cancel: '取消',
-  switchView: '切换界面视图'
+  switchView: '切换界面视图',
+  changed: '已修改'
 }

@@ -212,7 +212,9 @@ export default {
     let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
-    const html = helper.embedMDNote(markdown, resources, { wrapWithPreTag: isLite })
+    const html = helper.embedMDNote(markdown, resources, {
+      wrapWithPreTag: isLite
+    })
 
     const _updateNote = async title => {
       const result = await api.KnowledgeBaseApi.updateNote({
@@ -231,7 +233,8 @@ export default {
 
       ClientFileStorage.setCachedNote(
         { info: result, html },
-        api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
+        api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid),
+        null
       )
       Notify.create({
         color: 'primary',
@@ -410,7 +413,7 @@ export default {
         getters.imageUrl(result, imageUploadService)
       )
     }
-    if (imageUploadService === 'wizOfficialImageUploadService') commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
+    if (imageUploadService === 'wizOfficialImageUploadService') { commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result) }
   },
   async moveNote ({ commit }, noteInfo) {
     const { kbGuid, docGuid, category, type } = noteInfo
@@ -471,5 +474,8 @@ export default {
   updateContentsList ({ commit }, editorRootElement) {
     const list = helper.updateContentsList(editorRootElement)
     commit(types.UPDATE_CONTENTS_LIST, list)
+  },
+  updateNoteState ({ commit }, noteState) {
+    commit(types.UPDATE_NOTE_STATE, noteState)
   }
 }

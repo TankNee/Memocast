@@ -62,7 +62,7 @@
             />
           </transition-group>
         </div>
-        <NoteOutline ref="outlineDrawer" :change="outlineDrawerChangeHandler" />
+        <NoteOutlineDrawer ref="outlineDrawer" :change="outlineDrawerChangeHandler" />
         <Loading :visible="isCurrentNoteLoading" />
       </template>
     </q-splitter>
@@ -76,7 +76,7 @@ import bus from 'components/bus'
 import events from 'src/constants/events'
 import helper from 'src/utils/helper'
 import { createNamespacedHelpers } from 'vuex'
-import NoteOutline from 'components/ui/NoteOutlineDrawer'
+import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
 const {
   mapGetters: mapServerGetters,
@@ -86,7 +86,7 @@ const { mapState: mapClientState } = createNamespacedHelpers('client')
 // import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
-  components: { Loading, NoteOutline, Vditor, NoteList },
+  components: { Loading, NoteOutlineDrawer, Vditor, NoteList },
   computed: {
     thumbStyle () {
       return {
@@ -105,7 +105,7 @@ export default {
       return !helper.isNullOrEmpty(this.currentNote)
     },
     contentsListLoaded: function () {
-      return !!this.contentsList.length
+      return this.contentsList && !!this.contentsList.length
     },
     splitterLimit: function () {
       if (this.noteListVisible) return [300, 600]

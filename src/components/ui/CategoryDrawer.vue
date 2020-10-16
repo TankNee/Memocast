@@ -58,7 +58,9 @@ export default {
       this.$refs.drawer.toggle()
     },
     hide: function () {
-      this.$refs.drawer.hide()
+      if (this.$refs.drawer) {
+        this.$refs.drawer.hide()
+      }
     },
     ...mapServerActions(['updateCurrentCategory'])
   },
