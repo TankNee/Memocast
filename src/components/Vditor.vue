@@ -2,8 +2,6 @@
   <div class="flex justify-center">
     <div
       id="vditor"
-      class="fit"
-      style="max-width: 80%;min-width: 80vh;"
       v-show="!isCurrentNoteLoading && dataLoaded"
       v-close-popup
     ></div>
@@ -57,7 +55,7 @@ export default {
       // console.log(cdn)
       const that = this
       return new Vditor('vditor', {
-        width: '100%',
+        width: '75%',
         cache: {
           enable: false
         },

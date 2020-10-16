@@ -5,8 +5,7 @@ class ClientFileStorage extends BaseFileStorage {
     super()
     // init electron store
     this._store = new Store({
-      name: 'ClientFileStorage',
-      encryptionKey: 'client.file.storage'
+      name: 'ClientFileStorage'
     })
   }
 }

@@ -7,6 +7,7 @@ import cheerio from 'cheerio'
 const { dialog, BrowserWindow } = require('electron').remote
 const turndownService = new TurndownService({ codeBlockStyle: 'fenced', headingStyle: 'atx' })
 function isNullOrEmpty (obj) {
+  obj = _.toString(obj)
   return _.isNull(obj) || _.isEmpty(obj)
 }
 

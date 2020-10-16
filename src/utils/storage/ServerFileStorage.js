@@ -6,10 +6,8 @@ class ServerFileStorage extends BaseFileStorage {
     super()
     // init electron store
     this._store = new Store({
-      name: 'ServerFileStorage',
-      encryptionKey: 'server.file.storage'
+      name: 'ServerFileStorage'
     })
-    // this._cookie = session.defaultSession.cookies
   }
 
   // Chrome LocalStorage
