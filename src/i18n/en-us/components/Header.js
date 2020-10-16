@@ -7,5 +7,6 @@ export default {
   logout: 'Logout',
   logoutHint: 'Do you want to log out right now ?',
   cancel: 'Cancel',
-  switchView: 'Switch View'
+  switchView: 'Switch View',
+  changed: 'Changed'
 }

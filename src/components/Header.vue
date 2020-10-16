@@ -1,5 +1,16 @@
 <template>
-  <q-bar class="q-electron-drag header text-grey" @dblclick="macDoubleClickHandler">
+  <q-bar
+    class="q-electron-drag header text-grey"
+    @dblclick="macDoubleClickHandler"
+  >
+    <q-space v-if="$q.platform.is.mac" />
+    <div
+      v-if="$q.platform.is.mac && dataLoaded"
+      class="header-note-title animated fadeIn"
+    >
+      <q-icon key="icon" name="book" size="19px" />
+      <span key="title">{{ title }}</span>
+    </div>
     <q-space v-if="$q.platform.is.mac" />
     <q-avatar
       size="36px"
@@ -74,6 +85,14 @@
       </q-tooltip>
     </q-input>
     <q-space v-if="!$q.platform.is.mac" />
+    <div
+      v-if="!$q.platform.is.mac && dataLoaded"
+      class="header-note-title animated fadeIn"
+    >
+      <q-icon key="icon" name="book" size="19px" />
+      <span key="title">{{ title }}</span>
+    </div>
+    <q-space v-if="!$q.platform.is.mac" />
     <q-avatar
       size="36px"
       class="cursor-pointer q-electron-drag--exception "
@@ -81,7 +100,9 @@
       @click="switchViewHandler"
     >
       <q-icon name="table_chart" />
-      <q-tooltip :offset="[20, 10]" content-class="bg-brown-4 text-white shadow-4 text-h7"
+      <q-tooltip
+        :offset="[20, 10]"
+        content-class="bg-brown-4 text-white shadow-4 text-h7"
         >{{ $t('switchView') }}
       </q-tooltip>
     </q-avatar>
@@ -126,11 +147,27 @@ const {
 export default {
   name: 'Header',
   computed: {
-    ...mapServerState(['user', 'isLogin']),
+    ...mapServerState(['user', 'isLogin', 'currentNote', 'noteState']),
     ...mapServerGetters(['avatarUrl']),
     ...mapClientState(['shrinkInTray', 'autoLogin', 'noteListVisible']),
     darkMode: function () {
       return this.$q.dark.isActive
+    },
+    title: function () {
+      if (this.currentNote.info) {
+        let { title } = this.currentNote.info
+        if (title.length > 30) {
+          title = `${title.substr(0, 9)}...${title.substring(title.length - 12)}`
+        }
+        if (this.noteState !== 'default') {
+          return `${title} —— ${this.$t(this.noteState)}`
+        }
+        return title
+      }
+      return ''
+    },
+    dataLoaded: function () {
+      return this.currentNote && !helper.isNullOrEmpty(this.currentNote.html)
     }
   },
   components: { CategoryDrawer, SettingsDialog, LoginDialog },
@@ -181,7 +218,10 @@ export default {
       this.searchNote(this.searchText)
     },
     switchViewHandler: function () {
-      this.toggleChanged({ key: 'noteListVisible', value: !this.noteListVisible })
+      this.toggleChanged({
+        key: 'noteListVisible',
+        value: !this.noteListVisible
+      })
     },
     clearInputHandler: function () {
       this.searchText = ''
@@ -203,4 +243,15 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.header-note-title {
+  display: flex;
+  align-items: center;
+  margin-left: 20%;
+}
+.header-note-title > span {
+  font-weight: bold;
+  font-family: Monaco, Consolas;
+  margin-left: 7px;
+}
+</style>

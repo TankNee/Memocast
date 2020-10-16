@@ -94,7 +94,7 @@ class BaseFileStorage {
    * 设置笔记缓存
    * @param note
    * @param cacheKey
-   * @param {number} cachedDate
+   * @param cachedDate
    */
   setCachedNote (note, cacheKey, cachedDate) {
     this.setItemInStore(cacheKey, { ...note, cachedDate: cachedDate || new Date().getTime() })

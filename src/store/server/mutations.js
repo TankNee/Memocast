@@ -32,6 +32,7 @@ export default {
       state[key] = null
     }
     state.isLogin = false
+    state.noteState = 'default'
     return state
   },
   [types.UPDATE_CURRENT_NOTES] (state, payload) {
@@ -46,6 +47,7 @@ export default {
       currentNote.info = payload
       state.currentNote = currentNote
     }
+    state.noteState = 'default'
     return state
   },
   [types.UPDATE_CURRENT_NOTE_RESOURCE] (state, newResource) {
@@ -82,5 +84,9 @@ export default {
   },
   [types.UPDATE_CONTENTS_LIST] (state, list) {
     state.contentsList = list
+  },
+  [types.UPDATE_NOTE_STATE] (state, noteState) {
+    state.noteState = noteState
+    return state
   }
 }
