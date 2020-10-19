@@ -7,7 +7,9 @@ name: Neeto-Vue Release Action
 on:
   push:
     branches: 
-      - TankNee-Builder-Test
+      - master
+    tags:
+      - v*
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -15,7 +17,7 @@ jobs:
   build-windows:
     # The type of runner that the job will run on
     runs-on: windows-latest
-#     if: contains(github.ref, 'refs/tags/v')
+    if: contains(github.ref, 'refs/tags/v')
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -34,17 +36,17 @@ jobs:
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron/Packaged
-          bestzip Neeto-Vue-win32-x64.zip Neeto-Vue*
+          cd dist/electron
+          bestzip Neeto-Vue-win32-x64.zip Packaged/*
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
           name: Windows_Dist
-          path: dist/electron/Packaged/Neeto-Vue-win32-x64.zip
+          path: dist/electron/Neeto-Vue-win32-x64.zip
   build-linux:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-#     if: contains(github.ref, 'refs/tags/v')
+    if: contains(github.ref, 'refs/tags/v')
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -62,17 +64,17 @@ jobs:
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron/Packaged
-          bestzip Neeto-Vue-linux-x64.zip Neeto-Vue*
+          cd dist/electron
+          bestzip Neeto-Vue-linux-x64.zip Packaged/*
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
           name: Linux_Dist
-          path: dist/electron/Packaged/Neeto-Vue-linux-x64.zip
+          path: dist/electron/Neeto-Vue-linux-x64.zip
   build-mac:
     # The type of runner that the job will run on
     runs-on: macos-latest
-#     if: contains(github.ref, 'refs/tags/v')
+    if: contains(github.ref, 'refs/tags/v')
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -90,17 +92,17 @@ jobs:
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron/Packaged
-          bestzip Neeto-Vue-darwin-x64.zip Neeto-Vue*
+          cd dist/electron
+          bestzip Neeto-Vue-darwin-x64.zip Packaged/*
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
-          path: dist/electron/Packaged/Neeto-Vue-darwin-x64.zip
+          path: dist/electron/Neeto-Vue-darwin-x64.zip
   release:
     needs: [build-windows, build-linux, build-mac]
     runs-on: ubuntu-latest
-#     if: contains(github.ref, 'refs/tags/v')
+    if: contains(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v1
       - name: Download pre-built packages for Linux
