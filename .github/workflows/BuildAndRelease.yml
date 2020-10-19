@@ -37,7 +37,7 @@ jobs:
         run: |
           npm install -g bestzip
           cd dist/electron
-          bestzip Neeto-Vue-win32-x64.zip Neeto-Vue-win32-x64/*
+          bestzip Neeto-Vue-win32-x64.zip Packaged/*
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
@@ -65,7 +65,7 @@ jobs:
         run: |
           npm install -g bestzip
           cd dist/electron
-          bestzip Neeto-Vue-linux-x64.zip Neeto-Vue-linux-x64/*
+          bestzip Neeto-Vue-linux-x64.zip Packaged/*
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
@@ -93,7 +93,7 @@ jobs:
         run: |
           npm install -g bestzip
           cd dist/electron
-          bestzip Neeto-Vue-darwin-x64.zip Neeto-Vue-darwin-x64/*
+          bestzip Neeto-Vue-darwin-x64.zip Packaged/*
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
