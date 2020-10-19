@@ -34,8 +34,8 @@ jobs:
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron
-          bestzip Neeto-Vue-win32-x64.zip Packaged/*
+          cd dist/electron/Packaged
+          bestzip Neeto-Vue-win32-x64.zip Neeto-Vue*
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
@@ -62,8 +62,8 @@ jobs:
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron
-          bestzip Neeto-Vue-linux-x64.zip Packaged/*
+          cd dist/electron/Packaged
+          bestzip Neeto-Vue-linux-x64.zip Neeto-Vue*
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
@@ -90,8 +90,8 @@ jobs:
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron
-          bestzip Neeto-Vue-darwin-x64.zip Packaged/*
+          cd dist/electron/Packaged
+          bestzip Neeto-Vue-darwin-x64.zip Neeto-Vue*
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
