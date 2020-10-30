@@ -6,7 +6,7 @@ name: Neeto-Vue Release Action
 # events but only for the master branch
 on:
   push:
-    branches: 
+    branches:
       - master
     tags:
       - v*
@@ -23,26 +23,26 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out branch
         uses: actions/checkout@master
-        
+
       - name: Install Node.js, NPM
         uses: actions/setup-node@v1
         with:
           node-version: 14
-        
+
       - name: Build
         run: |
-         npm install
-         npm run build-publish
+          npm install
+          npm run build-publish
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron/Packaged
-          bestzip Neeto-Vue-win32-x64.zip *.exe
+          cd dist/electron
+          bestzip Neeto-Vue-win32-x64.zip Neeto-Vue-win32-x64/*
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
           name: Windows_Dist
-          path: dist/electron/Packaged/Neeto-Vue-win32-x64.zip
+          path: dist/electron/Neeto-Vue-win32-x64.zip
   build-linux:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -52,25 +52,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out branch
         uses: actions/checkout@master
-        
+
       - name: Install Node.js, NPM
         uses: actions/setup-node@v1
         with:
           node-version: 14
       - name: Build
         run: |
-         npm install
-         npm run build-publish
+          npm install
+          npm run build-publish
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron/Packaged
-          bestzip Neeto-Vue-linux-x64.zip Neeto*
+          cd dist/electron
+          bestzip Neeto-Vue-linux-x64.zip Neeto-Vue-linux-x64/*
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
           name: Linux_Dist
-          path: dist/electron/Packaged/Neeto-Vue-linux-x64.zip
+          path: dist/electron/Neeto-Vue-linux-x64.zip
   build-mac:
     # The type of runner that the job will run on
     runs-on: macos-latest
@@ -80,25 +80,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out branch
         uses: actions/checkout@master
-        
+
       - name: Install Node.js, NPM
         uses: actions/setup-node@v1
         with:
           node-version: 14
       - name: Build
         run: |
-         npm install
-         npm run build-publish
+          npm install
+          npm run build-publish
       - name: Compress Bundle
         run: |
           npm install -g bestzip
-          cd dist/electron/Packaged
-          bestzip Neeto-Vue-darwin-x64.zip Neeto*
+          cd dist/electron
+          bestzip Neeto-Vue-darwin-x64.zip Neeto-Vue-darwin-x64/*
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
-          path: dist/electron/Packaged/Neeto-Vue-darwin-x64.zip
+          path: dist/electron/Neeto-Vue-darwin-x64.zip
   release:
     needs: [build-windows, build-linux, build-mac]
     runs-on: ubuntu-latest
