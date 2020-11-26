@@ -263,11 +263,6 @@ function updateContentsList (editorRootElement) {
         let target = list
         for (let j = 1; j < rank; j++) {
           if (target.length === 0 || rank === target[0].rank) {
-            // target.push({
-            //   key: `${i}-${j}`,
-            //   label: `${i}-${j}`,
-            //   children: [],
-            // })
             break
           } else if (!target[target.length - 1].children) {
             target[target.length - 1].children = []
@@ -298,13 +293,6 @@ function updateContentsList (editorRootElement) {
             item.rank = rank
             item.element = editorRootElement.children[i]
           }
-          // else {
-          //   item.key = `${i}-${j}`
-          //   item.label = item.key
-          //   item.open = true
-          //   item.children = [{}]
-          //   item = item.children[0]
-          // }
         }
       }
     }

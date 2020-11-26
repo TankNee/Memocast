@@ -13,7 +13,7 @@
       <span class="text-left note-info-tag"><q-icon name="category" size="17px"/> {{ category }}</span>
       <span class="text-right note-info-tag"><q-icon name="timer" size="17px"/> {{ modifiedDate }}</span>
     </div>
-    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" />
+    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" :export-to="exportHandler" />
     <CategoryDialog ref="categoryDialog" :note-info="data" :label="categoryDialogLabel" :handler="categoryDialogHandler" />
   </q-card>
 </template>
@@ -23,6 +23,7 @@ import { createNamespacedHelpers } from 'vuex'
 import NoteItemContextMenu from './menu/NoteItemContextMenu'
 import helper from 'src/utils/helper'
 import CategoryDialog from 'components/ui/dialog/CategoryDialog'
+// import { exportMarkdownFile } from 'src/ApiHandler'
 const { mapActions, mapState } = createNamespacedHelpers('server')
 export default {
   name: 'NoteItem',
@@ -131,6 +132,10 @@ export default {
       this.categoryDialogHandler = this.moveNote
       this.$refs.categoryDialog.toggle()
     },
+    exportHandler: function () {
+      // exportMarkdownFile()
+      this.exportMarkdownFile(this.data)
+    },
     noteItemClickHandler: function () {
       if (this.noteState !== 'default') {
         this.$q.dialog({
@@ -147,7 +152,7 @@ export default {
         this.getNoteContent({ docGuid: this.docGuid })
       }
     },
-    ...mapActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote'])
+    ...mapActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile'])
   }
 }
 </script>

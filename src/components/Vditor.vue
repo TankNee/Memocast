@@ -77,6 +77,7 @@ export default {
             // return newHtml
           }
         },
+        typewriterMode: true,
         upload: {
           max: 5 * 1024 * 1024,
           async handler (files) {

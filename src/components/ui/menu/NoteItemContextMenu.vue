@@ -5,10 +5,13 @@
         <q-item-section>{{ $t('rename') }}</q-item-section>
       </q-item>
       <q-item clickable v-close-popup v-ripple @click="copyTo">
-        <q-item-section>{{ $t('copyTo') }}</q-item-section>
+        <q-item-section>{{ $t('copy') }}</q-item-section>
       </q-item>
       <q-item clickable v-close-popup v-ripple @click="moveTo">
-        <q-item-section>{{ $t('moveTo') }}</q-item-section>
+        <q-item-section>{{ $t('move') }}</q-item-section>
+      </q-item>
+      <q-item clickable v-close-popup v-ripple @click="exportTo">
+        <q-item-section>{{ $t('export') }}</q-item-section>
       </q-item>
       <q-item clickable v-close-popup v-ripple>
         <q-item-section>{{ $t('share') }}</q-item-section>
@@ -38,6 +41,10 @@ export default {
       default: () => {}
     },
     moveTo: {
+      types: Function,
+      default: () => {}
+    },
+    exportTo: {
       types: Function,
       default: () => {}
     },
