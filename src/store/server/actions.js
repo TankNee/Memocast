@@ -9,7 +9,7 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
-import { exportMarkdownFile } from 'src/ApiHandler'
+import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiHandler'
 
 async function getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -499,7 +499,27 @@ export default {
     }
     await exportMarkdownFile(content)
   },
-  async exportMarkdownFiles ({ state }, noteFields) {
-    // const { kbGuid } = state
+  async exportMarkdownFiles ({ state }, noteFields = []) {
+    const { kbGuid } = state
+    const results = []
+    for (const noteField of noteFields) {
+      const { docGuid } = noteField
+      const result = await getContent(kbGuid, docGuid)
+      results.push(result)
+    }
+    const contents = results.map(result => {
+      const isHtml = !_.endsWith(result.info.title, '.md')
+      const { html, info: { docGuid }, resources } = result
+      let content
+      if (isHtml) {
+        content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
+      } else {
+        content = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
+      }
+      return { content, title: isHtml ? result.info.title : result.info.title.replace('.md', '') }
+    })
+    await exportMarkdownFiles(contents)
+
+    // TODO: 实现用户体验优化
   }
 }
