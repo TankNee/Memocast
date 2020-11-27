@@ -35,6 +35,20 @@ You are also be able to check update in Neeto-Vue Settings Dialog
 
 - Better Dark Mode In Desktop Platform
 
+- Export single note or whole note folder to certain path
+
+- Loading Animation
+
+- New version check
+
+- International, support English and Chinese(Simplified)
+
+- Keymap: [vditor keymap](https://ld246.com/guide/markdown)
+
+
 ### Attention
 
 - There's another problem with copying notes, Since I haven't handled the transfer of note resources, I don't recommend copying notes for the time being
+
+### [Change Log](./CHANGELOG.md)
+
