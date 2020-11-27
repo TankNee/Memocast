@@ -1,9 +1,11 @@
 import { app, BrowserWindow, nativeTheme, shell } from 'electron'
+import Api from './Api'
 import windowStateKeeper from 'electron-window-state'
 import unhandled from 'electron-unhandled'
 
 import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
 
+const { registerApiHandler } = Api
 unhandled({
   reportButton: error => {
     openNewGitHubIssue({
@@ -89,6 +91,8 @@ function createWindow () {
     event.preventDefault()
     shell.openExternal(linkUrl)
   })
+  console.log('Begin register handler')
+  registerApiHandler()
   if (isMac) {
     enforceMacOSAppLocation()
   }

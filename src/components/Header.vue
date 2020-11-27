@@ -239,6 +239,13 @@ export default {
     if (!this.autoLogin && !this.isLogin) {
       this.$refs.loginDialog.toggle()
     }
+  },
+  watch: {
+    isLogin: function (currentData) {
+      if (!currentData) {
+        this.$refs.loginDialog.show()
+      }
+    }
   }
 }
 </script>

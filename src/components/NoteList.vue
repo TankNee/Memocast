@@ -53,6 +53,15 @@
             >{{ $t('deleteCategory') }}</q-tooltip
           >
         </q-fab-action>
+        <q-fab-action v-if="showDeleteCategoryFab" :color="$q.dark.isActive ? 'warning' : 'primary'" icon="import_export" @click="handleExportCategory">
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[20, 10]"
+            :content-class="`bg-${$q.dark.isActive ? 'warning' : 'primary'} text-white shadow-4  text-h7`"
+          >{{ $t('export') }}</q-tooltip
+          >
+        </q-fab-action>
         <q-fab-action :color="$q.dark.isActive ? 'warning' : 'primary'" icon="note_add" @click="handleAddNote">
           <q-tooltip
             anchor="center right"
@@ -165,6 +174,9 @@ export default {
           this.deleteCategory(this.currentCategory)
         })
     },
+    handleExportCategory: function () {
+      this.exportMarkdownFiles(this.currentNotes)
+    },
     handleRefreshNoteList: async function (done) {
       await this.getCategoryNotes({ category: this.currentCategory })
       done()
@@ -173,7 +185,8 @@ export default {
       'createNote',
       'createCategory',
       'deleteCategory',
-      'getCategoryNotes'
+      'getCategoryNotes',
+      'exportMarkdownFiles'
     ])
   }
 }

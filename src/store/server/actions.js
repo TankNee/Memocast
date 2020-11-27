@@ -1,6 +1,6 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify, Dialog } from 'quasar'
+import { Notify, Dialog, Loading, QSpinnerGears } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
@@ -9,6 +9,36 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
+import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiHandler'
+
+async function getContent (kbGuid, docGuid) {
+  const { info } = await api.KnowledgeBaseApi.getNoteContent({
+    kbGuid,
+    docGuid,
+    data: {
+      downloadInfo: 1
+    }
+  })
+  // dataModified
+  const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
+  const note = ClientFileStorage.getCachedNote(info, cacheKey)
+  let result
+  if (!helper.isNullOrEmpty(note)) {
+    result = note
+  } else {
+    result = await api.KnowledgeBaseApi.getNoteContent({
+      kbGuid,
+      docGuid,
+      data: {
+        downloadInfo: 1,
+        downloadData: 1
+      }
+    })
+    ClientFileStorage.setCachedNote(result, cacheKey)
+  }
+  return result
+}
+
 export default {
   /**
    * 从本地缓存中读取数据，初始化状态树
@@ -145,30 +175,7 @@ export default {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
     const { kbGuid } = state
     const { docGuid } = payload
-    const { info } = await api.KnowledgeBaseApi.getNoteContent({
-      kbGuid,
-      docGuid,
-      data: {
-        downloadInfo: 1
-      }
-    })
-    // dataModified
-    const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
-    const note = ClientFileStorage.getCachedNote(info, cacheKey)
-    let result
-    if (!helper.isNullOrEmpty(note)) {
-      result = note
-    } else {
-      result = await api.KnowledgeBaseApi.getNoteContent({
-        kbGuid,
-        docGuid,
-        data: {
-          downloadInfo: 1,
-          downloadData: 1
-        }
-      })
-      ClientFileStorage.setCachedNote(result, cacheKey)
-    }
+    const result = await getContent(kbGuid, docGuid)
 
     commit(types.UPDATE_CURRENT_NOTE, result)
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
@@ -477,5 +484,55 @@ export default {
   },
   updateNoteState ({ commit }, noteState) {
     commit(types.UPDATE_NOTE_STATE, noteState)
+  },
+  async exportMarkdownFile ({ state }, noteField) {
+    const { kbGuid } = state
+    const { docGuid } = noteField
+    const result = await getContent(kbGuid, docGuid)
+    const isHtml = !_.endsWith(result.info.title, '.md')
+    const { html, resources } = result
+    let content
+    if (isHtml) {
+      content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
+    } else {
+      content = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
+    }
+    await exportMarkdownFile(content)
+    Notify.create({
+      color: 'primary',
+      message: i18n.t('exportNoteSuccessfully'),
+      icon: 'check'
+    })
+  },
+  async exportMarkdownFiles ({ state }, noteFields = []) {
+    const { kbGuid } = state
+    const results = []
+    Loading.show({
+      spinner: QSpinnerGears,
+      message: i18n.t('prepareExportData')
+    })
+    for (const noteField of noteFields) {
+      const { docGuid } = noteField
+      const result = await getContent(kbGuid, docGuid)
+      results.push(result)
+    }
+    const contents = results.map(result => {
+      const isHtml = !_.endsWith(result.info.title, '.md')
+      const { html, info: { docGuid }, resources } = result
+      let content
+      if (isHtml) {
+        content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
+      } else {
+        content = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
+      }
+      return { content, title: isHtml ? result.info.title : result.info.title.replace('.md', '') }
+    })
+    Loading.hide()
+    await exportMarkdownFiles(contents)
+    Notify.create({
+      color: 'primary',
+      message: i18n.t('exportNoteSuccessfully'),
+      icon: 'check'
+    })
   }
 }

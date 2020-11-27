@@ -1,9 +1,5 @@
 <template>
-  <q-dialog
-    ref="dialog"
-    class="base-dialog"
-    persistent
-  >
+  <q-dialog ref="dialog" class="base-dialog" persistent>
     <q-card class="q-dialog base-dialog">
       <q-toolbar>
         <q-toolbar-title
@@ -32,10 +28,19 @@
             v-model="password"
             ref="password"
             :label="$t('password')"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             :rules="[val => !!val || $t('fieldIsRequired')]"
             spellcheck="false"
-          />
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="showPassword ? 'visibility' : 'visibility_off'"
+                class="cursor-pointer"
+                style="margin-right: 5px"
+                @click="showPassword = !showPassword"
+              />
+            </template>
+          </q-input>
           <q-toggle
             :value="enableSelfHostServer"
             :label="$t('selfHostEnable')"
@@ -70,8 +75,18 @@
             />
           </div>
           <div class="flex" style="flex-direction: column;">
-            <q-btn class="fab-btn" :label="$t('signIn')" type="submit" color="primary" />
-            <q-btn class="fab-btn" :label="$t('signUp')" @click="signUpHandler" color="green" />
+            <q-btn
+              class="fab-btn"
+              :label="$t('signIn')"
+              type="submit"
+              color="primary"
+            />
+            <q-btn
+              class="fab-btn"
+              :label="$t('signUp')"
+              @click="signUpHandler"
+              color="green"
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -98,7 +113,8 @@ export default {
       username: '',
       password: '',
       selfHostServer: '',
-      isLoading: false
+      isLoading: false,
+      showPassword: false
     }
   },
   computed: {
@@ -120,10 +136,15 @@ export default {
       }
     },
     signUpHandler: function () {
-      this.$q.electron.shell.openExternal(!(helper.isNullOrEmpty(this.selfHostServer) || !this.enableSelfHostServer) ? this.selfHostServer : 'https://wiz.cn')
+      this.$q.electron.shell.openExternal(
+        `${!(helper.isNullOrEmpty(this.selfHostServer) || !this.enableSelfHostServer) ? this.selfHostServer : 'https://wiz.cn'}/signup`
+      )
     },
     toggle: function () {
       return this.$refs.dialog.toggle()
+    },
+    show: function () {
+      return this.$refs.dialog.show()
     },
     ...mapServerActions(['login', 'getCategoryNotes']),
     ...mapClientActions(['toggleChanged'])
