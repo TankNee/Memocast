@@ -35,8 +35,7 @@ export default {
   registerApiHandler () {
     console.log('Registering')
     handleApi('export-markdown-file', (event, content) => {
-      console.log(content)
-      dialog.showSaveDialog({
+      return dialog.showSaveDialog({
         title: 'Export',
         defaultPath: app.getPath('documents'),
         filters: [
@@ -52,18 +51,20 @@ export default {
     })
 
     handleApi('export-markdown-files', (event, contents) => {
-      // console.log(contents)
-      dialog.showOpenDialog({
+      return dialog.showOpenDialog({
         title: 'Export',
         defaultPath: app.getPath('documents'),
         properties: [
-          'openDirectory'
-        ]
+          'openDirectory',
+          'createDirectory'
+        ],
+        buttonLabel: 'Confirm'
       }).then((result) => {
         if (result.canceled) return
-        contents.forEach(({ content, title }) => {
-          fs.writeFileSync(`${result.filePaths[0]}/${title}.md`, content)
+        const promises = contents.map(({ content, title }) => {
+          return fs.writeFile(`${result.filePaths[0]}/${title}.md`, content).catch(err => throw err)
         })
+        Promise.all(promises).catch(err => throw err)
       }).catch(err => throw err)
     })
   }

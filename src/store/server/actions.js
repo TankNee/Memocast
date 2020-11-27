@@ -1,6 +1,6 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify, Dialog } from 'quasar'
+import { Notify, Dialog, Loading, QSpinnerGears } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
@@ -498,10 +498,19 @@ export default {
       content = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
     }
     await exportMarkdownFile(content)
+    Notify.create({
+      color: 'primary',
+      message: i18n.t('exportNoteSuccessfully'),
+      icon: 'check'
+    })
   },
   async exportMarkdownFiles ({ state }, noteFields = []) {
     const { kbGuid } = state
     const results = []
+    Loading.show({
+      spinner: QSpinnerGears,
+      message: i18n.t('prepareExportData')
+    })
     for (const noteField of noteFields) {
       const { docGuid } = noteField
       const result = await getContent(kbGuid, docGuid)
@@ -518,8 +527,12 @@ export default {
       }
       return { content, title: isHtml ? result.info.title : result.info.title.replace('.md', '') }
     })
+    Loading.hide()
     await exportMarkdownFiles(contents)
-
-    // TODO: 实现用户体验优化
+    Notify.create({
+      color: 'primary',
+      message: i18n.t('exportNoteSuccessfully'),
+      icon: 'check'
+    })
   }
 }
