@@ -91,7 +91,6 @@ function createWindow () {
     event.preventDefault()
     shell.openExternal(linkUrl)
   })
-  console.log('Begin register handler')
   registerApiHandler()
   if (isMac) {
     enforceMacOSAppLocation()

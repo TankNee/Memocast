@@ -2,6 +2,8 @@
 // import i18n from 'boot/i18n'
 
 const { ipcMain, app, dialog } = require('electron')
+const sanitize = require('sanitize-filename')
+
 const fs = require('fs-extra')
 
 /**
@@ -62,6 +64,7 @@ export default {
       }).then((result) => {
         if (result.canceled) return
         const promises = contents.map(({ content, title }) => {
+          title = sanitize(title)
           return fs.writeFile(`${result.filePaths[0]}/${title}.md`, content).catch(err => throw err)
         })
         Promise.all(promises).catch(err => throw err)
