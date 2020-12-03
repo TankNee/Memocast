@@ -164,6 +164,16 @@ function generateCategoryNodeTree (categories) {
       ? category.split('/').filter(c => !isNullOrEmpty(c))
       : category
   })
+  // 适配乱序的返回结果
+  const rootCategories = categories.filter(c => c.length === 1)
+  const leafCategories = categories.filter(c => c.length !== 1)
+  let _categories = []
+  rootCategories.forEach(rc => {
+    _categories.push(rc)
+    const children = leafCategories.filter(lc => lc[0] === rc[0]).sort((a, b) => a.length - b.length)
+    _categories = _categories.concat(children)
+  })
+  categories = _categories
   for (let i = 0; i < categories.length; i++) {
     const category = categories[i]
     if (category.length === 1) {
