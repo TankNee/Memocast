@@ -4,7 +4,6 @@ import { i18n } from 'boot/i18n'
 import { Platform } from 'quasar'
 import TurndownService from 'turndown'
 import cheerio from 'cheerio'
-const { dialog, BrowserWindow } = require('electron').remote
 const turndownService = new TurndownService({ codeBlockStyle: 'fenced', headingStyle: 'atx' })
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
@@ -69,26 +68,6 @@ function embedMDNote (markdown, resources, options) {
     markdown = markdown.replace(imgReg, `![](index_files/${resource.name})`)
   })
   return wizMarkdownParser.embed(markdown, options)
-}
-
-/**
- * remove deprecatedTags
- * @param {string} html
- */
-function removeDeprecatedTags (html) {
-  const patterns = [
-    /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size:\s10\.5pt;">/g,
-    /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size: 0\.875rem;">/g
-  ]
-  patterns.forEach(pattern => {
-    html = html.replace(pattern, '')
-  })
-  // html = html.replace(/\s<img\ssrc="data.*>/g, '- [ ]')
-  html = html
-    .replace(/&gt;/g, '>')
-    .replace(/&lt;/g, '<')
-    .replace(/&amp;/g, '&')
-  return html
 }
 
 /**
@@ -202,15 +181,6 @@ function generateCategoryNodeTree (categories) {
     })
   }
   return result
-}
-
-/**
- * 开启一个图片选择弹窗
- * @param options
- * @returns {string[]}
- */
-function createFileSelectDialog (options) {
-  return dialog.showOpenDialogSync(BrowserWindow.getFocusedWindow(), options)
 }
 
 /**
@@ -348,8 +318,6 @@ export default {
   removeMarkdownTag,
   embedMDNote,
   displayDateElegantly,
-  createFileSelectDialog,
-  removeDeprecatedTags,
   updateContentsList,
   getFileNameWithExt,
   isCtrl,

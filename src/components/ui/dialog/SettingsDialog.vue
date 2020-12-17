@@ -163,6 +163,19 @@
                     />
                   </div>
                 </div>
+                <q-separator />
+                <div>
+                  <div class="text-h5 q-mb-md setting-item">
+                    <span>{{ $t('flomo') }}</span>
+                    <q-icon
+                      name="settings"
+                      color="primary"
+                      style="margin-left: 5px"
+                      class="cursor-pointer"
+                      @click="flomoSettingHandler"
+                    />
+                  </div>
+                </div>
               </q-tab-panel>
             </q-tab-panels>
           </template>
@@ -205,7 +218,8 @@ export default {
       'markdownOnly',
       'imageUploadService',
       'lightCodeTheme',
-      'darkCodeTheme'
+      'darkCodeTheme',
+      'flomoApiUrl'
     ]),
     languageOptions: function () {
       return i18n.availableLocales.map(l => i18n.t(l))
@@ -297,6 +311,25 @@ export default {
           icon: 'check'
         })
       }
+    },
+    flomoSettingHandler: async function () {
+      this.$q.dialog({
+        prompt: {
+          model: this.flomoApiUrl
+        },
+        title: this.$t('flomo'),
+        ok: {
+          label: this.$t('submit')
+        },
+        cancel: {
+          label: this.$t('cancel')
+        }
+      }).onOk(data => {
+        this.updateStateAndStore({ flomoApiUrl: data })
+      })
+      // this.$q.electron.shell.openExternal(
+      //   'https://flomoapp.com/mine?source=incoming_webhook'
+      // )
     },
     ...mapActions([
       'toggleDarkMode',

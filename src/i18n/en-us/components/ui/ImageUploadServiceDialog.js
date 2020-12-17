@@ -3,5 +3,6 @@ export default {
   postParam: 'Post Param',
   jsonPath: 'JSON Path',
   customHeader: 'Custom Header (JSON Schema)',
-  customBody: 'Custom Body (JSON Schema)'
+  customBody: 'Custom Body (JSON Schema)',
+  submit: 'Submit'
 }

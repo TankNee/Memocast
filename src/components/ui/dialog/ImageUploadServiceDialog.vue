@@ -2,6 +2,13 @@
   <q-dialog ref="dialog" class="base-dialog">
     <q-card class="q-dialog base-dialog">
       <q-toolbar>
+        <q-avatar>
+          <q-icon
+            name="image"
+            class="text-primary"
+            style="font-size: 1.8em"
+          />
+        </q-avatar>
         <q-toolbar-title
           ><span class="text-weight-bold">{{
             $t('imageUploadService')

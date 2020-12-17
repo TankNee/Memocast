@@ -11,7 +11,7 @@ import _ from 'lodash'
 import FormData from 'form-data'
 import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiHandler'
 
-async function getContent (kbGuid, docGuid) {
+export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
     kbGuid,
     docGuid,
@@ -63,6 +63,9 @@ export default {
     if (autoLogin) {
       await this.dispatch('server/login', { userId, password, url })
     }
+  },
+  async getContent (payload, { kbGuid, docGuid }) {
+    return await _getContent(kbGuid, docGuid)
   },
   /**
    * 用户登录接口
@@ -175,7 +178,7 @@ export default {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
     const { kbGuid } = state
     const { docGuid } = payload
-    const result = await getContent(kbGuid, docGuid)
+    const result = await _getContent(kbGuid, docGuid)
 
     commit(types.UPDATE_CURRENT_NOTE, result)
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
@@ -420,7 +423,9 @@ export default {
         getters.imageUrl(result, imageUploadService)
       )
     }
-    if (imageUploadService === 'wizOfficialImageUploadService') { commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result) }
+    if (imageUploadService === 'wizOfficialImageUploadService') {
+      commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
+    }
   },
   async moveNote ({ commit }, noteInfo) {
     const { kbGuid, docGuid, category, type } = noteInfo
@@ -488,14 +493,19 @@ export default {
   async exportMarkdownFile ({ state }, noteField) {
     const { kbGuid } = state
     const { docGuid } = noteField
-    const result = await getContent(kbGuid, docGuid)
+    const result = await _getContent(kbGuid, docGuid)
     const isHtml = !_.endsWith(result.info.title, '.md')
     const { html, resources } = result
     let content
     if (isHtml) {
       content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
     } else {
-      content = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
+      content = helper.extractMarkdownFromMDNote(
+        html,
+        kbGuid,
+        docGuid,
+        resources
+      )
     }
     await exportMarkdownFile(content)
     Notify.create({
@@ -513,19 +523,31 @@ export default {
     })
     for (const noteField of noteFields) {
       const { docGuid } = noteField
-      const result = await getContent(kbGuid, docGuid)
+      const result = await _getContent(kbGuid, docGuid)
       results.push(result)
     }
     const contents = results.map(result => {
       const isHtml = !_.endsWith(result.info.title, '.md')
-      const { html, info: { docGuid }, resources } = result
+      const {
+        html,
+        info: { docGuid },
+        resources
+      } = result
       let content
       if (isHtml) {
         content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
       } else {
-        content = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
+        content = helper.extractMarkdownFromMDNote(
+          html,
+          kbGuid,
+          docGuid,
+          resources
+        )
       }
-      return { content, title: isHtml ? result.info.title : result.info.title.replace('.md', '') }
+      return {
+        content,
+        title: isHtml ? result.info.title : result.info.title.replace('.md', '')
+      }
     })
     Loading.hide()
     await exportMarkdownFiles(contents)
