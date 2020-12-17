@@ -1,6 +1,6 @@
 {
   "name": "neeto.vue.electron",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Neeto-Vue",
   "author": "tanknee <nee@tanknee.cn>",
@@ -36,7 +36,7 @@
     "quasar": "^1.0.0",
     "sanitize-filename": "^1.6.3",
     "turndown": "^6.0.0",
-    "vditor": "^3.6.6",
+    "vditor": "^3.7.1",
     "vue-i18n": "^8.0.0"
   },
   "devDependencies": {

@@ -1,7 +1,10 @@
 import types from 'src/store/client/types'
-import { Dark } from 'quasar'
+import { Dark, Notify } from 'quasar'
 import api from 'src/utils/api'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
+import helper from 'src/utils/helper'
+import { i18n } from 'boot/i18n'
+import _ from 'lodash'
 
 export default {
   initClientStore ({ commit, state }) {
@@ -24,5 +27,38 @@ export default {
   },
   async getLatestVersion () {
     return await api.ThirdPartApi.getLatestVersion()
+  },
+  async sendToFlomo ({ state, rootState }, docGuid) {
+    const { flomoApiUrl } = state
+    if (helper.isNullOrEmpty(flomoApiUrl)) {
+      Notify.create({
+        message: i18n.t('flomoApiUrlIsEmpty'),
+        color: 'red-10',
+        caption: i18n.t('requestError')
+      })
+      return
+    }
+    const { kbGuid } = rootState.server
+    const note = await this.dispatch('server/getContent', {
+      kbGuid,
+      docGuid
+    })
+    const isHtml = !_.endsWith(note.info.title, '.md')
+    let content
+    const {
+      html,
+      resources
+    } = note
+    if (isHtml) {
+      content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
+    } else {
+      content = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
+    }
+    await api.ThirdPartApi.sendToFlomo(content, flomoApiUrl)
+    Notify.create({
+      message: i18n.t('sendToFlomoSuccessfully'),
+      color: 'green-10',
+      icon: 'check'
+    })
   }
 }

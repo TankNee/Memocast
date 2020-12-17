@@ -16,6 +16,7 @@ export default function () {
     shrinkInTray: false,
     lightCodeTheme: 'github',
     darkCodeTheme: 'monokai',
-    noteListVisible: true
+    noteListVisible: true,
+    flomoApiUrl: ''
   }
 }

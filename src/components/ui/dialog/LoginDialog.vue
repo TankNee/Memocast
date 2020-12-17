@@ -2,6 +2,11 @@
   <q-dialog ref="dialog" class="base-dialog" persistent>
     <q-card class="q-dialog base-dialog">
       <q-toolbar>
+        <q-icon
+          name="people"
+          class="text-primary"
+          style="font-size: 1.8em"
+        />
         <q-toolbar-title
           ><span class="text-weight-bold">{{
             $t('login')

@@ -1,5 +1,6 @@
 export default {
   requestError: 'Request Error',
+  flomoApiUrlIsEmpty: 'Flomo Api is empty, you should set it in Settings. (Settings >> Server >> Flomo)',
   301: 'Invalid Token',
   304: 'Traffic Limit',
   305: 'Storage Limit',

@@ -13,7 +13,7 @@
       <span class="text-left note-info-tag"><q-icon name="category" size="17px"/> {{ category }}</span>
       <span class="text-right note-info-tag"><q-icon name="timer" size="17px"/> {{ modifiedDate }}</span>
     </div>
-    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" :export-to="exportHandler" />
+    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" :export-to="exportHandler" :flomo="flomoHandler" />
     <CategoryDialog ref="categoryDialog" :note-info="data" :label="categoryDialogLabel" :handler="categoryDialogHandler" />
   </q-card>
 </template>
@@ -24,7 +24,8 @@ import NoteItemContextMenu from './menu/NoteItemContextMenu'
 import helper from 'src/utils/helper'
 import CategoryDialog from 'components/ui/dialog/CategoryDialog'
 // import { exportMarkdownFile } from 'src/ApiHandler'
-const { mapActions, mapState } = createNamespacedHelpers('server')
+const { mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
+const { mapActions: mapClientActions } = createNamespacedHelpers('client')
 export default {
   name: 'NoteItem',
   props: {
@@ -93,7 +94,7 @@ export default {
         return ''
       }
     },
-    ...mapState(['noteState'])
+    ...mapServerState(['noteState'])
   },
   methods: {
     renameHandler: function () {
@@ -132,8 +133,10 @@ export default {
       this.categoryDialogHandler = this.moveNote
       this.$refs.categoryDialog.toggle()
     },
+    flomoHandler: function () {
+      this.sendToFlomo(this.docGuid)
+    },
     exportHandler: function () {
-      // exportMarkdownFile()
       this.exportMarkdownFile(this.data)
     },
     noteItemClickHandler: function () {
@@ -152,7 +155,8 @@ export default {
         this.getNoteContent({ docGuid: this.docGuid })
       }
     },
-    ...mapActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile'])
+    ...mapServerActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile']),
+    ...mapClientActions(['sendToFlomo'])
   }
 }
 </script>

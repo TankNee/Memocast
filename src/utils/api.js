@@ -87,7 +87,7 @@ const KnowledgeBaseApi = {
    * @returns {string}
    */
   getCacheKey (kbGuid, docGuid) {
-    return `${this.getBaseUrl()}_${kbGuid}_${docGuid}`
+    return `${this.getBaseUrl().replace(/\./g, '_')}_${kbGuid}_${docGuid}`
   },
 
   /**
@@ -301,6 +301,9 @@ const ThirdPartApi = {
       true,
       true
     )
+  },
+  async sendToFlomo (content, url) {
+    return await execRequest('POST', url, { content }, null, null, true, true)
   }
 }
 /**
