@@ -37,7 +37,7 @@ export default {
     },
     ...mapServerGetters(['currentNote', 'uploadImageUrl', 'currentNoteResources', 'currentNoteResourceUrl']),
     ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
-    ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme'])
+    ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme', 'enableVditor'])
   },
   data () {
     return {
@@ -46,6 +46,7 @@ export default {
   },
   mounted () {
     this.contentEditor = this.initVditor()
+    this.enableVditor ? this.contentEditor.enable() : this.contentEditor.disabled()
     document.onkeydown = this.registerKeyboardHotKey.bind(this)
     this.registerEventHandler()
   },
@@ -174,7 +175,7 @@ export default {
         if (e.message.indexOf('Md2V') !== -1) return
         debugLogger.Error(e.message)
       }
-      this.contentEditor.enable()
+      // this.contentEditor.enable()
     },
     darkMode: function (darkMode) {
       this.contentEditor.setTheme(
@@ -196,6 +197,13 @@ export default {
         this.darkMode ? 'dark' : 'light',
         this.darkMode ? this.darkCodeTheme : currentData
       )
+    },
+    enableVditor: function (currentData) {
+      if (currentData) {
+        this.contentEditor.enable()
+      } else {
+        this.contentEditor.disabled()
+      }
     }
   }
 }

@@ -4,7 +4,7 @@ export default function () {
     autoLogin: false,
     rememberPassword: true,
     darkMode: false,
-    markdownOnly: true,
+    markdownOnly: false,
     enableSelfHostServer: false,
     imageUploadService: 'customWebUploadService',
     imageUploadServiceParam: {},
@@ -17,6 +17,7 @@ export default function () {
     lightCodeTheme: 'github',
     darkCodeTheme: 'monokai',
     noteListVisible: true,
-    flomoApiUrl: ''
+    flomoApiUrl: '',
+    enableVditor: true
   }
 }
