@@ -6,7 +6,23 @@
 
 ### 目录
 
-[TOC]
+[目录](#目录)
+
+[状态](#状态)
+
+[介绍](#介绍)
+
+[为知社区](#为知社区)
+
+[软件截图](#软件截图)
+
+[下载](#下载)
+
+[特色](#特色)
+
+[注意事项](#注意事项)
+
+[更新日志](#更新日志changelogmd)
 
 ### 状态
 
@@ -75,3 +91,6 @@
 
 ### [更新日志](./CHANGELOG.md)
 
+### License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)
