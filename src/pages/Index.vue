@@ -58,7 +58,7 @@
               color="#26A69A"
               v-show="dataLoaded && !isOutlineShow"
               v-ripple
-              key="cached"
+              key="save"
             />
           </transition-group>
         </div>

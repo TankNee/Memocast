@@ -32,6 +32,23 @@
       </q-tooltip>
     </q-avatar>
     <q-avatar
+      size="36px"
+      class="cursor-pointer q-electron-drag--exception"
+      v-ripple
+      @click.stop="
+        () => {
+          toggleChanged({ key: 'enableVditor', value: !enableVditor })
+        }
+      "
+    >
+      <q-icon :name="enableVditor ? 'lock_open' : 'lock'" color="#16A2B8" />
+      <q-tooltip
+        :offset="[20, 10]"
+        content-class="bg-accent text-white shadow-4  text-h7"
+        >{{ enableVditor ? $t('lock') : $t('unLock') }}
+      </q-tooltip>
+    </q-avatar>
+    <q-avatar
       size="26px"
       class="cursor-pointer q-electron-drag--exception"
       @click="loginHandler"
@@ -149,7 +166,12 @@ export default {
   computed: {
     ...mapServerState(['user', 'isLogin', 'currentNote', 'noteState']),
     ...mapServerGetters(['avatarUrl']),
-    ...mapClientState(['shrinkInTray', 'autoLogin', 'noteListVisible']),
+    ...mapClientState([
+      'shrinkInTray',
+      'autoLogin',
+      'noteListVisible',
+      'enableVditor'
+    ]),
     darkMode: function () {
       return this.$q.dark.isActive
     },
@@ -157,7 +179,9 @@ export default {
       if (this.currentNote.info) {
         let { title } = this.currentNote.info
         if (title.length > 30) {
-          title = `${title.substr(0, 9)}...${title.substring(title.length - 12)}`
+          title = `${title.substr(0, 9)}...${title.substring(
+            title.length - 12
+          )}`
         }
         if (this.noteState !== 'default') {
           return `${title} —— ${this.$t(this.noteState)}`
