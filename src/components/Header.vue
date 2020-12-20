@@ -45,7 +45,7 @@
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-accent text-white shadow-4  text-h7"
-        >{{ enableVditor ? $t('lock') : $t('unLock') }}
+        >{{ enableVditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar

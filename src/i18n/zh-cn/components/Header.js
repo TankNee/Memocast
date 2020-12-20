@@ -8,5 +8,7 @@ export default {
   logoutHint: '确定要立刻注销登录吗？',
   cancel: '取消',
   switchView: '切换界面视图',
-  changed: '已修改'
+  changed: '已修改',
+  lock: '锁定笔记',
+  unlock: '解锁笔记'
 }

@@ -22,7 +22,7 @@
 
 [Attention](#attention)
 
-[Change Log](#change-logchangelogmd)
+[Change Log](#change-log)
 
 ### Status
 
@@ -77,6 +77,9 @@ You are also be able to check update in Neeto-Vue Settings Dialog
 
 - Keymap: [vditor keymap](https://ld246.com/guide/markdown)
 
+- Support to send note to flomo app
+
+- Support note lock
 
 ### Attention
 
@@ -87,12 +90,61 @@ You are also be able to check update in Neeto-Vue Settings Dialog
   - `url`: Picture upload api url
   - `paramName`: POST parameter name(eg:`image`)
   - `jsonPath`: Jsonpath of the return value of the image URL`(eg:data.url)`
-  - `customHeader`: custom request http headers,using  standard JSON schema(eg: `{"key":"value"}`)
+  - `customHeader`: custom request http headers,using standard JSON schema(eg: `{"key":"value"}`)
   - `customBody`: custom request body, using standard JSON schema(eg: `{"key":"value"}`)
 
-### [Change Log](./CHANGELOG.md)
+### Change Log
 
+<details>
+<summary>Version change log</summary>
 
+## 2020 12 19 Update 0.0.22
+1. Add Chinese readme file
+2. Improve the readme description
+3. Add note locking function to make it easier to check notes.
+
+## 2020 12 17 Update 0.0.21
+1. Add flomo API support. Set > > Service > > inkjet. Then use the right-click menu in the list to send notes to flomo
+2. Upgrade note editor to v3.7.1
+3. Cache key naming policy adjustment
+
+## 2020 12 03 Update 0.0.20
+1. Fixed the problem that the server could not display the folder when it returned the out of order folder list
+
+## 2020 11 30 Update 0.0.19
+1. Repair the export failure when there are illegal characters in the note name
+
+## 2020 11 27 Update 0.0.18
+1. Export a single file to markdown
+2. Export the entire folder to the specified directory in the format of markdown
+
+## 2020 09 27 Update 0.0.6
+1. Better login experience
+2. Optimize the interface without content
+3. Optimize code logic
+
+## 2020 09 26 Update 0.0.5
+1. Add GitHub to build automatically
+
+## 2020 09 25 Update 0.0.4
+1. Optimize the header display in MacOS
+2. Add vdtor shortcut key, [shortcut key to check address]（ https://ld246.com/guide/markdown )
+3. Optimization Icon
+4. Add the Save button in the lower right corner of vdtor, but the outline button in the upper right corner has not been implemented
+5. Learn from wizlite to open the links in notes
+6. Optimize invalid code
+
+## 2020 09 22 Update 0.0.3
+1. Version updated to 0.0.3
+2. Add drag and drop image upload
+1. Drag the picture directly into the editor
+2. Remember to click the location of the image to be inserted first, otherwise it will be inserted directly into the place where I last clicked. I have no way to fix it for the time being
+3. Fix the size of editor area
+4. Add notes to modify the date display
+5. Fix the problem of missing translation
+
+</details>
 
 ### License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)
