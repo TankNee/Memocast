@@ -66,7 +66,7 @@
 yay -S neeto-vue-bin
 
 # pikaur
-pikaur -S neeto-vue
+pikaur -S neeto-vue-bin
 ```
 
 ### 特色
