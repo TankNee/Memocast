@@ -56,6 +56,19 @@
 
 ![image-20201011103144579](./screenshot/image-20201011103144579.png)
 
+- Arch Linux
+
+可以通过 [AUR](https://aur.archlinux.org/packages/neeto-vue-bin/) 安装
+
+```
+# AUR helper
+# yay
+yay -S neeto-vue-bin
+
+# pikaur
+pikaur -S neeto-vue
+```
+
 ### 特色
 
 - 更加舒适的设计
