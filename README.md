@@ -67,7 +67,7 @@ install  and upgrade from [AUR](https://aur.archlinux.org/packages/neeto-vue-bin
 yay -S neeto-vue-bin
 
 # pikaur
-pikaur -S neeto-vue
+pikaur -S neeto-vue-bin
 ```
 
 ### Feature
