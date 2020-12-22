@@ -1,4 +1,4 @@
-import { execRequest } from '../boot/request'
+import { execRequest } from 'boot/request'
 import FormData from 'form-data'
 import { UploadImageToCustomWebService } from 'src/service/imageCustomWebUploadService'
 let AccountServerBaseUrl = 'https://as.wiz.cn'

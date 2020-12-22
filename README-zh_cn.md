@@ -76,27 +76,31 @@
 
 - 快捷键: [vditor 快捷键](https://ld246.com/guide/markdown)
 
-- 支持将笔记发送到Flomo浮墨
+- 支持将笔记发送到 Flomo 浮墨
 
 - 支持笔记锁定模式
-
 
 ### 注意事项
 
 - 移动笔记时还存在一些问题。暂时不可用。
 - 图片上传还只支持拖拽上传和直接填写图片链接
 - 使用为知官方图片服务时只会显示图片的临时地址
-- 图片上传服务暂时只可用第三方web上传服务。(设置 >> 编辑器 >> 图片上传服务)参数填写方式请参照：[picgo-plugin-web-uploader](https://github.com/yuki-xin/picgo-plugin-web-uploader)
-  - `url`: 图床上传API地址
-  - `paramName`: POST参数名(eg:`image`)
-  - `jsonPath`: 图片URL所在返回值的`JsonPath(eg:data.url)`
-  - `customHeader`: 自定义请求头 标准JSON(eg: `{"key":"value"}`)
-  - `customBody`: 自定义Body 标准JSON(eg: `{"key":"value"}`)
+- 图片上传服务暂时只可用第三方 web 上传服务。(设置 >> 编辑器 >> 图片上传服务)参数填写方式请参照：[picgo-plugin-web-uploader](https://github.com/yuki-xin/picgo-plugin-web-uploader)
+  - `url`: 图床上传 API 地址
+  - `paramName`: POST 参数名(eg:`image`)
+  - `jsonPath`: 图片 URL 所在返回值的`JsonPath(eg:data.url)`
+  - `customHeader`: 自定义请求头 标准 JSON(eg: `{"key":"value"}`)
+  - `customBody`: 自定义 Body 标准 JSON(eg: `{"key":"value"}`)
 
 ### 更新记录
 
 <details>
 <summary>版本变更记录</summary>
+
+## 2020 12 22 Update 0.0.23
+
+1. 实现更简单的图片上传方式：在编辑器中右键选择图片上传。
+2. 暂时废弃拖拽上传的方式。
 
 ## 2020 12 19 Update 0.0.22
 
@@ -153,8 +157,6 @@
 5. 修复了翻译缺失的问题
 
 </details>
-
-
 
 ### License
 

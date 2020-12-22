@@ -11,7 +11,7 @@ axios.defaults.baseURL = baseUrl
 
 /**
  * execute network request
- * @param {string} method
+ * @param {'GET','POST','DELETE','PUT'} method
  * @param {string} url
  * @param {Object} body
  * @param token

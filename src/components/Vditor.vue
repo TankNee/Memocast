@@ -82,7 +82,11 @@ export default {
         upload: {
           max: 5 * 1024 * 1024,
           async handler (files) {
-            await files.map(async file => await that.uploadImage(file))
+            that.$q.notify({
+              type: 'negative',
+              message: 'Drag images to upload has been marked as unavailable'
+            })
+            // await files.map(async file => await that.uploadImage(file))
           }
         },
         debugger: process.env.DEV,
@@ -119,6 +123,12 @@ export default {
     registerEventHandler: function () {
       bus.$on(events.INSERT_IMAGE, url => {
         this.contentEditor.insertValue(`\n![](${url})`, true)
+      })
+      bus.$on(events.INSERT_IMAGES, urls => {
+        urls = urls || []
+        urls.forEach(url => {
+          this.contentEditor.insertValue(`\n![](${url})`, true)
+        })
       })
       bus.$on(events.SAVE_NOTE, () => {
         this.updateNote(this.contentEditor.getValue())
