@@ -57,6 +57,19 @@ You are also be able to check update in Neeto-Vue Settings Dialog
 
 ![image-20201011103144579](./screenshot/image-20201011103144579.png)
 
+### Arch Linux
+
+install  and upgrade from [AUR](https://aur.archlinux.org/packages/neeto-vue-bin/)
+
+```
+# AUR helper
+# yay
+yay -S neeto-vue-bin
+
+# pikaur
+pikaur -S neeto-vue-bin
+```
+
 ### Feature
 
 - More Beautiful
@@ -160,5 +173,4 @@ You are also be able to check update in Neeto-Vue Settings Dialog
 </details>
 
 ### License
-
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)
