@@ -195,6 +195,8 @@ export default {
       await this.dispatch('server/getCategoryNotes', { category: data })
     } else if (type === 'tag') {
       await this.dispatch('server/getTagNotes', { tag: data })
+    } else {
+      await this.dispatch('server/getCategoryNotes', { category: '' })
     }
     commit(types.UPDATE_CURRENT_CATEGORY, data)
     commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['currentCategory', data])
@@ -489,7 +491,7 @@ export default {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
   },
   updateContentsList ({ commit }, editorRootElement) {
-    const list = helper.updateContentsList(editorRootElement)
+    const list = helper.updateContentsList(editorRootElement) || []
     commit(types.UPDATE_CONTENTS_LIST, list)
   },
   updateNoteState ({ commit }, noteState) {

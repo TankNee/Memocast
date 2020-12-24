@@ -20,6 +20,10 @@
         @update:selected="
           v => {
             updateCurrentCategory({ data: v, type: type })
+            toggleChanged({
+              key: 'noteListVisible',
+              value: true
+            })
           }
         "
       />
@@ -34,6 +38,8 @@ const {
   mapActions: mapServerActions,
   mapState: mapServerState
 } = createNamespacedHelpers('server')
+
+const { mapActions: mapClientActions } = createNamespacedHelpers('client')
 
 export default {
   name: 'CategoryDrawer',
@@ -68,12 +74,18 @@ export default {
     toggle: function () {
       this.$refs.drawer.toggle()
     },
+    show: function () {
+      if (this.$refs.drawer) {
+        this.$refs.drawer.show()
+      }
+    },
     hide: function () {
       if (this.$refs.drawer) {
         this.$refs.drawer.hide()
       }
     },
-    ...mapServerActions(['updateCurrentCategory'])
+    ...mapServerActions(['updateCurrentCategory']),
+    ...mapClientActions(['toggleChanged'])
   },
   mounted () {
     const that = this
@@ -82,7 +94,9 @@ export default {
         e.path[1] &&
         e.path[1].className &&
         e.path[1].className.indexOf('q-tree__node') !== -1
-      ) { return }
+      ) {
+        return
+      }
       that.hide()
     })
   }

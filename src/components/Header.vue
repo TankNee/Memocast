@@ -7,9 +7,15 @@
     <div
       v-if="$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
+      style="cursor: pointer"
+      @click="$refs.tagDialog.toggle"
     >
       <q-icon key="icon" name="book" size="19px" />
-      <q-tooltip v-if="tags.length > 0" :offset="[20, 10]" content-class="shadow-4 text-h7">
+      <q-tooltip
+        v-if="tags.length > 0"
+        :offset="[20, 10]"
+        content-class="shadow-4 text-h7"
+      >
         <q-chip v-for="(tag, index) in tags" :key="index" icon="bookmark">{{
           tag
         }}</q-chip>
@@ -24,8 +30,10 @@
       @click.stop="
         () => {
           if (isLogin) {
-            drawerType = 'category'
-            $refs.sideDrawer.toggle()
+            if (drawerType !== 'category') {
+              drawerType = 'category'
+              $refs.sideDrawer.show()
+            } else $refs.sideDrawer.toggle()
           }
         }
       "
@@ -44,8 +52,10 @@
       @click.stop="
         () => {
           if (isLogin) {
-            drawerType = 'tag'
-            $refs.sideDrawer.toggle()
+            if (drawerType !== 'tag') {
+              drawerType = 'tag'
+              $refs.sideDrawer.show()
+            } else $refs.sideDrawer.toggle()
           }
         }
       "
@@ -80,13 +90,7 @@
       @click="loginHandler"
       v-ripple
     >
-      <img
-        :src="
-          avatarUrl
-            ? avatarUrl
-            : 'https://i.loli.net/2020/09/25/n3IphqrHxAJemSu.png'
-        "
-      />
+      <img :src="avatarUrl ? avatarUrl : defaultAvatar" />
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-green-7 text-white shadow-4 text-h7"
@@ -131,8 +135,19 @@
     <div
       v-if="!$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
+      style="cursor: pointer"
+      @click="$refs.tagDialog.toggle"
     >
       <q-icon key="icon" name="book" size="19px" />
+      <q-tooltip
+        v-if="tags.length > 0"
+        :offset="[20, 10]"
+        content-class="shadow-4 text-h7"
+      >
+        <q-chip v-for="(tag, index) in tags" :key="index" icon="bookmark">{{
+          tag
+        }}</q-chip>
+      </q-tooltip>
       <span key="title">{{ title }}</span>
     </div>
     <q-space v-if="!$q.platform.is.mac" />
@@ -167,6 +182,7 @@
     </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
+    <TagDialog ref="tagDialog" />
     <SideDrawer ref="sideDrawer" :type="drawerType" />
   </q-bar>
 </template>
@@ -177,6 +193,8 @@ import SettingsDialog from './ui/dialog/SettingsDialog'
 import SideDrawer from './ui/SideDrawer'
 import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
+import defaultAvatarBase64 from 'src/assets/default-avatar'
+import TagDialog from 'components/ui/dialog/TagDialog'
 const {
   mapState: mapServerState,
   mapGetters: mapServerGetters,
@@ -200,6 +218,10 @@ export default {
     darkMode: function () {
       return this.$q.dark.isActive
     },
+    defaultAvatar: function () {
+      return defaultAvatarBase64
+    },
+
     title: function () {
       if (this.currentNote.info) {
         let { title } = this.currentNote.info
@@ -229,7 +251,7 @@ export default {
       return this.tagsOfCurrentNote.map(t => t.name)
     }
   },
-  components: { SideDrawer, SettingsDialog, LoginDialog },
+  components: { TagDialog, SideDrawer, SettingsDialog, LoginDialog },
   data () {
     return {
       searchText: '',

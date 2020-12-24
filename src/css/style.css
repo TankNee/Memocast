@@ -147,6 +147,7 @@ body.body--dark {
 .base-dialog {
   width: 500px !important;
   max-width: 50vw;
+  font-weight: bold;
 }
 .neeto-icon {
   color: #000000;
