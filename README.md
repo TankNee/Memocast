@@ -14,7 +14,7 @@
 
 - [ScreenShot](#screenshot)
 
-- [Download](#download)
+- [Installation](#installation)
 
 - [Feature](#feature)
 
@@ -154,7 +154,7 @@ pikaur -S neeto-vue-bin
 ## 2020 09 25 Update 0.0.4
 
 1. Optimize the header display in MacOS
-2. Add vdtor shortcut key, [shortcut key to check address]（ https://ld246.com/guide/markdown )
+2. Add vditor shortcut key, [shortcut key to check address]（ https://ld246.com/guide/markdown )
 3. Optimization Icon
 4. Add the Save button in the lower right corner of vdtor, but the outline button in the upper right corner has not been implemented
 5. Learn from wizlite to open the links in notes

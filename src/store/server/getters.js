@@ -76,5 +76,10 @@ export default {
   },
   wizNoteToken: () => {
     return ServerFileStorage.getValueFromLocalStorage('token')
+  },
+  tagsOfCurrentNote: ({ currentNote, tags }) => {
+    if (helper.isNullOrEmpty(currentNote.info.tags)) return []
+    const tagGuids = currentNote.info.tags.split('*')
+    return tags.filter(t => tagGuids.includes(t.tagGuid))
   }
 }

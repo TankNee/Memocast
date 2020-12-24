@@ -84,6 +84,10 @@ body.body--dark {
 .note-list-dark {
   background-color: #2d2d2d;
 }
+.note-list,
+.note-list-dark {
+  font-weight: bold;
+}
 /*Note List CSS*/
 .note-card,
 .note-card-dark {

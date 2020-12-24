@@ -9,7 +9,12 @@
       class="header-note-title animated fadeIn"
     >
       <q-icon key="icon" name="book" size="19px" />
-      <span key="title">{{ title }}</span>
+      <q-tooltip v-if="tags.length > 0" :offset="[20, 10]" content-class="shadow-4 text-h7">
+        <q-chip v-for="(tag, index) in tags" :key="index" icon="bookmark">{{
+          tag
+        }}</q-chip>
+      </q-tooltip>
+      <span key="title" slot="reference">{{ title }}</span>
     </div>
     <q-space v-if="$q.platform.is.mac" />
     <q-avatar
@@ -28,7 +33,7 @@
       <q-icon name="account_tree" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4  text-h7"
+        content-class="bg-accent text-white shadow-4 text-h7"
         >{{ $t('noteCategory') }}
       </q-tooltip>
     </q-avatar>
@@ -49,7 +54,7 @@
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-amber-6 text-white shadow-4  text-h7"
-      >{{ $t('tag') }}
+        >{{ $t('tag') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -168,7 +173,6 @@
 
 <script>
 import LoginDialog from './ui/dialog/LoginDialog'
-
 import SettingsDialog from './ui/dialog/SettingsDialog'
 import SideDrawer from './ui/SideDrawer'
 import { createNamespacedHelpers } from 'vuex'
@@ -186,7 +190,7 @@ export default {
   name: 'Header',
   computed: {
     ...mapServerState(['user', 'isLogin', 'currentNote', 'noteState']),
-    ...mapServerGetters(['avatarUrl']),
+    ...mapServerGetters(['avatarUrl', 'tagsOfCurrentNote']),
     ...mapClientState([
       'shrinkInTray',
       'autoLogin',
@@ -213,6 +217,16 @@ export default {
     },
     dataLoaded: function () {
       return this.currentNote && !helper.isNullOrEmpty(this.currentNote.html)
+    },
+    popperOptions: function () {
+      return {
+        placement: 'bottom',
+        modifiers: { offset: { offset: '0,10px' } },
+        gpuAcceleration: true
+      }
+    },
+    tags: function () {
+      return this.tagsOfCurrentNote.map(t => t.name)
     }
   },
   components: { SideDrawer, SettingsDialog, LoginDialog },
