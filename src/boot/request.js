@@ -5,7 +5,6 @@ import NeetoError from 'app/share/error'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 
 axios.defaults.timeout = 50000 // 响应时间
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8' // 配置请求头
 const baseUrl = 'https://ac.wiz.cn'
 axios.defaults.baseURL = baseUrl
 
@@ -20,7 +19,7 @@ axios.defaults.baseURL = baseUrl
  * @param {boolean} ignoreStatusCode
  * @returns {Promise<*>}
  */
-export async function execRequest (method, url, body, token, extraConfig, returnFullResult = false, ignoreStatusCode) {
+export async function execRequest (method, url, body = {}, token = null, extraConfig = {}, returnFullResult = false, ignoreStatusCode = false) {
   const config = {
     url,
     method,

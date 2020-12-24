@@ -10,5 +10,6 @@ export default {
   switchView: '切换界面视图',
   changed: '已修改',
   lock: '锁定笔记',
-  unlock: '解锁笔记'
+  unlock: '解锁笔记',
+  tag: '标签'
 }

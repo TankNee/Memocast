@@ -6,23 +6,21 @@
 
 ### Content
 
-[Content](#content)
+- [Status](#status)
 
-[Status](#status)
+- [Installation](#installation)
 
-[Introduction](#introduction)
+- [Wiz Community](#wiz-community)
 
-[Wiz Community](#wiz-community)
+- [ScreenShot](#screenshot)
 
-[ScreenShot](#screenshot)
+- [Download](#download)
 
-[Download](#download)
+- [Feature](#feature)
 
-[Feature](#feature)
+- [Attention](#attention)
 
-[Attention](#attention)
-
-[Change Log](#change-log)
+- [Change Log](#change-log)
 
 ### Status
 
@@ -49,7 +47,7 @@ If you intend to prompt the development of Wiz Community，join us pls！
 
 ![image-20200925170327136](./screenshot/image-20200925170327136.png)
 
-### Download
+### Installation
 
 [Releases](https://github.com/TankNee/Neeto-Vue/releases/latest)
 
@@ -57,11 +55,13 @@ You are also be able to check update in Neeto-Vue Settings Dialog
 
 ![image-20201011103144579](./screenshot/image-20201011103144579.png)
 
-### Arch Linux
+#### Arch Linux
 
-install  and upgrade from [AUR](https://aur.archlinux.org/packages/neeto-vue-bin/)
+Install and upgrade from [AUR](https://aur.archlinux.org/packages/neeto-vue-bin/)
 
-```
+Thanks to [yjun123](https://github.com/yjun123)'s contribution.
+
+```bash
 # AUR helper
 # yay
 yay -S neeto-vue-bin
@@ -124,7 +124,7 @@ pikaur -S neeto-vue-bin
 
 ## 2020 12 17 Update 0.0.21
 
-1. Add flomo API support. Set > > Service > > inkjet. Then use the right-click menu in the list to send notes to flomo
+1. Add flomo API support. Set > > Service > > flomo. Then use the right-click menu in the list to send notes to flomo
 2. Upgrade note editor to v3.7.1
 3. Cache key naming policy adjustment
 
@@ -173,4 +173,5 @@ pikaur -S neeto-vue-bin
 </details>
 
 ### License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)

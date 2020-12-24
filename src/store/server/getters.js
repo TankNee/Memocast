@@ -63,6 +63,9 @@ export default {
   categories: ({ categories }) => {
     return helper.generateCategoryNodeTree(categories)
   },
+  tags: ({ tags }) => {
+    return helper.generateTagNodeTree(tags)
+  },
   activeNote: ({ currentNote }) => ({ docGuid }) => {
     return currentNote.info && currentNote.info.docGuid === docGuid
   },

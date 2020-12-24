@@ -118,15 +118,20 @@ export default {
     },
     category: function () {
       if (helper.isNullOrEmpty(this.currentCategory)) return ''
-      try {
-        const categoryList = this.currentCategory.split('/')
-        return categoryList[categoryList.length - 2]
-      } catch (e) {
-        return ''
+      const tagIndex = this.tags.findIndex(t => t.tagGuid === this.currentCategory)
+      if (tagIndex !== -1) {
+        return this.tags[tagIndex].name
+      } else {
+        try {
+          const categoryList = this.currentCategory.split('/')
+          return categoryList[categoryList.length - 2]
+        } catch (e) {
+          return ''
+        }
       }
     },
     ...mapGetters(['activeNote', 'currentNotes']),
-    ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin'])
+    ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags'])
   },
   methods: {
     handleAddNote: function () {

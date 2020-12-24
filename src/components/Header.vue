@@ -19,7 +19,8 @@
       @click.stop="
         () => {
           if (isLogin) {
-            $refs.categoryDrawer.toggle()
+            drawerType = 'category'
+            $refs.sideDrawer.toggle()
           }
         }
       "
@@ -29,6 +30,26 @@
         :offset="[20, 10]"
         content-class="bg-accent text-white shadow-4  text-h7"
         >{{ $t('noteCategory') }}
+      </q-tooltip>
+    </q-avatar>
+    <q-avatar
+      size="36px"
+      class="cursor-pointer q-electron-drag--exception "
+      v-ripple
+      @click.stop="
+        () => {
+          if (isLogin) {
+            drawerType = 'tag'
+            $refs.sideDrawer.toggle()
+          }
+        }
+      "
+    >
+      <q-icon name="local_offer" color="#16A2B8" />
+      <q-tooltip
+        :offset="[20, 10]"
+        content-class="bg-amber-6 text-white shadow-4  text-h7"
+      >{{ $t('tag') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -44,7 +65,7 @@
       <q-icon :name="enableVditor ? 'lock_open' : 'lock'" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4  text-h7"
+        content-class="bg-amber-9 text-white shadow-4  text-h7"
         >{{ enableVditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
@@ -141,7 +162,7 @@
     </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
-    <CategoryDrawer ref="categoryDrawer" />
+    <SideDrawer ref="sideDrawer" :type="drawerType" />
   </q-bar>
 </template>
 
@@ -149,7 +170,7 @@
 import LoginDialog from './ui/dialog/LoginDialog'
 
 import SettingsDialog from './ui/dialog/SettingsDialog'
-import CategoryDrawer from './ui/CategoryDrawer'
+import SideDrawer from './ui/SideDrawer'
 import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
 const {
@@ -194,10 +215,11 @@ export default {
       return this.currentNote && !helper.isNullOrEmpty(this.currentNote.html)
     }
   },
-  components: { CategoryDrawer, SettingsDialog, LoginDialog },
+  components: { SideDrawer, SettingsDialog, LoginDialog },
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      drawerType: 'category'
     }
   },
   methods: {

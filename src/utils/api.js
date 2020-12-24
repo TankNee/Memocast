@@ -22,7 +22,7 @@ const AccountServerApi = {
   async Login (params) {
     const result = await execRequest(
       'POST',
-      `${AccountServerBaseUrl}/as/user/login`,
+      `${this.getBaseUrl()}/as/user/login`,
       params
     )
     KnowledgeBaseBaseUrl = result.kbServer
@@ -37,7 +37,7 @@ const AccountServerApi = {
   async getUserInfo (params) {
     return await execRequest(
       'POST',
-      `${AccountServerBaseUrl}/as/user/login/token`,
+      `${this.getBaseUrl()}/as/user/login/token`,
       params
     )
   },
@@ -50,7 +50,7 @@ const AccountServerApi = {
   async getUserAvatar (params) {
     return await execRequest(
       'GET',
-      `${AccountServerBaseUrl}/as/user/avatar/${params.userGuid}`
+      `${this.getBaseUrl()}/as/user/avatar/${params.userGuid}`
     )
   },
 
@@ -60,7 +60,7 @@ const AccountServerApi = {
    * @constructor
    */
   async Logout () {
-    return await execRequest('GET', `${AccountServerBaseUrl}/as/user/logout`)
+    return await execRequest('GET', `${this.getBaseUrl()}/as/user/logout`)
   },
 
   /**
@@ -68,7 +68,7 @@ const AccountServerApi = {
    * @returns {Promise<unknown>}
    */
   async keepTokenAlive () {
-    return await execRequest('GET', `${AccountServerBaseUrl}/as/user/keep`)
+    return await execRequest('GET', `${this.getBaseUrl()}/as/user/keep`)
   }
 }
 
@@ -98,7 +98,7 @@ const KnowledgeBaseApi = {
   async getCategories (params) {
     return await execRequest(
       'GET',
-      `${KnowledgeBaseBaseUrl}/ks/category/all/${params.kbGuid}`
+      `${this.getBaseUrl()}/ks/category/all/${params.kbGuid}`
     )
   },
 
@@ -110,7 +110,7 @@ const KnowledgeBaseApi = {
   async getCategoryNotes (params) {
     return await execRequest(
       'GET',
-      `${KnowledgeBaseBaseUrl}/ks/note/list/category/${params.kbGuid}`,
+      `${this.getBaseUrl()}/ks/note/list/category/${params.kbGuid}`,
       null,
       null,
       { params: params.data }
@@ -124,7 +124,7 @@ const KnowledgeBaseApi = {
   async getNoteContent (params) {
     return await execRequest(
       'GET',
-      `${KnowledgeBaseBaseUrl}/ks/note/download/${params.kbGuid}/${params.docGuid}`,
+      `${this.getBaseUrl()}/ks/note/download/${params.kbGuid}/${params.docGuid}`,
       null,
       null,
       { params: params.data },
@@ -140,7 +140,7 @@ const KnowledgeBaseApi = {
   async getNoteInfo (params) {
     return await execRequest(
       'GET',
-      `${KnowledgeBaseBaseUrl}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
+      `${this.getBaseUrl()}/ks/note/info/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
       params.data
     )
   },
@@ -153,7 +153,7 @@ const KnowledgeBaseApi = {
   async updateNote (params) {
     return await execRequest(
       'PUT',
-      `${KnowledgeBaseBaseUrl}/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
+      `${this.getBaseUrl()}/ks/note/save/${params.kbGuid}/${params.docGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
       params.data
     )
   },
@@ -166,7 +166,7 @@ const KnowledgeBaseApi = {
   async updateNoteInfo (params) {
     return await execRequest(
       'POST',
-      `${KnowledgeBaseBaseUrl}/ks/note/upload/${params.kbGuid}/${params.docGuid}`,
+      `${this.getBaseUrl()}/ks/note/upload/${params.kbGuid}/${params.docGuid}`,
       params.data
     )
   },
@@ -179,7 +179,7 @@ const KnowledgeBaseApi = {
   async createNote (params) {
     return await execRequest(
       'POST',
-      `${KnowledgeBaseBaseUrl}/ks/note/create/${params.kbGuid}`,
+      `${this.getBaseUrl()}/ks/note/create/${params.kbGuid}`,
       params.data
     )
   },
@@ -192,7 +192,7 @@ const KnowledgeBaseApi = {
   async createCategory (params) {
     return await execRequest(
       'POST',
-      `${KnowledgeBaseBaseUrl}/ks/category/create/${params.kbGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
+      `${this.getBaseUrl()}/ks/category/create/${params.kbGuid}?clientType=web&clientVersion=3.0&lang=zh-cn`,
       params.data
     )
   },
@@ -205,7 +205,7 @@ const KnowledgeBaseApi = {
   async deleteNote (params) {
     return await execRequest(
       'DELETE',
-      `${KnowledgeBaseBaseUrl}/ks/note/delete/${params.kbGuid}/${params.docGuid}`
+      `${this.getBaseUrl()}/ks/note/delete/${params.kbGuid}/${params.docGuid}`
     )
   },
 
@@ -217,7 +217,7 @@ const KnowledgeBaseApi = {
   async deleteCategory (params) {
     return await execRequest(
       'DELETE',
-      `${KnowledgeBaseBaseUrl}/ks/category/delete/${params.kbGuid}`,
+      `${this.getBaseUrl()}/ks/category/delete/${params.kbGuid}`,
       null,
       null,
       { params: params.data }
@@ -232,7 +232,7 @@ const KnowledgeBaseApi = {
   async renameCategory (params) {
     return await execRequest(
       'PUT',
-      `${KnowledgeBaseBaseUrl}/ks/category/rename/${params.kbGuid}`,
+      `${this.getBaseUrl()}/ks/category/rename/${params.kbGuid}`,
       params.data
     )
   },
@@ -244,7 +244,7 @@ const KnowledgeBaseApi = {
   async searchNote (params) {
     return await execRequest(
       'GET',
-      `${KnowledgeBaseBaseUrl}/ks/note/search/${params.kbGuid}`,
+      `${this.getBaseUrl()}/ks/note/search/${params.kbGuid}`,
       null,
       null,
       { params: params.data },
@@ -260,10 +260,77 @@ const KnowledgeBaseApi = {
   async uploadImage (params) {
     return await execRequest(
       'POST',
-      `${KnowledgeBaseBaseUrl}/ks/resource/upload/${params.kbGuid}/${params.docGuid}`,
+      `${this.getBaseUrl()}/ks/resource/upload/${params.kbGuid}/${params.docGuid}`,
       params.formData,
       null,
       params.config
+    )
+  },
+  async getTagNotes (params) {
+    return await execRequest(
+      'GET',
+      `${this.getBaseUrl()}/ks/note/list/tag/${params.kbGuid}`,
+      null,
+      null,
+      { params: params.data }
+    )
+  },
+  /**
+   * 获取全部标签
+   * @param params
+   * @returns {Promise<*>}
+   */
+  async getAllTags (params) {
+    return await execRequest(
+      'GET',
+      `${this.getBaseUrl()}/ks/tag/all/${params.kbGuid}`
+    )
+  },
+  /**
+   * 创建标签
+   * @param params
+   * @returns {Promise<*>}
+   */
+  async createTag (params) {
+    return await execRequest(
+      'POST',
+      `${this.getBaseUrl()}/ks/tag/create/${params.kbGuid}`,
+      params.data
+    )
+  },
+  /**
+   * 重命名标签
+   * @param params
+   * @returns {Promise<*>}
+   */
+  async renameTag (params) {
+    return await execRequest(
+      'PUT',
+      `${this.getBaseUrl()}/ks/tag/rename/${params.kbGuid}`,
+      params.data
+    )
+  },
+  /**
+   * 移动笔记
+   * @param params
+   * @returns {Promise<*>}
+   */
+  async moveTag (params) {
+    return await execRequest(
+      'PUT',
+      `${this.getBaseUrl()}/ks/tag/move/${params.kbGuid}`,
+      params.data
+    )
+  },
+  /**
+   * 删除标签
+   * @param params
+   * @returns {Promise<*>}
+   */
+  async deleteTag (params) {
+    return await execRequest(
+      'DELETE',
+      `${this.getBaseUrl()}/ks/tag/delete/${params.kbGuid}/${params.tagGuid}`
     )
   }
 }

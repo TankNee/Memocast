@@ -10,5 +10,6 @@ export default {
   switchView: 'Switch View',
   changed: 'Changed',
   lock: 'Lock',
-  unlock: 'Unlock'
+  unlock: 'Unlock',
+  tag: 'Tag'
 }
