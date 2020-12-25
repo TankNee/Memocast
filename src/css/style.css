@@ -171,3 +171,8 @@ span[data-type='a']:not(.vditor-ir__node--expand)::after {
   bottom: 0;
   cursor: pointer;
 }
+
+.tag-tooltip {
+  max-width: 500px;
+  word-break: normal;
+}

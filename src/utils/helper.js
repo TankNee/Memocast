@@ -331,12 +331,22 @@ function findNodeByNodeLabel (nodeList, label) {
   }
   return null
 }
+
+/**
+ * @param {{}[]} targetArray
+ */
+function generateRandomResult (targetArray) {
+  const rnd = Math.floor(Math.random() * targetArray.length)
+  return targetArray[rnd]
+}
+
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
   extractMarkdownFromMDNote,
   generateCategoryNodeTree,
   generateTagNodeTree,
+  generateRandomResult,
   removeMarkdownTag,
   embedMDNote,
   displayDateElegantly,

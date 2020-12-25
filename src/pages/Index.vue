@@ -13,7 +13,7 @@
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut"
         >
-          <NoteList v-if="noteListVisible" />
+          <NoteList v-show="noteListVisible" />
         </transition>
       </template>
       <template v-slot:after>

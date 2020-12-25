@@ -519,16 +519,43 @@ export default {
     const tags = await api.KnowledgeBaseApi.getAllTags({ kbGuid })
     commit(types.UPDATE_ALL_TAGS, tags)
   },
+  /**
+   * 创建一个标签，但没有指定哪篇笔记拥有这个标签
+   * @param state
+   * @param parentTag
+   * @param name
+   * @returns {Promise<void>}
+   */
   async createTag ({ state }, { parentTag = {}, name }) {
     const { kbGuid } = state
     const { tagGuid: parentTagGuid } = parentTag
-    await api.KnowledgeBaseApi.createTag({
+    return await api.KnowledgeBaseApi.createTag({
       kbGuid,
       data: {
         parentTagGuid,
         name
       }
     })
+  },
+  /**
+   * 将指定的标签添加到当前笔记上
+   * @param state
+   * @param commit
+   * @param tagGuid
+   * @returns {Promise<void>}
+   */
+  async attachTag ({ state, commit }, { tagGuid }) {
+    const {
+      currentNote: { info }
+    } = state
+    const newTagList = info.tags?.split('*') || []
+    newTagList.push(tagGuid)
+    commit(types.UPDATE_CURRENT_NOTE_TAGS, newTagList.join('*'))
+    this.dispatch('server/updateNoteInfo', {
+      ...state.currentNote.info,
+      tags: newTagList.join('*')
+    })
+    this.dispatch('server/getAllTags')
   },
   async renameTag ({ state }, tag) {
     const { kbGuid } = state
@@ -540,13 +567,39 @@ export default {
     const { kbGuid } = state
     const { tagGuid } = tag
     const { tagGuid: parentTagGuid } = parentTag
-    await api.KnowledgeBaseApi.moveTag({ kbGuid, data: { tagGuid, parentTagGuid } })
+    await api.KnowledgeBaseApi.moveTag({
+      kbGuid,
+      data: { tagGuid, parentTagGuid }
+    })
     this.dispatch('server/getAllTags')
   },
+  /**
+   * 移除某篇笔记上的tag标记，不会删除这个tag
+   * @returns {Promise<void>}
+   */
+  async removeTag ({ state, commit }, { tagGuid }) {
+    const {
+      currentNote: { info }
+    } = state
+    const newTagList =
+      info.tags?.split('*').filter(t => t !== tagGuid) || []
+    commit(types.UPDATE_CURRENT_NOTE_TAGS, newTagList.join('*'))
+    this.dispatch('server/updateNoteInfo', {
+      ...state.currentNote.info,
+      tags: newTagList.join('*')
+    })
+    this.dispatch('server/getAllTags')
+  },
+  /**
+   * 将一个tag永久删除
+   * @param state
+   * @param tag
+   * @returns {Promise<void>}
+   */
   async deleteTag ({ state }, tag) {
     const { kbGuid } = state
     const { tagGuid } = tag
-    await api.KnowledgeBaseApi.moveTag({ kbGuid, tagGuid })
+    await api.KnowledgeBaseApi.deleteTag({ kbGuid, tagGuid })
     this.dispatch('server/getAllTags')
   },
   /**

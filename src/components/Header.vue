@@ -14,7 +14,7 @@
       <q-tooltip
         v-if="tags.length > 0"
         :offset="[20, 10]"
-        content-class="shadow-4 text-h7"
+        content-class="shadow-4 text-h7 tag-tooltip"
       >
         <q-chip v-for="(tag, index) in tags" :key="index" icon="bookmark">{{
           tag
@@ -142,7 +142,7 @@
       <q-tooltip
         v-if="tags.length > 0"
         :offset="[20, 10]"
-        content-class="shadow-4 text-h7"
+        content-class="shadow-4 text-h7 tag-tooltip"
       >
         <q-chip v-for="(tag, index) in tags" :key="index" icon="bookmark">{{
           tag
