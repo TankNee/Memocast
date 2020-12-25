@@ -1,13 +1,17 @@
 <template>
-  <q-dialog ref="dialog" @before-hide="beforeHideHandler" class="base-dialog">
+  <q-dialog ref="dialog" class="base-dialog" persistent>
     <q-card class="q-dialog base-dialog">
       <q-toolbar>
+        <q-icon
+          name="people"
+          class="text-primary"
+          style="font-size: 1.8em"
+        />
         <q-toolbar-title
           ><span class="text-weight-bold">{{
             $t('login')
           }}</span></q-toolbar-title
         >
-        <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
 
       <q-card-section class="q-pt-none">
@@ -29,10 +33,19 @@
             v-model="password"
             ref="password"
             :label="$t('password')"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             :rules="[val => !!val || $t('fieldIsRequired')]"
             spellcheck="false"
-          />
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="showPassword ? 'visibility' : 'visibility_off'"
+                class="cursor-pointer"
+                style="margin-right: 5px"
+                @click="showPassword = !showPassword"
+              />
+            </template>
+          </q-input>
           <q-toggle
             :value="enableSelfHostServer"
             :label="$t('selfHostEnable')"
@@ -66,15 +79,18 @@
               @input="v => toggleChanged({ key: 'autoLogin', value: v })"
             />
           </div>
-
-          <div>
-            <q-btn :label="$t('submit')" type="submit" color="primary" />
+          <div class="flex" style="flex-direction: column;">
             <q-btn
-              :label="$t('cancel')"
+              class="fab-btn"
+              :label="$t('signIn')"
+              type="submit"
               color="primary"
-              flat
-              class="q-ml-sm"
-              v-close-popup
+            />
+            <q-btn
+              class="fab-btn"
+              :label="$t('signUp')"
+              @click="signUpHandler"
+              color="green"
             />
           </div>
         </q-form>
@@ -86,8 +102,9 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import Loading from './Loading'
-import fileStorage from '../../utils/fileStorage'
+import Loading from '../Loading'
+import helper from '../../../utils/helper'
+import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 const { mapActions: mapServerActions } = createNamespacedHelpers('server')
 const {
   mapState: mapClientState,
@@ -101,7 +118,8 @@ export default {
       username: '',
       password: '',
       selfHostServer: '',
-      isLoading: false
+      isLoading: false,
+      showPassword: false
     }
   },
   computed: {
@@ -122,19 +140,22 @@ export default {
         this.isLoading = false
       }
     },
-    beforeHideHandler: function () {
-      this.username = null
-      this.password = null
-      this.selfHostServer = null
+    signUpHandler: function () {
+      this.$q.electron.shell.openExternal(
+        `${!(helper.isNullOrEmpty(this.selfHostServer) || !this.enableSelfHostServer) ? this.selfHostServer : 'https://wiz.cn'}/signup`
+      )
     },
     toggle: function () {
       return this.$refs.dialog.toggle()
+    },
+    show: function () {
+      return this.$refs.dialog.show()
     },
     ...mapServerActions(['login', 'getCategoryNotes']),
     ...mapClientActions(['toggleChanged'])
   },
   created () {
-    const [userId, password, url] = fileStorage.getItemsFromStore([
+    const [userId, password, url] = ClientFileStorage.getItemsFromStore([
       'userId',
       'password',
       'url'

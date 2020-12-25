@@ -1,6 +1,6 @@
 import types from 'src/store/client/types'
 import helper from 'src/utils/helper'
-import fileStorage from 'src/utils/fileStorage'
+import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 
 export default {
   [types.INIT] (state, payload) {
@@ -20,10 +20,10 @@ export default {
     state.darkMode = darkMode
   },
   [types.SAVE_TO_LOCAL_STORE_SYNC] (state, [key, value]) {
-    fileStorage.setItemInStore(key, value)
+    ClientFileStorage.setItemInStore(key, value)
   },
   [types.SAVE_ITEMS_TO_LOCAL_STORE_SYNC] (state, object) {
-    fileStorage.setItemsInStore(object)
+    ClientFileStorage.setItemsInStore(object)
   },
   [types.TOGGLE_CHANGED] (state, { key, value }) {
     state[key] = value

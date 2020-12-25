@@ -1,31 +1,71 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import fileStorage from 'src/utils/fileStorage'
-import { Notify } from 'quasar'
+import { Notify, Dialog, Loading, QSpinnerGears } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
-const FormData = require('form-data')
+import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
+import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
+import _ from 'lodash'
+import FormData from 'form-data'
+import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiHandler'
+
+export async function _getContent (kbGuid, docGuid) {
+  const { info } = await api.KnowledgeBaseApi.getNoteContent({
+    kbGuid,
+    docGuid,
+    data: {
+      downloadInfo: 1
+    }
+  })
+  // dataModified
+  const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
+  const note = ClientFileStorage.getCachedNote(info, cacheKey)
+  let result
+  if (!helper.isNullOrEmpty(note)) {
+    result = note
+  } else {
+    result = await api.KnowledgeBaseApi.getNoteContent({
+      kbGuid,
+      docGuid,
+      data: {
+        downloadInfo: 1,
+        downloadData: 1
+      }
+    })
+    ClientFileStorage.setCachedNote(result, cacheKey)
+  }
+  return result
+}
+
 export default {
   /**
    * 从本地缓存中读取数据，初始化状态树
    * @param commit
    * @param state
    */
-  initServerStore ({ commit, state }) {
-    const localStore = fileStorage.getItemsFromStore(state)
+  async initServerStore ({ commit, state }) {
+    const localStore = ClientFileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
-    fileStorage.removeItemFromLocalStorage('token')
-    const [autoLogin, userId, password, url] = fileStorage.getItemsFromStore([
+    ServerFileStorage.removeItemFromLocalStorage('token')
+    const [
+      autoLogin,
+      userId,
+      password,
+      url
+    ] = ClientFileStorage.getItemsFromStore([
       'autoLogin',
       'userId',
       'password',
       'url'
     ])
     if (autoLogin) {
-      this.dispatch('server/login', { userId, password, url })
+      await this.dispatch('server/login', { userId, password, url })
     }
+  },
+  async getContent (payload, { kbGuid, docGuid }) {
+    return await _getContent(kbGuid, docGuid)
   },
   /**
    * 用户登录接口
@@ -41,18 +81,18 @@ export default {
     const result = await api.AccountServerApi.Login(payload)
 
     if (rootState.client.rememberPassword) {
-      fileStorage.setItemsInStore({ userId, password, url })
+      ClientFileStorage.setItemsInStore({ userId, password, url })
     } else {
-      if (fileStorage.isKeyExistInStore('password')) {
-        fileStorage.removeItemFromStore('password')
+      if (ClientFileStorage.isKeyExistInStore('password')) {
+        ClientFileStorage.removeItemFromStore('password')
       }
-      fileStorage.setItemsInStore({ userId, url })
+      ClientFileStorage.setItemsInStore({ userId, url })
     }
     if (
       !rootState.client.enableSelfHostServer &&
-      fileStorage.isKeyExistInStore('url')
+      ClientFileStorage.isKeyExistInStore('url')
     ) {
-      fileStorage.removeItemFromStore('url')
+      ClientFileStorage.removeItemFromStore('url')
     }
 
     commit(types.LOGIN, { ...result, isLogin: true })
@@ -61,13 +101,35 @@ export default {
       category: ''
     })
     this.dispatch('server/getAllCategories')
-
+    this.dispatch('server/getAllTags')
     return result
   },
+  /**
+   * 登出
+   * @param commit
+   * @returns {Promise<void>}
+   */
   async logout ({ commit }) {
     await api.AccountServerApi.Logout()
-    fileStorage.removeItemFromLocalStorage('token')
+    ServerFileStorage.removeItemFromLocalStorage('token')
     commit(types.LOGOUT)
+  },
+  /**
+   * 重新登录
+   * @param commit
+   * @returns {Promise<void>}
+   */
+  async reLogin ({ commit }) {
+    const [userId, password, url] = ClientFileStorage.getItemsFromStore([
+      'userId',
+      'password',
+      'url'
+    ])
+    await this.dispatch('server/login', {
+      userId,
+      password,
+      url
+    })
   },
   /**
    * 获取指定文件夹下的笔记
@@ -116,15 +178,7 @@ export default {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
     const { kbGuid } = state
     const { docGuid } = payload
-
-    const result = await api.KnowledgeBaseApi.getNoteContent({
-      kbGuid,
-      docGuid,
-      data: {
-        downloadInfo: 1,
-        downloadData: 1
-      }
-    })
+    const result = await _getContent(kbGuid, docGuid)
 
     commit(types.UPDATE_CURRENT_NOTE, result)
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
@@ -135,9 +189,17 @@ export default {
    * @param category
    * @returns {Promise<void>}
    */
-  async updateCurrentCategory ({ commit }, category) {
-    await this.dispatch('server/getCategoryNotes', { category })
-    commit(types.UPDATE_CURRENT_CATEGORY, category)
+  async updateCurrentCategory ({ commit }, payload) {
+    const { type, data } = payload
+    if (type === 'category') {
+      await this.dispatch('server/getCategoryNotes', { category: data })
+    } else if (type === 'tag') {
+      await this.dispatch('server/getTagNotes', { tag: data })
+    } else {
+      await this.dispatch('server/getCategoryNotes', { category: '' })
+    }
+    commit(types.UPDATE_CURRENT_CATEGORY, data)
+    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['currentCategory', data])
   },
   /**
    * 更新笔记信息，例如笔记title等
@@ -163,28 +225,59 @@ export default {
    * @returns {Promise<void>}
    */
   async updateNote ({ commit, state }, markdown) {
-    const { kbGuid, docGuid, category, title } = state.currentNote.info
+    const { kbGuid, docGuid, category } = state.currentNote.info
+    let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
-    await api.KnowledgeBaseApi.updateNote({
-      kbGuid,
-      docGuid,
-      data: {
-        title,
+    const html = helper.embedMDNote(markdown, resources, {
+      wrapWithPreTag: isLite
+    })
+
+    const _updateNote = async title => {
+      const result = await api.KnowledgeBaseApi.updateNote({
         kbGuid,
         docGuid,
-        category,
-        resources,
-        html: helper.embedMDNote(markdown, { wrapWithPreTag: isLite }),
-        type: isLite ? 'lite/markdown' : 'document'
-      }
-    })
-    Notify.create({
-      color: 'primary',
-      message: i18n.t('saveNoteSuccessfully'),
-      icon: 'check'
-    })
-    await this.dispatch('server/getCategoryNotes')
+        data: {
+          html,
+          title,
+          kbGuid,
+          docGuid,
+          category,
+          resources: resources.map(r => r.name),
+          type: isLite ? 'lite/markdown' : 'document'
+        }
+      })
+
+      ClientFileStorage.setCachedNote(
+        { info: result, html },
+        api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid),
+        null
+      )
+      Notify.create({
+        color: 'primary',
+        message: i18n.t('saveNoteSuccessfully'),
+        icon: 'check'
+      })
+      await this.dispatch('server/getCategoryNotes')
+      commit(types.UPDATE_CURRENT_NOTE, result)
+    }
+    if (!_.endsWith(title, '.md')) {
+      Dialog.create({
+        title: i18n.t('convertToMarkdownNote'),
+        message: i18n.t('convertToMarkdownNoteHint'),
+        ok: {
+          label: i18n.t('ok')
+        },
+        cancel: {
+          label: i18n.t('cancel')
+        }
+      }).onOk(async () => {
+        title = `${title}.md`
+        await _updateNote(title)
+      })
+    } else {
+      await _updateNote(title)
+    }
   },
   /**
    * 创建笔记
@@ -195,8 +288,8 @@ export default {
    * @returns {Promise<void>}
    */
   async createNote ({ commit, state, rootState }, title) {
-    const { kbGuid, currentCategory } = state
-    const userId = fileStorage.getItemFromStore('userId')
+    const { kbGuid, currentCategory = '' } = state
+    const userId = ClientFileStorage.getItemFromStore('userId')
     const isLite = currentCategory.replace(/\//g, '') === 'Lite'
     const result = await api.KnowledgeBaseApi.createNote({
       kbGuid,
@@ -205,7 +298,7 @@ export default {
         kbGuid,
         title,
         owner: userId,
-        html: helper.embedMDNote(`# ${title}`, { wrapWithPreTag: isLite }),
+        html: helper.embedMDNote(`# ${title}`, [], { wrapWithPreTag: isLite }),
         type: isLite ? 'lite/markdown' : 'document'
       }
     })
@@ -294,7 +387,8 @@ export default {
       }
     } = rootState
 
-    let data = {}, options = {}
+    let data = {},
+      options = {}
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
         formData.append('data', file)
@@ -331,18 +425,29 @@ export default {
 
     const result = await api.UploadImageApi(imageUploadService, data, options)
     if (result) {
-      bus.$emit(events.INSERT_IMAGE, getters.imageUrl(result, imageUploadService))
+      bus.$emit(
+        events.INSERT_IMAGE,
+        getters.imageUrl(result, imageUploadService)
+      )
+    }
+    if (imageUploadService === 'wizOfficialImageUploadService') {
+      commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
     }
   },
   async moveNote ({ commit }, noteInfo) {
-    const { kbGuid, docGuid } = noteInfo
-    await api.KnowledgeBaseApi.updateNoteInfo({ kbGuid, docGuid, data: noteInfo })
+    const { kbGuid, docGuid, category, type } = noteInfo
+    const isLite = category === '/Lite/' ? 'lite/markdown' : type
+    await api.KnowledgeBaseApi.updateNoteInfo({
+      kbGuid,
+      docGuid,
+      data: { ...noteInfo, type: isLite ? 'lite/markdown' : type }
+    })
     await this.dispatch('server/getCategoryNotes')
   },
   async copyNote ({ commit, state }, noteInfo) {
     const { kbGuid, docGuid, category, title, type } = noteInfo
     const { currentCategory } = state
-    const userId = fileStorage.getItemFromStore('userId')
+    const userId = ClientFileStorage.getItemFromStore('userId')
 
     const noteContent = await api.KnowledgeBaseApi.getNoteContent({
       kbGuid,
@@ -359,14 +464,221 @@ export default {
       data: {
         category: category,
         kbGuid,
-        title: isCurrentCategory ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${title.indexOf('.md') !== -1 ? '.md' : ''}` : title,
+        title: isCurrentCategory
+          ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${
+              title.indexOf('.md') !== -1 ? '.md' : ''
+            }`
+          : title,
         owner: userId,
         html,
-        type
+        type: category === '/Lite/' ? 'lite/markdown' : type
       }
     })
     if (isCurrentCategory || helper.isNullOrEmpty(currentCategory)) {
       await this.dispatch('server/getCategoryNotes')
     }
+  },
+  async searchNote ({ commit, state }, searchText) {
+    const { kbGuid } = state
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    const result = await api.KnowledgeBaseApi.searchNote({
+      data: {
+        ss: searchText
+      },
+      kbGuid
+    })
+    commit(types.UPDATE_CURRENT_NOTES, result)
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+  },
+  updateContentsList ({ commit }, editorRootElement) {
+    const list = helper.updateContentsList(editorRootElement) || []
+    commit(types.UPDATE_CONTENTS_LIST, list)
+  },
+  updateNoteState ({ commit }, noteState) {
+    commit(types.UPDATE_NOTE_STATE, noteState)
+  },
+  async getTagNotes ({ commit, state }, payload) {
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    const { kbGuid } = state
+    const { tag, start, count } = payload
+    const result = await api.KnowledgeBaseApi.getTagNotes({
+      kbGuid,
+      data: {
+        tag,
+        withAbstract: true,
+        start: start || 0,
+        count: count || 100,
+        orderBy: 'modified'
+      }
+    })
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+    commit(types.UPDATE_CURRENT_NOTES, result)
+  },
+  async getAllTags ({ commit, state }) {
+    const { kbGuid } = state
+    const tags = await api.KnowledgeBaseApi.getAllTags({ kbGuid })
+    commit(types.UPDATE_ALL_TAGS, tags)
+  },
+  /**
+   * 创建一个标签，但没有指定哪篇笔记拥有这个标签
+   * @param state
+   * @param parentTag
+   * @param name
+   * @returns {Promise<void>}
+   */
+  async createTag ({ state }, { parentTag = {}, name }) {
+    const { kbGuid } = state
+    const { tagGuid: parentTagGuid } = parentTag
+    return await api.KnowledgeBaseApi.createTag({
+      kbGuid,
+      data: {
+        parentTagGuid,
+        name
+      }
+    })
+  },
+  /**
+   * 将指定的标签添加到当前笔记上
+   * @param state
+   * @param commit
+   * @param tagGuid
+   * @returns {Promise<void>}
+   */
+  async attachTag ({ state, commit }, { tagGuid }) {
+    const {
+      currentNote: { info }
+    } = state
+    const newTagList = info.tags?.split('*') || []
+    newTagList.push(tagGuid)
+    commit(types.UPDATE_CURRENT_NOTE_TAGS, newTagList.join('*'))
+    this.dispatch('server/updateNoteInfo', {
+      ...state.currentNote.info,
+      tags: newTagList.join('*')
+    })
+    this.dispatch('server/getAllTags')
+  },
+  async renameTag ({ state }, tag) {
+    const { kbGuid } = state
+    const { tagGuid, name } = tag
+    await api.KnowledgeBaseApi.renameTag({ kbGuid, data: { tagGuid, name } })
+    this.dispatch('server/getAllTags')
+  },
+  async moveTag ({ state }, { tag, parentTag = {} }) {
+    const { kbGuid } = state
+    const { tagGuid } = tag
+    const { tagGuid: parentTagGuid } = parentTag
+    await api.KnowledgeBaseApi.moveTag({
+      kbGuid,
+      data: { tagGuid, parentTagGuid }
+    })
+    this.dispatch('server/getAllTags')
+  },
+  /**
+   * 移除某篇笔记上的tag标记，不会删除这个tag
+   * @returns {Promise<void>}
+   */
+  async removeTag ({ state, commit }, { tagGuid }) {
+    const {
+      currentNote: { info }
+    } = state
+    const newTagList =
+      info.tags?.split('*').filter(t => t !== tagGuid) || []
+    commit(types.UPDATE_CURRENT_NOTE_TAGS, newTagList.join('*'))
+    this.dispatch('server/updateNoteInfo', {
+      ...state.currentNote.info,
+      tags: newTagList.join('*')
+    })
+    this.dispatch('server/getAllTags')
+  },
+  /**
+   * 将一个tag永久删除
+   * @param state
+   * @param tag
+   * @returns {Promise<void>}
+   */
+  async deleteTag ({ state }, tag) {
+    const { kbGuid } = state
+    const { tagGuid } = tag
+    await api.KnowledgeBaseApi.deleteTag({ kbGuid, tagGuid })
+    this.dispatch('server/getAllTags')
+  },
+  /**
+   * 导出markdown文件到本地
+   * @param state
+   * @param noteField
+   * @returns {Promise<void>}
+   */
+  async exportMarkdownFile ({ state }, noteField) {
+    const { kbGuid } = state
+    const { docGuid } = noteField
+    const result = await _getContent(kbGuid, docGuid)
+    const isHtml = !_.endsWith(result.info.title, '.md')
+    const { html, resources } = result
+    let content
+    if (isHtml) {
+      content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
+    } else {
+      content = helper.extractMarkdownFromMDNote(
+        html,
+        kbGuid,
+        docGuid,
+        resources
+      )
+    }
+    await exportMarkdownFile(content)
+    Notify.create({
+      color: 'primary',
+      message: i18n.t('exportNoteSuccessfully'),
+      icon: 'check'
+    })
+  },
+  /**
+   * 批量导出markdown笔记到本地
+   * @param state
+   * @param noteFields
+   * @returns {Promise<void>}
+   */
+  async exportMarkdownFiles ({ state }, noteFields = []) {
+    const { kbGuid } = state
+    const results = []
+    Loading.show({
+      spinner: QSpinnerGears,
+      message: i18n.t('prepareExportData')
+    })
+    for (const noteField of noteFields) {
+      const { docGuid } = noteField
+      const result = await _getContent(kbGuid, docGuid)
+      results.push(result)
+    }
+    const contents = results.map(result => {
+      const isHtml = !_.endsWith(result.info.title, '.md')
+      const {
+        html,
+        info: { docGuid },
+        resources
+      } = result
+      let content
+      if (isHtml) {
+        content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
+      } else {
+        content = helper.extractMarkdownFromMDNote(
+          html,
+          kbGuid,
+          docGuid,
+          resources
+        )
+      }
+      return {
+        content,
+        title: isHtml ? result.info.title : result.info.title.replace('.md', '')
+      }
+    })
+    Loading.hide()
+    await exportMarkdownFiles(contents)
+    Notify.create({
+      color: 'primary',
+      message: i18n.t('exportNoteSuccessfully'),
+      icon: 'check'
+    })
   }
 }

@@ -1,5 +1,6 @@
 export default {
   requestError: '网络请求错误',
+  flomoApiUrlIsEmpty: '浮墨接口地址为空，请在设置中完善信息。(设置 >> 服务 >> 浮墨)',
   301: 'token过期，请尝试重新登陆',
   304: '上传限制',
   305: '容量达到上限',

@@ -4,5 +4,7 @@ export default {
     SETTINGS_UPDATE: 'settings.update'
   },
   INSERT_IMAGE: 'insert.image',
-  SAVE_NOTE: 'save.note'
+  INSERT_IMAGES: 'insert.images',
+  SAVE_NOTE: 'save.note',
+  SCROLL_TO_HEADER: 'scroll.to.header'
 }

@@ -1,8 +1,10 @@
 export default {
   rename: 'Rename',
-  copyTo: 'Copy To',
-  moveTo: 'Move To',
+  copy: 'Copy',
+  move: 'Move',
+  flomo: 'Flomo',
   share: 'Share',
+  export: 'Export',
   delete: 'Delete',
   renameNote: 'Rename Note',
   deleteNote: 'Delete Note'

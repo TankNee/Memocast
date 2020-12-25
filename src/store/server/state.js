@@ -13,6 +13,9 @@ export default function () {
     isCurrentNotesLoading: false, // current notes loading state,
     categories: [],
     currentCategory: '',
-    uploadImageUrl: ''
+    uploadImageUrl: '',
+    contentsList: [],
+    noteState: 'default',
+    tags: []
   }
 }

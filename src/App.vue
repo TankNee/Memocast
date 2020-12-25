@@ -15,15 +15,15 @@ const { mapActions: mapClientActions } = createNamespacedHelpers('client')
 const { mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
 export default {
   name: 'App',
-  mounted () {
+  async mounted () {
     RegisterErrorHandler()
     RegisterScheduleJobs(this)
-    this.initClientStore()
-    this.initServerStore()
+    await this.initClientStore()
+    await this.initServerStore()
   },
   methods: {
     ...mapClientActions(['initClientStore']),
-    ...mapServerActions(['initServerStore']),
+    ...mapServerActions(['initServerStore', 'reLogin']),
     ...mapServerState(['isLogin'])
   }
 }

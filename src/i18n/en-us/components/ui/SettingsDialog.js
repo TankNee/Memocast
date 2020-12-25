@@ -8,7 +8,14 @@ export default {
   darkMode: 'Dark Mode',
   markdownOnly: 'Only Show Markdown Note',
   imageUploadService: 'Image Upload Service',
-  wizOfficialImageUploadService: 'WizNote Official Image Upload Service',
+  wizOfficialImageUploadService: 'WizNote Official Image Upload Service (unavailable)',
   customWebUploadService: 'Custom Web Image Upload Service',
-  smmsImageUploadService: 'SMMS Image Upload Service'
+  smmsImageUploadService: 'SMMS Image Upload Service (unavailable)',
+  currentVersion: 'Current Version: {version}',
+  getNewerVersion: 'New version detected: {version} !',
+  update: 'Update',
+  noNewerVersion: 'This is the latest version!',
+  codeTheme: 'Code Theme',
+  lightCodeTheme: 'Light Mode Code Theme',
+  darkCodeTheme: 'Dark Mode Code Theme'
 }

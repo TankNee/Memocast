@@ -90,6 +90,7 @@
     opacity: 1;
   }
 }
+
 .vditor-tooltipped {
   position: relative;
   cursor: pointer;
@@ -512,9 +513,7 @@
   border: 1px solid var(--border-color);
   border-radius: 3px;
   box-sizing: border-box;
-  font-family: Helvetica Neue, Luxi Sans, DejaVu Sans, Hiragino Sans GB,
-    Microsoft Yahei, sans-serif, Apple Color Emoji, Segoe UI Emoji,
-    Noto Color Emoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 }
 .vditor .vditor-copy {
   z-index: auto;
@@ -794,12 +793,13 @@
 .vditor-reset {
   color: #333333;
   font-variant-ligatures: no-common-ligatures;
-  font-family: 'Open Sans', 'Noto Sans SC', Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   word-wrap: break-word;
   overflow: auto;
   line-height: 28px;
-  font-size: 16px;
+  font-size: 19px;
   word-break: break-word;
+  padding: 0px !important;
 }
 .vditor-reset--anchor {
   padding-left: 20px;
@@ -840,6 +840,9 @@
 }
 .vditor-reset img {
   max-width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 .vditor-reset img.emoji {
   cursor: auto;
@@ -946,9 +949,7 @@
   margin: 0;
   font-size: 85%;
   border-radius: 3px;
-  font-family: mononoki, Consolas, Liberation Mono, Menlo, Courier, monospace,
-    Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, Segoe UI Symbol,
-    Android Emoji, EmojiSymbols;
+  font-family: Monaco, Consolas, "Courier New", monospace;
   word-break: break-word;
   background-size: 20px 20px;
   white-space: pre-wrap;
@@ -965,9 +966,7 @@
   display: block;
   overflow: auto;
   white-space: pre;
-  font-family: mononoki, Consolas, Liberation Mono, Menlo, Courier, monospace,
-    Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, Segoe UI Symbol,
-    Android Emoji, EmojiSymbols;
+  font-family: Monaco, Consolas, "Courier New", monospace;
   background-size: 20px 20px;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8AgMAAABHkjHhAAAACVBMVEWAgIBaWlo+Pj7rTFvWAAAAA3RSTlMHCAw+VhR4AAAA+klEQVQoz4WSMW7EQAhFPxKWNh2FCx+HkaZI6RRb5DYbyVfIJXLKDCFoMbaTKSw/8ZnPAPjaH2xgZcUNUDADD7D9LtDBCLZ45fbkvo/30K8yeI64pPwl6znd/3n/Oe93P3ho9qeh72btTFzqkz0rsJle8Zr81OLEwZ1dv/713uWqvu2pl+k0fy7MWtj9r/tN5q/02z89qa/L4Dc2LvM93kezPfXlME/O86EbY/V9GB9ePX8G1/6W+/9h1dq/HGfTfzT3j/xNo7522Bfnqe5jO/fvhVthlfk434v3iO9zG/UOphyPeinPl1J8Gtaa7xPTa/Dk+RIs4deMvwGvcGsmsCvJ0AAAAABJRU5ErkJggg==);
   word-break: normal;
@@ -1002,7 +1001,7 @@
 .vditor-reset blockquote:last-child,
 .vditor-reset hr:last-child,
 .vditor-reset ol:last-child,
-.vditor-reset p:last-child,
+.vditor-reset p:last-child
 .vditor-reset pre:last-child,
 .vditor-reset ul:last-child {
   margin-bottom: 0;
@@ -1359,6 +1358,17 @@
   position: relative;
   width: 100%;
 }
+.vditor-reset span[data-type=img] > span,
+.vditor-reset span[data-type=a] > span{
+  font-family: Monaco, Consolas, "Courier New", monospace;
+}
+.vditor-reset span[data-type=img] > img{
+  cursor: default;
+}
+.vditor-ir__node[data-type='img']:not(.vditor-ir__node--expand) {
+  display: flex;
+  justify-content: center;
+}
 .vditor-ir__node[data-type='code-block']:after,
 .vditor-ir__node[data-type='code-block']:before,
 .vditor-ir__node[data-type='math-block']:after,
@@ -1461,8 +1471,8 @@
   box-sizing: border-box;
 }
 .vditor-ir pre.vditor-reset[contenteditable='false'] {
-  opacity: 0.3;
-  cursor: not-allowed;
+  opacity: 0.7;
+  cursor: default;
 }
 .vditor-ir pre.vditor-reset:empty:before {
   content: attr(placeholder);
@@ -1563,9 +1573,7 @@
   }
 }
 .vditor-sv {
-  font-family: Helvetica Neue, Luxi Sans, DejaVu Sans, Hiragino Sans GB,
-    Microsoft Yahei, sans-serif, Apple Color Emoji, Segoe UI Emoji,
-    Noto Color Emoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
+  font-family: Monaco, Consolas, "Courier New", monospace;
   margin: 0 1px 0 0;
   overflow: auto;
   width: 100%;

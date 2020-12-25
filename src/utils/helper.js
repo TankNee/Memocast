@@ -1,25 +1,33 @@
 import _ from 'lodash'
-import he from 'he'
-import html2markdown from '../lib/html2markdown'
-import api from 'src/utils/api'
 import wizMarkdownParser from '@altairwei/wiz-markdown'
 import { i18n } from 'boot/i18n'
 import { Platform } from 'quasar'
-const { dialog, BrowserWindow } = require('electron').remote
-
+import TurndownService from 'turndown'
+import cheerio from 'cheerio'
+const turndownService = new TurndownService({ codeBlockStyle: 'fenced', headingStyle: 'atx' })
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
   return _.isNull(obj) || _.isEmpty(obj)
 }
+
+/**
+ * converter
+ * @param {string} html
+ * @param kbGuid
+ * @param docGuid
+ * @param resources
+ * @returns {*}
+ */
 function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
   try {
-    html = html2markdown(html, {
-      imgBaseUrl: `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/`,
-      resources: resources,
-      imageUrlInLine: true
+    resources.forEach(resource => {
+      html = html.replace(`index_files/${resource.name}`, resource.url)
     })
-    html = he.decode(html)
-    html = removeDeprecatedTags(html)
+    const $ = cheerio.load(html)
+    const $body = $('html').clone()
+    $body.find('style').remove()
+    $body.removeClass()
+    html = turndownService.turndown($body.html())
     return html
   } catch (e) {
     return html
@@ -36,7 +44,7 @@ function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
  */
 function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
   resources.forEach(resource => {
-    html = html.replace(`index_files/${resource.name}`, resource.url)
+    html = html.replace(new RegExp(`index_files/${resource.name}`, 'g'), resource.url)
   })
   return wizMarkdownParser.extract(html, {
     convertImgTag: true,
@@ -47,31 +55,19 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
 /**
  * embed markdown source string to html string
  * @param markdown
+ * @param resources
  * @param options
  * @returns {string}
  */
-function embedMDNote (markdown, options) {
-  return wizMarkdownParser.embed(markdown, options)
-}
-
-/**
- * remove deprecatedTags
- * @param {string} html
- */
-function removeDeprecatedTags (html) {
-  const patterns = [
-    /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size:\s10\.5pt;">/g,
-    /<span\sdata-wiz-span="data-wiz-span"\sstyle="font-size: 0\.875rem;">/g
-  ]
-  patterns.forEach(pattern => {
-    html = html.replace(pattern, '')
+function embedMDNote (markdown, resources, options) {
+  resources.forEach(resource => {
+    const imgReg = new RegExp(`!\\[.*\\]\\(${resource.name}\\)`, 'g')
+    markdown = markdown.replace(resource.url, resource.name)
+    const result = imgReg.exec(markdown)
+    console.log(result)
+    markdown = markdown.replace(imgReg, `![](index_files/${resource.name})`)
   })
-  // html = html.replace(/\s<img\ssrc="data.*>/g, '- [ ]')
-  html = html
-    .replace(/&gt;/g, '>')
-    .replace(/&lt;/g, '<')
-    .replace(/&amp;/g, '&')
-  return html
+  return wizMarkdownParser.embed(markdown, options)
 }
 
 /**
@@ -147,6 +143,16 @@ function generateCategoryNodeTree (categories) {
       ? category.split('/').filter(c => !isNullOrEmpty(c))
       : category
   })
+  // 适配乱序的返回结果
+  const rootCategories = categories.filter(c => c.length === 1)
+  const leafCategories = categories.filter(c => c.length !== 1)
+  let _categories = []
+  rootCategories.forEach(rc => {
+    _categories.push(rc)
+    const children = leafCategories.filter(lc => lc[0] === rc[0]).sort((a, b) => a.length - b.length)
+    _categories = _categories.concat(children)
+  })
+  categories = _categories
   for (let i = 0; i < categories.length; i++) {
     const category = categories[i]
     if (category.length === 1) {
@@ -178,14 +184,26 @@ function generateCategoryNodeTree (categories) {
 }
 
 /**
- * 开启一个图片选择弹窗
- * @param options
- * @returns {string[]}
+ * @param {{}[]} tags
  */
-function createFileSelectDialog (options) {
-  return dialog.showOpenDialogSync(BrowserWindow.getFocusedWindow(), options)
-}
+function generateTagNodeTree (tags = []) {
+  if (!tags.length) return
 
+  let result = []
+  const rootTags = tags.filter(t => isNullOrEmpty(t.parentTagGuid)).sort((tagA, tagB) => tagA.pos - tagB.pos)
+  result = result.concat(rootTags.map(t => ({ label: t.name, children: [], selectable: true, key: t.tagGuid })))
+  // const leafTags = tags.filter(t => !isNullOrEmpty(t.parentTagGuid)) || []
+  const seekLeafTags = (rootTag) => {
+    tags.filter(t => t.parentTagGuid === rootTag.key).forEach(t => {
+      rootTag.children.push({ label: t.name, children: [], selectable: true, key: t.tagGuid })
+    })
+    rootTag.children.forEach(t => {
+      seekLeafTags(t)
+    })
+  }
+  result.forEach(t => seekLeafTags(t))
+  return result
+}
 /**
  * 获取文件的拓展名
  * @param filePath 文件路径
@@ -196,6 +214,12 @@ function getFileNameWithExt (filePath) {
 
   return fileName
 }
+
+/**
+ * 兼容Windows与MacOS的Ctrl键判断
+ * @param event
+ * @returns {boolean}
+ */
 function isCtrl (event) {
   if (Platform.is.mac) {
     if (event.metaKey && !event.ctrlKey) {
@@ -223,16 +247,113 @@ function filterParentElement (dom, root, filterFn, self = false) {
   }
   return null
 }
+
+/**
+ * 更新笔记目录数据结构
+ * @param {HTMLElement} editorRootElement
+ */
+function updateContentsList (editorRootElement) {
+  const list = []
+  for (let i = 0; i < editorRootElement.childElementCount; i++) {
+    const tagName = editorRootElement.children[i].tagName.toLowerCase()
+    // 如果是标题类的标签，那么就进行解析
+    if (/^h[1-6]$/.test(tagName)) {
+      // 解出标签的等级，h1到h6
+      const rank = parseInt(tagName[1], 10)
+      if (list.length) {
+        let target = list
+        for (let j = 1; j < rank; j++) {
+          if (target.length === 0 || rank === target[0].rank) {
+            break
+          } else if (!target[target.length - 1].children) {
+            target[target.length - 1].children = []
+          }
+          // 放到最后一个元素的子元素集合中
+          target = target[target.length - 1].children
+        }
+        target.push({
+          key: `${i}-${rank}`,
+          label: editorRootElement.children[i].innerText.replace(/^#+\s/, ''),
+          element: editorRootElement.children[i],
+          selectable: true,
+          rank: rank
+        })
+      } else {
+        // 处理第一个标题元素
+        list.push({})
+        const item = list[list.length - 1]
+        for (let j = 0; j < rank; j++) {
+          if (j === rank - 1) {
+            // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
+            item.key = `${i}-${j}`
+            item.label = editorRootElement.children[i].innerText.replace(
+              /^#+\s/,
+              ''
+            )
+            item.selectable = true
+            item.rank = rank
+            item.element = editorRootElement.children[i]
+          }
+        }
+      }
+    }
+  }
+  return list
+}
+
+/**
+ * 根据key查找node对象
+ * @param {node[]} nodeList
+ * @param {string} key
+ * @returns {null|*}
+ */
+function findNodeByNodeKey (nodeList, key) {
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i].key === key) return nodeList[i]
+    if (!nodeList[i].children) continue
+    const node = findNodeByNodeKey(nodeList[i].children, key)
+    if (node) return node
+  }
+  return null
+}
+/**
+ * 根据label查找node对象
+ * @param {node[]} nodeList
+ * @param {string} label
+ * @returns {null|*}
+ */
+function findNodeByNodeLabel (nodeList, label) {
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i].label.replace(/\s/g, '') === label) return nodeList[i]
+    if (!nodeList[i].children) continue
+    const node = findNodeByNodeLabel(nodeList[i].children, label)
+    if (node) return node
+  }
+  return null
+}
+
+/**
+ * @param {{}[]} targetArray
+ */
+function generateRandomResult (targetArray) {
+  const rnd = Math.floor(Math.random() * targetArray.length)
+  return targetArray[rnd]
+}
+
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
   extractMarkdownFromMDNote,
   generateCategoryNodeTree,
+  generateTagNodeTree,
+  generateRandomResult,
   removeMarkdownTag,
   embedMDNote,
   displayDateElegantly,
-  createFileSelectDialog,
+  updateContentsList,
   getFileNameWithExt,
   isCtrl,
-  filterParentElement
+  filterParentElement,
+  findNodeByNodeKey,
+  findNodeByNodeLabel
 }

@@ -1,9 +1,0 @@
-export default {
-  noteEditor: 'Note Editor',
-  tags: 'Tags',
-  noteCategory: 'Note Category',
-  search: 'Search',
-  settings: 'Settings',
-  logout: 'Logout',
-  logoutHint: 'Do you want to log out right now ?'
-}

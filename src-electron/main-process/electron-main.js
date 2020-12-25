@@ -1,6 +1,22 @@
 import { app, BrowserWindow, nativeTheme, shell } from 'electron'
+import Api from './Api'
 import windowStateKeeper from 'electron-window-state'
-// const windowStateKeeper = require('electron-window-state')
+import unhandled from 'electron-unhandled'
+
+import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
+
+const { registerApiHandler } = Api
+unhandled({
+  reportButton: error => {
+    openNewGitHubIssue({
+      user: 'TankNee',
+      repo: 'Neeto-Vue',
+      body: `\`\`\`\n${error.stack}\n\`\`\`\n\n---\n\n${debugInfo()}`
+    })
+  },
+  showDialog: true
+})
+
 try {
   if (
     process.platform === 'win32' &&
@@ -20,7 +36,7 @@ if (process.env.PROD) {
   global.__statics = __dirname
 }
 
-let mainWindow
+let mainWindow, forceQuit
 const isMac = process.platform === 'darwin'
 
 function createWindow () {
@@ -57,6 +73,16 @@ function createWindow () {
 
   mainWindow.loadURL(process.env.APP_URL)
 
+  // mainWindow.on('closed', () => {
+  //   mainWindow = null
+  // })
+  mainWindow.on('close', (event) => {
+    if (!forceQuit) {
+      event.preventDefault() // This will cancel the close
+      mainWindow.hide()
+    }
+  })
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -65,6 +91,10 @@ function createWindow () {
     event.preventDefault()
     shell.openExternal(linkUrl)
   })
+  registerApiHandler()
+  if (isMac) {
+    enforceMacOSAppLocation()
+  }
 }
 
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')
@@ -75,6 +105,10 @@ app.on('window-all-closed', () => {
   if (!isMac) {
     app.quit()
   }
+})
+
+app.on('before-quit', () => {
+  forceQuit = true
 })
 
 app.on('activate', () => {

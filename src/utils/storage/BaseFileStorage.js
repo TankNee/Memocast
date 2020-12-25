@@ -1,37 +1,12 @@
-import Store from 'electron-store'
 import debugLogger from 'src/utils/debugLogger'
 import i18n from 'boot/i18n'
 import _ from 'lodash'
 import helper from 'src/utils/helper'
 
-class FileStorage {
+class BaseFileStorage {
   constructor () {
     // init electron store
-    this._store = new Store({
-      name: 'RenderThreadFileStorage',
-      encryptionKey: 'render.thread.file.storage'
-    })
-  }
-
-  // Chrome LocalStorage
-  saveToLocalStorage (key, value) {
-    localStorage.setItem(key, JSON.stringify(value))
-  }
-
-  getValueFromLocalStorage (key) {
-    return JSON.parse(localStorage.getItem(key))
-  }
-
-  isKeyExistsInLocalStorage (key) {
-    return !!this.getValueFromLocalStorage(key)
-  }
-
-  removeItemFromLocalStorage (key) {
-    return localStorage.removeItem(key)
-  }
-
-  clearUpLocalStorage () {
-    return localStorage.clear()
+    this._store = {}
   }
 
   // Electron Store
@@ -87,5 +62,46 @@ class FileStorage {
   removeItemFromStore (key) {
     return this._store.delete(key)
   }
+
+  clearStore () {
+    return this._store.clear()
+  }
+
+  get size () {
+    return this._store.size
+  }
+
+  /**
+   * 获取缓存在本地的笔记数据
+   * @param info 笔记信息
+   * @param cacheKey 缓存key
+   */
+  getCachedNote (info, cacheKey) {
+    const { dataModified } = info
+    const note = this.getItemFromStore(cacheKey)
+    if (helper.isNullOrEmpty(note) || helper.isNullOrEmpty(note.info)) {
+      return null
+    }
+    if (note.info.dataModified === dataModified) {
+      note.info = info
+      this.setCachedNote(note, cacheKey, note.cachedDate)
+      const now = new Date().getTime()
+      // 没有资源文件的时候直接返回缓存，如果有资源文件但是缓存时间小于五分钟的也可以使用缓存
+      if ((note.resources && note.resources.length === 0) || (note.cachedDate && now - note.cachedDate < 5 * 60 * 1000)) {
+        return note
+      }
+    } else this.removeItemFromStore(cacheKey)
+    return null
+  }
+
+  /**
+   * 设置笔记缓存
+   * @param note
+   * @param cacheKey
+   * @param cachedDate
+   */
+  setCachedNote (note, cacheKey, cachedDate) {
+    this.setItemInStore(cacheKey, { ...note, cachedDate: cachedDate || new Date().getTime() })
+  }
 }
-export default new FileStorage()
+export default BaseFileStorage

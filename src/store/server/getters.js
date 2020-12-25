@@ -1,7 +1,7 @@
 import api from 'src/utils/api'
 import _ from 'lodash'
 import helper from 'src/utils/helper'
-import fileStorage from 'src/utils/fileStorage'
+import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 export default {
   avatarUrl: ({ userGuid }) => {
     return userGuid ? `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${userGuid}` : null
@@ -10,7 +10,8 @@ export default {
     let img = ''
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
-        img = docGuid ? `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/${url}` : url
+        img = url.url
+        // img = docGuid ? `${api.KnowledgeBaseApi.getBaseUrl()}/ks/note/view/${kbGuid}/${docGuid}/${url.url}` : url
         break
       case 'smmsImageUploadService':
       case 'customWebUploadService':
@@ -49,10 +50,21 @@ export default {
     } else {
       result = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
     }
-    return result
+    return helper.isNullOrEmpty(result) ? `# ${currentNote.info.title}` : result
+  },
+  currentNoteResources: ({ currentNote }) => {
+    const { resources } = currentNote
+    return resources
+  },
+  currentNoteResourceUrl: ({ currentNote }) => {
+    const { info: { docGuid, kbGuid } } = currentNote
+    return `${api.KnowledgeBaseApi.getBaseUrl()}/${kbGuid}/${docGuid}`
   },
   categories: ({ categories }) => {
     return helper.generateCategoryNodeTree(categories)
+  },
+  tags: ({ tags }) => {
+    return helper.generateTagNodeTree(tags)
   },
   activeNote: ({ currentNote }) => ({ docGuid }) => {
     return currentNote.info && currentNote.info.docGuid === docGuid
@@ -63,6 +75,11 @@ export default {
     return `${api.KnowledgeBaseApi.getBaseUrl()}/ks/resource/upload/${kbGuid}/${docGuid}`
   },
   wizNoteToken: () => {
-    return fileStorage.getValueFromLocalStorage('token')
+    return ServerFileStorage.getValueFromLocalStorage('token')
+  },
+  tagsOfCurrentNote: ({ currentNote, tags }) => {
+    if (helper.isNullOrEmpty(currentNote.info?.tags)) return []
+    const tagGuids = currentNote.info.tags.split('*')
+    return tags.filter(t => tagGuids.includes(t.tagGuid))
   }
 }
