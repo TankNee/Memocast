@@ -8,5 +8,8 @@ export default {
   logoutHint: 'Do you want to log out right now ?',
   cancel: 'Cancel',
   switchView: 'Switch View',
-  changed: 'Changed'
+  changed: 'Changed',
+  lock: 'Lock',
+  unlock: 'Unlock',
+  tag: 'Tag'
 }

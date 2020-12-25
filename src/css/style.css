@@ -84,6 +84,10 @@ body.body--dark {
 .note-list-dark {
   background-color: #2d2d2d;
 }
+.note-list,
+.note-list-dark {
+  font-weight: bold;
+}
 /*Note List CSS*/
 .note-card,
 .note-card-dark {
@@ -143,6 +147,7 @@ body.body--dark {
 .base-dialog {
   width: 500px !important;
   max-width: 50vw;
+  font-weight: bold;
 }
 .neeto-icon {
   color: #000000;
@@ -165,4 +170,9 @@ span[data-type='a']:not(.vditor-ir__node--expand)::after {
   right: 3px;
   bottom: 0;
   cursor: pointer;
+}
+
+.tag-tooltip {
+  max-width: 500px;
+  word-break: normal;
 }

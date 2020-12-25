@@ -101,7 +101,7 @@ export default {
       category: ''
     })
     this.dispatch('server/getAllCategories')
-
+    this.dispatch('server/getAllTags')
     return result
   },
   /**
@@ -189,10 +189,17 @@ export default {
    * @param category
    * @returns {Promise<void>}
    */
-  async updateCurrentCategory ({ commit }, category) {
-    await this.dispatch('server/getCategoryNotes', { category })
-    commit(types.UPDATE_CURRENT_CATEGORY, category)
-    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['currentCategory', category])
+  async updateCurrentCategory ({ commit }, payload) {
+    const { type, data } = payload
+    if (type === 'category') {
+      await this.dispatch('server/getCategoryNotes', { category: data })
+    } else if (type === 'tag') {
+      await this.dispatch('server/getTagNotes', { tag: data })
+    } else {
+      await this.dispatch('server/getCategoryNotes', { category: '' })
+    }
+    commit(types.UPDATE_CURRENT_CATEGORY, data)
+    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['currentCategory', data])
   },
   /**
    * 更新笔记信息，例如笔记title等
@@ -484,12 +491,123 @@ export default {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
   },
   updateContentsList ({ commit }, editorRootElement) {
-    const list = helper.updateContentsList(editorRootElement)
+    const list = helper.updateContentsList(editorRootElement) || []
     commit(types.UPDATE_CONTENTS_LIST, list)
   },
   updateNoteState ({ commit }, noteState) {
     commit(types.UPDATE_NOTE_STATE, noteState)
   },
+  async getTagNotes ({ commit, state }, payload) {
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    const { kbGuid } = state
+    const { tag, start, count } = payload
+    const result = await api.KnowledgeBaseApi.getTagNotes({
+      kbGuid,
+      data: {
+        tag,
+        withAbstract: true,
+        start: start || 0,
+        count: count || 100,
+        orderBy: 'modified'
+      }
+    })
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+    commit(types.UPDATE_CURRENT_NOTES, result)
+  },
+  async getAllTags ({ commit, state }) {
+    const { kbGuid } = state
+    const tags = await api.KnowledgeBaseApi.getAllTags({ kbGuid })
+    commit(types.UPDATE_ALL_TAGS, tags)
+  },
+  /**
+   * 创建一个标签，但没有指定哪篇笔记拥有这个标签
+   * @param state
+   * @param parentTag
+   * @param name
+   * @returns {Promise<void>}
+   */
+  async createTag ({ state }, { parentTag = {}, name }) {
+    const { kbGuid } = state
+    const { tagGuid: parentTagGuid } = parentTag
+    return await api.KnowledgeBaseApi.createTag({
+      kbGuid,
+      data: {
+        parentTagGuid,
+        name
+      }
+    })
+  },
+  /**
+   * 将指定的标签添加到当前笔记上
+   * @param state
+   * @param commit
+   * @param tagGuid
+   * @returns {Promise<void>}
+   */
+  async attachTag ({ state, commit }, { tagGuid }) {
+    const {
+      currentNote: { info }
+    } = state
+    const newTagList = info.tags?.split('*') || []
+    newTagList.push(tagGuid)
+    commit(types.UPDATE_CURRENT_NOTE_TAGS, newTagList.join('*'))
+    this.dispatch('server/updateNoteInfo', {
+      ...state.currentNote.info,
+      tags: newTagList.join('*')
+    })
+    this.dispatch('server/getAllTags')
+  },
+  async renameTag ({ state }, tag) {
+    const { kbGuid } = state
+    const { tagGuid, name } = tag
+    await api.KnowledgeBaseApi.renameTag({ kbGuid, data: { tagGuid, name } })
+    this.dispatch('server/getAllTags')
+  },
+  async moveTag ({ state }, { tag, parentTag = {} }) {
+    const { kbGuid } = state
+    const { tagGuid } = tag
+    const { tagGuid: parentTagGuid } = parentTag
+    await api.KnowledgeBaseApi.moveTag({
+      kbGuid,
+      data: { tagGuid, parentTagGuid }
+    })
+    this.dispatch('server/getAllTags')
+  },
+  /**
+   * 移除某篇笔记上的tag标记，不会删除这个tag
+   * @returns {Promise<void>}
+   */
+  async removeTag ({ state, commit }, { tagGuid }) {
+    const {
+      currentNote: { info }
+    } = state
+    const newTagList =
+      info.tags?.split('*').filter(t => t !== tagGuid) || []
+    commit(types.UPDATE_CURRENT_NOTE_TAGS, newTagList.join('*'))
+    this.dispatch('server/updateNoteInfo', {
+      ...state.currentNote.info,
+      tags: newTagList.join('*')
+    })
+    this.dispatch('server/getAllTags')
+  },
+  /**
+   * 将一个tag永久删除
+   * @param state
+   * @param tag
+   * @returns {Promise<void>}
+   */
+  async deleteTag ({ state }, tag) {
+    const { kbGuid } = state
+    const { tagGuid } = tag
+    await api.KnowledgeBaseApi.deleteTag({ kbGuid, tagGuid })
+    this.dispatch('server/getAllTags')
+  },
+  /**
+   * 导出markdown文件到本地
+   * @param state
+   * @param noteField
+   * @returns {Promise<void>}
+   */
   async exportMarkdownFile ({ state }, noteField) {
     const { kbGuid } = state
     const { docGuid } = noteField
@@ -514,6 +632,12 @@ export default {
       icon: 'check'
     })
   },
+  /**
+   * 批量导出markdown笔记到本地
+   * @param state
+   * @param noteFields
+   * @returns {Promise<void>}
+   */
   async exportMarkdownFiles ({ state }, noteFields = []) {
     const { kbGuid } = state
     const results = []

@@ -7,9 +7,20 @@
     <div
       v-if="$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
+      style="cursor: pointer"
+      @click="$refs.tagDialog.toggle"
     >
       <q-icon key="icon" name="book" size="19px" />
-      <span key="title">{{ title }}</span>
+      <q-tooltip
+        v-if="tags.length > 0"
+        :offset="[20, 10]"
+        content-class="shadow-4 text-h7 tag-tooltip"
+      >
+        <q-chip v-for="(tag, index) in tags" :key="index" icon="bookmark">{{
+          tag
+        }}</q-chip>
+      </q-tooltip>
+      <span key="title" slot="reference">{{ title }}</span>
     </div>
     <q-space v-if="$q.platform.is.mac" />
     <q-avatar
@@ -19,7 +30,10 @@
       @click.stop="
         () => {
           if (isLogin) {
-            $refs.categoryDrawer.toggle()
+            if (drawerType !== 'category') {
+              drawerType = 'category'
+              $refs.sideDrawer.show()
+            } else $refs.sideDrawer.toggle()
           }
         }
       "
@@ -27,8 +41,30 @@
       <q-icon name="account_tree" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4  text-h7"
+        content-class="bg-accent text-white shadow-4 text-h7"
         >{{ $t('noteCategory') }}
+      </q-tooltip>
+    </q-avatar>
+    <q-avatar
+      size="36px"
+      class="cursor-pointer q-electron-drag--exception "
+      v-ripple
+      @click.stop="
+        () => {
+          if (isLogin) {
+            if (drawerType !== 'tag') {
+              drawerType = 'tag'
+              $refs.sideDrawer.show()
+            } else $refs.sideDrawer.toggle()
+          }
+        }
+      "
+    >
+      <q-icon name="local_offer" color="#16A2B8" />
+      <q-tooltip
+        :offset="[20, 10]"
+        content-class="bg-amber-6 text-white shadow-4  text-h7"
+        >{{ $t('tag') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -44,8 +80,8 @@
       <q-icon :name="enableVditor ? 'lock_open' : 'lock'" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4  text-h7"
-        >{{ enableVditor ? $t('lock') : $t('unLock') }}
+        content-class="bg-amber-9 text-white shadow-4  text-h7"
+        >{{ enableVditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -54,13 +90,7 @@
       @click="loginHandler"
       v-ripple
     >
-      <img
-        :src="
-          avatarUrl
-            ? avatarUrl
-            : 'https://i.loli.net/2020/09/25/n3IphqrHxAJemSu.png'
-        "
-      />
+      <img :src="avatarUrl ? avatarUrl : defaultAvatar" />
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-green-7 text-white shadow-4 text-h7"
@@ -105,8 +135,19 @@
     <div
       v-if="!$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
+      style="cursor: pointer"
+      @click="$refs.tagDialog.toggle"
     >
       <q-icon key="icon" name="book" size="19px" />
+      <q-tooltip
+        v-if="tags.length > 0"
+        :offset="[20, 10]"
+        content-class="shadow-4 text-h7 tag-tooltip"
+      >
+        <q-chip v-for="(tag, index) in tags" :key="index" icon="bookmark">{{
+          tag
+        }}</q-chip>
+      </q-tooltip>
       <span key="title">{{ title }}</span>
     </div>
     <q-space v-if="!$q.platform.is.mac" />
@@ -141,17 +182,19 @@
     </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
-    <CategoryDrawer ref="categoryDrawer" />
+    <TagDialog ref="tagDialog" />
+    <SideDrawer ref="sideDrawer" :type="drawerType" />
   </q-bar>
 </template>
 
 <script>
 import LoginDialog from './ui/dialog/LoginDialog'
-
 import SettingsDialog from './ui/dialog/SettingsDialog'
-import CategoryDrawer from './ui/CategoryDrawer'
+import SideDrawer from './ui/SideDrawer'
 import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
+import defaultAvatarBase64 from 'src/assets/default-avatar'
+import TagDialog from 'components/ui/dialog/TagDialog'
 const {
   mapState: mapServerState,
   mapGetters: mapServerGetters,
@@ -165,7 +208,7 @@ export default {
   name: 'Header',
   computed: {
     ...mapServerState(['user', 'isLogin', 'currentNote', 'noteState']),
-    ...mapServerGetters(['avatarUrl']),
+    ...mapServerGetters(['avatarUrl', 'tagsOfCurrentNote']),
     ...mapClientState([
       'shrinkInTray',
       'autoLogin',
@@ -175,6 +218,10 @@ export default {
     darkMode: function () {
       return this.$q.dark.isActive
     },
+    defaultAvatar: function () {
+      return defaultAvatarBase64
+    },
+
     title: function () {
       if (this.currentNote.info) {
         let { title } = this.currentNote.info
@@ -192,12 +239,23 @@ export default {
     },
     dataLoaded: function () {
       return this.currentNote && !helper.isNullOrEmpty(this.currentNote.html)
+    },
+    popperOptions: function () {
+      return {
+        placement: 'bottom',
+        modifiers: { offset: { offset: '0,10px' } },
+        gpuAcceleration: true
+      }
+    },
+    tags: function () {
+      return this.tagsOfCurrentNote.map(t => t.name)
     }
   },
-  components: { CategoryDrawer, SettingsDialog, LoginDialog },
+  components: { TagDialog, SideDrawer, SettingsDialog, LoginDialog },
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      drawerType: 'category'
     }
   },
   methods: {

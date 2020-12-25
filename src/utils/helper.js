@@ -184,6 +184,27 @@ function generateCategoryNodeTree (categories) {
 }
 
 /**
+ * @param {{}[]} tags
+ */
+function generateTagNodeTree (tags = []) {
+  if (!tags.length) return
+
+  let result = []
+  const rootTags = tags.filter(t => isNullOrEmpty(t.parentTagGuid)).sort((tagA, tagB) => tagA.pos - tagB.pos)
+  result = result.concat(rootTags.map(t => ({ label: t.name, children: [], selectable: true, key: t.tagGuid })))
+  // const leafTags = tags.filter(t => !isNullOrEmpty(t.parentTagGuid)) || []
+  const seekLeafTags = (rootTag) => {
+    tags.filter(t => t.parentTagGuid === rootTag.key).forEach(t => {
+      rootTag.children.push({ label: t.name, children: [], selectable: true, key: t.tagGuid })
+    })
+    rootTag.children.forEach(t => {
+      seekLeafTags(t)
+    })
+  }
+  result.forEach(t => seekLeafTags(t))
+  return result
+}
+/**
  * 获取文件的拓展名
  * @param filePath 文件路径
  */
@@ -310,11 +331,22 @@ function findNodeByNodeLabel (nodeList, label) {
   }
   return null
 }
+
+/**
+ * @param {{}[]} targetArray
+ */
+function generateRandomResult (targetArray) {
+  const rnd = Math.floor(Math.random() * targetArray.length)
+  return targetArray[rnd]
+}
+
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
   extractMarkdownFromMDNote,
   generateCategoryNodeTree,
+  generateTagNodeTree,
+  generateRandomResult,
   removeMarkdownTag,
   embedMDNote,
   displayDateElegantly,

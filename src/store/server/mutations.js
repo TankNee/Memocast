@@ -81,12 +81,22 @@ export default {
   },
   [types.CLEAR_CURRENT_NOTE] (state) {
     state.currentNote = {}
+    return state
   },
   [types.UPDATE_CONTENTS_LIST] (state, list) {
     state.contentsList = list
+    return state
   },
   [types.UPDATE_NOTE_STATE] (state, noteState) {
     state.noteState = noteState
+    return state
+  },
+  [types.UPDATE_ALL_TAGS] (state, tags) {
+    state.tags = tags
+    return state
+  },
+  [types.UPDATE_CURRENT_NOTE_TAGS] (state, tags) {
+    state.currentNote.info.tags = tags
     return state
   }
 }

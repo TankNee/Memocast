@@ -29,7 +29,7 @@
         v-ripple
         v-if="isLogin"
       >
-        <span>{{category}}</span>
+        <span>{{ category }}</span>
       </q-card>
       <q-fab
         :color="$q.dark.isActive ? 'warning' : 'primary'"
@@ -53,21 +53,38 @@
             >{{ $t('deleteCategory') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action v-if="showDeleteCategoryFab" :color="$q.dark.isActive ? 'warning' : 'primary'" icon="import_export" @click="handleExportCategory">
+        <q-fab-action
+          v-if="showDeleteCategoryFab"
+          :color="$q.dark.isActive ? 'warning' : 'primary'"
+          icon="import_export"
+          @click="handleExportCategory"
+        >
           <q-tooltip
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            :content-class="`bg-${$q.dark.isActive ? 'warning' : 'primary'} text-white shadow-4  text-h7`"
-          >{{ $t('export') }}</q-tooltip
+            :content-class="
+              `bg-${
+                $q.dark.isActive ? 'warning' : 'primary'
+              } text-white shadow-4  text-h7`
+            "
+            >{{ $t('export') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action :color="$q.dark.isActive ? 'warning' : 'primary'" icon="note_add" @click="handleAddNote">
+        <q-fab-action
+          :color="$q.dark.isActive ? 'warning' : 'primary'"
+          icon="note_add"
+          @click="handleAddNote"
+        >
           <q-tooltip
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            :content-class="`bg-${$q.dark.isActive ? 'warning' : 'primary'} text-white shadow-4  text-h7`"
+            :content-class="
+              `bg-${
+                $q.dark.isActive ? 'warning' : 'primary'
+              } text-white shadow-4  text-h7`
+            "
             >{{ $t('createNote') }}</q-tooltip
           >
         </q-fab-action>
@@ -80,7 +97,11 @@
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            :content-class="`bg-${$q.dark.isActive ? 'warning' : 'primary'} text-white shadow-4  text-h7`"
+            :content-class="
+              `bg-${
+                $q.dark.isActive ? 'warning' : 'primary'
+              } text-white shadow-4  text-h7`
+            "
             >{{ $t('createCategory') }}</q-tooltip
           >
         </q-fab-action>
@@ -118,15 +139,22 @@ export default {
     },
     category: function () {
       if (helper.isNullOrEmpty(this.currentCategory)) return ''
-      try {
-        const categoryList = this.currentCategory.split('/')
-        return categoryList[categoryList.length - 2]
-      } catch (e) {
-        return ''
+      const tagIndex = this.tags.findIndex(
+        t => t.tagGuid === this.currentCategory
+      )
+      if (tagIndex !== -1) {
+        return this.tags[tagIndex].name
+      } else {
+        try {
+          const categoryList = this.currentCategory.split('/')
+          return categoryList[categoryList.length - 2]
+        } catch (e) {
+          return ''
+        }
       }
     },
     ...mapGetters(['activeNote', 'currentNotes']),
-    ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin'])
+    ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags'])
   },
   methods: {
     handleAddNote: function () {
@@ -178,14 +206,20 @@ export default {
       this.exportMarkdownFiles(this.currentNotes)
     },
     handleRefreshNoteList: async function (done) {
-      await this.getCategoryNotes({ category: this.currentCategory })
+      const tagIndex = this.tags.findIndex(
+        t => t.tagGuid === this.currentCategory
+      )
+      await this.updateCurrentCategory({
+        type: tagIndex === -1 ? 'category' : 'tag',
+        data: this.currentCategory
+      })
       done()
     },
     ...mapActions([
       'createNote',
       'createCategory',
       'deleteCategory',
-      'getCategoryNotes',
+      'updateCurrentCategory',
       'exportMarkdownFiles'
     ])
   }
@@ -196,10 +230,10 @@ export default {
 .note-list-bottom {
   max-height: 4.5vh;
   padding: 4px !important;
-  color: #9B9B9B;
+  color: #9b9b9b;
   user-select: none;
   font-size: 13px;
   font-weight: bold;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, 黑体;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, 黑体;
 }
 </style>

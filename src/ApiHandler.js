@@ -19,7 +19,25 @@ async function exportMarkdownFile (note) {
 async function exportMarkdownFiles (notes) {
   return await ipcRenderer.invoke(channels.exportMarkdownFiles, notes)
 }
+
+/**
+ * import images
+ * @returns {Promise<string[]>}
+ */
+async function importImages () {
+  return await ipcRenderer.invoke(channels.importImages)
+}
+
+/**
+ * @param {string[]} imagePaths
+ * @returns {Promise<any>}
+ */
+async function uploadImages (imagePaths) {
+  return await ipcRenderer.invoke(channels.uploadImages, imagePaths)
+}
 export {
   exportMarkdownFile,
-  exportMarkdownFiles
+  exportMarkdownFiles,
+  importImages,
+  uploadImages
 }

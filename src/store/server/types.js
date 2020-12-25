@@ -12,5 +12,7 @@ export default {
   UPDATE_CURRENT_NOTES_LOADING_STATE: 'update_current_notes_loading_state',
   CLEAR_CURRENT_NOTE: 'clear_current_note',
   UPDATE_CONTENTS_LIST: 'update_contents_list',
-  UPDATE_NOTE_STATE: 'update_note_state'
+  UPDATE_NOTE_STATE: 'update_note_state',
+  UPDATE_ALL_TAGS: 'update_all_tags',
+  UPDATE_CURRENT_NOTE_TAGS: 'update_current_note_tags'
 }

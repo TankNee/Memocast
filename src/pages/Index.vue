@@ -13,7 +13,7 @@
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut"
         >
-          <NoteList v-if="noteListVisible" />
+          <NoteList v-show="noteListVisible" />
         </transition>
       </template>
       <template v-slot:after>
@@ -25,6 +25,7 @@
             class="exclude-header overflow-hidden"
           >
             <Vditor />
+            <VditorContextMenu />
           </q-scroll-area>
           <transition-group
             appear
@@ -61,6 +62,7 @@
               key="save"
             />
           </transition-group>
+
         </div>
         <NoteOutlineDrawer ref="outlineDrawer" :change="outlineDrawerChangeHandler" />
         <Loading :visible="isCurrentNoteLoading" />
@@ -78,6 +80,7 @@ import helper from 'src/utils/helper'
 import { createNamespacedHelpers } from 'vuex'
 import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
+import VditorContextMenu from 'components/ui/menu/VditorContextMenu'
 const {
   mapGetters: mapServerGetters,
   mapState: mapServerState
@@ -86,7 +89,7 @@ const { mapState: mapClientState } = createNamespacedHelpers('client')
 // import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
-  components: { Loading, NoteOutlineDrawer, Vditor, NoteList },
+  components: { VditorContextMenu, Loading, NoteOutlineDrawer, Vditor, NoteList },
   computed: {
     thumbStyle () {
       return {

@@ -1,6 +1,8 @@
 // import channels from 'app/share/channels'
 // import i18n from 'boot/i18n'
 
+const { uploadImages } = require('./3rd-part/PicGoUtils')
+
 const { ipcMain, app, dialog } = require('electron')
 const sanitize = require('sanitize-filename')
 
@@ -35,7 +37,9 @@ async function handleApi (channel, api) {
 
 export default {
   registerApiHandler () {
-    console.log('Registering')
+    /**
+     *  export single note
+     */
     handleApi('export-markdown-file', (event, content) => {
       return dialog.showSaveDialog({
         title: 'Export',
@@ -50,8 +54,10 @@ export default {
         if (result.canceled) return
         fs.writeFile(result.filePath, content).catch(err => throw err)
       }).catch(err => throw err)
-    })
-
+    }).catch(err => throw err)
+    /**
+     * batch export notes
+     */
     handleApi('export-markdown-files', (event, contents) => {
       return dialog.showOpenDialog({
         title: 'Export',
@@ -63,12 +69,31 @@ export default {
         buttonLabel: 'Confirm'
       }).then((result) => {
         if (result.canceled) return
-        const promises = contents.map(({ content, title }) => {
+        const promises = contents.map(({
+          content,
+          title
+        }) => {
           title = sanitize(title)
           return fs.writeFile(`${result.filePaths[0]}/${title}.md`, content).catch(err => throw err)
         })
         Promise.all(promises).catch(err => throw err)
       }).catch(err => throw err)
+    }).catch(err => throw err)
+    /**
+     * batch import images
+     */
+    handleApi('import-images', async (event) => {
+      const result = await dialog.showOpenDialog({
+        title: 'Import Images',
+        defaultPath: app.getPath('pictures'),
+        properties: ['multiSelections', 'openFile']
+      })
+      if (result.canceled) return
+      return result.filePaths
+    })
+    handleApi('upload-images', async (event, imagePaths) => {
+      const uploadResult = await uploadImages(imagePaths)
+      return uploadResult
     })
   }
 }
