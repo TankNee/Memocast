@@ -111,6 +111,12 @@ pikaur -S neeto-vue-bin
 <details>
 <summary>Version change log</summary>
 
+## 2020 12 22 Update 1.0.0
+
+1. Realize the label system
+2. Right click to upload pictures, which depends on picgo
+3. Optimize a lot of details
+
 ## 2020 12 22 Update 0.0.23
 
 1. To achieve a simpler image upload method: right click in the editor and select the image to upload.
