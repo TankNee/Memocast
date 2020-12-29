@@ -32,12 +32,12 @@
         <span>{{ category }}</span>
       </q-card>
       <q-fab
-        :color="$q.dark.isActive ? 'warning' : 'primary'"
+        :color="color"
         icon="build"
         direction="up"
         padding="11px"
         class="absolute-bottom-right fab-btn"
-        v-if="isLogin"
+        v-if="isLogin && !isTagCategory"
       >
         <q-fab-action
           color="red-7"
@@ -55,7 +55,7 @@
         </q-fab-action>
         <q-fab-action
           v-if="showDeleteCategoryFab"
-          :color="$q.dark.isActive ? 'warning' : 'primary'"
+          :color="color"
           icon="import_export"
           @click="handleExportCategory"
         >
@@ -63,33 +63,21 @@
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            :content-class="
-              `bg-${
-                $q.dark.isActive ? 'warning' : 'primary'
-              } text-white shadow-4  text-h7`
-            "
+            :content-class="`bg-${color} text-white shadow-4  text-h7`"
             >{{ $t('export') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action
-          :color="$q.dark.isActive ? 'warning' : 'primary'"
-          icon="note_add"
-          @click="handleAddNote"
-        >
+        <q-fab-action :color="color" icon="note_add" @click="handleAddNote">
           <q-tooltip
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            :content-class="
-              `bg-${
-                $q.dark.isActive ? 'warning' : 'primary'
-              } text-white shadow-4  text-h7`
-            "
+            :content-class="`bg-${color} text-white shadow-4  text-h7`"
             >{{ $t('createNote') }}</q-tooltip
           >
         </q-fab-action>
         <q-fab-action
-          :color="$q.dark.isActive ? 'warning' : 'primary'"
+          :color="color"
           icon="create_new_folder"
           @click="handleAddCategory"
         >
@@ -97,11 +85,7 @@
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
-            :content-class="
-              `bg-${
-                $q.dark.isActive ? 'warning' : 'primary'
-              } text-white shadow-4  text-h7`
-            "
+            :content-class="`bg-${color} text-white shadow-4  text-h7`"
             >{{ $t('createCategory') }}</q-tooltip
           >
         </q-fab-action>
@@ -152,6 +136,12 @@ export default {
           return ''
         }
       }
+    },
+    color: function () {
+      return this.$q.dark.isActive ? 'warning' : 'primary'
+    },
+    isTagCategory: function () {
+      return this.tags.map(t => t.tagGuid).includes(this.currentCategory)
     },
     ...mapGetters(['activeNote', 'currentNotes']),
     ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags'])
