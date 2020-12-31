@@ -96,12 +96,10 @@ export default {
     }
 
     commit(types.LOGIN, { ...result, isLogin: true })
-
-    this.dispatch('server/getCategoryNotes', {
-      category: ''
-    })
+    await this.dispatch('server/getAllTags')
     this.dispatch('server/getAllCategories')
-    this.dispatch('server/getAllTags')
+    this.dispatch('server/getCategoryNotes')
+
     return result
   },
   /**
@@ -139,9 +137,14 @@ export default {
    * @returns {Promise<void>}
    */
   async getCategoryNotes ({ commit, state }, payload = {}) {
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
-    const { kbGuid, currentCategory } = state
+    const { kbGuid, currentCategory, tags } = state
     const { category, start, count } = payload
+    const isTagCategory = tags.map(t => t.tagGuid).includes(helper.isNullOrEmpty(category) ? currentCategory : category)
+    if (isTagCategory) {
+      this.dispatch('server/getTagNotes', { tag: currentCategory })
+      return
+    }
+    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const result = await api.KnowledgeBaseApi.getCategoryNotes({
       kbGuid,
       data: {

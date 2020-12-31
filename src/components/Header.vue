@@ -134,8 +134,8 @@
     <q-space v-if="!$q.platform.is.mac" />
     <div
       v-if="!$q.platform.is.mac && dataLoaded"
-      class="header-note-title animated fadeIn"
-      style="cursor: pointer"
+      class="header-note-title animated fadeIn q-electron-drag--exception"
+      style="cursor: pointer;margin-left: 0;"
       @click="$refs.tagDialog.toggle"
     >
       <q-icon key="icon" name="book" size="19px" />
