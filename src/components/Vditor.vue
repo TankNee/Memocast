@@ -101,6 +101,8 @@ export default {
         input: (value) => {
           if (value !== that.currentNote) {
             that.updateNoteState('changed')
+          } else {
+            that.updateNoteState('default')
           }
           that.updateContentsList(that.contentEditor.vditor.ir.element)
         }

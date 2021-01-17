@@ -1461,7 +1461,7 @@
 }
 .vditor-ir__link {
   color: var(--ir-bracket-color);
-  text-decoration: underline;
+  text-decoration: none;
 }
 .vditor-ir pre.vditor-reset {
   background-color: var(--panel-background-color);

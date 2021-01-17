@@ -3,8 +3,13 @@ import wizMarkdownParser from '@altairwei/wiz-markdown'
 import { i18n } from 'boot/i18n'
 import { Platform } from 'quasar'
 import TurndownService from 'turndown'
+import VditorPreview from 'vditor/dist/method.min'
 import cheerio from 'cheerio'
-const turndownService = new TurndownService({ codeBlockStyle: 'fenced', headingStyle: 'atx' })
+
+const turndownService = new TurndownService({
+  codeBlockStyle: 'fenced',
+  headingStyle: 'atx'
+})
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
   return _.isNull(obj) || _.isEmpty(obj)
@@ -44,7 +49,10 @@ function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
  */
 function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
   resources.forEach(resource => {
-    html = html.replace(new RegExp(`index_files/${resource.name}`, 'g'), resource.url)
+    html = html.replace(
+      new RegExp(`index_files/${resource.name}`, 'g'),
+      resource.url
+    )
   })
   return wizMarkdownParser.extract(html, {
     convertImgTag: true,
@@ -76,7 +84,7 @@ function embedMDNote (markdown, resources, options) {
  */
 function removeMarkdownTag (markdown) {
   markdown = markdown || ''
-  const patterns = [/#/g, /!?\[.*\]\(.*\)/g, />/g, /\\+/g, /\\-/g]
+  const patterns = [/#/g, /!?\[.*]\(.*\)/g, />/g, /\\+/g, /\\-/g]
   patterns.forEach(pattern => (markdown = markdown.replace(pattern, '')))
   return markdown
 }
@@ -149,7 +157,9 @@ function generateCategoryNodeTree (categories) {
   let _categories = []
   rootCategories.forEach(rc => {
     _categories.push(rc)
-    const children = leafCategories.filter(lc => lc[0] === rc[0]).sort((a, b) => a.length - b.length)
+    const children = leafCategories
+      .filter(lc => lc[0] === rc[0])
+      .sort((a, b) => a.length - b.length)
     _categories = _categories.concat(children)
   })
   categories = _categories
@@ -190,13 +200,29 @@ function generateTagNodeTree (tags = []) {
   if (!tags.length) return
 
   let result = []
-  const rootTags = tags.filter(t => isNullOrEmpty(t.parentTagGuid)).sort((tagA, tagB) => tagA.pos - tagB.pos)
-  result = result.concat(rootTags.map(t => ({ label: t.name, children: [], selectable: true, key: t.tagGuid })))
+  const rootTags = tags
+    .filter(t => isNullOrEmpty(t.parentTagGuid))
+    .sort((tagA, tagB) => tagA.pos - tagB.pos)
+  result = result.concat(
+    rootTags.map(t => ({
+      label: t.name,
+      children: [],
+      selectable: true,
+      key: t.tagGuid
+    }))
+  )
   // const leafTags = tags.filter(t => !isNullOrEmpty(t.parentTagGuid)) || []
-  const seekLeafTags = (rootTag) => {
-    tags.filter(t => t.parentTagGuid === rootTag.key).forEach(t => {
-      rootTag.children.push({ label: t.name, children: [], selectable: true, key: t.tagGuid })
-    })
+  const seekLeafTags = rootTag => {
+    tags
+      .filter(t => t.parentTagGuid === rootTag.key)
+      .forEach(t => {
+        rootTag.children.push({
+          label: t.name,
+          children: [],
+          selectable: true,
+          key: t.tagGuid
+        })
+      })
     rootTag.children.forEach(t => {
       seekLeafTags(t)
     })
@@ -210,9 +236,7 @@ function generateTagNodeTree (tags = []) {
  */
 function getFileNameWithExt (filePath) {
   const index = filePath.lastIndexOf('/')
-  const fileName = filePath.substr(index + 1)
-
-  return fileName
+  return filePath.substr(index + 1)
 }
 
 /**
@@ -222,15 +246,9 @@ function getFileNameWithExt (filePath) {
  */
 function isCtrl (event) {
   if (Platform.is.mac) {
-    if (event.metaKey && !event.ctrlKey) {
-      return true
-    }
-    return false
+    return event.metaKey && !event.ctrlKey
   }
-  if (!event.metaKey && event.ctrlKey) {
-    return true
-  }
-  return false
+  return !event.metaKey && event.ctrlKey
 }
 function filterParentElement (dom, root, filterFn, self = false) {
   if (dom) {
@@ -252,7 +270,7 @@ function filterParentElement (dom, root, filterFn, self = false) {
  * 更新笔记目录数据结构
  * @param {HTMLElement} editorRootElement
  */
-function updateContentsList (editorRootElement) {
+async function updateContentsList (editorRootElement) {
   const list = []
   for (let i = 0; i < editorRootElement.childElementCount; i++) {
     const tagName = editorRootElement.children[i].tagName.toLowerCase()
@@ -260,6 +278,10 @@ function updateContentsList (editorRootElement) {
     if (/^h[1-6]$/.test(tagName)) {
       // 解出标签的等级，h1到h6
       const rank = parseInt(tagName[1], 10)
+      let innerText = editorRootElement.children[i].innerText
+      const titleHTML = await VditorPreview.md2html(innerText)
+      innerText = cheerio.load(titleHTML).text()
+
       if (list.length) {
         let target = list
         for (let j = 1; j < rank; j++) {
@@ -273,7 +295,7 @@ function updateContentsList (editorRootElement) {
         }
         target.push({
           key: `${i}-${rank}`,
-          label: editorRootElement.children[i].innerText.replace(/^#+\s/, ''),
+          label: innerText,
           element: editorRootElement.children[i],
           selectable: true,
           rank: rank
@@ -286,10 +308,7 @@ function updateContentsList (editorRootElement) {
           if (j === rank - 1) {
             // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
             item.key = `${i}-${j}`
-            item.label = editorRootElement.children[i].innerText.replace(
-              /^#+\s/,
-              ''
-            )
+            item.label = innerText
             item.selectable = true
             item.rank = rank
             item.element = editorRootElement.children[i]
