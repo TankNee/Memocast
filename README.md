@@ -111,6 +111,11 @@ pikaur -S neeto-vue-bin
 <details>
 <summary>Version change log</summary>
 
+## 2021 01 17 Update 1.0.2
+
+1. Remove the underline of links
+2. Extract source plain text from note content instead of using the origin markdown text
+
 ## 2020 12 22 Update 1.0.0
 
 1. Realize the label system
