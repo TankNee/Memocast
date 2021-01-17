@@ -493,8 +493,8 @@ export default {
     commit(types.UPDATE_CURRENT_NOTES, result)
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
   },
-  updateContentsList ({ commit }, editorRootElement) {
-    const list = helper.updateContentsList(editorRootElement) || []
+  async updateContentsList ({ commit }, editorRootElement) {
+    const list = await helper.updateContentsList(editorRootElement) || []
     commit(types.UPDATE_CONTENTS_LIST, list)
   },
   updateNoteState ({ commit }, noteState) {

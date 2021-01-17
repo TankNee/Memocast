@@ -110,6 +110,11 @@ pikaur -S neeto-vue-bin
 <details>
 <summary>版本变更记录</summary>
 
+## 2021 01 17 Update 1.0.2
+
+1. 去除超链接的下划线
+2. 文章目录识别时自动提取标题的内容而不是使用Markdown原文本
+
 ## 2020 12 22 Update 1.0.0
 
 1. 实现标签系统
