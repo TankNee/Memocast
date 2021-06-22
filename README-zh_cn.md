@@ -1,15 +1,17 @@
-<h1 align="center">Neeto Vue</h1>
+<div align="center">
+  <h1>Neeto Vue</h1>
 
-<div  align="center"><img align="center" src="./src-electron/icons/192.png" style="zoom: 33%;" /></div>
+  <img src="./src-electron/icons/192.png" style="zoom: 33%;"  alt="logo"/>
 
-<h3 align="center">又一个设计优良的为知笔记客户端</h3>
+  <h3>又一个设计优良的为知笔记客户端</h3>
 
-<h3 align="center"><a href="./README.md" target="_self">English</a> | 简体中文</h3>
+  <h3><a href="./README.md" target="_self">English</a> | 简体中文</h3>
 
+  ### 状态
 
-### 状态
+  ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_shield)
+</div>
 
 ### 介绍
 
@@ -94,6 +96,7 @@ pikaur -S neeto-vue-bin
 
 <details>
 <summary>版本变更记录</summary>
+
 ## 2021 06 22 Update 1.0.3
 
 1. 修复 #72，#73

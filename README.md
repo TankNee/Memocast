@@ -1,15 +1,17 @@
-<h1 align="center">Neeto Vue</h1>
+<div align="center">
+  <h1>Neeto Vue</h1>
 
-<div  align="center"><img align="center" src="./src-electron/icons/192.png" style="zoom: 33%;" /></div>
+  <img src="./src-electron/icons/192.png" style="zoom: 33%;"  alt="logo"/>
 
-<h3 align="center">An Awesome Wiz Note Client</h3>
+  <h3>An Awesome Wiz Note Client</h3>
 
-<h3 align="center">English | <a href="./README-zh_cn.md" target="_self">简体中文</a></h3>
+  <h3>English | <a href="./README-zh_cn.md" target="_self">简体中文</a></h3>
 
-### Status
+  ### Status
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_shield)
+  ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
+
+</div>
 
 ### Introduction
 
@@ -54,7 +56,7 @@ yay -S neeto-vue-bin
 pikaur -S neeto-vue-bin
 ```
 
-### Feature and Keymap
+### Feature
 
 - More Beautiful
 
@@ -72,7 +74,7 @@ pikaur -S neeto-vue-bin
 
 - International, support English and Chinese(Simplified)
 
-- Keymap: [vditor keymap](#Feature and Keymap)
+- Keymap: [vditor keymap](#Change Log and Keymap)
 
 - Support to send note to flomo app
 
@@ -90,7 +92,7 @@ pikaur -S neeto-vue-bin
   - `customHeader`: custom request http headers,using standard JSON schema(eg: `{"key":"value"}`)
   - `customBody`: custom request body, using standard JSON schema(eg: `{"key":"value"}`)
 
-### Change Log
+### Change Log and Keymap
 
 <details>
 <summary>Version change log</summary>
