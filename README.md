@@ -1,8 +1,8 @@
 <h1 align="center">Neeto Vue</h1>
 
-<img align="center" src="./src-electron/icons/linux-512x512.png" style="zoom: 33%;" />
+<div  align="center"><img align="center" src="./src-electron/icons/192.png" style="zoom: 33%;" /></div>
 
-<p align="center">An Awesome Wiz Note Client</p>
+<h3 align="center">An Awesome Wiz Note Client</h3>
 
 <h3 align="center">English | <a href="./README-zh_cn.md" target="_self">简体中文</a></h3>
 

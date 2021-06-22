@@ -1,8 +1,8 @@
 <h1 align="center">Neeto Vue</h1>
 
-<img align="center" src="./src-electron/icons/linux-512x512.png" style="zoom: 33%;" />
+<div  align="center"><img align="center" src="./src-electron/icons/192.png" style="zoom: 33%;" /></div>
 
-<p align="center">又一个设计优良的为知笔记客户端</p>
+<h3 align="center">又一个设计优良的为知笔记客户端</h3>
 
 <h3 align="center"><a href="./README.md" target="_self">English</a> | 简体中文</h3>
 
