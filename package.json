@@ -36,7 +36,7 @@
     "quasar": "^1.0.0",
     "sanitize-filename": "^1.6.3",
     "turndown": "^6.0.0",
-    "vditor": "^3.7.3",
+    "vditor": "^3.8.5",
     "vue-i18n": "^8.0.0"
   },
   "devDependencies": {

@@ -127,7 +127,15 @@ export default {
      *  Upload Images
      */
     handleApi('upload-images', async (event, imagePaths) => {
-      const uploadResult = await uploadImages(imagePaths)
+      const uploadResult = await uploadImages(imagePaths).catch(err => {
+        if (err.errno === 'ECONNREFUSED') {
+          sendNotification({
+            msg: 'PicGo Upload Server Not Found!',
+            type: 'negative',
+            icon: 'delete'
+          }).catch(err => throw err)
+        }
+      })
       return uploadResult
     }).catch(err => throw err)
   }

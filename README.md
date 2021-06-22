@@ -261,9 +261,9 @@ pikaur -S neeto-vue-bin
 | Move Caret to Previous Cell | Shift Tab / ⇧ Tab Backspace |
 | Move Caret to Next Cell     | Tab                         |
 
-
 </details>
 
 ### License
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)
+
