@@ -45,7 +45,10 @@ export default {
    * @param commit
    * @param state
    */
-  async initServerStore ({ commit, state }) {
+  async initServerStore ({
+    commit,
+    state
+  }) {
     const localStore = ClientFileStorage.getItemsFromStore(state)
     commit(types.INIT, localStore)
     ServerFileStorage.removeItemFromLocalStorage('token')
@@ -61,10 +64,17 @@ export default {
       'url'
     ])
     if (autoLogin) {
-      await this.dispatch('server/login', { userId, password, url })
+      await this.dispatch('server/login', {
+        userId,
+        password,
+        url
+      })
     }
   },
-  async getContent (payload, { kbGuid, docGuid }) {
+  async getContent (payload, {
+    kbGuid,
+    docGuid
+  }) {
     return await _getContent(kbGuid, docGuid)
   },
   /**
@@ -74,19 +84,32 @@ export default {
    * @param payload
    * @returns {Promise<*>}
    */
-  async login ({ commit, rootState }, payload) {
+  async login ({
+    commit,
+    rootState
+  }, payload) {
     const { url } = payload
     api.AccountServerApi.setBaseUrl(url)
-    const { userId, password } = payload
+    const {
+      userId,
+      password
+    } = payload
     const result = await api.AccountServerApi.Login(payload)
 
     if (rootState.client.rememberPassword) {
-      ClientFileStorage.setItemsInStore({ userId, password, url })
+      ClientFileStorage.setItemsInStore({
+        userId,
+        password,
+        url
+      })
     } else {
       if (ClientFileStorage.isKeyExistInStore('password')) {
         ClientFileStorage.removeItemFromStore('password')
       }
-      ClientFileStorage.setItemsInStore({ userId, url })
+      ClientFileStorage.setItemsInStore({
+        userId,
+        url
+      })
     }
     if (
       !rootState.client.enableSelfHostServer &&
@@ -95,7 +118,10 @@ export default {
       ClientFileStorage.removeItemFromStore('url')
     }
 
-    commit(types.LOGIN, { ...result, isLogin: true })
+    commit(types.LOGIN, {
+      ...result,
+      isLogin: true
+    })
     await this.dispatch('server/getAllTags')
     this.dispatch('server/getAllCategories')
     this.dispatch('server/getCategoryNotes')
@@ -136,9 +162,20 @@ export default {
    * @param payload
    * @returns {Promise<void>}
    */
-  async getCategoryNotes ({ commit, state }, payload = {}) {
-    const { kbGuid, currentCategory, tags } = state
-    const { category, start, count } = payload
+  async getCategoryNotes ({
+    commit,
+    state
+  }, payload = {}) {
+    const {
+      kbGuid,
+      currentCategory,
+      tags
+    } = state
+    const {
+      category,
+      start,
+      count
+    } = payload
     const isTagCategory = tags.map(t => t.tagGuid).includes(helper.isNullOrEmpty(category) ? currentCategory : category)
     if (isTagCategory) {
       this.dispatch('server/getTagNotes', { tag: currentCategory })
@@ -163,7 +200,10 @@ export default {
    * @param state
    * @returns {Promise<void>}
    */
-  async getAllCategories ({ commit, state }) {
+  async getAllCategories ({
+    commit,
+    state
+  }) {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
     const result = await api.KnowledgeBaseApi.getCategories({ kbGuid })
@@ -177,7 +217,10 @@ export default {
    * @param payload
    * @returns {Promise<void>}
    */
-  async getNoteContent ({ commit, state }, payload) {
+  async getNoteContent ({
+    commit,
+    state
+  }, payload) {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
     const { kbGuid } = state
     const { docGuid } = payload
@@ -193,7 +236,12 @@ export default {
    * @returns {Promise<void>}
    */
   async updateCurrentCategory ({ commit }, payload) {
-    const { type, data } = payload
+    const {
+      type,
+      data
+    } = payload
+    commit(types.UPDATE_CURRENT_CATEGORY, data)
+    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['currentCategory', data])
     if (type === 'category') {
       await this.dispatch('server/getCategoryNotes', { category: data })
     } else if (type === 'tag') {
@@ -201,8 +249,6 @@ export default {
     } else {
       await this.dispatch('server/getCategoryNotes', { category: '' })
     }
-    commit(types.UPDATE_CURRENT_CATEGORY, data)
-    commit(types.SAVE_TO_LOCAL_STORE_SYNC, ['currentCategory', data])
   },
   /**
    * 更新笔记信息，例如笔记title等
@@ -211,8 +257,14 @@ export default {
    * @param payload
    * @returns {Promise<void>}
    */
-  async updateNoteInfo ({ commit, state }, payload) {
-    const { docGuid, kbGuid } = payload
+  async updateNoteInfo ({
+    commit,
+    state
+  }, payload) {
+    const {
+      docGuid,
+      kbGuid
+    } = payload
     await api.KnowledgeBaseApi.updateNoteInfo({
       kbGuid,
       docGuid,
@@ -227,8 +279,15 @@ export default {
    * @param markdown
    * @returns {Promise<void>}
    */
-  async updateNote ({ commit, state }, markdown) {
-    const { kbGuid, docGuid, category } = state.currentNote.info
+  async updateNote ({
+    commit,
+    state
+  }, markdown) {
+    const {
+      kbGuid,
+      docGuid,
+      category
+    } = state.currentNote.info
     let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
@@ -252,7 +311,10 @@ export default {
       })
 
       ClientFileStorage.setCachedNote(
-        { info: result, html },
+        {
+          info: result,
+          html
+        },
         api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid),
         null
       )
@@ -290,8 +352,15 @@ export default {
    * @param title
    * @returns {Promise<void>}
    */
-  async createNote ({ commit, state, rootState }, title) {
-    const { kbGuid, currentCategory = '' } = state
+  async createNote ({
+    commit,
+    state,
+    rootState
+  }, title) {
+    const {
+      kbGuid,
+      currentCategory = ''
+    } = state
     const userId = ClientFileStorage.getItemFromStore('userId')
     const isLite = currentCategory.replace(/\//g, '') === 'Lite'
     const result = await api.KnowledgeBaseApi.createNote({
@@ -318,9 +387,18 @@ export default {
    * @param payload
    * @returns {Promise<void>}
    */
-  async deleteNote ({ commit, state }, payload) {
-    const { kbGuid, docGuid } = payload
-    await api.KnowledgeBaseApi.deleteNote({ kbGuid, docGuid })
+  async deleteNote ({
+    commit,
+    state
+  }, payload) {
+    const {
+      kbGuid,
+      docGuid
+    } = payload
+    await api.KnowledgeBaseApi.deleteNote({
+      kbGuid,
+      docGuid
+    })
     const { currentNote } = state
     if (currentNote && currentNote.info.docGuid === docGuid) {
       commit(types.CLEAR_CURRENT_NOTE)
@@ -339,8 +417,14 @@ export default {
    * @param childCategoryName
    * @returns {Promise<void>}
    */
-  async createCategory ({ commit, state }, childCategoryName) {
-    const { kbGuid, currentCategory } = state
+  async createCategory ({
+    commit,
+    state
+  }, childCategoryName) {
+    const {
+      kbGuid,
+      currentCategory
+    } = state
     await api.KnowledgeBaseApi.createCategory({
       kbGuid,
       data: {
@@ -351,24 +435,42 @@ export default {
     })
     await this.dispatch('server/getAllCategories')
     await this.dispatch(
-      'server/updateCurrentCategory',
-      helper.isNullOrEmpty(currentCategory)
-        ? `/${childCategoryName}/`
-        : `${currentCategory}${childCategoryName}/`
+      'server/updateCurrentCategory', {
+        data:
+          helper
+            .isNullOrEmpty(currentCategory)
+            ? `/${childCategoryName}/`
+            : `${currentCategory}${childCategoryName}/`,
+        type: 'category'
+      }
     )
   },
-  async deleteCategory ({ commit, state }, category) {
+  async deleteCategory ({
+    commit,
+    state
+  }, category) {
     const { kbGuid } = state
-    await api.KnowledgeBaseApi.deleteCategory({ kbGuid, data: { category } })
+    await api.KnowledgeBaseApi.deleteCategory({
+      kbGuid,
+      data: { category }
+    })
     await this.dispatch('server/getAllCategories')
-    await this.dispatch('server/updateCurrentCategory', '')
+    await this.dispatch('server/updateCurrentCategory', {
+      type: 'category',
+      data: ''
+    })
     Notify.create({
       color: 'red-10',
       message: i18n.t('deleteCategorySuccessfully'),
       icon: 'delete'
     })
   },
-  async uploadImage ({ commit, getters, state, rootState }, file) {
+  async uploadImage ({
+    commit,
+    getters,
+    state,
+    rootState
+  }, file) {
     // TODO: 实现图片上传
     const token = getters.wizNoteToken
     const {
@@ -438,17 +540,34 @@ export default {
     }
   },
   async moveNote ({ commit }, noteInfo) {
-    const { kbGuid, docGuid, category, type } = noteInfo
+    const {
+      kbGuid,
+      docGuid,
+      category,
+      type
+    } = noteInfo
     const isLite = category === '/Lite/' ? 'lite/markdown' : type
     await api.KnowledgeBaseApi.updateNoteInfo({
       kbGuid,
       docGuid,
-      data: { ...noteInfo, type: isLite ? 'lite/markdown' : type }
+      data: {
+        ...noteInfo,
+        type: isLite ? 'lite/markdown' : type
+      }
     })
     await this.dispatch('server/getCategoryNotes')
   },
-  async copyNote ({ commit, state }, noteInfo) {
-    const { kbGuid, docGuid, category, title, type } = noteInfo
+  async copyNote ({
+    commit,
+    state
+  }, noteInfo) {
+    const {
+      kbGuid,
+      docGuid,
+      category,
+      title,
+      type
+    } = noteInfo
     const { currentCategory } = state
     const userId = ClientFileStorage.getItemFromStore('userId')
 
@@ -469,8 +588,8 @@ export default {
         kbGuid,
         title: isCurrentCategory
           ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${
-              title.indexOf('.md') !== -1 ? '.md' : ''
-            }`
+            title.indexOf('.md') !== -1 ? '.md' : ''
+          }`
           : title,
         owner: userId,
         html,
@@ -481,7 +600,10 @@ export default {
       await this.dispatch('server/getCategoryNotes')
     }
   },
-  async searchNote ({ commit, state }, searchText) {
+  async searchNote ({
+    commit,
+    state
+  }, searchText) {
     const { kbGuid } = state
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const result = await api.KnowledgeBaseApi.searchNote({
@@ -500,10 +622,17 @@ export default {
   updateNoteState ({ commit }, noteState) {
     commit(types.UPDATE_NOTE_STATE, noteState)
   },
-  async getTagNotes ({ commit, state }, payload) {
+  async getTagNotes ({
+    commit,
+    state
+  }, payload) {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
-    const { tag, start, count } = payload
+    const {
+      tag,
+      start,
+      count
+    } = payload
     const result = await api.KnowledgeBaseApi.getTagNotes({
       kbGuid,
       data: {
@@ -517,7 +646,10 @@ export default {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
-  async getAllTags ({ commit, state }) {
+  async getAllTags ({
+    commit,
+    state
+  }) {
     const { kbGuid } = state
     const tags = await api.KnowledgeBaseApi.getAllTags({ kbGuid })
     commit(types.UPDATE_ALL_TAGS, tags)
@@ -529,7 +661,10 @@ export default {
    * @param name
    * @returns {Promise<void>}
    */
-  async createTag ({ state }, { parentTag = {}, name }) {
+  async createTag ({ state }, {
+    parentTag = {},
+    name
+  }) {
     const { kbGuid } = state
     const { tagGuid: parentTagGuid } = parentTag
     return await api.KnowledgeBaseApi.createTag({
@@ -547,7 +682,10 @@ export default {
    * @param tagGuid
    * @returns {Promise<void>}
    */
-  async attachTag ({ state, commit }, { tagGuid }) {
+  async attachTag ({
+    state,
+    commit
+  }, { tagGuid }) {
     const {
       currentNote: { info }
     } = state
@@ -562,17 +700,32 @@ export default {
   },
   async renameTag ({ state }, tag) {
     const { kbGuid } = state
-    const { tagGuid, name } = tag
-    await api.KnowledgeBaseApi.renameTag({ kbGuid, data: { tagGuid, name } })
+    const {
+      tagGuid,
+      name
+    } = tag
+    await api.KnowledgeBaseApi.renameTag({
+      kbGuid,
+      data: {
+        tagGuid,
+        name
+      }
+    })
     this.dispatch('server/getAllTags')
   },
-  async moveTag ({ state }, { tag, parentTag = {} }) {
+  async moveTag ({ state }, {
+    tag,
+    parentTag = {}
+  }) {
     const { kbGuid } = state
     const { tagGuid } = tag
     const { tagGuid: parentTagGuid } = parentTag
     await api.KnowledgeBaseApi.moveTag({
       kbGuid,
-      data: { tagGuid, parentTagGuid }
+      data: {
+        tagGuid,
+        parentTagGuid
+      }
     })
     this.dispatch('server/getAllTags')
   },
@@ -580,7 +733,10 @@ export default {
    * 移除某篇笔记上的tag标记，不会删除这个tag
    * @returns {Promise<void>}
    */
-  async removeTag ({ state, commit }, { tagGuid }) {
+  async removeTag ({
+    state,
+    commit
+  }, { tagGuid }) {
     const {
       currentNote: { info }
     } = state
@@ -602,7 +758,10 @@ export default {
   async deleteTag ({ state }, tag) {
     const { kbGuid } = state
     const { tagGuid } = tag
-    await api.KnowledgeBaseApi.deleteTag({ kbGuid, tagGuid })
+    await api.KnowledgeBaseApi.deleteTag({
+      kbGuid,
+      tagGuid
+    })
     this.dispatch('server/getAllTags')
   },
   /**
@@ -616,7 +775,10 @@ export default {
     const { docGuid } = noteField
     const result = await _getContent(kbGuid, docGuid)
     const isHtml = !_.endsWith(result.info.title, '.md')
-    const { html, resources } = result
+    const {
+      html,
+      resources
+    } = result
     let content
     if (isHtml) {
       content = helper.convertHtml2Markdown(html, kbGuid, docGuid, resources)
@@ -628,13 +790,7 @@ export default {
         resources
       )
     }
-    const exportResult = await exportMarkdownFile(content)
-    console.log(exportResult)
-    // Notify.create({
-    //   color: 'primary',
-    //   message: i18n.t('exportNoteSuccessfully'),
-    //   icon: 'check'
-    // })
+    await exportMarkdownFile(content)
   },
   /**
    * 批量导出markdown笔记到本地
@@ -678,12 +834,6 @@ export default {
       }
     })
     Loading.hide()
-    const exportResult = await exportMarkdownFiles(contents)
-    console.log(exportResult)
-    // Notify.create({
-    //   color: 'primary',
-    //   message: i18n.t('exportNoteSuccessfully'),
-    //   icon: 'check'
-    // })
+    await exportMarkdownFiles(contents)
   }
 }
