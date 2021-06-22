@@ -9,7 +9,7 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
-import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiHandler'
+import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiInvoker'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -628,12 +628,13 @@ export default {
         resources
       )
     }
-    await exportMarkdownFile(content)
-    Notify.create({
-      color: 'primary',
-      message: i18n.t('exportNoteSuccessfully'),
-      icon: 'check'
-    })
+    const exportResult = await exportMarkdownFile(content)
+    console.log(exportResult)
+    // Notify.create({
+    //   color: 'primary',
+    //   message: i18n.t('exportNoteSuccessfully'),
+    //   icon: 'check'
+    // })
   },
   /**
    * 批量导出markdown笔记到本地
@@ -677,11 +678,12 @@ export default {
       }
     })
     Loading.hide()
-    await exportMarkdownFiles(contents)
-    Notify.create({
-      color: 'primary',
-      message: i18n.t('exportNoteSuccessfully'),
-      icon: 'check'
-    })
+    const exportResult = await exportMarkdownFiles(contents)
+    console.log(exportResult)
+    // Notify.create({
+    //   color: 'primary',
+    //   message: i18n.t('exportNoteSuccessfully'),
+    //   icon: 'check'
+    // })
   }
 }

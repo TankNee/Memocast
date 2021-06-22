@@ -64,7 +64,7 @@ export default {
       } else if (this.type === 'tag') {
         return this.tags
       }
-      return {}
+      return []
     },
 
     ...mapServerGetters(['categories', 'tags']),

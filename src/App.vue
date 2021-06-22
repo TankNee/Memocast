@@ -6,10 +6,12 @@
 <script>
 import ErrorHandler from './ErrorHandler'
 import ScheduleHandler from './ScheduleHandler'
+import ApiHandler from 'src/ApiHandler'
 import { createNamespacedHelpers } from 'vuex'
 
 const { RegisterErrorHandler } = ErrorHandler
 const { RegisterScheduleJobs } = ScheduleHandler
+const { RegisterApiHandler } = ApiHandler
 
 const { mapActions: mapClientActions } = createNamespacedHelpers('client')
 const { mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
@@ -18,6 +20,7 @@ export default {
   async mounted () {
     RegisterErrorHandler()
     RegisterScheduleJobs(this)
+    RegisterApiHandler()
     await this.initClientStore()
     await this.initServerStore()
   },

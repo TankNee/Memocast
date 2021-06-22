@@ -11,6 +11,9 @@ class BaseFileStorage {
 
   // Electron Store
   setItemInStore (key, value) {
+    if (!value || helper.isNullOrEmpty(value)) {
+      return this._store.delete(key)
+    }
     return this._store.set(key, value)
   }
 
@@ -90,7 +93,9 @@ class BaseFileStorage {
       if ((note.resources && note.resources.length === 0) || (note.cachedDate && now - note.cachedDate < 5 * 60 * 1000)) {
         return note
       }
-    } else this.removeItemFromStore(cacheKey)
+    } else {
+      this.removeItemFromStore(cacheKey)
+    }
     return null
   }
 
@@ -101,7 +106,11 @@ class BaseFileStorage {
    * @param cachedDate
    */
   setCachedNote (note, cacheKey, cachedDate) {
-    this.setItemInStore(cacheKey, { ...note, cachedDate: cachedDate || new Date().getTime() })
+    this.setItemInStore(cacheKey, {
+      ...note,
+      cachedDate: cachedDate || new Date().getTime()
+    })
   }
 }
+
 export default BaseFileStorage

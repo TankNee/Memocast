@@ -1,9 +1,15 @@
 // import channels from 'app/share/channels'
 // import i18n from 'boot/i18n'
 
+import { sendNotification } from './api-invoker'
+
 const { uploadImages } = require('./3rd-part/PicGoUtils')
 
-const { ipcMain, app, dialog } = require('electron')
+const {
+  ipcMain,
+  app,
+  dialog
+} = require('electron')
 const sanitize = require('sanitize-filename')
 
 const fs = require('fs-extra')
@@ -52,7 +58,20 @@ export default {
         ]
       }).then((result) => {
         if (result.canceled) return
-        fs.writeFile(result.filePath, content).catch(err => throw err)
+        fs.writeFile(result.filePath, content).then(() => {
+          sendNotification({
+            msg: 'Export Successfully',
+            type: 'positive',
+            icon: 'check'
+          }).catch(err => throw err)
+        })
+          .catch(err => {
+            sendNotification({
+              msg: err.msg,
+              type: 'negative',
+              icon: 'delete'
+            }).catch(err => throw err)
+          })
       }).catch(err => throw err)
     }).catch(err => throw err)
     /**
@@ -76,7 +95,20 @@ export default {
           title = sanitize(title)
           return fs.writeFile(`${result.filePaths[0]}/${title}.md`, content).catch(err => throw err)
         })
-        Promise.all(promises).catch(err => throw err)
+        return Promise.all(promises).then(() => {
+          sendNotification({
+            msg: 'Export Successfully',
+            type: 'positive',
+            icon: 'check'
+          }).catch(err => throw err)
+        })
+          .catch(err => {
+            sendNotification({
+              msg: err.msg,
+              type: 'negative',
+              icon: 'delete'
+            }).catch(err => throw err)
+          })
       }).catch(err => throw err)
     }).catch(err => throw err)
     /**
@@ -90,10 +122,13 @@ export default {
       })
       if (result.canceled) return
       return result.filePaths
-    })
+    }).catch(err => throw err)
+    /**
+     *  Upload Images
+     */
     handleApi('upload-images', async (event, imagePaths) => {
       const uploadResult = await uploadImages(imagePaths)
       return uploadResult
-    })
+    }).catch(err => throw err)
   }
 }

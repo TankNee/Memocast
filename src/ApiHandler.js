@@ -1,43 +1,48 @@
-import channels from 'app/share/channels'
-
-const { ipcRenderer } = require('electron')
+import { ipcRenderer } from 'electron'
+import { Notify } from 'quasar'
 
 /**
- * 导出markdown文件到本地
- * @param note 笔记对象
+ * 在本地注册对应的事件句柄，用于解决对应的事件
+ * @param {string} channel 频道名称
+ * @param {Function} api 操作函数
  * @returns {Promise<void>}
  */
-async function exportMarkdownFile (note) {
-  return await ipcRenderer.invoke(channels.exportMarkdownFile, note)
+async function handleApi (channel, api) {
+  ipcRenderer.setMaxListeners(200000)
+  ipcRenderer.on(channel, async (event, ...args) => {
+    try {
+      return await api(event, ...args)
+    } catch (err) {
+      console.error(err)
+      return {
+        error: {
+          code: err.code,
+          message: err.message,
+          externCode: err.externCode,
+          sourceStack: err.stack,
+          isNetworkError: err.isAxiosError,
+          networkStatus: err.response?.status
+        }
+      }
+    }
+  })
 }
 
-/**
- * 批量导出markdown文件
- * @param notes 笔记列表
- * @returns {Promise<any>}
- */
-async function exportMarkdownFiles (notes) {
-  return await ipcRenderer.invoke(channels.exportMarkdownFiles, notes)
-}
+export default {
+  RegisterApiHandler () {
+    console.log('[API Handler] Render Process registers handler successfully!')
 
-/**
- * import images
- * @returns {Promise<string[]>}
- */
-async function importImages () {
-  return await ipcRenderer.invoke(channels.importImages)
-}
-
-/**
- * @param {string[]} imagePaths
- * @returns {Promise<any>}
- */
-async function uploadImages (imagePaths) {
-  return await ipcRenderer.invoke(channels.uploadImages, imagePaths)
-}
-export {
-  exportMarkdownFile,
-  exportMarkdownFiles,
-  importImages,
-  uploadImages
+    handleApi('show-notification', (event, payload) => {
+      const { msg, type = 'primary', icon = 'check' } = payload
+      Notify.create({
+        type: type,
+        message: msg,
+        icon: icon
+      })
+    }).catch(err => throw err)
+  },
+  UnregisterApiHandler () {
+    console.log('[API Handler] Render Process unregisters handler successfully!')
+    ipcRenderer.removeAllListeners('show-notification')
+  }
 }
