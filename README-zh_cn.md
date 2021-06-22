@@ -1,4 +1,6 @@
-<h2 align="center">Neeto Vue</h2>
+<h1 align="center">Neeto Vue</h1>
+
+<img align="center" src="./src-electron/icons/linux-512x512.png" style="zoom: 33%;" />
 
 <p align="center">又一个设计优良的为知笔记客户端</p>
 
@@ -92,6 +94,10 @@ pikaur -S neeto-vue-bin
 
 <details>
 <summary>版本变更记录</summary>
+## 2021 06 22 Update 1.0.3
+
+1. 修复 #72，#73
+2. 修复依赖的一些问题
 
 ## 2021 01 17 Update 1.0.2
 
@@ -264,5 +270,8 @@ pikaur -S neeto-vue-bin
 </details>
 
 ### 许可证
+
+Copyright © 2021 [tanknee <nee@tanknee.cn>](https://github.com/TankNee).<br />
+This project is [MIT](https://github.com/TankNee/Neeto-Vue/blob/master/LICENSE) licensed.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)
