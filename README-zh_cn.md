@@ -1,30 +1,15 @@
-<h2 align="center">Neeto Vue</h2>
+<div align="center">
+  <h1>Neeto Vue</h1>
 
-<p align="center">又一个设计优良的为知笔记客户端</p>
+  <img src="./src-electron/icons/192.png" style="zoom: 33%;"  alt="logo"/>
 
-<h3 align="center"><a href="./README.md" target="_self">English</a> | 简体中文</h3>
+  <h3>又一个设计优良的为知笔记客户端</h3>
 
-### 目录
+  <h3><a href="./README.md" target="_self">English</a> | 简体中文</h3>
 
-- [状态](#状态)
+  ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
 
-- [介绍](#介绍)
-
-- [为知社区](#为知社区)
-
-- [软件截图](#软件截图)
-
-- [下载](#下载)
-
-- [特色](#特色)
-
-- [注意事项](#注意事项)
-
-- [更新日志](#更新记录)
-
-### 状态
-
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_shield)
+</div>
 
 ### 介绍
 
@@ -87,7 +72,7 @@ pikaur -S neeto-vue-bin
 
 - 国际化，支持简体中文与英文
 
-- 快捷键: [vditor 快捷键](https://ld246.com/guide/markdown)
+- 快捷键: [vditor 快捷键](#更新记录与快捷键)
 
 - 支持将笔记发送到 Flomo 浮墨
 
@@ -105,10 +90,15 @@ pikaur -S neeto-vue-bin
   - `customHeader`: 自定义请求头 标准 JSON(eg: `{"key":"value"}`)
   - `customBody`: 自定义 Body 标准 JSON(eg: `{"key":"value"}`)
 
-### 更新记录
+### 更新记录与快捷键
 
 <details>
 <summary>版本变更记录</summary>
+
+## 2021 06 22 Update 1.0.3
+
+1. 修复 #72，#73
+2. 修复依赖的一些问题
 
 ## 2021 01 17 Update 1.0.2
 
@@ -182,6 +172,107 @@ pikaur -S neeto-vue-bin
 
 </details>
 
-### License
+<details>
+<summary>快捷键指南</summary>
+
+[Vditor 快捷键](https://ld246.com/article/1582778815353#%E4%B8%AD%E6%96%87)
+
+## 中文
+
+### 通用
+
+| 名称           | 快捷键                | 备注              |
+| -------------- | --------------------- | ----------------- |
+| 表情           | :/⌘ E                 |                   |
+| 标题           | Ctrl H / ⌘ H          | 参见下文          |
+| 粗体           | Ctrl B / ⌘ B          |                   |
+| 斜体           | Ctrl I / ⌘ I          |                   |
+| 删除线         | Ctrl S / ⌘ S          |                   |
+| 链接           | Ctrl K / ⌘ K          | 参见下文          |
+| 无序列表       | Ctrl L / ⌘ L          | 参见下文          |
+| 有序列表       | Ctrl O / ⌘ O          | 参见下文          |
+| 任务列表       | Ctrl J / ⌘ J          | 参见下文          |
+| 引用           | Ctrl ; / ⌘ ;          | 参见下文          |
+| 分割线         | Ctrl Shift H  / ⌘ ⇧ H |                   |
+| 代码块         | Ctrl U / ⌘ U          | 参见下文          |
+| 代码           | Ctrl G / ⌘ G          |                   |
+| 元素前插入空块 | Ctrl Shift B / ⌘ ⇧ B  | wysiwyg & ir 模式 |
+| 元素后插入空块 | Ctrl Shift E / ⌘ ⇧ E  | wysiwyg & ir 模式 |
+| 表格           | Ctrl M / ⌘ M          | 参见下文          |
+| 撤销           | Ctrl Z / ⌘ Z          |                   |
+| 重做           | Ctrl Y / ⌘ Y          |                   |
+| 隐藏编辑器     | Ctrl P / ⌘ P          | sv 模式           |
+| 全屏           | Ctrl ' / ⌘ '          |                   |
+| 向上移动块元素 | Ctrl Shift U / ⌘ ⇧ U  | wysiwyg & ir 模式 |
+| 向下移动块元素 | Ctrl Shift D / ⌘ ⇧ D  | wysiwyg & ir 模式 |
+| 移除当前元素   | Ctrl Shift X / ⌘ ⇧ X  | wysiwyg 模式      |
+| At 用户        | @                     |                   |
+| 错误输入       | Backspace             |                   |
+
+### 标题 Ctrl H / ⌘ H
+
+| 名称     | 快捷键                                 |
+| -------- | -------------------------------------- |
+| 变大     | Ctrl + / ⌘ +                           |
+| 变小     | Ctrl - / ⌘ -                           |
+| H1-H6    | Ctrl Alt 1/2/3/4/5/6 / ⌘ ⌥ 1/2/3/4/5/6 |
+| 弹出菜单 | Ctrl H / ⌘ H                           |
+
+### 链接 Ctrl K / ⌘ K
+
+| 名称                 | 快捷键              |
+| -------------------- | ------------------- |
+| 输入框和元素之间切换 | Alt Enter / ⌥ Enter |
+| 输入框之间切换       | Tab                 |
+
+### 列表 Ctrl L/O/J / ⌘ L/O/J
+
+| 名称               | 快捷键                                       | 备注                                                  |
+| ------------------ | -------------------------------------------- | ----------------------------------------------------- |
+| 缩进               | Tab Ctrl Shift I / ⌘ ⇧ I                     | Tab: 光标需位于开头                                   |
+| 反向缩进           | Shift Tab / ⇧ Tab Ctrl Shift O / ⌘ ⇧ O Enter | Shift Tab / ⇧ Tab: 光标需位于开头 Enter: 需为空列表项 |
+| 完成和待办之间切换 | Ctrl Shift J / ⌘ ⇧ J                         | 任务列表                                              |
+
+### 引用 Ctrl ; / ⌘ ;
+
+| 名称                 | 快捷键                     | 备注                                                       |
+| -------------------- | -------------------------- | ---------------------------------------------------------- |
+| 在顶层引用前插入空块 | Ctrl Alt Enter / ⌘ ⌥ Enter | wysiwyg 模式                                               |
+| 在顶层引用后插入空块 | Alt Enter / ⌥ Enter        | wysiwyg 模式                                               |
+| 插入块元素           | Ctrl Shift : / ⌘ ⇧ :  >    | Ctrl Shift : / ⌘ ⇧ :: 块元素变为引用 >: 内联元素中插入引用 |
+| 引用和块元素之间切换 | Ctrl ; / ⌘ ;               |                                                            |
+
+### 代码块 Ctrl U / ⌘ U
+
+| 名称                   | 快捷键              |
+| ---------------------- | ------------------- |
+| 输入框和代码块之间切换 | Alt Enter / ⌥ Enter |
+| 隐藏编辑界面           | Escape              |
+| 选中所有代码           | Ctrl A / ⌘ A        |
+
+### 表格 Ctrl M / ⌘ M
+
+| 名称                   | 快捷键                      |
+| ---------------------- | --------------------------- |
+| 在上方插入一行         | Ctrl + / ⌘ ⇧ F              |
+| 在下方插入一行         | Ctrl + / ⌘ +                |
+| 删除行                 | Ctrl - / ⌘ -                |
+| 在左边插入一列         | Ctrl Shift + / ⌘ ⇧ G        |
+| 在右边插入一列         | Ctrl Shift + / ⌘ ⇧ +        |
+| 删除列                 | Ctrl Shift - / ⌘ ⇧ -        |
+| 左对齐                 | Ctrl Shift L / ⌘ ⇧ L        |
+| 中对齐                 | Ctrl Shift C / ⌘ ⇧ C        |
+| 右对齐                 | Ctrl Shift R / ⌘ ⇧ R        |
+| 光标移动到输入框中     | Alt Enter / ⌥ Enter         |
+| 输入框之间切换         | Tab                         |
+| 将光标移动到上一个元素 | Shift Tab / ⇧ Tab Backspace |
+| 将光标移动到下一个元素 | Tab                         |
+
+</details>
+
+### 许可证
+
+Copyright © 2021 [tanknee <nee@tanknee.cn>](https://github.com/TankNee).<br />
+This project is [MIT](https://github.com/TankNee/Neeto-Vue/blob/master/LICENSE) licensed.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)

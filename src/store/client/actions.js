@@ -5,7 +5,7 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import _ from 'lodash'
-import { importImages, uploadImages } from 'src/ApiHandler'
+import { importImages, uploadImages } from 'src/ApiInvoker'
 
 export default {
   initClientStore ({ commit, state }) {

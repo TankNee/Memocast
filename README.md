@@ -1,31 +1,15 @@
-<h2 align="center">Neeto Vue</h2>
+<div align="center">
+  <h1>Neeto Vue</h1>
 
-<p align="center">An Awesome Wiz Note Client</p>
+  <img src="./src-electron/icons/192.png" style="zoom: 33%;"  alt="logo"/>
 
-<h3 align="center">English | <a href="./README-zh_cn.md" target="_self">简体中文</a></h3>
+  <h3>An Awesome Wiz Note Client</h3>
 
-### Content
+  <h3>English | <a href="./README-zh_cn.md" target="_self">简体中文</a></h3>
 
-- [Status](#status)
+  ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
 
-- [Installation](#installation)
-
-- [Wiz Community](#wiz-community)
-
-- [ScreenShot](#screenshot)
-
-- [Installation](#installation)
-
-- [Feature](#feature)
-
-- [Attention](#attention)
-
-- [Change Log](#change-log)
-
-### Status
-
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_shield)
+</div>
 
 ### Introduction
 
@@ -88,7 +72,7 @@ pikaur -S neeto-vue-bin
 
 - International, support English and Chinese(Simplified)
 
-- Keymap: [vditor keymap](https://ld246.com/guide/markdown)
+- Keymap: [vditor keymap](#Change Log and Keymap)
 
 - Support to send note to flomo app
 
@@ -106,10 +90,15 @@ pikaur -S neeto-vue-bin
   - `customHeader`: custom request http headers,using standard JSON schema(eg: `{"key":"value"}`)
   - `customBody`: custom request body, using standard JSON schema(eg: `{"key":"value"}`)
 
-### Change Log
+### Change Log and Keymap
 
 <details>
 <summary>Version change log</summary>
+
+## 2021 06 22 Update 1.0.3
+
+1. fix #72，#73
+2. fix some issues of dependencies
 
 ## 2021 01 17 Update 1.0.2
 
@@ -183,6 +172,108 @@ pikaur -S neeto-vue-bin
 
 </details>
 
+<details>
+<summary>Keymap reference </summary>
+
+
+[Origin Site](https://ld246.com/article/1582778815353#English)
+
+## English
+
+### Summary
+
+| Name                   | Keymap                | Remarks           |
+| ---------------------- | --------------------- | ----------------- |
+| Emoji                  | :/⌘ E                 |                   |
+| Headings               | Ctrl H / ⌘ H          | see below         |
+| Bold                   | Ctrl B / ⌘ B          |                   |
+| Italic                 | Ctrl I / ⌘ I          |                   |
+| Strikeout              | Ctrl S / ⌘ S          |                   |
+| Link                   | Ctrl K / ⌘ K          | see below         |
+| Unordered List         | Ctrl L / ⌘ L          | see below         |
+| Ordered List           | Ctrl O / ⌘ O          | see below         |
+| Task List              | Ctrl J / ⌘ J          | see below         |
+| Blockquote             | Ctrl ; / ⌘ ;          | see below         |
+| Horizontal             | Ctrl Shift H  / ⌘ ⇧ H |                   |
+| Code Block             | Ctrl U / ⌘ U          | see below         |
+| Inline Code            | Ctrl G / ⌘ G          |                   |
+| Insert Block to Before | Ctrl Shift B / ⌘ ⇧ B  | wysiwyg & ir mode |
+| Insert Block to End    | Ctrl Shift E / ⌘ ⇧ E  | wysiwyg & ir mode |
+| Table                  | Ctrl M / ⌘ M          | see below         |
+| Undo                   | Ctrl Z / ⌘ Z          |                   |
+| Redo                   | Ctrl Y / ⌘ Y          |                   |
+| Hide Edit              | Ctrl P / ⌘ P          | sv mode           |
+| Fullscreen             | Ctrl ' / ⌘ '          |                   |
+| Move Block to Up       | Ctrl Shift U / ⌘ ⇧ U  | wysiwyg & ir mode |
+| Move Block to Down     | Ctrl Shift D / ⌘ ⇧ D  | wysiwyg & ir mode |
+| Remove                 | Ctrl Shift X / ⌘ ⇧ X  | wysiwyg mode      |
+| At User                | @                     |                   |
+| Mistyped               | Backspace             |                   |
+
+### Headings Ctrl H / ⌘ H
+
+| Name    | Keymap                                 |
+| ------- | -------------------------------------- |
+| Bigger  | Ctrl + / ⌘ +                           |
+| Smaller | Ctrl - / ⌘ -                           |
+| H1-H6   | Ctrl Alt 1/2/3/4/5/6 / ⌘ ⌥ 1/2/3/4/5/6 |
+| Menu    | Ctrl H / ⌘ H                           |
+
+### Link Ctrl K / ⌘ K
+
+| Name                  | Keymap              |
+| --------------------- | ------------------- |
+| Toggle Input and Link | Alt Enter / ⌥ Enter |
+| Toggle Input          | Tab                 |
+
+### List Ctrl L/O/J / ⌘ L/O/J
+
+| Name         | Keymap                                       | Remarks                                               |
+| ------------ | -------------------------------------------- | ----------------------------------------------------- |
+| Indent       | Tab Ctrl Shift I / ⌘ ⇧ I                     | Tab: Caret must be at Zero                            |
+| Unindent     | Shift Tab / ⇧ Tab Ctrl Shift O / ⌘ ⇧ O Enter | Shift Tab / ⇧ Tab: Caret must be at Zero Enter: Empty |
+| Toggle Check | Ctrl Shift J / ⌘ ⇧ J                         | Task List                                             |
+
+### Blockquote Ctrl ; / ⌘ ;
+
+| Name                    | Keymap                     | Remarks                                               |
+| ----------------------- | -------------------------- | ----------------------------------------------------- |
+| Move Caret to Top Start | Ctrl Alt Enter / ⌘ ⌥ Enter | wysiwyg mode                                          |
+| Move Caret to Top End   | Alt Enter / ⌥ Enter        | wysiwyg mode                                          |
+| Insert Blockquote       | Ctrl Shift : / ⌘ ⇧ :  >    | Ctrl Shift : / ⌘ ⇧ :: Block Element >: Inline Element |
+| Toggle Blockquote       | Ctrl ; / ⌘ ;               |                                                       |
+
+### Code Block Ctrl U / ⌘ U
+
+| Name                        | Keymap              |
+| --------------------------- | ------------------- |
+| Toggle Input and Code Block | Alt Enter / ⌥ Enter |
+| Hide Edit                   | Escape              |
+| Select all Code Block       | Ctrl A / ⌘ A        |
+
+### Table Ctrl M / ⌘ M
+
+| Name                        | Keymap                      |
+| --------------------------- | --------------------------- |
+| Insert 1 above              | Ctrl + / ⌘ ⇧ F              |
+| Insert 1 below              | Ctrl + / ⌘ +                |
+| Delete Row                  | Ctrl - / ⌘ -                |
+| Insert 1 left               | Ctrl Shift + / ⌘ ⇧ G        |
+| Insert 1 right              | Ctrl Shift + / ⌘ ⇧ +        |
+| Delete Column               | Ctrl Shift - / ⌘ ⇧ -        |
+| Left Alignment              | Ctrl Shift L / ⌘ ⇧ L        |
+| Center Alignment            | Ctrl Shift C / ⌘ ⇧ C        |
+| Right Alignment             | Ctrl Shift R / ⌘ ⇧ R        |
+| Move Caret to Input         | Alt Enter / ⌥ Enter         |
+| Toggle Input                | Tab                         |
+| Move Caret to Previous Cell | Shift Tab / ⇧ Tab Backspace |
+| Move Caret to Next Cell     | Tab                         |
+
+</details>
+
 ### License
+
+Copyright © 2021 [tanknee <nee@tanknee.cn>](https://github.com/TankNee).<br />
+This project is [MIT](https://github.com/TankNee/Neeto-Vue/blob/master/LICENSE) licensed.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)

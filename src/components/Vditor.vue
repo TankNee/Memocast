@@ -1,8 +1,8 @@
 <template>
-  <div class="flex justify-center">
+  <div class='flex justify-center'>
     <div
-      id="vditor"
-      v-show="!isCurrentNoteLoading && dataLoaded"
+      id='vditor'
+      v-show='!isCurrentNoteLoading && dataLoaded'
       v-close-popup
     ></div>
   </div>
@@ -17,6 +17,7 @@ import helper from '../utils/helper'
 // import VditorContextMenu from './ui/VditorContextMenu'
 import bus from './bus'
 import events from '../constants/events'
+
 const {
   mapGetters: mapServerGetters,
   mapState: mapServerState,
@@ -41,7 +42,7 @@ export default {
   },
   data () {
     return {
-      contentEditor: ''
+      contentEditor: {}
     }
   },
   mounted () {
@@ -52,7 +53,7 @@ export default {
   },
   methods: {
     initVditor: function () {
-      // const cdn = /^https?:\/\//i.test(window.location.origin) ? `${window.location.origin}/libs/vditor` : `${(window.location.origin + window.location.pathname).replace('/index.html', '')}/libs/vditor`
+      // const cdn = /^https?:\/\//i.test(window.location.origin) ? `${window.location.origin}/~assets/vditor-dist` : `${(window.location.origin + window.location.pathname).replace('/index.html', '')}/~assets/vditor-dist`
       // console.log(cdn)
       const that = this
       return new Vditor('vditor', {
@@ -71,14 +72,14 @@ export default {
             style: this.$q.dark.isActive ? this.darkCodeTheme : this.lightCodeTheme
           },
           transform: (html) => {
-            // console.log('transform', html)
+            console.log('transform', html)
             // const imgReg = /(<img\s+([^>]*\s+)?(data-src|src)=")index_files(\/[^"]*")/ig
             // const newHtml = imgReg.exec(html)
             // console.log(newHtml)
             // return newHtml
           }
         },
-        typewriterMode: true,
+        typewriterMode: false,
         upload: {
           max: 5 * 1024 * 1024,
           async handler (files) {
@@ -135,6 +136,10 @@ export default {
       bus.$on(events.SAVE_NOTE, () => {
         this.updateNote(this.contentEditor.getValue())
       })
+      bus.$on(events.INSERT_TEXT, (text) => {
+        console.log(text, this.contentEditor.getHTML())
+        this.contentEditor.insertValue(text)
+      })
     },
     linkClickHandler: function (e) {
       const LinkElement = helper.filterParentElement(
@@ -144,6 +149,7 @@ export default {
         true
       )
       if (LinkElement) {
+        e.preventDefault()
         const afterStyle = window.getComputedStyle(LinkElement, ':after')
         if (
           helper.isCtrl(e) ||
@@ -156,19 +162,22 @@ export default {
           )
           if (urlElement.innerText) {
             try {
-              if (urlElement.innerText.indexOf('http') !== -1) {
-                window.open(urlElement.innerText)
-              } else if (urlElement.innerText.indexOf('#') === 0) {
+              if (urlElement.innerText.indexOf('#') === 0) {
                 const item = helper.findNodeByNodeLabel(
                   this.contentsList,
                   urlElement.innerText.replace('#', '')
                 )
                 bus.$emit(events.SCROLL_TO_HEADER, item)
+              } else {
+                if (!urlElement.innerText.startsWith('http')) {
+                  window.open(`https://${urlElement.innerText}`)
+                } else {
+                  window.open(urlElement.innerText)
+                }
               }
             } catch (err) {
               console.error(err)
             }
-            e.preventDefault()
           }
         }
         return true
