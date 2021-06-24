@@ -7,6 +7,7 @@ class ClientFileStorage extends BaseFileStorage {
     this._store = new Store({
       name: 'ClientFileStorage'
     })
+    console.log(this._store.path)
   }
 }
 export default new ClientFileStorage()

@@ -373,6 +373,30 @@ const ThirdPartApi = {
     return await execRequest('POST', url, { content }, null, null, true, true)
   }
 }
+
+const AnalysisApi = {
+  async uploadNoteInfo (noteInfo) {
+    // TODO
+  },
+  async uploadUserInfo (userInfo) {
+    // TODO
+  },
+  async uploadUserSettings (settings) {
+    // TODO
+  },
+  async uploadNoteContent (noteContent) {
+    // TODO
+  },
+  async uploadCategoryInfo (categoryInfo) {
+    // TODO
+  },
+  async uploadStartTime (startTime) {
+    // TODO
+  },
+  async uploadRunningDuration (duration) {
+    // TODO
+  }
+}
 /**
  * Upload image to image service
  * @param type
@@ -402,5 +426,6 @@ export default {
   AccountServerApi,
   KnowledgeBaseApi,
   ThirdPartApi,
+  AnalysisApi,
   UploadImageApi
 }

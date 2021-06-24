@@ -1,8 +1,8 @@
 {
-  "name": "neeto.vue.electron",
+  "name": "cn.memocast.app",
   "version": "1.0.3",
   "description": "An Awesome WizNote Desktop Application",
-  "productName": "Neeto-Vue",
+  "productName": "Memocast",
   "author": "tanknee <nee@tanknee.cn>",
   "private": false,
   "license": "MIT",

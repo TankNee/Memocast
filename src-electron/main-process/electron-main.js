@@ -50,8 +50,8 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     x: mainWindowState.x,
     y: mainWindowState.y,
-    width: mainWindowState.width,
-    height: mainWindowState.height,
+    width: mainWindowState.width < 600 ? 600 : mainWindowState.width,
+    height: mainWindowState.height < 400 ? 400 : mainWindowState.height,
     useContentSize: true,
     // transparent: true,
     webPreferences: {
