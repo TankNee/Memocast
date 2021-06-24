@@ -19,7 +19,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out branch
-        uses: actions/checkout@rebuild/analysis
+        uses: actions/checkout@v2
+        with:
+          ref: rebuild/analysis
 
       - name: Install Node.js, NPM
         uses: actions/setup-node@v1
@@ -46,7 +48,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out branch
-        uses: actions/checkout@rebuild/analysis
+        uses: actions/checkout@v2
+        with:
+          ref: rebuild/analysis
 
       - name: Install Node.js, NPM
         uses: actions/setup-node@v1
@@ -72,7 +76,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out branch
-        uses: actions/checkout@rebuild/analysis
+        uses: actions/checkout@v2
+        with:
+          ref: rebuild/analysis
 
       - name: Install Node.js, NPM
         uses: actions/setup-node@v1
