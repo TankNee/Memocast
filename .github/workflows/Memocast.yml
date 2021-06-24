@@ -30,16 +30,15 @@ jobs:
         run: |
           npm install
           npm run build-publish
-      - name: Compress Bundle
+      - name: Rename Package
         run: |
-          npm install -g bestzip
-          cd dist/electron
-          bestzip Memocast-win32-x64.zip Packaged/*
+          cd dist/electron/Packaged
+          ren Memocast*.exe Memocast-win.exe
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
           name: Windows_Dist
-          path: dist/electron/Memocast-win32-x64.zip
+          path: dist/electron/Packaged/Memocast-win.dmg
   build-linux:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -57,11 +56,10 @@ jobs:
         run: |
           npm install
           npm run build-publish
-      - name: Compress Bundle
+      - name: Rename Package
         run: |
-          npm install -g bestzip
-          cd dist/electron
-          bestzip Memocast-linux-x64.zip Packaged/*
+          cd dist/electron/Packaged
+          cp Memocast*.AppImage Memocast-linux.AppImage
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
@@ -84,16 +82,15 @@ jobs:
         run: |
           npm install
           npm run build-publish
-      - name: Compress Bundle
+      - name: Rename Package
         run: |
-          npm install -g bestzip
-          cd dist/electron
-          bestzip Memocast-darwin-x64.zip Packaged/*
+          cd dist/electron/Packaged
+          cp Memocast*.dmg Memocast-darwin.dmg
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
-          path: dist/electron/Memocast-darwin-x64.zip
+          path: dist/electron/Packaged/Memocast-darwin.dmg
   release:
     needs: [build-windows, build-linux, build-mac]
     runs-on: ubuntu-latest
