@@ -5,5 +5,7 @@ export default {
   exportAsMarkdownFile: 'Export Markdown File',
   markdownFile: 'Markdown File',
   prepareExportData: 'Preparing Export-Data',
-  exportNoteSuccessfully: 'Export Note Successfully'
+  exportNoteSuccessfully: 'Export Note Successfully',
+  sourceMode: 'Source Mode',
+  previewMode: 'Preview Mode'
 }
