@@ -199,12 +199,11 @@ module.exports = function (/* ctx */) {
         },
         mac: {
           target: [
-            'dmg',
-            'zip'
+            'dmg'
           ],
           electronLanguages: [
             'en-US',
-            'zh_CN'
+            'zh-CN'
           ]
         },
         win: {

@@ -41,8 +41,8 @@ const isMac = process.platform === 'darwin'
 
 function createWindow () {
   const mainWindowState = windowStateKeeper({
-    defaultWidth: 1500,
-    defaultHeight: 1000
+    defaultWidth: 1200,
+    defaultHeight: 800
   })
   /**
    * Initial window options

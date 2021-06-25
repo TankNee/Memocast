@@ -1,188 +1,188 @@
 <template>
-  <q-dialog ref="dialog" persistent>
-    <q-card style="height: 70vh;min-width: 70vw">
+  <q-dialog ref='dialog' persistent>
+    <q-card style='height: 70vh;min-width: 70vw'>
       <q-toolbar>
         <q-avatar>
           <q-icon
-            name="settings"
-            class="text-primary"
-            style="font-size: 1.8em"
+            name='settings'
+            class='text-primary'
+            style='font-size: 1.8em'
           />
         </q-avatar>
         <q-toolbar-title>
-          <span class="text-weight-bold">{{ $t('settings') }}</span>
+          <span class='text-weight-bold'>{{ $t('settings') }}</span>
         </q-toolbar-title>
-        <q-btn flat round dense icon="close" v-close-popup />
+        <q-btn flat round dense icon='close' v-close-popup />
       </q-toolbar>
 
-      <q-card-section class="scroll">
-        <q-splitter v-model="splitterModel" style="height: 55vh">
+      <q-card-section class='scroll hide-scrollbar'>
+        <q-splitter v-model='splitterModel' style='height: 55vh' after-class='hide-scrollbar'>
           <template v-slot:before>
-            <q-tabs v-model="tab" vertical class="text-teal no-border">
+            <q-tabs v-model='tab' vertical class='text-teal no-border'>
               <q-tab
-                name="general"
-                icon="tune"
+                name='general'
+                icon='tune'
                 :label="$t('general')"
-                class="text-primary"
+                class='text-primary'
               />
               <q-tab
-                name="editor"
-                icon="edit_attributes"
+                name='editor'
+                icon='edit_attributes'
                 :label="$t('editor')"
-                class="text-amber-10"
+                class='text-amber-10'
               />
               <q-tab
-                name="server"
-                icon="storage"
+                name='server'
+                icon='storage'
                 :label="$t('server')"
-                class="text-red-7"
+                class='text-red-7'
               />
             </q-tabs>
           </template>
 
-          <template v-slot:after>
-            <q-tab-panels
-              v-model="tab"
-              animated
-              swipeable
-              vertical
-              transition-prev="jump-up"
-              transition-next="jump-up"
-            >
-              <q-tab-panel name="general">
-                <div class="text-h4 q-mb-md">{{ $t('general') }}</div>
-                <q-separator />
-                <div>
-                  <div class="text-h5 q-mb-md setting-item">
-                    {{ $t('language') }}
-                  </div>
-                  <q-select
-                    :value="$t(language)"
-                    :options="languageOptions"
-                    @input="languageChangeHandler"
-                  />
-                </div>
-                <div>
-                  <div class="text-h5 q-mb-md setting-item">
-                    <span>{{ $t('darkMode') }}</span>
-                    <q-toggle
-                      :value="darkMode"
-                      color="black"
-                      @input="v => toggleDarkMode(v)"
-                    />
-                  </div>
-                </div>
-                <q-separator />
-                <div>
-                  <div class="text-h5 q-mb-md setting-item fa-align-center">
-                    <span>{{ $t('currentVersion', { version }) }}</span>
-                    <q-btn
-                      class="fab-btn"
-                      flat
-                      round
-                      color="primary"
-                      icon="cached"
-                      @click="checkUpdateHandler"
-                    />
-                  </div>
-                </div>
-              </q-tab-panel>
-
-              <q-tab-panel name="editor">
-                <div class="text-h4 q-mb-md">{{ $t('editor') }}</div>
-                <q-separator />
-                <div>
-                  <div class="text-h5 q-mb-md setting-item">
-                    <span>{{ $t('imageUploadService') }}</span>
+          <template v-slot:after class='hide-scrollbar'>
+              <q-tab-panels
+                v-model='tab'
+                animated
+                swipeable
+                vertical
+                transition-prev='jump-up'
+                transition-next='jump-up'
+              >
+                <q-tab-panel name='general'>
+                  <div class='text-h4 q-mb-md'>{{ $t('general') }}</div>
+                  <q-separator />
+                  <div>
+                    <div class='text-h5 q-mb-md setting-item'>
+                      {{ $t('language') }}
+                    </div>
                     <q-select
-                      :value="$t(imageUploadService)"
-                      :options="imageUploadServiceOptions"
-                      @input="imageUploadServiceChangeHandler"
-                    >
-                      <template v-slot:after>
-                        <q-btn
-                          v-if="imageUploadService === 'customWebUploadService'"
-                          round
-                          dense
-                          flat
-                          icon="settings"
-                          @click="$refs.imageUploadServiceDialog.toggle()"
-                        />
-                      </template>
-                    </q-select>
+                      :value='$t(language)'
+                      :options='languageOptions'
+                      @input='languageChangeHandler'
+                    />
                   </div>
-                  <div class="text-h5 q-mb-md setting-item">
-                    <span>{{ $t('codeTheme') }}</span>
-                    <q-icon
-                      name="launch"
-                      color="primary"
-                      style="margin-left: 5px"
-                      class="cursor-pointer"
-                      @click="
+                  <div>
+                    <div class='text-h5 q-mb-md setting-item'>
+                      <span>{{ $t('darkMode') }}</span>
+                      <q-toggle
+                        :value='darkMode'
+                        color='black'
+                        @input='v => toggleDarkMode(v)'
+                      />
+                    </div>
+                  </div>
+                  <q-separator />
+                  <div>
+                    <div class='text-h5 q-mb-md setting-item fa-align-center'>
+                      <span>{{ $t('currentVersion', { version }) }}</span>
+                      <q-btn
+                        class='fab-btn'
+                        flat
+                        round
+                        color='primary'
+                        icon='cached'
+                        @click='checkUpdateHandler'
+                      />
+                    </div>
+                  </div>
+                </q-tab-panel>
+
+                <q-tab-panel name='editor'>
+                  <div class='text-h4 q-mb-md'>{{ $t('editor') }}</div>
+                  <q-separator />
+                  <div>
+                    <div class='text-h5 q-mb-md setting-item'>
+                      <span>{{ $t('imageUploadService') }}</span>
+                      <q-select
+                        :value='$t(imageUploadService)'
+                        :options='imageUploadServiceOptions'
+                        @input='imageUploadServiceChangeHandler'
+                      >
+                        <template v-slot:after>
+                          <q-btn
+                            v-if="imageUploadService === 'customWebUploadService'"
+                            round
+                            dense
+                            flat
+                            icon='settings'
+                            @click='$refs.imageUploadServiceDialog.toggle()'
+                          />
+                        </template>
+                      </q-select>
+                    </div>
+                    <div class='text-h5 q-mb-md setting-item'>
+                      <span>{{ $t('codeTheme') }}</span>
+                      <q-icon
+                        name='launch'
+                        color='primary'
+                        style='margin-left: 5px'
+                        class='cursor-pointer'
+                        @click="
                         () =>
                           $q.electron.shell.openExternal(
                             'https://xyproto.github.io/splash/docs/longer/all.html?utm_source=ld246.com'
                           )
                       "
-                    />
+                      />
+                    </div>
+                    <q-separator />
+                    <div class='text-h6 q-mb-md setting-item'>
+                      <span>{{ $t('lightCodeTheme') }}</span>
+                      <q-select
+                        :value='lightCodeTheme'
+                        :options='codethems'
+                        @input='v => codeThemeChangeHandler(v, true)'
+                      >
+                      </q-select>
+                    </div>
+                    <div class='text-h6 q-mb-md setting-item'>
+                      <span>{{ $t('darkCodeTheme') }}</span>
+                      <q-select
+                        :value='darkCodeTheme'
+                        :options='codethems'
+                        @input='v => codeThemeChangeHandler(v, false)'
+                      >
+                      </q-select>
+                    </div>
                   </div>
-                  <q-separator />
-                  <div class="text-h6 q-mb-md setting-item">
-                    <span>{{ $t('lightCodeTheme') }}</span>
-                    <q-select
-                      :value="lightCodeTheme"
-                      :options="codethems"
-                      @input="v => codeThemeChangeHandler(v, true)"
-                    >
-                    </q-select>
-                  </div>
-                  <div class="text-h6 q-mb-md setting-item">
-                    <span>{{ $t('darkCodeTheme') }}</span>
-                    <q-select
-                      :value="darkCodeTheme"
-                      :options="codethems"
-                      @input="v => codeThemeChangeHandler(v, false)"
-                    >
-                    </q-select>
-                  </div>
-                </div>
-              </q-tab-panel>
+                </q-tab-panel>
 
-              <q-tab-panel name="server">
-                <div class="text-h4 q-mb-md">{{ $t('server') }}</div>
-                <q-separator />
-                <div>
-                  <div class="text-h5 q-mb-md setting-item">
-                    <span>{{ $t('markdownOnly') }}</span>
-                    <q-toggle
-                      :value="markdownOnly"
-                      color="primary"
-                      @input="
+                <q-tab-panel name='server'>
+                  <div class='text-h4 q-mb-md'>{{ $t('server') }}</div>
+                  <q-separator />
+                  <div>
+                    <div class='text-h5 q-mb-md setting-item'>
+                      <span>{{ $t('markdownOnly') }}</span>
+                      <q-toggle
+                        :value='markdownOnly'
+                        color='primary'
+                        @input="
                         v => toggleChanged({ key: 'markdownOnly', value: v })
                       "
-                    />
+                      />
+                    </div>
                   </div>
-                </div>
-                <q-separator />
-                <div>
-                  <div class="text-h5 q-mb-md setting-item">
-                    <span>{{ $t('flomo') }}</span>
-                    <q-icon
-                      name="settings"
-                      color="primary"
-                      style="margin-left: 5px"
-                      class="cursor-pointer"
-                      @click="flomoSettingHandler"
-                    />
+                  <q-separator />
+                  <div>
+                    <div class='text-h5 q-mb-md setting-item'>
+                      <span>{{ $t('flomo') }}</span>
+                      <q-icon
+                        name='settings'
+                        color='primary'
+                        style='margin-left: 5px'
+                        class='cursor-pointer'
+                        @click='flomoSettingHandler'
+                      />
+                    </div>
                   </div>
-                </div>
-              </q-tab-panel>
-            </q-tab-panels>
+                </q-tab-panel>
+              </q-tab-panels>
           </template>
         </q-splitter>
       </q-card-section>
     </q-card>
-    <ImageUploadServiceDialog ref="imageUploadServiceDialog" />
+    <ImageUploadServiceDialog ref='imageUploadServiceDialog' />
   </q-dialog>
 </template>
 
@@ -194,7 +194,10 @@ import { version } from '../../../../package.json'
 import codethems from '../../../constants/codethems'
 import VditorPreview from 'vditor/dist/method.min'
 
-const { mapState, mapActions } = createNamespacedHelpers('client')
+const {
+  mapState,
+  mapActions
+} = createNamespacedHelpers('client')
 
 export default {
   name: 'SettingsDialog',
