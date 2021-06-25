@@ -35,7 +35,6 @@
             enter-active-class='animated fadeIn'
             leave-active-class='animated fadeOut'
           >
-            <!--            <AppLogo key='logo' />-->
             <q-icon
               class='absolute-center material-icons-round'
               size='256px'
@@ -61,8 +60,6 @@
               v-ripple
               key='format_align_center'
             />
-
-            <!--            :name='isSourceMode ? "assignment" : "code_icon"'-->
             <q-icon
               :name='isSourceMode ? "assignment" : "code"'
               class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
