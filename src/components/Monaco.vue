@@ -134,7 +134,7 @@ export default {
     },
     darkMode: function (darkMode) {
       const currentTheme = darkMode ? 'Memocast-Dark' : 'Memocast-Light'
-      this.contentEditor.setTheme(currentTheme)
+      monaco.editor.setTheme(currentTheme)
     },
     data: function (val) {
       this.contentEditor.setValue(val)
