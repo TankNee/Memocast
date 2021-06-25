@@ -5,5 +5,7 @@ export default {
   exportAsMarkdownFile: '导出为 Markdown 文件',
   markdownFile: 'Markdown 文件',
   prepareExportData: '正在准备导出数据',
-  exportNoteSuccessfully: '笔记导出成功'
+  exportNoteSuccessfully: '笔记导出成功',
+  sourceMode: '源代码模式',
+  previewMode: '预览模式'
 }

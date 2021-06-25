@@ -6,6 +6,7 @@
       class='full-width'
       unit='px'
       separator-class='bg-transparent'
+      after-class='hide-scrollbar'
     >
       <template v-slot:before>
         <transition
@@ -17,16 +18,18 @@
         </transition>
       </template>
       <template v-slot:after>
-        <div>
+        <div class='full-height'>
           <q-scroll-area
             ref='vditorScrollArea'
             :thumb-style='thumbStyle'
             :bar-style='barStyle'
             class='exclude-header overflow-hidden'
+            v-show='!isSourceMode'
           >
-            <Vditor />
+            <Vditor ref='vditor' :active='!isSourceMode' :data='tempNoteData' />
             <VditorContextMenu />
           </q-scroll-area>
+          <Monaco ref='monaco' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
           <transition-group
             appear
             enter-active-class='animated fadeIn'
@@ -58,6 +61,24 @@
               v-ripple
               key='format_align_center'
             />
+
+            <!--            :name='isSourceMode ? "assignment" : "code_icon"'-->
+            <q-icon
+              :name='isSourceMode ? "assignment" : "code"'
+              class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
+              style='bottom: 50px'
+              @click='isSourceMode = !isSourceMode'
+              size='24px'
+              color='#26A69A'
+              v-show='dataLoaded && !isOutlineShow'
+              v-ripple
+              key='source_code'
+            >
+              <q-tooltip anchor='top middle' self='bottom middle' :offset='[10, 10]'
+                         content-class='text-bold text-white shadow-4'
+              >{{ !isSourceMode ? $t('sourceMode') : $t('previewMode') }}
+              </q-tooltip>
+            </q-icon>
             <q-icon
               name='save'
               class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
@@ -88,7 +109,7 @@ import { createNamespacedHelpers } from 'vuex'
 import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
 import VditorContextMenu from 'components/ui/menu/VditorContextMenu'
-import MemocastLogo from '../assets/Memocast-logo.svg'
+import Monaco from 'components/Monaco'
 
 const {
   mapGetters: mapServerGetters,
@@ -99,6 +120,7 @@ const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'PageIndex',
   components: {
+    Monaco,
     VditorContextMenu,
     Loading,
     NoteOutlineDrawer,
@@ -137,7 +159,8 @@ export default {
     return {
       splitterModel: 300,
       isOutlineShow: false,
-      appLogo: MemocastLogo
+      isSourceMode: false,
+      tempNoteData: ''
     }
   },
   methods: {
@@ -159,6 +182,15 @@ export default {
         window.innerHeight * 0.065
       that.$refs.vditorScrollArea.setScrollPosition(top, 300)
     })
+  },
+  watch: {
+    isSourceMode: function (val, oldVal) {
+      if (oldVal) {
+        this.tempNoteData = this.$refs.monaco.getValue()
+      } else {
+        this.tempNoteData = this.$refs.vditor.getValue()
+      }
+    }
   }
 }
 </script>
