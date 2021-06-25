@@ -191,7 +191,7 @@ export default {
   watch: {
     tagsOfCurrentNote: function (v) {
       this.noteTags = v.map(t => t.name)
-      this.tagList = this.tags.filter(
+      this.tagList = this.tags?.filter(
         t => !this.tagsOfCurrentNote.map(t => t.tagGuid).includes(t.tagGuid)
       )
     }

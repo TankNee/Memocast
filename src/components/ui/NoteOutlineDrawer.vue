@@ -16,7 +16,7 @@
       :class="`exclude-header note-list${$q.dark.isActive ? '-dark' : ''} fit`"
     >
       <q-tree
-        :nodes="contentsList"
+        :nodes="contentsList ? contentsList : []"
         node-key="key"
         default-expand-all
         selected-color="primary"

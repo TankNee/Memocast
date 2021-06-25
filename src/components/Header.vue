@@ -273,7 +273,8 @@ export default {
     },
 
     closeApp () {
-      this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
+      // this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
+      this.$q.electron.remote.app.quit()
     },
     loginHandler: function () {
       if (!this.isLogin) {
