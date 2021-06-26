@@ -1,4 +1,4 @@
-<script src='../constants/codethems.js'></script>
+<script src='../../../constants/codethems.js'></script>
 <template>
   <div class='flex justify-center'>
     <div
@@ -13,11 +13,11 @@
 import Vditor from 'vditor'
 import 'src/css/vditor.css'
 import { createNamespacedHelpers } from 'vuex'
-import debugLogger from '../utils/debugLogger'
-import helper from '../utils/helper'
+import debugLogger from '../../../utils/debugLogger'
+import helper from '../../../utils/helper'
 // import monaco from 'monaco-editor'
-import bus from './bus'
-import events from '../constants/events'
+import bus from '../../bus'
+import events from '../../../constants/events'
 
 const {
   mapGetters: mapServerGetters,
@@ -43,7 +43,7 @@ export default {
     },
     ...mapServerGetters(['currentNote', 'uploadImageUrl', 'currentNoteResources', 'currentNoteResourceUrl']),
     ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
-    ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme', 'enableVditor'])
+    ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme', 'enablePreviewEditor'])
   },
   data () {
     return {
@@ -52,7 +52,7 @@ export default {
   },
   mounted () {
     this.contentEditor = this.initVditor()
-    this.enableVditor ? this.contentEditor.enable() : this.contentEditor.disabled()
+    this.enablePreviewEditor ? this.contentEditor.enable() : this.contentEditor.disabled()
     document.addEventListener('keydown', this.registerKeyboardHotKey)
     this.registerEventHandler()
   },
@@ -228,7 +228,7 @@ export default {
         this.darkMode ? this.darkCodeTheme : currentData
       )
     },
-    enableVditor: function (currentData) {
+    enablePreviewEditor: function (currentData) {
       if (currentData) {
         this.contentEditor.enable()
       } else {

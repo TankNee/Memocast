@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme, dialog, shell } from 'electron'
+import { app, BrowserWindow, nativeTheme, dialog, shell, protocol } from 'electron'
 import Api from './Api'
 import windowStateKeeper from 'electron-window-state'
 import unhandled from 'electron-unhandled'
@@ -69,10 +69,20 @@ function createWindow () {
     frame: false,
     titleBarStyle: 'hiddenInset'
   })
+
+  protocol.interceptFileProtocol('file', (req, callback) => {
+    const url = req.url.substr(8)
+    callback(decodeURI(url))
+  }, (error) => {
+    if (error) {
+      console.error('Failed to register protocol')
+    }
+  })
+
   mainWindow.isMainWindow = true
   mainWindowState.manage(mainWindow)
 
-  mainWindow.loadURL(process.env.APP_URL)
+  mainWindow.loadURL(process.env.APP_URL).then()
 
   // mainWindow.on('closed', () => {
   //   mainWindow = null

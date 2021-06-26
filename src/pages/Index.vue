@@ -20,13 +20,13 @@
       <template v-slot:after>
         <div class='full-height'>
           <q-scroll-area
-            ref='vditorScrollArea'
+            ref='previewScrollArea'
             :thumb-style='thumbStyle'
             :bar-style='barStyle'
             class='exclude-header overflow-hidden'
             v-show='!isSourceMode'
           >
-            <Vditor ref='vditor' :active='!isSourceMode' :data='tempNoteData' />
+            <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
             <VditorContextMenu />
           </q-scroll-area>
           <Monaco ref='monaco' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import Vditor from '../components/Vditor'
+// import Vditor from '../components/ui/editor/Vditor'
 import NoteList from '../components/NoteList'
 import bus from 'components/bus'
 import events from 'src/constants/events'
@@ -106,7 +106,8 @@ import { createNamespacedHelpers } from 'vuex'
 import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
 import VditorContextMenu from 'components/ui/menu/VditorContextMenu'
-import Monaco from 'components/Monaco'
+import Monaco from 'components/ui/editor/Monaco'
+import Muya from 'components/ui/editor/Muya'
 
 const {
   mapGetters: mapServerGetters,
@@ -117,11 +118,12 @@ const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'PageIndex',
   components: {
+    Muya,
     Monaco,
     VditorContextMenu,
     Loading,
     NoteOutlineDrawer,
-    Vditor,
+    // Vditor,
     NoteList
   },
   computed: {
@@ -171,13 +173,18 @@ export default {
   mounted () {
     const that = this
     bus.$on(events.SCROLL_TO_HEADER, item => {
-      if (!item || !item.element || !that.$refs.vditorScrollArea) return
+      if (!item || !item.element || !that.$refs.previewScrollArea) return
       const rect = item.element.getBoundingClientRect()
       const top =
-        that.$refs.vditorScrollArea.getScrollPosition() +
+        that.$refs.previewScrollArea.getScrollPosition() +
         rect.top -
         window.innerHeight * 0.065
-      that.$refs.vditorScrollArea.setScrollPosition(top, 300)
+      console.log(top)
+      that.$refs.previewScrollArea.setScrollPosition(top, 300)
+    })
+
+    bus.$on(events.SCROLL_DOWN, () => {
+      that.$refs.previewScrollArea.setScrollPosition(that.$refs.previewScrollArea.scrollSize, 300)
     })
   },
   watch: {
@@ -185,7 +192,7 @@ export default {
       if (oldVal) {
         this.tempNoteData = this.$refs.monaco.getValue()
       } else {
-        this.tempNoteData = this.$refs.vditor.getValue()
+        this.tempNoteData = this.$refs.muya.getValue()
       }
     }
   }
