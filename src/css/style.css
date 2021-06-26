@@ -156,11 +156,15 @@ body.body--dark {
   color: #ffffff;
 }
 span[data-type='a']:not(.vditor-ir__node--expand) {
-  padding-right: 25px;
+  /*padding-right: 25px;*/
   position: relative;
+  cursor: pointer;
 }
-span[data-type='a']:not(.vditor-ir__node--expand)::after {
-  display: block;
+span[data-type='a']:not(.vditor-ir__node--expand):hover {
+  padding-right: 25px;
+}
+span[data-type='a']:not(.vditor-ir__node--expand):hover:after {
+  display: inline;
   content: '';
   width: 20px;
   height: 20px;

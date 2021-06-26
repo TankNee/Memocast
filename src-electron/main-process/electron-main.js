@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme, shell } from 'electron'
+import { app, BrowserWindow, nativeTheme, dialog, shell } from 'electron'
 import Api from './Api'
 import windowStateKeeper from 'electron-window-state'
 import unhandled from 'electron-unhandled'
@@ -26,7 +26,8 @@ try {
       require('path').join(app.getPath('userData'), 'DevTools Extensions')
     )
   }
-} catch (_) {}
+} catch (_) {
+}
 
 /**
  * Set `__statics` path to static files in production;
@@ -89,7 +90,21 @@ function createWindow () {
 
   mainWindow.webContents.on('new-window', (event, linkUrl) => {
     event.preventDefault()
-    shell.openExternal(linkUrl)
+    if (linkUrl.startsWith('http://localhost:') || linkUrl.startsWith('file://')) {
+      // dialog.showErrorBox('Unsupported Url Protocol', `Memocast cannot resolve this protocol: ${linkUrl}, please copy it to browser manually!`)
+      return
+    }
+    dialog.showMessageBox(mainWindow, {
+      type: 'question',
+      title: 'Open link url in your default browser!',
+      message: 'Open link url in your default browser!',
+      detail: linkUrl,
+      buttons: ['Confirm', 'Cancel']
+    }).then((res) => {
+      if (!res.response) {
+        shell.openExternal(linkUrl).then()
+      }
+    })
   })
   registerApiHandler()
   if (isMac) {

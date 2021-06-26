@@ -156,7 +156,6 @@ export default {
         true
       )
       if (LinkElement) {
-        e.preventDefault()
         const afterStyle = window.getComputedStyle(LinkElement, ':after')
         if (
           helper.isCtrl(e) ||
@@ -238,6 +237,7 @@ export default {
     },
     data: function (val) {
       this.contentEditor.setValue(val)
+      this.updateContentsList(this.contentEditor.vditor.ir.element)
     }
   }
 }
