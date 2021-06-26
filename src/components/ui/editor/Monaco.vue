@@ -87,7 +87,10 @@ export default {
         language: 'markdown',
         automaticLayout: true,
         theme: this.darkMode ? 'Memocast-Dark' : 'Memocast-Light',
-        fontSize: '15px'
+        fontSize: '17px',
+        scrollBeyondLastLine: false,
+        fontLigatures: true,
+        fontFamily: 'JetBrains Mono, Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial, sans-serif, Microsoft YaHei'
       })
       this.contentEditor.onKeyDown(e => {
         const curData = this.contentEditor.getValue()

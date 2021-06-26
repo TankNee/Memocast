@@ -4,4 +4,5 @@
 /src-cordova
 /.quasar
 /node_modules
+/src/libs
 /src/lib

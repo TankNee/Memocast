@@ -18,6 +18,6 @@ export default function () {
     darkCodeTheme: 'monokai',
     noteListVisible: true,
     flomoApiUrl: '',
-    enableVditor: true
+    enablePreviewEditor: true
   }
 }

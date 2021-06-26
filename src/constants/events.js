@@ -7,5 +7,6 @@ export default {
   INSERT_IMAGES: 'insert.images',
   INSERT_TEXT: 'insert.text',
   SAVE_NOTE: 'save.note',
-  SCROLL_TO_HEADER: 'scroll.to.header'
+  SCROLL_TO_HEADER: 'scroll.to.header',
+  SCROLL_DOWN: 'scroll.down'
 }

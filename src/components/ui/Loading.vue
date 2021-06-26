@@ -1,6 +1,6 @@
 <template>
   <q-inner-loading :showing="visible">
-    <q-spinner :color="$q.dark.isActive ? 'warning' : 'primary'" size="5em" />
+    <q-spinner-hourglass :color="$q.dark.isActive ? 'warning' : 'primary'" size="6em" />
   </q-inner-loading>
 </template>
 

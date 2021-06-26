@@ -33,7 +33,7 @@ export default {
     color: function () {
       return this.$q.dark.isActive ? 'warning' : 'primary'
     },
-    ...mapClientState(['enableVditor'])
+    ...mapClientState(['enablePreviewEditor'])
   },
   data () {
     return {
@@ -67,7 +67,7 @@ export default {
       bus.$emit(events.INSERT_TEXT, clipboard.readText('clipboard'))
     },
     inputHandler: function () {
-      if (!this.enableVditor) {
+      if (!this.enablePreviewEditor) {
         this.$refs.menu.hide()
       }
     },
