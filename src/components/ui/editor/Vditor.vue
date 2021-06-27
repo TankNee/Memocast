@@ -1,3 +1,4 @@
+<script src='../../../constants/codethems.js'></script>
 <template>
   <div class='flex justify-center'>
     <div
@@ -12,11 +13,11 @@
 import Vditor from 'vditor'
 import 'src/css/vditor.css'
 import { createNamespacedHelpers } from 'vuex'
-import debugLogger from '../utils/debugLogger'
-import helper from '../utils/helper'
-// import VditorContextMenu from './ui/VditorContextMenu'
-import bus from './bus'
-import events from '../constants/events'
+import debugLogger from '../../../utils/debugLogger'
+import helper from '../../../utils/helper'
+// import monaco from 'monaco-editor'
+import bus from '../../bus'
+import events from '../../../constants/events'
 
 const {
   mapGetters: mapServerGetters,
@@ -30,6 +31,10 @@ export default {
     data: {
       type: String,
       default: ''
+    },
+    active: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -38,7 +43,7 @@ export default {
     },
     ...mapServerGetters(['currentNote', 'uploadImageUrl', 'currentNoteResources', 'currentNoteResourceUrl']),
     ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
-    ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme', 'enableVditor'])
+    ...mapClientState(['darkMode', 'lightCodeTheme', 'darkCodeTheme', 'enablePreviewEditor'])
   },
   data () {
     return {
@@ -47,8 +52,8 @@ export default {
   },
   mounted () {
     this.contentEditor = this.initVditor()
-    this.enableVditor ? this.contentEditor.enable() : this.contentEditor.disabled()
-    document.onkeydown = this.registerKeyboardHotKey.bind(this)
+    this.enablePreviewEditor ? this.contentEditor.enable() : this.contentEditor.disabled()
+    document.addEventListener('keydown', this.registerKeyboardHotKey)
     this.registerEventHandler()
   },
   methods: {
@@ -110,10 +115,12 @@ export default {
       })
     },
     registerKeyboardHotKey: function (e) {
+      if (!this.active) return
       const key = window.event.keyCode
         ? window.event.keyCode
         : window.event.which
       if (helper.isCtrl(e)) {
+        console.log(e)
         switch (key) {
           case 83:
             this.updateNote(this.contentEditor.getValue())
@@ -149,7 +156,6 @@ export default {
         true
       )
       if (LinkElement) {
-        e.preventDefault()
         const afterStyle = window.getComputedStyle(LinkElement, ':after')
         if (
           helper.isCtrl(e) ||
@@ -183,6 +189,9 @@ export default {
         return true
       }
       return false
+    },
+    getValue: function () {
+      return this.contentEditor?.getValue()
     },
     ...mapServerActions(['updateNote', 'uploadImage', 'updateContentsList', 'updateNoteState'])
   },
@@ -219,12 +228,16 @@ export default {
         this.darkMode ? this.darkCodeTheme : currentData
       )
     },
-    enableVditor: function (currentData) {
+    enablePreviewEditor: function (currentData) {
       if (currentData) {
         this.contentEditor.enable()
       } else {
         this.contentEditor.disabled()
       }
+    },
+    data: function (val) {
+      this.contentEditor.setValue(val)
+      this.updateContentsList(this.contentEditor.vditor.ir.element)
     }
   }
 }

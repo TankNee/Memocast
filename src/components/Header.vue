@@ -73,15 +73,15 @@
       v-ripple
       @click.stop="
         () => {
-          toggleChanged({ key: 'enableVditor', value: !enableVditor })
+          toggleChanged({ key: 'enablePreviewEditor', value: !enablePreviewEditor })
         }
       "
     >
-      <q-icon :name="enableVditor ? 'lock_open' : 'lock'" color="#16A2B8" />
+      <q-icon :name="enablePreviewEditor ? 'lock_open' : 'lock'" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-amber-9 text-white shadow-4  text-h7"
-        >{{ enableVditor ? $t('lock') : $t('unlock') }}
+        >{{ enablePreviewEditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -213,7 +213,7 @@ export default {
       'shrinkInTray',
       'autoLogin',
       'noteListVisible',
-      'enableVditor'
+      'enablePreviewEditor'
     ]),
     darkMode: function () {
       return this.$q.dark.isActive

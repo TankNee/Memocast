@@ -157,7 +157,7 @@ export default {
       return this.$q.dark.isActive ? 'warning' : 'primary'
     },
     isTagCategory: function () {
-      return this.tags.map(t => t.tagGuid).includes(this.currentCategory)
+      return this.tags?.map(t => t.tagGuid).includes(this.currentCategory)
     },
     ...mapGetters(['activeNote', 'currentNotes']),
     ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags'])
