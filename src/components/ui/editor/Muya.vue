@@ -115,7 +115,7 @@ export default {
       })
 
       document.addEventListener('keydown', (e) => {
-        // console.log(this.currentNote === this.contentEditor.getMarkdown(), this.currentNote, this.contentEditor.getMarkdown())
+        if (!e.srcElement.className.includes('ag-')) return
         const curData = this.contentEditor.getMarkdown()
         if (curData !== this.currentNote) {
           this.updateNoteState('changed')
