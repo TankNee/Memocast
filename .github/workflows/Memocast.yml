@@ -92,9 +92,8 @@ jobs:
           npm run build-publish
       - name: Rename Package
         run: |
-          cd dist/electron/Packaged
-          ls
-          cp M*.dmg Memocast-darwin.dmg
+          cd dist/electron/Packaged/mac
+          cp Memocast*.dmg Memocast-darwin.dmg
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
