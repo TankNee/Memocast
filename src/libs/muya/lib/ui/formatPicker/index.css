@@ -4,7 +4,7 @@
 }
 .ag-format-picker {
   height: 28px;
-  width: 265px;
+  width: 305px;
 }
 
 .ag-format-picker ul,
@@ -67,7 +67,7 @@
   display: inline-block;
   width: 100%;
   height: 100%;
-  filter: drop-shadow(16px 0 currentColor); 
+  filter: drop-shadow(16px 0 currentColor);
   position: relative;
   left: -16px;
 }
