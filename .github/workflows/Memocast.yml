@@ -93,7 +93,7 @@ jobs:
       - name: Rename Package
         run: |
           cd dist/electron/Packaged
-          ll
+          ls
           cp M*.dmg Memocast-darwin.dmg
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
