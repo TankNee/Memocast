@@ -200,7 +200,7 @@ module.exports = function (/* ctx */) {
         mac: {
           target: [
             'dmg'
-          ],
+          ]
         },
         win: {
           target: [
