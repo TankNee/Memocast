@@ -31,6 +31,7 @@ import FrontMenu from 'src/libs/muya/lib/ui/frontMenu'
 import ImageToolbar from 'src/libs/muya/lib/ui/imageToolbar'
 import LinkTools from 'src/libs/muya/lib/ui/linkTools'
 import TableBarTools from 'src/libs/muya/lib/ui/tableTools'
+import Transformer from 'src/libs/muya/lib/ui/transformer'
 // import * as FootNoteTools from 'src/libs/muya/lib/ui/footnoteTool'
 import debugLogger from 'src/utils/debugLogger'
 
@@ -62,9 +63,9 @@ export default {
     dataLoaded: function () {
       return !helper.isNullOrEmpty(this.currentNote)
     },
-    ...mapServerState(['isCurrentNoteLoading', 'contentsList', 'enablePreviewEditor']),
+    ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
     ...mapServerGetters(['currentNote', 'uploadImageUrl', 'currentNoteResources', 'currentNoteResourceUrl']),
-    ...mapClientState(['darkMode'])
+    ...mapClientState(['darkMode', 'enablePreviewEditor'])
   },
   methods: {
     getValue: function () {
@@ -108,13 +109,12 @@ export default {
       Muya.use(LinkTools, {
         jumpClick: (linkInfo) => {
           window.open(linkInfo.href)
-          console.log(linkInfo)
         }
       })
+      Muya.use(Transformer)
       Muya.use(TableBarTools)
 
       this.contentEditor = new Muya(this.$refs.muya, {
-        focusMode: true,
         imagePathPicker: () => {
           const paths = this.$q.electron.remote.dialog.showOpenDialogSync({
             title: 'Import Images' // TODO: translation
@@ -126,9 +126,10 @@ export default {
       })
 
       document.addEventListener('keydown', (e) => {
-        if (!e.srcElement.className.includes('ag-')) return
+        if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
         const curData = this.contentEditor.getMarkdown()
-        if (curData !== this.currentNote) {
+        // eslint-disable-next-line eqeqeq
+        if (curData != this.currentNote) {
           this.updateNoteState('changed')
         } else {
           this.updateNoteState('default')
@@ -152,7 +153,8 @@ export default {
       }
     },
     enablePreviewEditor: function (val) {
-      //  12312
+      console.log('Content Editable', document.querySelector('.ag-show-quick-insert-hint'))
+      document.querySelector('.ag-show-quick-insert-hint').setAttribute('contenteditable', val)
     },
     data: function (val) {
       this.contentEditor.setMarkdown(val)

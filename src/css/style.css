@@ -72,6 +72,11 @@ body.body--dark {
   font-size: 14px;
 }
 
+div.ag-show-quick-insert-hint[contenteditable=false] {
+  /*background: green;*/
+  mso-foreground: #1c1c1c;
+}
+
 .vditor-toolbar {
   border: none !important;
   display: none;
