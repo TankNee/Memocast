@@ -380,6 +380,37 @@ export default {
     //   commit(types.js.UPDATE_CURRENT_NOTE, result)
     // }
   },
+  importNote ({
+    commit,
+    state
+  }, importFile) {
+    const {
+      kbGuid,
+      currentCategory = ''
+    } = state
+    const title = importFile.name
+    const userId = ClientFileStorage.getItemFromStore('userId')
+    const isLite = currentCategory.replace(/\//g, '') === 'Lite'
+    const reader = new FileReader()
+    reader.readAsText(importFile)
+    reader.onload = async () => {
+      var text = reader.result
+      console.log(text)
+      const result = await api.KnowledgeBaseApi.createNote({
+        kbGuid,
+        data: {
+          category: currentCategory,
+          kbGuid,
+          title,
+          owner: userId,
+          html: helper.embedMDNote(text, [], { wrapWithPreTag: isLite }),
+          type: isLite ? 'lite/markdown' : 'document'
+        }
+      })
+      await this.dispatch('server/getNoteContent', result)
+      await this.dispatch('server/getCategoryNotes')
+    }
+  },
   /**
    * 删除笔记
    * @param commit

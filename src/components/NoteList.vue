@@ -67,6 +67,20 @@
             >{{ $t('export') }}</q-tooltip
           >
         </q-fab-action>
+        <q-fab-action
+          v-if="showDeleteCategoryFab"
+          :color="color"
+          icon="add"
+          @click="$refs.ImportDialog.toggle()"
+        >
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[20, 10]"
+            :content-class="`bg-${color} text-white shadow-4  text-h7`"
+            >{{ $t('import') }}</q-tooltip
+          >
+        </q-fab-action>
         <q-fab-action :color="color" icon="note_add" @click="handleAddNote">
           <q-tooltip
             anchor="center right"
@@ -91,19 +105,21 @@
         </q-fab-action>
       </q-fab>
       <Loading :visible="isCurrentNotesLoading" />
+      <ImportDialog ref="ImportDialog" />
     </q-pull-to-refresh>
   </div>
 </template>
 
 <script>
 import NoteItem from './ui/NoteItem'
+import ImportDialog from './ui/dialog/ImportDialog.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Loading from './ui/Loading'
 import helper from '../utils/helper'
 const { mapGetters, mapState, mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'NoteList',
-  components: { Loading, NoteItem },
+  components: { Loading, NoteItem, ImportDialog },
   computed: {
     thumbStyle () {
       return {
