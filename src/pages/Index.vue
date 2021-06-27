@@ -179,7 +179,6 @@ export default {
         that.$refs.previewScrollArea.getScrollPosition() +
         rect.top -
         window.innerHeight * 0.065
-      console.log(top)
       that.$refs.previewScrollArea.setScrollPosition(top, 300)
     })
 
