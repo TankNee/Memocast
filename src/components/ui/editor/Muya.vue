@@ -149,7 +149,7 @@ export default {
         this.updateContentsList(document.getElementById('ag-editor-id'))
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
-        debugLogger.Error(e.message)
+        debugLogger.Error(e, e.message)
       }
     },
     enablePreviewEditor: function (val) {
