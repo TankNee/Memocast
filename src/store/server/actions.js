@@ -225,8 +225,8 @@ export default {
     const { docGuid } = payload
     const result = await _getContent(kbGuid, docGuid)
 
-    commit(types.UPDATE_CURRENT_NOTE, result)
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
+    commit(types.UPDATE_CURRENT_NOTE, result)
   },
   /**
    * 设置当前显示的笔记文件夹，并在显示之前从网络刷新文件夹的内容

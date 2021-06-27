@@ -20,28 +20,38 @@
   /* border-radius: 10px; */
   background: transparent;
 }
+
+div {
+  outline-color: transparent;
+}
+
 .exclude-header {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   height: 93.5vh !important;
 }
+
 body {
   margin: 0;
   overflow: hidden;
   background: #ffffff !important;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
+
 body.body {
   background: #ffffff !important;
 }
+
 body.body--dark {
   background: #2d2d2d !important;
 }
+
 .text-h7 {
   font-size: 15px;
   font-weight: bold;
 }
+
 .bg-blur {
   position: fixed;
   top: 0;
@@ -53,9 +63,15 @@ body.body--dark {
   opacity: 0.9;
   box-shadow: 0px 1px 16px 0px rgba(0, 0, 0, 0.31);
 }
+
 .tooltip {
   font-size: 17px;
 }
+
+.ag-image-toolbar li.item div.tooltip {
+  font-size: 14px;
+}
+
 .vditor-toolbar {
   border: none !important;
   display: none;
@@ -67,27 +83,34 @@ body.body--dark {
   background-color: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, 黑体;
 }
+
 .note-item-dark {
   background-color: #2d2d2d;
 }
+
 .active-note-item,
 .active-note-item-dark {
   color: #212121;
   background-color: #e4e4e4;
 }
+
 .active-note-item-dark {
   background-color: #393939;
 }
+
 .note-list {
   background-color: #ffffff;
 }
+
 .note-list-dark {
   background-color: #2d2d2d;
 }
+
 .note-list,
 .note-list-dark {
   font-weight: bold;
 }
+
 /*Note List CSS*/
 .note-card,
 .note-card-dark {
@@ -96,9 +119,11 @@ body.body--dark {
   border-radius: 0px;
   user-select: none;
 }
+
 .note-card-dark {
   border-bottom: 1px solid #262626;
 }
+
 .note-item-title,
 .note-item-title-dark {
   color: #343a40;
@@ -106,16 +131,19 @@ body.body--dark {
   font-weight: bold;
   margin-bottom: 3px;
 }
+
 .note-item-summary,
 .note-item-summary-dark {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, Consolas;
   color: #acacac;
   font-size: 14px;
 }
+
 .note-item-summary,
 .note-item-summary-dark > span {
   color: #8f8f8f;
 }
+
 .note-item-title > em,
 .note-item-title-dark > em,
 .note-item-summary > em,
@@ -123,46 +151,58 @@ body.body--dark {
   background-color: #f7c049;
   color: #282828;
 }
+
 .note-item-title-dark {
   color: #dadada;
 }
+
 .note-item-summary-dark {
   color: #919191;
 }
+
 .note-info-tag {
   display: flex;
   align-items: center;
 }
+
 .note-info-tag > i {
   padding-right: 3px;
 }
+
 /*fab button*/
 .fab-btn {
   margin: 10px;
 }
+
 .fab-icon {
   margin: 40px;
 }
+
 /*base dialog*/
 .base-dialog {
   width: 500px !important;
   max-width: 50vw;
   font-weight: bold;
 }
+
 .neeto-icon {
   color: #000000;
 }
+
 .neeto-icon-dark {
   color: #ffffff;
 }
+
 span[data-type='a']:not(.vditor-ir__node--expand) {
   /*padding-right: 25px;*/
   position: relative;
   cursor: pointer;
 }
+
 span[data-type='a']:not(.vditor-ir__node--expand):hover {
   padding-right: 25px;
 }
+
 span[data-type='a']:not(.vditor-ir__node--expand):hover:after {
   display: inline;
   content: '';

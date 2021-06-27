@@ -56,7 +56,7 @@
               @click.stop='$refs.outlineDrawer.show'
               size='24px'
               color='#26A69A'
-              v-show='dataLoaded && contentsListLoaded && !isOutlineShow'
+              v-show='dataLoaded && contentsListLoaded && !isOutlineShow && !isSourceMode'
               v-ripple
               key='format_align_center'
             />
@@ -168,6 +168,21 @@ export default {
     },
     outlineDrawerChangeHandler: function (state) {
       this.isOutlineShow = state
+    },
+    registerKeyboardHotKey: function (e) {
+      const key = window.event.keyCode
+        ? window.event.keyCode
+        : window.event.which
+      if (helper.isCtrl(e)) {
+        switch (key) {
+          case 190:
+            this.isSourceMode = !this.isSourceMode
+            // this.updateNote(this.contentEditor.getMarkdown())
+            break
+          default:
+            break
+        }
+      }
     }
   },
   mounted () {
@@ -185,6 +200,8 @@ export default {
     bus.$on(events.SCROLL_DOWN, () => {
       that.$refs.previewScrollArea.setScrollPosition(that.$refs.previewScrollArea.scrollSize, 300)
     })
+
+    document.addEventListener('keydown', this.registerKeyboardHotKey)
   },
   watch: {
     isSourceMode: function (val, oldVal) {

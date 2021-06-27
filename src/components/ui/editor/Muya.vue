@@ -2,7 +2,7 @@
   <div class='flex justify-center full-height full-width'>
     <div
       id='muya'
-      class='full-height full-width'
+      class='full-height full-width animated fadeIn'
       v-show='!isCurrentNoteLoading && dataLoaded'
       v-close-popup
     >
@@ -28,6 +28,10 @@ import ImagePathPicker from 'src/libs/muya/lib/ui/imagePicker'
 import ImageSelector from 'src/libs/muya/lib/ui/imageSelector'
 import FormatPicker from 'src/libs/muya/lib/ui/formatPicker'
 import FrontMenu from 'src/libs/muya/lib/ui/frontMenu'
+import ImageToolbar from 'src/libs/muya/lib/ui/imageToolbar'
+import LinkTools from 'src/libs/muya/lib/ui/linkTools'
+import TableBarTools from 'src/libs/muya/lib/ui/tableTools'
+// import * as FootNoteTools from 'src/libs/muya/lib/ui/footnoteTool'
 import debugLogger from 'src/utils/debugLogger'
 
 const {
@@ -72,7 +76,6 @@ export default {
         ? window.event.keyCode
         : window.event.which
       if (helper.isCtrl(e)) {
-        console.log(e)
         switch (key) {
           case 83:
             this.updateNote(this.contentEditor.getMarkdown())
@@ -98,9 +101,17 @@ export default {
       Muya.use(CodePicker)
       Muya.use(EmojiPicker)
       Muya.use(ImagePathPicker)
+      Muya.use(ImageToolbar)
       Muya.use(ImageSelector)
       Muya.use(FormatPicker)
       Muya.use(FrontMenu)
+      Muya.use(LinkTools, {
+        jumpClick: (linkInfo) => {
+          window.open(linkInfo.href)
+          console.log(linkInfo)
+        }
+      })
+      Muya.use(TableBarTools)
 
       this.contentEditor = new Muya(this.$refs.muya, {
         focusMode: true,
