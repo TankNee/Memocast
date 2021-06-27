@@ -3,8 +3,9 @@ import wizMarkdownParser from '@altairwei/wiz-markdown'
 import { i18n } from 'boot/i18n'
 import { Platform } from 'quasar'
 import TurndownService from 'turndown'
-import VditorPreview from 'vditor/dist/method.min'
 import cheerio from 'cheerio'
+import bus from 'components/bus'
+import events from 'src/constants/events'
 
 const turndownService = new TurndownService({
   codeBlockStyle: 'fenced',
@@ -269,56 +270,57 @@ function filterParentElement (dom, root, filterFn, self = false) {
 /**
  * 更新笔记目录数据结构
  * @param {HTMLElement} editorRootElement
+ * @deprecated
  */
-async function updateContentsList (editorRootElement) {
-  const list = []
-  for (let i = 0; i < editorRootElement.childElementCount; i++) {
-    const tagName = editorRootElement.children[i].tagName.toLowerCase()
-    // 如果是标题类的标签，那么就进行解析
-    if (/^h[1-6]$/.test(tagName)) {
-      // 解出标签的等级，h1到h6
-      const rank = parseInt(tagName[1], 10)
-      let innerText = editorRootElement.children[i].innerText
-      const titleHTML = await VditorPreview.md2html(innerText)
-      innerText = cheerio.load(titleHTML).text()
-
-      if (list.length) {
-        let target = list
-        for (let j = 1; j < rank; j++) {
-          if (target.length === 0 || rank === target[0].rank) {
-            break
-          } else if (!target[target.length - 1].children) {
-            target[target.length - 1].children = []
-          }
-          // 放到最后一个元素的子元素集合中
-          target = target[target.length - 1].children
-        }
-        target.push({
-          key: `${i}-${rank}`,
-          label: innerText,
-          element: editorRootElement.children[i],
-          selectable: true,
-          rank: rank
-        })
-      } else {
-        // 处理第一个标题元素
-        list.push({})
-        const item = list[list.length - 1]
-        for (let j = 0; j < rank; j++) {
-          if (j === rank - 1) {
-            // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
-            item.key = `${i}-${j}`
-            item.label = innerText
-            item.selectable = true
-            item.rank = rank
-            item.element = editorRootElement.children[i]
-          }
-        }
-      }
-    }
-  }
-  return list
-}
+// async function updateContentsList (editorRootElement) {
+//   const list = []
+//   for (let i = 0; i < editorRootElement.childElementCount; i++) {
+//     const tagName = editorRootElement.children[i].tagName.toLowerCase()
+//     // 如果是标题类的标签，那么就进行解析
+//     if (/^h[1-6]$/.test(tagName)) {
+//       // 解出标签的等级，h1到h6
+//       const rank = parseInt(tagName[1], 10)
+//       let innerText = editorRootElement.children[i].innerText
+//       const titleHTML = await VditorPreview.md2html(innerText)
+//       innerText = cheerio.load(titleHTML).text()
+//
+//       if (list.length) {
+//         let target = list
+//         for (let j = 1; j < rank; j++) {
+//           if (target.length === 0 || rank === target[0].rank) {
+//             break
+//           } else if (!target[target.length - 1].children) {
+//             target[target.length - 1].children = []
+//           }
+//           // 放到最后一个元素的子元素集合中
+//           target = target[target.length - 1].children
+//         }
+//         target.push({
+//           key: `${i}-${rank}`,
+//           label: innerText,
+//           element: editorRootElement.children[i],
+//           selectable: true,
+//           rank: rank
+//         })
+//       } else {
+//         // 处理第一个标题元素
+//         list.push({})
+//         const item = list[list.length - 1]
+//         for (let j = 0; j < rank; j++) {
+//           if (j === rank - 1) {
+//             // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
+//             item.key = `${i}-${j}`
+//             item.label = innerText
+//             item.selectable = true
+//             item.rank = rank
+//             item.element = editorRootElement.children[i]
+//           }
+//         }
+//       }
+//     }
+//   }
+//   return list
+// }
 
 /**
  * 根据key查找node对象
@@ -359,6 +361,105 @@ function generateRandomResult (targetArray) {
   return targetArray[rnd]
 }
 
+class Node {
+  constructor (item) {
+    const { parent, lvl, content, key } = item
+    this.parent = parent
+    this.lvl = lvl
+    this.label = content
+    this.key = key
+    this.handler = (v) => {
+      bus.$emit(events.SCROLL_TO_HEADER, v.key)
+    }
+    this.children = []
+  }
+
+  // Add child node.
+  addChild (node) {
+    this.children.push(node)
+  }
+}
+
+const findParent = (item, lastNode, rootNode) => {
+  if (!lastNode) {
+    return rootNode
+  }
+  const { lvl: lastLvl } = lastNode
+  const { lvl } = item
+
+  if (lvl < lastLvl) {
+    return findParent(item, lastNode.parent, rootNode)
+  } else if (lvl === lastLvl) {
+    return lastNode.parent
+  } else {
+    return lastNode
+  }
+}
+
+const updateContentsList = list => {
+  list = list.map(i => {
+    i.key = i.slug
+    delete i.slug
+    return i
+  })
+  const rootNode = new Node({ parent: null, lvl: null, content: null, key: null })
+  let lastNode = null
+
+  for (const item of list) {
+    const parent = findParent(item, lastNode, rootNode)
+
+    const node = new Node({ parent, ...item })
+    parent.addChild(node)
+    lastNode = node
+  }
+
+  return rootNode.children
+}
+
+const animatedScrollTo = function (element, to, duration, callback) {
+  const start = element.scrollTop
+  const change = to - start
+  const animationStart = +new Date()
+  let animating = true
+  let lastpos = null
+
+  const easeInOutQuad = function (t, b, c, d) {
+    t /= d / 2
+    if (t < 1) return c / 2 * t * t + b
+    t--
+    return -c / 2 * (t * (t - 2) - 1) + b
+  }
+
+  const animateScroll = function () {
+    console.log(element.scrollTop)
+    if (!animating) {
+      return
+    }
+    requestAnimationFrame(animateScroll)
+    const now = +new Date()
+    const val = Math.floor(easeInOutQuad(now - animationStart, start, change, duration))
+    if (lastpos) {
+      if (lastpos === element.scrollTop) {
+        lastpos = val
+        element.scrollTop = val
+      } else {
+        animating = false
+      }
+    } else {
+      lastpos = val
+      element.scrollTop = val
+    }
+    if (now > animationStart + duration) {
+      element.scrollTop = to
+      animating = false
+      if (callback) {
+        callback()
+      }
+    }
+  }
+  requestAnimationFrame(animateScroll)
+}
+
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
@@ -374,5 +475,6 @@ export default {
   isCtrl,
   filterParentElement,
   findNodeByNodeKey,
-  findNodeByNodeLabel
+  findNodeByNodeLabel,
+  animatedScrollTo
 }

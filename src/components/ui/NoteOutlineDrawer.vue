@@ -16,16 +16,13 @@
       :class="`exclude-header note-list${$q.dark.isActive ? '-dark' : ''} fit`"
     >
       <q-tree
-        :nodes='wrappedContentsList ? wrappedContentsList : []'
+        :nodes='contentsList ? contentsList : []'
         node-key='key'
         default-expand-all
         selected-color='secondary'
         class='non-selectable z-max'
         :selected.sync='selected'
         :expanded.sync='expanded'
-        @update:selected='v => {
-          this.nodeClickHandler(v)
-        }'
       />
       <!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
     </q-scroll-area>
@@ -75,17 +72,6 @@ export default {
         display: 'none'
       }
     },
-    wrappedContentsList () {
-      return this.contentsList?.map(c => {
-        const handler = v => {
-          this.nodeClickHandler(v.key)
-        }
-        return {
-          ...c,
-          handler
-        }
-      })
-    },
     ...mapGetters(['currentNote']),
     ...mapState(['contentsList'])
   },
@@ -105,6 +91,7 @@ export default {
       this.change(false)
     },
     nodeClickHandler: function (v) {
+      console.log(this.contentsList)
       const node = helper.findNodeByNodeKey(this.contentsList, v)
       bus.$emit(events.SCROLL_TO_HEADER, node)
     }
