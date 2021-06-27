@@ -201,16 +201,12 @@ module.exports = function (/* ctx */) {
           target: [
             'dmg'
           ],
-          electronLanguages: [
-            'en-US',
-            'zh-CN'
-          ]
         },
         win: {
           target: [
             'nsis'
           ],
-          legalTrademarks: 'Neeto Studio'
+          legalTrademarks: 'Memocast'
         },
         nsis: {
           perMachine: false,
@@ -221,7 +217,7 @@ module.exports = function (/* ctx */) {
           target: [
             'AppImage'
           ],
-          vendor: 'Neeto Studio'
+          vendor: 'Memocast'
         },
         files: [
           '**/*',
