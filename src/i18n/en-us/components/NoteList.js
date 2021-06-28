@@ -3,5 +3,7 @@ export default {
   createCategory: 'Create Category',
   noteTitle: 'Note.md',
   categoryName: 'Category Name',
-  deleteCategory: 'Delete This Category'
+  deleteCategory: 'Delete This Category',
+  import: 'Import',
+  RestrictedToMarkdown: 'Restricted to Markdown'
 }

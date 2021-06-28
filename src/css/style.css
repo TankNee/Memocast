@@ -155,6 +155,15 @@ body.body--dark {
 .neeto-icon-dark {
   color: #ffffff;
 }
+
+body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div.q-uploader.column.no-wrap.q-uploader--flat.no-shadow > div.q-uploader__header > div > div > div.q-uploader__subtitle{
+  display: none;
+}
+
+body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div.q-uploader.column.no-wrap.q-uploader--flat.no-shadow > div.q-uploader__list.scroll > div > div > div > div.q-uploader__subtitle.row.items-center.no-wrap {
+  display: none;
+}
+
 span[data-type='a']:not(.vditor-ir__node--expand) {
   /*padding-right: 25px;*/
   position: relative;
