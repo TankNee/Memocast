@@ -14,6 +14,8 @@ import * as monaco from 'monaco-editor'
 import { createNamespacedHelpers } from 'vuex'
 import debugLogger from 'src/utils/debugLogger'
 import helper from 'src/utils/helper'
+import bus from 'components/bus'
+import events from 'src/constants/events'
 
 const {
   mapGetters: mapServerGetters,
@@ -105,20 +107,9 @@ export default {
         }
       })
     },
-    registerKeyboardHotKey: function (e) {
-      if (!this.active) return
-      const key = window.event.keyCode
-        ? window.event.keyCode
-        : window.event.which
-      if (helper.isCtrl(e)) {
-        console.log(e)
-        switch (key) {
-          case 83:
-            this.updateNote(this.contentEditor.getValue())
-            break
-          default:
-            break
-        }
+    saveHandler: function () {
+      if (this.active && this.contentEditor) {
+        this.updateNote(this.contentEditor.getValue())
       }
     },
     getValue: function () {
@@ -128,7 +119,7 @@ export default {
   },
   mounted () {
     this.initMonaco()
-    document.addEventListener('keydown', this.registerKeyboardHotKey)
+    bus.$on(events.EDIT_SHORTCUT_CALL.save, this.saveHandler)
   },
   watch: {
     currentNote: function (currentData) {

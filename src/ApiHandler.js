@@ -48,11 +48,16 @@ export default {
     }).catch(err => throw err)
 
     handleApi('editor-edit-action', (event, { type }) => {
-      bus.$emit(events.EDIT_SHORTCUT_CALL, type)
+      bus.$emit(events.EDIT_SHORTCUT_CALL[type], type)
     }).catch(err => throw err)
 
     handleApi('editor-format-action', (event, { type }) => {
       bus.$emit(events.FORMAT_SHORTCUT_CALL, type)
+    }).catch(err => throw err)
+
+    handleApi('editor-view-action', (event, { type }) => {
+      console.log(type)
+      bus.$emit(events.VIEW_SHORTCUT_CALL[type], type)
     }).catch(err => throw err)
   },
   UnregisterApiHandler () {

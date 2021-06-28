@@ -169,20 +169,8 @@ export default {
     outlineDrawerChangeHandler: function (state) {
       this.isOutlineShow = state
     },
-    registerKeyboardHotKey: function (e) {
-      const key = window.event.keyCode
-        ? window.event.keyCode
-        : window.event.which
-      if (helper.isCtrl(e)) {
-        switch (key) {
-          case 190:
-            this.isSourceMode = !this.isSourceMode
-            // this.updateNote(this.contentEditor.getMarkdown())
-            break
-          default:
-            break
-        }
-      }
+    sourceModeHandler: function () {
+      this.isSourceMode = !this.isSourceMode
     }
   },
   mounted () {
@@ -196,21 +184,13 @@ export default {
         const DISTANCE = that.$refs.previewScrollArea.getScrollPosition() + top - STANDARD_Y
         that.$refs.previewScrollArea.setScrollPosition(DISTANCE, DURATION)
       }
-      // if (!item || !item.element || !that.$refs.previewScrollArea) return
-      // const rect = item.element.getBoundingClientRect()
-      // const top =
-      //   that.$refs.previewScrollArea.getScrollPosition() +
-      //   rect.top -
-      //   window.innerHeight * 0.065
-      // console.log(top, top)
-      // that.$refs.previewScrollArea.setScrollPosition(top, 300)
     })
 
     bus.$on(events.SCROLL_DOWN, () => {
       that.$refs.previewScrollArea.setScrollPosition(that.$refs.previewScrollArea.scrollSize, 300)
     })
 
-    document.addEventListener('keydown', this.registerKeyboardHotKey)
+    bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
   },
   watch: {
     isSourceMode: function (val, oldVal) {

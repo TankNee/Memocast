@@ -73,26 +73,56 @@ export default {
     getValue: function () {
       return this.contentEditor?.getMarkdown()
     },
-    registerKeyboardHotKey: function (e) {
-      if (!this.active) return
-      const key = window.event.keyCode
-        ? window.event.keyCode
-        : window.event.which
-      if (helper.isCtrl(e)) {
-        switch (key) {
-          case 83:
-            this.updateNote(this.contentEditor.getMarkdown())
-            break
-          case 90:
-            if (e.shiftKey) {
-              this.contentEditor.redo()
-            } else {
-              this.contentEditor.undo()
-            }
-            break
+    paragraphHandler: function (type) {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor.updateParagraph(type)
+      }
+    },
+    formatHandler: function (type) {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor.format(type)
+      }
+    },
+    editParagraphHandler: function (type) {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        switch (type) {
+          case 'duplicate': {
+            return this.contentEditor.duplicate()
+          }
+          case 'createParagraph': {
+            return this.contentEditor.insertParagraph('after', '', true)
+          }
+          case 'deleteParagraph': {
+            return this.contentEditor.deleteParagraph()
+          }
           default:
-            break
+            console.error(`Cannot recognize paragraph edit type: ${type}`)
         }
+      }
+    },
+    editCopyPasteHandler: function (type) {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor[type]()
+      }
+    },
+    saveHandler: function () {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.updateNote(this.contentEditor.getMarkdown())
+      }
+    },
+    selectAllHandler: function () {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor.selectAll()
+      }
+    },
+    undoHandler: function () {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor.undo()
+      }
+    },
+    redoHandler: function () {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor.redo()
       }
     },
     ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList']),
@@ -149,15 +179,19 @@ export default {
           bus.$emit(events.SCROLL_DOWN)
         }
       })
-      document.addEventListener('keydown', this.registerKeyboardHotKey)
 
-      bus.$on(events.PARAGRAPH_SHORTCUT_CALL, (type) => {
-        this.contentEditor.updateParagraph(type)
-      })
-
-      bus.$on(events.FORMAT_SHORTCUT_CALL, (type) => {
-        this.contentEditor.format(type)
-      })
+      bus.$on(events.PARAGRAPH_SHORTCUT_CALL, this.paragraphHandler)
+      bus.$on(events.FORMAT_SHORTCUT_CALL, this.formatHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.undo, this.editCopyPasteHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.redo, this.editCopyPasteHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.save, this.saveHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.copyAsMarkdown, this.editCopyPasteHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.copyAsHtml, this.editCopyPasteHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.pasteAsPlainText, this.editCopyPasteHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.duplicate, this.editParagraphHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.selectAll, this.selectAllHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.createParagraph, this.editParagraphHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.deleteParagraph, this.editParagraphHandler)
     })
   },
   watch: {

@@ -10,6 +10,7 @@ export default class KeyBindings {
       // Edit menu
       ['edit.undo', 'CmdOrCtrl+Z'],
       ['edit.redo', 'CmdOrCtrl+Shift+Z'],
+      ['edit.save', 'CmdOrCtrl+S'],
       ['edit.cut', 'CmdOrCtrl+X'],
       ['edit.copy', 'CmdOrCtrl+C'],
       ['edit.paste', 'CmdOrCtrl+V'],
@@ -19,13 +20,6 @@ export default class KeyBindings {
       ['edit.duplicate', 'CmdOrCtrl+Alt+D'],
       ['edit.create-paragraph', 'Shift+CmdOrCtrl+N'],
       ['edit.delete-paragraph', 'Shift+CmdOrCtrl+D'],
-      ['edit.find', 'CmdOrCtrl+F'],
-      ['edit.find-next', isMac ? 'Cmd+G' : 'F3'],
-      ['edit.find-previous', isMac ? 'Cmd+Shift+G' : 'Shift+F3'],
-      ['edit.replace', 'CmdOrCtrl+Alt+F'],
-      ['edit.find-in-folder', 'Shift+CmdOrCtrl+F'],
-      ['edit.aidou', 'CmdOrCtrl+/'],
-      ['edit.screenshot', 'CmdOrCtrl+Alt+A'], // macOS only
 
       // Paragraph menu
       ['paragraph.heading-1', 'CmdOrCtrl+1'],
@@ -59,7 +53,11 @@ export default class KeyBindings {
       ['format.strike', 'CmdOrCtrl+D'],
       ['format.hyperlink', 'CmdOrCtrl+L'],
       ['format.image', 'CmdOrCtrl+Shift+I'],
-      ['format.clear-format', 'Shift+CmdOrCtrl+R']
+      ['format.clear-format', 'Shift+CmdOrCtrl+R'],
+      // View Shortcut
+      ['view.switch-view', 'CmdOrCtrl+,'],
+      ['view.source-mode', 'CmdOrCtrl+.'],
+      ['view.lock-mode', 'CmdOrCtrl+Shift+L']
     ])
   }
 

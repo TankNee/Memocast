@@ -16,6 +16,12 @@ export default function (keybindings) {
         actions.edit(browserWindow, 'redo')
       }
     }, {
+      label: 'Save',
+      accelerator: keybindings.getAccelerator('edit.save'),
+      click (menuItem, browserWindow) {
+        actions.edit(browserWindow, 'save')
+      }
+    }, {
       type: 'separator'
     }, {
       label: 'Cut',
