@@ -32,7 +32,6 @@ import ImageToolbar from 'src/libs/muya/lib/ui/imageToolbar'
 import LinkTools from 'src/libs/muya/lib/ui/linkTools'
 import TableBarTools from 'src/libs/muya/lib/ui/tableTools'
 import Transformer from 'src/libs/muya/lib/ui/transformer'
-// import * as FootNoteTools from 'src/libs/muya/lib/ui/footnoteTool'
 import debugLogger from 'src/utils/debugLogger'
 
 const {
@@ -41,7 +40,10 @@ const {
   mapActions: mapServerActions
 } = createNamespacedHelpers('server')
 
-const { mapState: mapClientState } = createNamespacedHelpers('client')
+const {
+  mapState: mapClientState,
+  mapActions: mapClietnActions
+} = createNamespacedHelpers('client')
 export default {
   name: 'Muya',
   props: {
@@ -93,7 +95,8 @@ export default {
         }
       }
     },
-    ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList'])
+    ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList']),
+    ...mapClietnActions(['importImagesFromLocal'])
   },
   created () {
     this.$nextTick(() => {
@@ -116,12 +119,18 @@ export default {
 
       this.contentEditor = new Muya(this.$refs.muya, {
         imagePathPicker: () => {
-          const paths = this.$q.electron.remote.dialog.showOpenDialogSync({
-            title: 'Import Images' // TODO: translation
+          return new Promise((resolve, reject) => {
+            this.importImagesFromLocal().then(paths => {
+              resolve(paths ? paths[0] : '')
+              debugLogger.Info(paths)
+            }).catch(err => {
+              debugLogger.Error(err)
+            })
           })
-          // TODO: 增加一个上传选项
-          console.log(paths)
-          return paths ? paths[0] : null
+          // const paths = this.importImagesFromLocal()
+          // // TODO: 增加一个上传选项
+          // console.log(paths)
+          // return paths ? paths[0] : null
         }
       })
 
@@ -141,20 +150,15 @@ export default {
         }
       })
       document.addEventListener('keydown', this.registerKeyboardHotKey)
-    })
 
-    // bus.$on(events.SCROLL_TO_HEADER, item => {
-    //   const anchor = document.querySelector(`#${item}`)
-    //   const { container } = this.contentEditor
-    //   if (anchor) {
-    //     const { y } = anchor.getBoundingClientRect()
-    //     const DURATION = 300
-    //     const STANDAR_Y = window.innerHeight * 0.065
-    //     const DISTANCE = container.scrollTop + y - STANDAR_Y
-    //     console.log(DISTANCE)
-    //     helper.animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, DURATION)
-    //   }
-    // })
+      bus.$on(events.PARAGRAPH_SHORTCUT_CALL, (type) => {
+        this.contentEditor.updateParagraph(type)
+      })
+
+      bus.$on(events.FORMAT_SHORTCUT_CALL, (type) => {
+        this.contentEditor.format(type)
+      })
+    })
   },
   watch: {
     currentNote: function (currentData) {

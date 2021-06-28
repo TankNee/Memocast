@@ -128,6 +128,10 @@ class ImageToolbar extends BaseFloat {
         })
         return this.hide()
       }
+      case 'upload': {
+        // TODO Upload local image
+        return this.hide()
+      }
       case 'inline':
       case 'left':
       case 'center':

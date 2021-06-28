@@ -8,5 +8,8 @@ export default {
   INSERT_TEXT: 'insert.text',
   SAVE_NOTE: 'save.note',
   SCROLL_TO_HEADER: 'scroll.to.header',
-  SCROLL_DOWN: 'scroll.down'
+  SCROLL_DOWN: 'scroll.down',
+  PARAGRAPH_SHORTCUT_CALL: 'paragraph.shortcut.call',
+  EDIT_SHORTCUT_CALL: 'edit.shortcut.call',
+  FORMAT_SHORTCUT_CALL: 'format.shortcut.call'
 }

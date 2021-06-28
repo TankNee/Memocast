@@ -1,9 +1,11 @@
-import { app, BrowserWindow, nativeTheme, dialog, shell, protocol } from 'electron'
-import Api from './Api'
+import { app, BrowserWindow, nativeTheme, dialog, shell, protocol, Menu } from 'electron'
+import Api from './api'
 import windowStateKeeper from 'electron-window-state'
 import unhandled from 'electron-unhandled'
+import configureMenu from './menu/templates'
 
 import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
+import KeyBindings from './keyboard/shortcut'
 
 const { registerApiHandler } = Api
 unhandled({
@@ -78,6 +80,11 @@ function createWindow () {
       console.error('Failed to register protocol')
     }
   })
+  if (!process.env.PROD) {
+    mainWindow.webContents.openDevTools()
+  }
+  const menu = Menu.buildFromTemplate(configureMenu(new KeyBindings()))
+  Menu.setApplicationMenu(menu)
 
   mainWindow.isMainWindow = true
   mainWindowState.manage(mainWindow)

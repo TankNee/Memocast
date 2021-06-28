@@ -93,6 +93,10 @@ export default {
         fontFamily: 'JetBrains Mono, Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial, sans-serif, Microsoft YaHei'
       })
       this.contentEditor.onKeyDown(e => {
+        if (!this.active) {
+          e.preventDefault()
+          return
+        }
         const curData = this.contentEditor.getValue()
         if (curData !== this.currentNote) {
           this.updateNoteState('changed')
