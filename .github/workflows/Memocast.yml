@@ -34,6 +34,8 @@ jobs:
         run: |
           npm install
           npm run build-publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Rename Package
         run: |
           cd dist/electron/Packaged
@@ -62,6 +64,8 @@ jobs:
         run: |
           npm install
           npm run build-publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Rename Package
         run: |
           cd dist/electron/Packaged
@@ -90,42 +94,43 @@ jobs:
         run: |
           npm install
           npm run build-publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Rename Package
         run: |
           cd dist/electron/Packaged
-          ls
-          cp M*.dmg Memocast-darwin.dmg
+          cp Memocast*.dmg Memocast-darwin.dmg
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
           path: dist/electron/Packaged/Memocast-darwin.dmg
-  release:
-    needs: [build-windows, build-linux, build-mac]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Download pre-built packages for Linux
-        uses: actions/download-artifact@v1
-        with:
-          name: Linux_Dist
-          path: artifacts
-      - name: Download pre-built packages for Windows
-        uses: actions/download-artifact@v1
-        with:
-          name: Windows_Dist
-          path: artifacts
-      - name: Download pre-built packages for MacOS
-        uses: actions/download-artifact@v1
-        with:
-          name: MacOS_Dist
-          path: artifacts
-      - name: Create Release
-        id: create_release
-        uses: ncipollo/release-action@v1
-        with:
-          name: Memocast
-          token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "artifacts/*"
-          draft: true
-          prerelease: true
+#  release:
+#    needs: [build-windows, build-linux, build-mac]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v1
+#      - name: Download pre-built packages for Linux
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: Linux_Dist
+#          path: artifacts
+#      - name: Download pre-built packages for Windows
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: Windows_Dist
+#          path: artifacts
+#      - name: Download pre-built packages for MacOS
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: MacOS_Dist
+#          path: artifacts
+#      - name: Create Release
+#        id: create_release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          name: Memocast
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          artifacts: "artifacts/*"
+#          draft: true
+#          prerelease: true

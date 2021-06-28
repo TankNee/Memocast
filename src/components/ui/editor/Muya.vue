@@ -131,6 +131,7 @@ export default {
         // eslint-disable-next-line eqeqeq
         if (curData != this.currentNote) {
           this.updateNoteState('changed')
+          this.updateContentsList(this.contentEditor.getTOC())
         } else {
           this.updateNoteState('default')
         }
@@ -141,15 +142,28 @@ export default {
       })
       document.addEventListener('keydown', this.registerKeyboardHotKey)
     })
+
+    // bus.$on(events.SCROLL_TO_HEADER, item => {
+    //   const anchor = document.querySelector(`#${item}`)
+    //   const { container } = this.contentEditor
+    //   if (anchor) {
+    //     const { y } = anchor.getBoundingClientRect()
+    //     const DURATION = 300
+    //     const STANDAR_Y = window.innerHeight * 0.065
+    //     const DISTANCE = container.scrollTop + y - STANDAR_Y
+    //     console.log(DISTANCE)
+    //     helper.animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, DURATION)
+    //   }
+    // })
   },
   watch: {
     currentNote: function (currentData) {
       try {
         this.contentEditor.setMarkdown(currentData)
-        this.updateContentsList(document.getElementById('ag-editor-id'))
+        this.updateContentsList(this.contentEditor.getTOC())
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
-        debugLogger.Error(e.message)
+        debugLogger.Error(e, e.message)
       }
     },
     enablePreviewEditor: function (val) {
@@ -158,6 +172,7 @@ export default {
     },
     data: function (val) {
       this.contentEditor.setMarkdown(val)
+      this.updateContentsList(this.contentEditor.getTOC())
     }
   }
 }

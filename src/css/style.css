@@ -198,29 +198,6 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
   color: #ffffff;
 }
 
-span[data-type='a']:not(.vditor-ir__node--expand) {
-  /*padding-right: 25px;*/
-  position: relative;
-  cursor: pointer;
-}
-
-span[data-type='a']:not(.vditor-ir__node--expand):hover {
-  padding-right: 25px;
-}
-
-span[data-type='a']:not(.vditor-ir__node--expand):hover:after {
-  display: inline;
-  content: '';
-  width: 20px;
-  height: 20px;
-  background: url(./link.svg) no-repeat center center;
-  background-size: 18px 18px;
-  position: absolute;
-  right: 3px;
-  bottom: 0;
-  cursor: pointer;
-}
-
 .tag-tooltip {
   max-width: 500px;
   word-break: normal;

@@ -188,13 +188,22 @@ export default {
   mounted () {
     const that = this
     bus.$on(events.SCROLL_TO_HEADER, item => {
-      if (!item || !item.element || !that.$refs.previewScrollArea) return
-      const rect = item.element.getBoundingClientRect()
-      const top =
-        that.$refs.previewScrollArea.getScrollPosition() +
-        rect.top -
-        window.innerHeight * 0.065
-      that.$refs.previewScrollArea.setScrollPosition(top, 300)
+      const anchor = document.querySelector(`#${item}`)
+      if (anchor) {
+        const { top } = anchor.getBoundingClientRect()
+        const DURATION = 300
+        const STANDARD_Y = window.innerHeight * 0.065
+        const DISTANCE = that.$refs.previewScrollArea.getScrollPosition() + top - STANDARD_Y
+        that.$refs.previewScrollArea.setScrollPosition(DISTANCE, DURATION)
+      }
+      // if (!item || !item.element || !that.$refs.previewScrollArea) return
+      // const rect = item.element.getBoundingClientRect()
+      // const top =
+      //   that.$refs.previewScrollArea.getScrollPosition() +
+      //   rect.top -
+      //   window.innerHeight * 0.065
+      // console.log(top, top)
+      // that.$refs.previewScrollArea.setScrollPosition(top, 300)
     })
 
     bus.$on(events.SCROLL_DOWN, () => {
