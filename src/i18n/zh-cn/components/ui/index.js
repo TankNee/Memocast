@@ -6,6 +6,7 @@ import VditorContextMenu from 'src/i18n/zh-cn/components/ui/VditorContextMenu'
 import ImageUploadServiceDialog from 'src/i18n/zh-cn/components/ui/ImageUploadServiceDialog'
 import NoteItem from 'src/i18n/zh-cn/components/ui/NoteItem'
 import TagDialog from 'src/i18n/zh-cn/components/ui/TagDialog'
+import QuickInsert from 'src/i18n/zh-cn/components/ui/QuickInsert'
 export default {
   ...LoginDialog,
   ...SettingsDialog,
@@ -14,5 +15,6 @@ export default {
   ...VditorContextMenu,
   ...ImageUploadServiceDialog,
   ...NoteItem,
-  ...TagDialog
+  ...TagDialog,
+  ...QuickInsert
 }

@@ -54,8 +54,8 @@ class QuickInsert extends BaseScrollFloat {
           }))
 
           const description = h('div.description', [
-            h('div.big-title', title),
-            h('div.sub-title', subTitle)
+            h('div.big-title', title()),
+            h('div.sub-title', subTitle())
           ])
           const shortCutVnode = h('div.short-cut', [
             h('span', shortCut)
