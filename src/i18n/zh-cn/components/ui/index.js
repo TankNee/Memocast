@@ -7,6 +7,9 @@ import ImageUploadServiceDialog from 'src/i18n/zh-cn/components/ui/ImageUploadSe
 import NoteItem from 'src/i18n/zh-cn/components/ui/NoteItem'
 import TagDialog from 'src/i18n/zh-cn/components/ui/TagDialog'
 import QuickInsert from 'src/i18n/zh-cn/components/ui/QuickInsert'
+import ImageToolbar from 'src/i18n/zh-cn/components/ui/ImageToolbar'
+import FormatPicker from 'src/i18n/zh-cn/components/ui/FormatPicker'
+import FrontMenu from 'src/i18n/zh-cn/components/ui/FrontMenu'
 export default {
   ...LoginDialog,
   ...SettingsDialog,
@@ -16,5 +19,8 @@ export default {
   ...ImageUploadServiceDialog,
   ...NoteItem,
   ...TagDialog,
-  ...QuickInsert
+  ...QuickInsert,
+  ...ImageToolbar,
+  ...FormatPicker,
+  ...FrontMenu
 }

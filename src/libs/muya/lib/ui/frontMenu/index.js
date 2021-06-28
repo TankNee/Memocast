@@ -108,7 +108,7 @@ class FrontMenu extends BaseFloat {
           'background-size': '100%'
         }
       }))
-      const textWrapper = h('span', text)
+      const textWrapper = h('span', text())
       const shortCutWrapper = h('div.short-cut', [
         h('span', shortCut)
       ])

@@ -81,7 +81,7 @@ class ImageToolbar extends BaseFloat {
             this.selectItem(event, i)
           }
         }
-      }, [h('div.tooltip', i.tooltip), iconWrapper])
+      }, [h('div.tooltip', i.tooltip()), iconWrapper])
     })
 
     const vnode = h('ul', children)

@@ -4,36 +4,37 @@ import leftIcon from '../../assets/pngicon/algin_left/2.png'
 import middleIcon from '../../assets/pngicon/algin_center/2.png'
 import rightIcon from '../../assets/pngicon/algin_right/2.png'
 import deleteIcon from '../../assets/pngicon/image_delete/2.png'
+import { i18n } from 'boot/i18n'
 
 const icons = [
   {
     type: 'edit',
-    tooltip: 'Edit Image',
+    tooltip: () => i18n.t('editImage'),
     icon: editIcon
   },
   {
     type: 'inline',
-    tooltip: 'Inline Image',
+    tooltip: () => i18n.t('inlineImage'),
     icon: inlineIcon
   },
   {
     type: 'left',
-    tooltip: 'Align Left',
+    tooltip: () => i18n.t('alignLeft'),
     icon: leftIcon
   },
   {
     type: 'center',
-    tooltip: 'Align Middle',
+    tooltip: () => i18n.t('alignMiddle'),
     icon: middleIcon
   },
   {
     type: 'right',
-    tooltip: 'Align Right',
+    tooltip: () => i18n.t('alignRight'),
     icon: rightIcon
   },
   {
     type: 'delete',
-    tooltip: 'Remove Image',
+    tooltip: () => i18n.t('removeImage'),
     icon: deleteIcon
   }
 ]
