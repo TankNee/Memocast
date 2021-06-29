@@ -11,6 +11,7 @@ const turndownService = new TurndownService({
   codeBlockStyle: 'fenced',
   headingStyle: 'atx'
 })
+
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
   return _.isNull(obj) || _.isEmpty(obj)
@@ -231,6 +232,7 @@ function generateTagNodeTree (tags = []) {
   result.forEach(t => seekLeafTags(t))
   return result
 }
+
 /**
  * 获取文件的拓展名
  * @param filePath 文件路径
@@ -251,107 +253,6 @@ function isCtrl (event) {
   }
   return !event.metaKey && event.ctrlKey
 }
-function filterParentElement (dom, root, filterFn, self = false) {
-  if (dom) {
-    let parent = self ? dom : dom.parentElement
-    while (parent) {
-      if (parent === root) {
-        break
-      }
-      if (filterFn(parent)) {
-        return parent
-      }
-      parent = parent.parentElement
-    }
-  }
-  return null
-}
-
-/**
- * 更新笔记目录数据结构
- * @param {HTMLElement} editorRootElement
- * @deprecated
- */
-// async function updateContentsList (editorRootElement) {
-//   const list = []
-//   for (let i = 0; i < editorRootElement.childElementCount; i++) {
-//     const tagName = editorRootElement.children[i].tagName.toLowerCase()
-//     // 如果是标题类的标签，那么就进行解析
-//     if (/^h[1-6]$/.test(tagName)) {
-//       // 解出标签的等级，h1到h6
-//       const rank = parseInt(tagName[1], 10)
-//       let innerText = editorRootElement.children[i].innerText
-//       const titleHTML = await VditorPreview.md2html(innerText)
-//       innerText = cheerio.load(titleHTML).text()
-//
-//       if (list.length) {
-//         let target = list
-//         for (let j = 1; j < rank; j++) {
-//           if (target.length === 0 || rank === target[0].rank) {
-//             break
-//           } else if (!target[target.length - 1].children) {
-//             target[target.length - 1].children = []
-//           }
-//           // 放到最后一个元素的子元素集合中
-//           target = target[target.length - 1].children
-//         }
-//         target.push({
-//           key: `${i}-${rank}`,
-//           label: innerText,
-//           element: editorRootElement.children[i],
-//           selectable: true,
-//           rank: rank
-//         })
-//       } else {
-//         // 处理第一个标题元素
-//         list.push({})
-//         const item = list[list.length - 1]
-//         for (let j = 0; j < rank; j++) {
-//           if (j === rank - 1) {
-//             // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
-//             item.key = `${i}-${j}`
-//             item.label = innerText
-//             item.selectable = true
-//             item.rank = rank
-//             item.element = editorRootElement.children[i]
-//           }
-//         }
-//       }
-//     }
-//   }
-//   return list
-// }
-
-/**
- * 根据key查找node对象
- * @param {node[]} nodeList
- * @param {string} key
- * @returns {null|*}
- */
-function findNodeByNodeKey (nodeList, key) {
-  for (let i = 0; i < nodeList.length; i++) {
-    if (nodeList[i].key === key) return nodeList[i]
-    if (!nodeList[i].children) continue
-    const node = findNodeByNodeKey(nodeList[i].children, key)
-    if (node) return node
-  }
-  return null
-}
-/**
- * 根据label查找node对象
- * @param {node[]} nodeList
- * @param {string} label
- * @returns {null|*}
- */
-function findNodeByNodeLabel (nodeList, label) {
-  for (let i = 0; i < nodeList.length; i++) {
-    if (nodeList[i].label.replace(/\s/g, '') === label) return nodeList[i]
-    if (!nodeList[i].children) continue
-    const node = findNodeByNodeLabel(nodeList[i].children, label)
-    if (node) return node
-  }
-  return null
-}
 
 /**
  * @param {{}[]} targetArray
@@ -361,12 +262,36 @@ function generateRandomResult (targetArray) {
   return targetArray[rnd]
 }
 
+/**
+ * extract content
+ * @param {string} markdown
+ * @returns {string}
+ */
+function extractMarkdownContent (markdown) {
+  const linkPattern = /!?\[(.*)\]\(.*\)/
+  const emphasizePattern = /\*?(.*)\*?/
+  if (linkPattern.test(markdown)) {
+    const matches = markdown.match(linkPattern)
+    markdown = matches[1]
+  }
+  if (emphasizePattern.test(markdown)) {
+    const matches = markdown.match(emphasizePattern)
+    markdown = matches[1]
+  }
+  return markdown
+}
+
 class Node {
   constructor (item) {
-    const { parent, lvl, content, key } = item
+    const {
+      parent,
+      lvl,
+      content,
+      key
+    } = item
     this.parent = parent
     this.lvl = lvl
-    this.label = content
+    this.label = extractMarkdownContent(content || '')
     this.key = key
     this.handler = (v) => {
       bus.$emit(events.SCROLL_TO_HEADER, v.key)
@@ -402,7 +327,12 @@ const updateContentsList = list => {
     delete i.slug
     return i
   })
-  const rootNode = new Node({ parent: null, lvl: null, content: null, key: null })
+  const rootNode = new Node({
+    parent: null,
+    lvl: null,
+    content: null,
+    key: null
+  })
   let lastNode = null
 
   for (const item of list) {
@@ -414,50 +344,6 @@ const updateContentsList = list => {
   }
 
   return rootNode.children
-}
-
-const animatedScrollTo = function (element, to, duration, callback) {
-  const start = element.scrollTop
-  const change = to - start
-  const animationStart = +new Date()
-  let animating = true
-  let lastpos = null
-
-  const easeInOutQuad = function (t, b, c, d) {
-    t /= d / 2
-    if (t < 1) return c / 2 * t * t + b
-    t--
-    return -c / 2 * (t * (t - 2) - 1) + b
-  }
-
-  const animateScroll = function () {
-    console.log(element.scrollTop)
-    if (!animating) {
-      return
-    }
-    requestAnimationFrame(animateScroll)
-    const now = +new Date()
-    const val = Math.floor(easeInOutQuad(now - animationStart, start, change, duration))
-    if (lastpos) {
-      if (lastpos === element.scrollTop) {
-        lastpos = val
-        element.scrollTop = val
-      } else {
-        animating = false
-      }
-    } else {
-      lastpos = val
-      element.scrollTop = val
-    }
-    if (now > animationStart + duration) {
-      element.scrollTop = to
-      animating = false
-      if (callback) {
-        callback()
-      }
-    }
-  }
-  requestAnimationFrame(animateScroll)
 }
 
 export default {
@@ -472,9 +358,5 @@ export default {
   displayDateElegantly,
   updateContentsList,
   getFileNameWithExt,
-  isCtrl,
-  filterParentElement,
-  findNodeByNodeKey,
-  findNodeByNodeLabel,
-  animatedScrollTo
+  isCtrl
 }

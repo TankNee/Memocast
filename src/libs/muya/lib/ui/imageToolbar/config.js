@@ -3,6 +3,7 @@ import inlineIcon from '../../assets/pngicon/inline_image/2.png'
 import leftIcon from '../../assets/pngicon/algin_left/2.png'
 import middleIcon from '../../assets/pngicon/algin_center/2.png'
 import rightIcon from '../../assets/pngicon/algin_right/2.png'
+import uploadIcon from '../../assets/pngicon/upload/3.png'
 import deleteIcon from '../../assets/pngicon/image_delete/2.png'
 import { i18n } from 'boot/i18n'
 
@@ -32,6 +33,11 @@ const icons = [
     tooltip: () => i18n.t('alignRight'),
     icon: rightIcon
   },
+  // {
+  //   type: 'upload',
+  //   tooltip: 'Upload Image',
+  //   icon: uploadIcon
+  // },
   {
     type: 'delete',
     tooltip: () => i18n.t('removeImage'),

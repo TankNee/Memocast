@@ -779,8 +779,3 @@ figure[data-role] svg use[fill="black"] {
 figure[data-role] svg use[fill="#000000"] {
   fill: var(--editorColor);
 }
-
-/*
- * Prism.js theme
- */
-@import url("prismjs/light.theme.css");

@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron'
 import { Notify } from 'quasar'
+import bus from 'components/bus'
+import events from 'src/constants/events'
 
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
@@ -39,6 +41,23 @@ export default {
         message: msg,
         icon: icon
       })
+    }).catch(err => throw err)
+
+    handleApi('editor-paragraph-action', (event, { type }) => {
+      bus.$emit(events.PARAGRAPH_SHORTCUT_CALL, type)
+    }).catch(err => throw err)
+
+    handleApi('editor-edit-action', (event, { type }) => {
+      bus.$emit(events.EDIT_SHORTCUT_CALL[type], type)
+    }).catch(err => throw err)
+
+    handleApi('editor-format-action', (event, { type }) => {
+      bus.$emit(events.FORMAT_SHORTCUT_CALL, type)
+    }).catch(err => throw err)
+
+    handleApi('editor-view-action', (event, { type }) => {
+      console.log(type)
+      bus.$emit(events.VIEW_SHORTCUT_CALL[type], type)
     }).catch(err => throw err)
   },
   UnregisterApiHandler () {

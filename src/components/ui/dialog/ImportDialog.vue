@@ -1,41 +1,41 @@
 <template>
   <q-dialog ref="dialog" persistent>
     <q-card>
-      <q-file v-model="file" label="Restricted to Markdown" accept=".md"/>
+      <q-uploader :label="$t('restrictedToMarkdown')" multiple accept=".md" flat :factory="factoryFn"/>
       <q-card-actions align="right">
-        <q-btn flat label="Cancel" color="primary" v-close-popup />
-        <q-btn flat label="Ok" color="primary" v-close-popup @click="handleImport"/>
+        <q-btn flat :label="$t('cancel')" color="primary" v-close-popup />
       </q-card-actions>
       </q-card>
   </q-dialog>
 </template>
-
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import { Notify } from 'quasar'
 const { mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'ImportDialog',
-  data () {
-    return {
-      file: null
-    }
-  },
   methods: {
     ...mapActions(['importNote']),
     toggle: function () {
       return this.$refs.dialog.toggle()
     },
-    handleImport: function () {
-      this.$q.loading.show({
-        message: '上传中'
+    factoryFn (files) {
+      files.forEach(file => {
+        try {
+          this.importNote(file)
+          Notify.create({
+            color: 'primary',
+            icon: 'check',
+            message: this.$t('uploadNoteSuccessfully')
+          })
+        } catch (e) {
+          Notify.create({
+            color: 'red-10',
+            icon: 'error',
+            message: this.$t('uploadNoteError')
+          })
+        }
       })
-      try {
-        this.importNote(this.file)
-        this.$q.notify('导入成功')
-        this.$q.loading.hide()
-      } catch (e) {
-        this.$q.notify('错误')
-      }
     }
   }
 }

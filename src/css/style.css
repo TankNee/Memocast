@@ -44,7 +44,7 @@ body.body {
 }
 
 body.body--dark {
-  background: #2d2d2d !important;
+  background: #34383e !important;
 }
 
 .text-h7 {
@@ -77,11 +77,6 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
   mso-foreground: #1c1c1c;
 }
 
-.vditor-toolbar {
-  border: none !important;
-  display: none;
-}
-
 /*Note Item CSS*/
 .note-item,
 .note-item-dark {
@@ -90,7 +85,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .note-item-dark {
-  background-color: #2d2d2d;
+  background-color: #34383e;
 }
 
 .active-note-item,
@@ -100,7 +95,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .active-note-item-dark {
-  background-color: #393939;
+  background-color: #1c232b;
 }
 
 .note-list {
@@ -108,7 +103,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .note-list-dark {
-  background-color: #2d2d2d;
+  background-color: #34383e;
 }
 
 .note-list,
@@ -126,7 +121,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .note-card-dark {
-  border-bottom: 1px solid #262626;
+  border-bottom: 1px solid #35373e;
 }
 
 .note-item-title,
@@ -196,6 +191,14 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 
 .neeto-icon-dark {
   color: #ffffff;
+}
+
+body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div.q-uploader.column.no-wrap.q-uploader--flat.no-shadow > div.q-uploader__header > div > div > div.q-uploader__subtitle{
+  display: none;
+}
+
+body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div.q-uploader.column.no-wrap.q-uploader--flat.no-shadow > div.q-uploader__list.scroll > div > div > div > div.q-uploader__subtitle.row.items-center.no-wrap {
+  display: none;
 }
 
 .tag-tooltip {

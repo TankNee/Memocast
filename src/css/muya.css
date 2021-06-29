@@ -2,7 +2,7 @@
 :root {
   --titleBarHeight: 32px;
   --editorAreaWidth: 90%;
-
+  --backgroundColor: #35373e;
   /*editor*/
   /*Theme color cluster*/
   --themeColor: rgba(33, 181, 111, 1);
