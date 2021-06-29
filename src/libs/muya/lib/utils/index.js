@@ -270,7 +270,7 @@ export const getImageInfo = (src, baseUrl = window.DIRNAME) => {
       // Correct relative path on desktop. If we resolve a absolute path "path.resolve" doesn't do anything.
       return {
         isUnknownType: false,
-        src: 'file://' + require('path').resolve(baseUrl, src)
+        src: 'file://' + require('path').resolve(baseUrl ? baseUrl : "", src)
       }
     }
   } else if (isUrl && !imageExtension) {

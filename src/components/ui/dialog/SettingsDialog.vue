@@ -111,40 +111,6 @@
                         </template>
                       </q-select>
                     </div>
-                    <div class='text-h5 q-mb-md setting-item'>
-                      <span>{{ $t('codeTheme') }}</span>
-                      <q-icon
-                        name='launch'
-                        color='primary'
-                        style='margin-left: 5px'
-                        class='cursor-pointer'
-                        @click="
-                        () =>
-                          $q.electron.shell.openExternal(
-                            'https://xyproto.github.io/splash/docs/longer/all.html?utm_source=ld246.com'
-                          )
-                      "
-                      />
-                    </div>
-                    <q-separator />
-                    <div class='text-h6 q-mb-md setting-item'>
-                      <span>{{ $t('lightCodeTheme') }}</span>
-                      <q-select
-                        :value='lightCodeTheme'
-                        :options='codethems'
-                        @input='v => codeThemeChangeHandler(v, true)'
-                      >
-                      </q-select>
-                    </div>
-                    <div class='text-h6 q-mb-md setting-item'>
-                      <span>{{ $t('darkCodeTheme') }}</span>
-                      <q-select
-                        :value='darkCodeTheme'
-                        :options='codethems'
-                        @input='v => codeThemeChangeHandler(v, false)'
-                      >
-                      </q-select>
-                    </div>
                   </div>
                 </q-tab-panel>
 
@@ -191,7 +157,6 @@ import { createNamespacedHelpers } from 'vuex'
 import ImageUploadServiceDialog from './ImageUploadServiceDialog'
 import { i18n } from 'boot/i18n'
 import { version } from '../../../../package.json'
-import codethems from '../../../constants/codethems'
 import VditorPreview from 'vditor/dist/method.min'
 
 const {
@@ -220,8 +185,6 @@ export default {
       'darkMode',
       'markdownOnly',
       'imageUploadService',
-      'lightCodeTheme',
-      'darkCodeTheme',
       'flomoApiUrl'
     ]),
     languageOptions: function () {
@@ -233,9 +196,6 @@ export default {
         this.$t('customWebUploadService'),
         this.$t('smmsImageUploadService')
       ]
-    },
-    codethems: function () {
-      return codethems
     }
   },
   methods: {
@@ -254,13 +214,6 @@ export default {
         i => this.$t(i) === service
       )
       this.updateStateAndStore({ imageUploadService: servicePlain })
-    },
-    codeThemeChangeHandler: function (v, light) {
-      if (light) {
-        this.updateStateAndStore({ lightCodeTheme: v })
-      } else {
-        this.updateStateAndStore({ darkCodeTheme: v })
-      }
     },
     checkUpdateHandler: async function () {
       // eslint-disable-next-line camelcase

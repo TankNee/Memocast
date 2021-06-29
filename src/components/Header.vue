@@ -195,6 +195,8 @@ import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
 import defaultAvatarBase64 from 'src/assets/default-avatar'
 import TagDialog from 'components/ui/dialog/TagDialog'
+import bus from 'components/bus'
+import events from 'src/constants/events'
 const {
   mapState: mapServerState,
   mapGetters: mapServerGetters,
@@ -306,6 +308,12 @@ export default {
         value: !this.noteListVisible
       })
     },
+    lockModeHandler: function () {
+      this.toggleChanged({
+        key: 'enablePreviewEditor',
+        value: !this.enablePreviewEditor
+      })
+    },
     clearInputHandler: function () {
       this.searchText = ''
       this.getCategoryNotes({ category: this.currentCategory })
@@ -322,6 +330,8 @@ export default {
     if (!this.autoLogin && !this.isLogin) {
       this.$refs.loginDialog.toggle()
     }
+    bus.$on(events.VIEW_SHORTCUT_CALL.switchView, this.switchViewHandler)
+    bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
   },
   watch: {
     isLogin: function (currentData) {

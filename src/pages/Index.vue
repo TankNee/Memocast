@@ -56,7 +56,7 @@
               @click.stop='$refs.outlineDrawer.show'
               size='24px'
               color='#26A69A'
-              v-show='dataLoaded && contentsListLoaded && !isOutlineShow'
+              v-show='dataLoaded && contentsListLoaded && !isOutlineShow && !isSourceMode'
               v-ripple
               key='format_align_center'
             />
@@ -168,23 +168,29 @@ export default {
     },
     outlineDrawerChangeHandler: function (state) {
       this.isOutlineShow = state
+    },
+    sourceModeHandler: function () {
+      this.isSourceMode = !this.isSourceMode
     }
   },
   mounted () {
     const that = this
     bus.$on(events.SCROLL_TO_HEADER, item => {
-      if (!item || !item.element || !that.$refs.previewScrollArea) return
-      const rect = item.element.getBoundingClientRect()
-      const top =
-        that.$refs.previewScrollArea.getScrollPosition() +
-        rect.top -
-        window.innerHeight * 0.065
-      that.$refs.previewScrollArea.setScrollPosition(top, 300)
+      const anchor = document.querySelector(`#${item}`)
+      if (anchor) {
+        const { top } = anchor.getBoundingClientRect()
+        const DURATION = 300
+        const STANDARD_Y = window.innerHeight * 0.065
+        const DISTANCE = that.$refs.previewScrollArea.getScrollPosition() + top - STANDARD_Y
+        that.$refs.previewScrollArea.setScrollPosition(DISTANCE, DURATION)
+      }
     })
 
     bus.$on(events.SCROLL_DOWN, () => {
       that.$refs.previewScrollArea.setScrollPosition(that.$refs.previewScrollArea.scrollSize, 300)
     })
+
+    bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
   },
   watch: {
     isSourceMode: function (val, oldVal) {

@@ -14,8 +14,6 @@ export default function () {
     customHeader: '',
     customBody: '',
     shrinkInTray: false,
-    lightCodeTheme: 'github',
-    darkCodeTheme: 'monokai',
     noteListVisible: true,
     flomoApiUrl: '',
     enablePreviewEditor: true

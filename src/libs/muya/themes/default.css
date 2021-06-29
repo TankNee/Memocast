@@ -106,8 +106,76 @@
   src: url('./fonts/DejaVuSansMono-Oblique.ttf');
 }
 
+/*
+ * JetBrains Mono
+ */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 300;
+  src: local('JetBrains Mono Light'),
+  url('./fonts/JetBrainsMono-Light.woff2') format('woff');
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: italic;
+  font-weight: 300;
+  src: local('JetBrains Mono Light Italic'),
+  url('./fonts/JetBrainsMono-LightItalic.woff2') format('woff');
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  src: local('JetBrains Mono Regular'),
+  url('./fonts/JetBrainsMono-Regular.woff2') format('woff');
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: italic;
+  font-weight: 300;
+  src: local('JetBrains Mono Regular Italic'),
+  url('./fonts/JetBrainsMono-Italic.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  src: local('JetBrains Mono Medium'),
+  url('./fonts/JetBrainsMono-Medium.woff2') format('woff');
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: italic;
+  font-weight: 300;
+  src: local('JetBrains Mono Medium Italic'),
+  url('./fonts/JetBrainsMono-MediumItalic.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: local('JetBrains Mono Bold'),
+  url('./fonts/JetBrainsMono-Bold.woff2') format('woff');
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: italic;
+  font-weight: 300;
+  src: local('JetBrains Mono Bold Italic'),
+  url('./fonts/JetBrainsMono-BoldItalic.woff2') format('woff');
+}
+
+
 #ag-editor-id {
-  font-family: JetBrains Mono, Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial, sans-serif, Microsoft YaHei, "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "JetBrains Mono", "Open Sans", "Clear Sans", "Helvetica Neue", Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial, sans-serif, Microsoft YaHei, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
 }
