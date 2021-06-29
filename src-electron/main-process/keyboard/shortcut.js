@@ -6,6 +6,7 @@ export default class KeyBindings {
       // Memocast - macOS only
       ['mc.hide', 'Command+H'],
       ['mc.hide-others', 'Command+Alt+H'],
+      ['mc.quit', 'Command+Q'],
 
       // Edit menu
       ['edit.undo', 'CmdOrCtrl+Z'],
