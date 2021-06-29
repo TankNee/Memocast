@@ -24,12 +24,14 @@ export default {
         try {
           this.importNote(file)
           Notify.create({
-            color: 'red-10',
+            color: 'primary',
+            icon: 'check',
             message: this.$t('uploadNoteSuccessfully')
           })
         } catch (e) {
           Notify.create({
             color: 'red-10',
+            icon: 'error',
             message: this.$t('uploadNoteError')
           })
         }
