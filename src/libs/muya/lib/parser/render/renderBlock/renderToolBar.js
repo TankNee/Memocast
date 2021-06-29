@@ -6,26 +6,27 @@ import AlignLeftIcon from '../../../assets/pngicon/algin_left/2.png'
 import AlignRightIcon from '../../../assets/pngicon/algin_right/2.png'
 import AlignCenterIcon from '../../../assets/pngicon/algin_center/2.png'
 import DeleteIcon from '../../../assets/pngicon/table_delete/2.png'
+import { i18n } from 'boot/i18n'
 
 export const TABLE_TOOLS = [{
   label: 'table',
-  title: 'Resize Table',
+  title: () => i18n.t('resizeTable'),
   icon: TableIcon
 }, {
   label: 'left',
-  title: 'Align Left',
+  title: () => i18n.t('alignLeft'),
   icon: AlignLeftIcon
 }, {
   label: 'center',
-  title: 'Align Center',
+  title: () => i18n.t('alignMiddle'),
   icon: AlignCenterIcon
 }, {
   label: 'right',
-  title: 'Align Right',
+  title: () => i18n.t('alignRight'),
   icon: AlignRightIcon
 }, {
   label: 'delete',
-  title: 'Delete Table',
+  title: () => i18n.t('deleteTable'),
   icon: DeleteIcon
 }]
 
@@ -46,7 +47,7 @@ const renderToolBar = (type, tools, activeBlocks) => {
     return h(selector, {
       dataset: {
         label,
-        tooltip: title
+        tooltip: title()
       }
     }, iconVnode)
   })

@@ -12,7 +12,7 @@ export default {
   header6: '标题6',
   tableBlock: '表格',
   tableBlockSubTitle: '| 标题1 | 标题2 |',
-  displayMath: '数学公示',
+  displayMath: '数学公式',
   HTMLBlock: 'HTML代码',
   codeBlock: '代码块',
   quoteBlock: '引用',

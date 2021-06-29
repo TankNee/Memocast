@@ -60,7 +60,7 @@ class TableBarTools extends BaseFloat {
             this.selectItem(event, item)
           }
         }
-      }, label)
+      }, label())
     })
 
     const vnode = h('ul', children)

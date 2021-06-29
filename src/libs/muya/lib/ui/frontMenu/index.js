@@ -73,7 +73,7 @@ class FrontMenu extends BaseFloat {
         }
       }))
 
-      const textWrapper = h('span', title)
+      const textWrapper = h('span', title())
       const shortCutWrapper = h('div.short-cut', [
         h('span', shortCut)
       ])

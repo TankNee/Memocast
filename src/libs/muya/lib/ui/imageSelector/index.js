@@ -4,6 +4,7 @@ import { patch, h } from '../../parser/render/snabbdom'
 import { EVENT_KEYS, URL_REG } from '../../config'
 import { getUniqueId, getImageInfo as getImageSrc } from '../../utils'
 import { getImageInfo } from '../../utils/getImageInfo'
+import { i18n } from 'boot/i18n'
 
 import './index.css'
 
@@ -261,10 +262,10 @@ class ImageSelector extends BaseFloat {
 
   renderHeader () {
     const tabs = [{
-      label: 'Select',
+      label: i18n.t('select'),
       value: 'select'
     }, {
-      label: 'Embed link',
+      label: i18n.t('embedLink'),
       value: 'link'
     }]
 
@@ -301,13 +302,13 @@ class ImageSelector extends BaseFloat {
               this.handleSelectButtonClick()
             }
           }
-        }, 'Choose an Image'),
-        h('span.description', 'Choose image from your computer.')
+        }, i18n.t('chooseImage')),
+        h('span.description', i18n.t('chooseImageFromComputer'))
       ]
     } else if (tab === 'link') {
       const altInput = h('input.alt', {
         props: {
-          placeholder: 'Alt text',
+          placeholder: i18n.t('altText'),
           value: alt
         },
         on: {
@@ -324,7 +325,7 @@ class ImageSelector extends BaseFloat {
       })
       const srcInput = h('input.src', {
         props: {
-          placeholder: 'Image link or local path',
+          placeholder: i18n.t('imageLink'),
           value: src
         },
         on: {
@@ -344,7 +345,7 @@ class ImageSelector extends BaseFloat {
       })
       const titleInput = h('input.title', {
         props: {
-          placeholder: 'Image title',
+          placeholder: i18n.t('picTitle'),
           value: title
         },
         on: {
@@ -370,16 +371,16 @@ class ImageSelector extends BaseFloat {
             this.handleLinkButtonClick()
           }
         }
-      }, 'Embed Image')
+      }, i18n.t('embedImage'))
       const bottomDes = h('span.description', [
-        h('span', 'Paste web image or local image path. Use '),
+        h('span', i18n.t('imagePath')),
         h('a', {
           on: {
             click: event => {
               this.toggleMode()
             }
           }
-        }, `${isFullMode ? 'simple mode' : 'full mode'}.`)
+        }, `${isFullMode ? i18n.t('simpleMode') : i18n.t('fullMode')}.`)
       ])
       bodyContent = [inputWrapper, embedButton, bottomDes]
     } else {

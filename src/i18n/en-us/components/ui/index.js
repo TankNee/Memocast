@@ -10,6 +10,9 @@ import QuickInsert from 'src/i18n/en-us/components/ui/QuickInsert'
 import ImageToolbar from 'src/i18n/en-us/components/ui/ImageToolbar'
 import FormatPicker from 'src/i18n/en-us/components/ui/FormatPicker'
 import FrontMenu from 'src/i18n/en-us/components/ui/FrontMenu'
+import TableTools from 'src/i18n/en-us/components/ui/TableTools'
+import RenderToolBar from 'src/i18n/en-us/components/ui/RenderToolBar'
+import RenderLeafBlock from 'src/i18n/en-us/components/ui/RenderLeafBlock'
 export default {
   ...LoginDialog,
   ...SettingsDialog,
@@ -22,5 +25,8 @@ export default {
   ...QuickInsert,
   ...ImageToolbar,
   ...FormatPicker,
-  ...FrontMenu
+  ...FrontMenu,
+  ...TableTools,
+  ...RenderToolBar,
+  ...RenderLeafBlock
 }
