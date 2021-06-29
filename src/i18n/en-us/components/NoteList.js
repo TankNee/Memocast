@@ -5,5 +5,5 @@ export default {
   categoryName: 'Category Name',
   deleteCategory: 'Delete This Category',
   import: 'Import',
-  RestrictedToMarkdown: 'Restricted to Markdown'
+  restrictedToMarkdown: 'Restricted to Markdown'
 }

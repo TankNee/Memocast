@@ -5,5 +5,5 @@ export default {
   categoryName: '文件夹名',
   deleteCategory: '删除此文件夹',
   import: '导入',
-  RestrictedToMarkdown: '仅限于Markdown'
+  restrictedToMarkdown: '仅限于Markdown'
 }
