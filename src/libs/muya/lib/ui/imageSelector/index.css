@@ -84,7 +84,7 @@
 .ag-image-selector .input-container input.title,
 .ag-image-selector .input-container input.alt {
   flex: 0;
-  max-width: 80px;
+  max-width: 85px;
 }
 
 .ag-image-selector button.role-button {
