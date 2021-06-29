@@ -44,7 +44,7 @@ body.body {
 }
 
 body.body--dark {
-  background: #2d2d2d !important;
+  background: #34383e !important;
 }
 
 .text-h7 {
@@ -90,7 +90,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .note-item-dark {
-  background-color: #2d2d2d;
+  background-color: #34383e;
 }
 
 .active-note-item,
@@ -100,7 +100,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .active-note-item-dark {
-  background-color: #393939;
+  background-color: #1c232b;
 }
 
 .note-list {
@@ -108,7 +108,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .note-list-dark {
-  background-color: #2d2d2d;
+  background-color: #34383e;
 }
 
 .note-list,
@@ -126,7 +126,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 }
 
 .note-card-dark {
-  border-bottom: 1px solid #262626;
+  border-bottom: 1px solid #35373e;
 }
 
 .note-item-title,

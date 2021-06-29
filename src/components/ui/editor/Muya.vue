@@ -19,7 +19,7 @@ import Muya from 'src/libs/muya/lib'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import 'src/libs/muya/themes/default.css'
-import 'src/css/muya.css'
+// import 'src/css/muya.css'
 import TablePicker from 'src/libs/muya/lib/ui/tablePicker'
 import QuickInsert from 'src/libs/muya/lib/ui/quickInsert'
 import CodePicker from 'src/libs/muya/lib/ui/codePicker'
@@ -33,6 +33,7 @@ import LinkTools from 'src/libs/muya/lib/ui/linkTools'
 import TableBarTools from 'src/libs/muya/lib/ui/tableTools'
 import Transformer from 'src/libs/muya/lib/ui/transformer'
 import debugLogger from 'src/utils/debugLogger'
+import { attachThemeColor } from 'src/utils/theme'
 
 const {
   mapGetters: mapServerGetters,
@@ -42,7 +43,7 @@ const {
 
 const {
   mapState: mapClientState,
-  mapActions: mapClietnActions
+  mapActions: mapClientActions
 } = createNamespacedHelpers('client')
 export default {
   name: 'Muya',
@@ -126,10 +127,30 @@ export default {
       }
     },
     ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList']),
-    ...mapClietnActions(['importImagesFromLocal'])
+    ...mapClientActions(['importImagesFromLocal'])
   },
   created () {
     this.$nextTick(() => {
+      // const theme = document.createElement('style')
+      // theme.type = 'text/css'
+      // theme.id = 'muya-theme'
+      // theme.innerHTML = '  --titleBarHeight: 32px;\n' +
+      //   '  --editorAreaWidth: 90%;\n' +
+      //   '\n' +
+      //   '  /*editor*/\n' +
+      //   '  /*Theme color cluster*/\n' +
+      //   '  --themeColor: rgba(33, 181, 111, 1);\n' +
+      //   '  --themeColor90: rgba(33, 181, 111, .9);\n' +
+      //   '  --themeColor80: rgba(33, 181, 111, .8);\n' +
+      //   '  --themeColor70: rgba(33, 181, 111, .7);\n' +
+      //   '  --themeColor60: rgba(33, 181, 111, .6);\n' +
+      //   '  --themeColor50: rgba(33, 181, 111, .5);\n' +
+      //   '  --themeColor40: rgba(33, 181, 111, .4);\n' +
+      //   '  --themeColor30: rgba(33, 181, 111, .3);\n' +
+      //   '  --themeColor20: rgba(33, 181, 111, .2);\n' +
+      //   '  --themeColor10: rgba(33, 181, 111, .1);'
+      // document.getElementsByTagName('head').item(0).appendChild(theme)
+
       Muya.use(TablePicker)
       Muya.use(QuickInsert)
       Muya.use(CodePicker)
@@ -163,6 +184,12 @@ export default {
           // return paths ? paths[0] : null
         }
       })
+
+      if (this.darkMode) {
+        attachThemeColor('one-dark')
+      } else {
+        attachThemeColor('ulysses')
+      }
 
       document.addEventListener('keydown', (e) => {
         if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
@@ -202,6 +229,13 @@ export default {
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
         debugLogger.Error(e, e.message)
+      }
+    },
+    darkMode: function (mode) {
+      if (mode) {
+        attachThemeColor('one-dark')
+      } else {
+        attachThemeColor('ulysses')
       }
     },
     enablePreviewEditor: function (val) {

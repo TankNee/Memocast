@@ -37,7 +37,11 @@ class QuickInsert extends BaseScrollFloat {
   }
 
   render () {
-    const { scrollElement, activeItem, _renderObj } = this
+    const {
+      scrollElement,
+      activeItem,
+      _renderObj
+    } = this
     let children = Object.keys(_renderObj).filter(key => {
       return _renderObj[key].length !== 0
     })
@@ -45,7 +49,13 @@ class QuickInsert extends BaseScrollFloat {
         const titleVnode = h('div.title', key.toUpperCase())
         const items = []
         for (const item of _renderObj[key]) {
-          const { title, subTitle, label, icon, shortCut } = item
+          const {
+            title,
+            subTitle,
+            label,
+            icon,
+            shortCut
+          } = item
           const iconVnode = h('div.icon-container', h('i.icon', {
             style: {
               background: `url(${icon}) 0% 0% / 100% no-repeat`,
@@ -125,8 +135,14 @@ class QuickInsert extends BaseScrollFloat {
     const { key } = this.block
     const offset = 0
     contentState.cursor = {
-      start: { key, offset },
-      end: { key, offset }
+      start: {
+        key,
+        offset
+      },
+      end: {
+        key,
+        offset
+      }
     }
     switch (item.label) {
       case 'paragraph':

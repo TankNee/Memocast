@@ -57,11 +57,11 @@ export default {
       monaco.editor.defineTheme('Memocast-Dark', {
         base: 'vs-dark',
         inherit: true,
-        rules: [{ background: '#2d2d2d' }],
+        rules: [{ background: '#34383e' }],
         colors: {
           // 相关颜色属性配置
           // 'editor.foreground': '#000000',
-          'editor.background': '#2d2d2d'
+          'editor.background': '#34383e'
           // 'editorCursor.foreground': '#8B0000',
           // 'editor.lineHighlightBackground': '#0000FF20',
           // 'editorLineNumber.foreground': '#008800',
