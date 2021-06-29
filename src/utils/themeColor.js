@@ -207,7 +207,7 @@ pre.ag-paragraph {
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
-
+  text-shadow: none;
   -webkit-hyphens: none;
   -moz-hyphens: none;
   -ms-hyphens: none;
@@ -306,193 +306,176 @@ pre.ag-paragraph {
 }
 `
 
-const ulyssesTheme = `:root {
+const ulyssesTheme = `/* Common CSS use by both light and dark themes */
+:root {
+  --titleBarHeight: 32px;
+  --editorAreaWidth: 90%;
   --backgroundColor: #35373e;
+  /*editor*/
+  /*Theme color cluster*/
+  --themeColor: rgba(33, 181, 111, 1);
+  --themeColor90: rgba(33, 181, 111, .9);
+  --themeColor80: rgba(33, 181, 111, .8);
+  --themeColor70: rgba(33, 181, 111, .7);
+  --themeColor60: rgba(33, 181, 111, .6);
+  --themeColor50: rgba(33, 181, 111, .5);
+  --themeColor40: rgba(33, 181, 111, .4);
+  --themeColor30: rgba(33, 181, 111, .3);
+  --themeColor20: rgba(33, 181, 111, .2);
+  --themeColor10: rgba(33, 181, 111, .1);
 
-  --themeColor: rgb(12, 139, 186);
-  --themeColor90: rgba(12, 139, 186, .9);
-  --themeColor80: rgba(12, 139, 186, .8);
-  --themeColor70: rgba(12, 139, 186, .7);
-  --themeColor60: rgba(12, 139, 186, .6);
-  --themeColor50: rgba(12, 139, 186, .5);
-  --themeColor40: rgba(12, 139, 186, .4);
-  --themeColor30: rgba(12, 139, 186, .3);
-  --themeColor20: rgba(12, 139, 186, .2);
-  --themeColor10: rgba(12, 139, 186, .1);
-
-  --highlightColor: rgba(12, 139, 186, .4);
+  --highlightColor: rgba(33, 181, 111, .4);
   --selectionColor: rgba(0, 0, 0, .1);
-  --editorColor: rgba(101, 101, 101, .7);
-  --editorColor80: rgba(101, 101, 101, .8);
-  --editorColor60: rgba(101, 101, 101, .6);
-  --editorColor50: rgba(101, 101, 101, .5);
-  --editorColor40: rgba(101, 101, 101, .4);
-  --editorColor30: rgba(101, 101, 101, .3);
-  --editorColor10: rgba(101, 101, 101, .1);
-  --editorColor04: rgba(101, 101, 101, .04);
-  --editorBgColor: #f3f3f3;
-  --deleteColor: #cf000f;
-  --iconColor: rgba(101, 101, 101, .8);
+  --editorColor: rgba(0, 0, 0, .7);
+  --editorColor80: rgba(0, 0, 0, .8);
+  --editorColor60: rgba(0, 0, 0, .6);
+  --editorColor50: rgba(0, 0, 0, .5);
+  --editorColor40: rgba(0, 0, 0, .4);
+  --editorColor30: rgba(0, 0, 0, .3);
+  --editorColor10: rgba(0, 0, 0, .1);
+  --editorColor04: rgba(0, 0, 0, .03);
+  --editorBgColor: rgba(255, 255, 255, 1);
+  --deleteColor: #ff6969;
+  --iconColor: #6B737B;
   --codeBgColor: #d8d8d869;
-  --codeBlockBgColor: rgba(12, 139, 186, .05);
-  --footnoteBgColor: rgba(0, 0, 0, .03);
+  --codeBlockBgColor: rgba(0, 0, 0, 0.03);
   --inputBgColor: rgba(0, 0, 0, .06);
-  --focusColor: var(--themeColor);
-
-  --buttonFontColor: var(--editorColor);
   --buttonBgColor: #ffffff;
-  --buttonBorder: 1px solid #dcdfe6;
-  --buttonShadow: none;
-  --buttonFontColorHover: var(--buttonFontColor);
-  --buttonBgColorHover: linear-gradient(#fafafa, #f5f5f5);
-  --buttonBorderHover: var(--buttonBorder);
-  --buttonFontColorActive: var(--buttonFontColor);
-  --buttonBgColorActive: #f5f5f5;
-  --buttonBorderActive: var(--buttonBorder);
-  --buttonFocusBorder: 1px solid var(--themeColor);
+  --buttonBorderColor: rgba(0, 0, 0, 0.2);
+  --buttonShadow: rgba(0, 0, 0, 0.12);
+  --buttonHover: #f2f2f2;
+  --buttonActive: #e5e5e5;
 
-  --buttonPrimaryFontColor: #ffffff;
-  --buttonPrimaryBgColor: var(--themeColor);
-  --buttonPrimaryBorder: none;
-  --buttonPrimaryShadow: 0 0 8px 0 rgba(0, 0, 0, .1);
-  --buttonPrimaryFontColorHover: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorHover: var(--buttonPrimaryBgColor);
-  --buttonPrimaryBorderHover: var(--buttonPrimaryBorder);
-  --buttonPrimaryFontColorActive: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorActive: var(--buttonPrimaryBgColor);
-  --buttonPrimaryBorderActive: var(--buttonPrimaryBorder);
-  --buttonPrimaryFocusBorder: none;
-  --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(5, 66, 89, 0.5), 0 0 0 1px var(--themeColor);
-  --tableBorderColor: #e5e5e5;
-
-  --sideBarColor: rgba(101, 101, 101, .6);
-  --sideBarIconColor: var(--iconColor);
-  --sideBarTitleColor: rgba(101, 101, 101, 1);
-  --sideBarTextColor: rgba(101, 101, 101, .4);
-  --sideBarBgColor: rgba(248, 248, 248, 0.9);
-  --sideBarItemHoverBgColor: rgba(101, 101, 101, .03);
-  --itemBgColor: rgba(245, 245, 245, 0.6);
-
-  --floatFontColor: rgba(101, 101, 101, .7);
-  --floatBgColor: #ffffff;
-  --floatHoverColor: rgba(101, 101, 101, .04);
-  --floatBorderColor: rgba(0, 0, 0, .03);
-  --maskColor: rgba(232, 232, 232, .8);
-  --editorAreaWidth: 750px;
+  /*marktext*/
+  --sideBarColor: rgba(0, 0, 0, .6);
+  --sideBarTitleColor: rgba(0, 0, 0, 1);
+  --sideBarTextColor: rgba(0, 0, 0, .4);
+  --sideBarBgColor: rgba(242, 242, 242, 0.9);
+  --sideBarItemHoverBgColor: rgba(0, 0, 0, .03);
+  --itemBgColor: rgba(255, 255, 255, 0.6);
+  --floatBgColor: #fff;
+  --floatHoverColor: rgba(0, 0, 0, .04);
+  --floatBorderColor: rgba(0, 0, 0, .1);
+  --floatShadow: rgba(15, 15, 15, 0.03) 0px 0px 0px 1px, rgba(15, 15, 15, 0.04) 0px 3px 6px, rgba(15, 15, 15, 0.05) 0px 9px 24px;
+  --maskColor: rgba(255, 255, 255, .7);
+  --tableBorderColor: rgb(158, 158, 158);
 }
+`
 
-.editor-tabs {
-  box-shadow: none !important;
-}
+const lightPrismTheme = `/*
+ * ------------------------------------
+ * Prism.js light theme
+ */
 
-.tabs-container > li {
-  border-right: 1px solid #e5e5e5 !important;
-  background: var(--editorBgColor) !important;
+code[class*="language-"],
+pre.ag-paragraph {
+  color: black;
+  /*font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;*/
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
 }
 
-/* ------------------------------------ */
-
-h1, h2, h3, h4, h5, h6 {
-  color: var(--themeColor);
-  text-align: center;
+/* Code Fence */
+pre.ag-paragraph {
+  padding: 1em;
+  margin: 1em 0;
 }
 
-li.ag-bullet-list-item {
-  position: relative;
-  list-style: none;
-}
-li.ag-bullet-list-item::before {
-  content: '';
-  display: block;
-  position: absolute;
-  width: 5px;
-  height: 2px;
-  left: -18px;
-  top: 15px;
-  background: var(--editorColor);
+/* Inline Code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
 }
 
-blockquote.ag-paragraph {
-  background: rgb(233, 233, 233);
-}
-blockquote.ag-paragraph::before {
-  content: none;
-}
-
-li.ag-paragraph {
-  color: var(--editorColor);
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: slategray;
 }
 
-/*task list*/
-li.ag-task-list-item {
-  list-style-type: none;
-  position: relative;
-}
-li.ag-task-list-item > input[type=checkbox] {
-  position: absolute;
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-  top: .1em;
-  transform: rotate(-90deg);
-  margin: 0;
-  left: -24px;
-  transform-origin: center;
-  transition: all .2s ease;
-}
-li.ag-task-list-item > input.ag-checkbox-checked {
-  transform: rotate(0);
-  opacity: .5;
-}
-li.ag-task-list-item > input[type=checkbox]::before {
-  content: '';
-  width: 16px;
-  height: 16px;
-  box-sizing: border-box;
-  display: inline-block;
-  border: 2px solid var(--editorColor);
-  border-radius: 2px;
-  background-color: var(--editorBgColor);
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: all .2s ease;
-}
-li.ag-task-list-item > input.ag-checkbox-checked::before {
-  border: transparent;
-  background-color: var(--editorColor);
-}
-li.ag-task-list-item > input::after {
-  content: '';
-  transform: rotate(-45deg) scale(0);
-  width: 9px;
-  height: 5px;
-  border: 2px solid #fff;
-  border-top: none;
-  border-right: none;
-  position: absolute;
-  display: inline-block;
-  top: 1px;
-  left: 5px;
-  transition: all .2s ease;
-}
-li.ag-task-list-item > input.ag-checkbox-checked::after {
-  transform: rotate(-45deg) scale(1);
+.token.punctuation {
+  color: #999;
 }
 
-/*horizontal line*/
-p:not(.ag-active)[data-role="hr"]::before {
-  content: '';
-  position: absolute;
-  width: 50%;
-  display: block;
-  left: 50%;
-  top: 50%;
-  height: 2px;
-  box-sizing: border-box;
-  border: none;
-  border-bottom: 2px dashed var(--editorColor50);
-  transform: translateX(-50%) translateY(-50%);
+.namespace {
+  opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  color: #690;
+}
+
+.token.inserted {
+  color: #22863a;
+  background: #f0fff4;
+}
+
+.token.deleted {
+  color: #b31d28;
+  background: #ffeef0;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #9a6e3a;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #07a;
+}
+
+.token.function,
+.token.class-name {
+  color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #e90;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
 }
 `
 
@@ -501,5 +484,5 @@ export const oneDark = () => {
 }
 
 export const ulysses = () => {
-  return ulyssesTheme
+  return ulyssesTheme + '\n' + lightPrismTheme
 }

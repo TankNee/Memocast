@@ -77,11 +77,6 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
   mso-foreground: #1c1c1c;
 }
 
-.vditor-toolbar {
-  border: none !important;
-  display: none;
-}
-
 /*Note Item CSS*/
 .note-item,
 .note-item-dark {
