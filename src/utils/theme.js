@@ -1,4 +1,4 @@
-import { oneDark, ulysses } from 'src/utils/themeColor'
+import { oneDark, light } from 'src/utils/themeColor'
 
 export const railscastsThemes = ['dark', 'material-dark']
 export const oneDarkThemes = ['one-dark']
@@ -23,12 +23,11 @@ export function attachThemeColor (theme) {
       themeStyleEle.innerHTML = patchTheme(oneDark())
       break
     }
-    case 'ulysses' : {
-      themeStyleEle.innerHTML = patchTheme(ulysses())
+    case 'light' : {
+      themeStyleEle.innerHTML = patchTheme(light())
       break
     }
   }
-  console.log(themeStyleEle.innerHTML)
 
   document.body.classList.remove('dark')
   if (isDarkTheme) {

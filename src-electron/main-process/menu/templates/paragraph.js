@@ -1,5 +1,4 @@
 import * as actions from '../actions/paragraph'
-
 /**
  *
  * @param {KeyBindings} keybindings

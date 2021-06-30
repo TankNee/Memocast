@@ -188,7 +188,7 @@ export default {
       if (this.darkMode) {
         attachThemeColor('one-dark')
       } else {
-        attachThemeColor('ulysses')
+        attachThemeColor('light')
       }
 
       document.addEventListener('keydown', (e) => {
@@ -235,7 +235,7 @@ export default {
       if (mode) {
         attachThemeColor('one-dark')
       } else {
-        attachThemeColor('ulysses')
+        attachThemeColor('light')
       }
     },
     enablePreviewEditor: function (val) {

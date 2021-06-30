@@ -2,6 +2,8 @@ import { app, BrowserWindow, nativeTheme, dialog, shell, protocol, Menu } from '
 import Api from './api'
 import windowStateKeeper from 'electron-window-state'
 import unhandled from 'electron-unhandled'
+import path from 'path'
+import packageJSON from '../../package.json'
 import configureMenu from './menu/templates'
 
 import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
@@ -44,8 +46,8 @@ const isMac = process.platform === 'darwin'
 
 function createWindow () {
   const mainWindowState = windowStateKeeper({
-    defaultWidth: 1200,
-    defaultHeight: 800
+    defaultWidth: 900,
+    defaultHeight: 600
   })
   /**
    * Initial window options
@@ -149,6 +151,14 @@ app.on('activate', () => {
   } else if (isMac) {
     mainWindow.show()
   }
+})
+
+app.setAboutPanelOptions({
+  applicationName: 'Memocast',
+  copyright: 'TankNee',
+  website: 'https://github.com/TankNee/Memocast',
+  iconPath: path.resolve('src-electron/icons', 'icon.ico'),
+  applicationVersion: packageJSON.version
 })
 
 if (!isMac) {

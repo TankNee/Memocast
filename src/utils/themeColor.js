@@ -1,6 +1,6 @@
 // import oneDarkTheme from 'src/css/dark.theme.css'
 // import oneDarkPrismTheme from 'src/css/prism/dark.theme.css'
-// import ulyssesTheme from 'src/css/ulyssess.theme.css'
+// import lightTheme from 'src/css/lights.theme.css'
 
 const oneDarkTheme = `:root {
   --backgroundColor: #35373e;
@@ -306,7 +306,7 @@ pre.ag-paragraph {
 }
 `
 
-const ulyssesTheme = `/* Common CSS use by both light and dark themes */
+const lightTheme = `/* Common CSS use by both light and dark themes */
 :root {
   --titleBarHeight: 32px;
   --editorAreaWidth: 90%;
@@ -483,6 +483,6 @@ export const oneDark = () => {
   return oneDarkTheme + '\n' + oneDarkPrismTheme
 }
 
-export const ulysses = () => {
-  return ulyssesTheme + '\n' + lightPrismTheme
+export const light = () => {
+  return lightTheme + '\n' + lightPrismTheme
 }
