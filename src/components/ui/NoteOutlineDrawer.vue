@@ -1,46 +1,41 @@
 <template>
   <q-drawer
-    ref="drawer"
-    :value="false"
-    :mini-width="200"
-    :breakpoint="700"
-    content-class="bg-primary text-white"
+    ref='drawer'
+    :value='false'
+    :mini-width='200'
+    :breakpoint='700'
+    content-class='bg-primary text-white hide-scrollbar'
     overlay
     elevated
-    side="right"
-    class="bg-blur"
+    side='right'
+    class='bg-blur'
   >
     <q-scroll-area
-      :thumb-style="thumbStyle"
-      :bar-style="barStyle"
+      :thumb-style='thumbStyle'
+      :bar-style='barStyle'
       :class="`exclude-header note-list${$q.dark.isActive ? '-dark' : ''} fit`"
     >
       <q-tree
-        :nodes="contentsList"
-        node-key="key"
+        :nodes='contentsList ? contentsList : []'
+        node-key='key'
         default-expand-all
-        selected-color="primary"
-        class="non-selectable z-max"
-        :selected.sync="selected"
-        :expanded.sync="expanded"
-        @update:selected="
-          v => {
-            nodeClickHandler(v)
-          }
-        "
+        selected-color='secondary'
+        class='non-selectable z-max'
+        :selected.sync='selected'
+        :expanded.sync='expanded'
       />
       <!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
     </q-scroll-area>
     <q-icon
-      name="close"
+      name='close'
       :class="
         `absolute-bottom-right fab-icon cursor-pointer material-icons-round neeto-icon${
           $q.dark.isActive ? '-dark' : ''
         } z-max`
       "
-      @click="hide"
-      size="24px"
-      color="#26A69A"
+      @click='hide'
+      size='24px'
+      color='#26A69A'
       v-ripple
     />
   </q-drawer>
@@ -51,13 +46,18 @@ import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
 import bus from 'components/bus'
 import events from 'src/constants/events'
-const { mapGetters, mapState } = createNamespacedHelpers('server')
+
+const {
+  mapGetters,
+  mapState
+} = createNamespacedHelpers('server')
 export default {
   name: 'NoteOutline',
   props: {
     change: {
       types: Function,
-      default: () => {}
+      default: () => {
+      }
     }
   },
   computed: {
@@ -91,6 +91,7 @@ export default {
       this.change(false)
     },
     nodeClickHandler: function (v) {
+      console.log(this.contentsList)
       const node = helper.findNodeByNodeKey(this.contentsList, v)
       bus.$emit(events.SCROLL_TO_HEADER, node)
     }

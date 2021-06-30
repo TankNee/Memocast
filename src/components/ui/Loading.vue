@@ -1,6 +1,12 @@
 <template>
   <q-inner-loading :showing="visible">
-    <q-spinner :color="$q.dark.isActive ? 'warning' : 'primary'" size="5em" />
+    <transition
+      appear
+      enter-active-class='animated fadeIn'
+      leave-active-class='animated fadeOut'
+    >
+      <q-spinner-hourglass :color="$q.dark.isActive ? 'warning' : 'primary'" size="6em" />
+    </transition>
   </q-inner-loading>
 </template>
 

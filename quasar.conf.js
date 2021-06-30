@@ -173,14 +173,14 @@ module.exports = function (/* ctx */) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'builder', // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-        // productName: 'neeto-vue',
-        // mac: {
-        //   target: ['dmg']
-        // }
+        productName: 'Memocast',
+        mac: {
+          target: ['dmg']
+        }
 
         // OS X / Mac App Store
         // appBundleId: '',
@@ -193,7 +193,37 @@ module.exports = function (/* ctx */) {
       },
 
       builder: {
-
+        appId: 'cn.memocast.app',
+        electronDownload: {
+          mirror: 'https://npm.taobao.org/mirrors/electron/'
+        },
+        mac: {
+          target: [
+            'dmg'
+          ]
+        },
+        win: {
+          target: [
+            'nsis'
+          ],
+          legalTrademarks: 'Memocast'
+        },
+        nsis: {
+          perMachine: false,
+          oneClick: false,
+          allowToChangeInstallationDirectory: true
+        },
+        linux: {
+          target: [
+            'AppImage'
+          ],
+          vendor: 'Memocast'
+        },
+        files: [
+          '**/*',
+          './package.json',
+          'dist/electron/**/*'
+        ]
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

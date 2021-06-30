@@ -41,7 +41,7 @@
       >
         <q-fab-action
           color="red-7"
-          v-if="showDeleteCategoryFab"
+          v-if="isRootCategory"
           icon="delete_forever"
           @click="handleDeleteCategory"
         >
@@ -54,7 +54,7 @@
           >
         </q-fab-action>
         <q-fab-action
-          v-if="showDeleteCategoryFab"
+          v-if="isRootCategory"
           :color="color"
           icon="import_export"
           @click="handleExportCategory"
@@ -67,7 +67,21 @@
             >{{ $t('export') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action :color="color" icon="note_add" @click="handleAddNote">
+        <q-fab-action
+          v-if="isRootCategory"
+          :color="color"
+          icon="add"
+          @click="$refs.ImportDialog.toggle()"
+        >
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[20, 10]"
+            :content-class="`bg-${color} text-white shadow-4  text-h7`"
+            >{{ $t('import') }}</q-tooltip
+          >
+        </q-fab-action>
+        <q-fab-action v-if="isRootCategory" :color="color" icon="note_add" @click="handleAddNote">
           <q-tooltip
             anchor="center right"
             self="center left"
@@ -91,19 +105,21 @@
         </q-fab-action>
       </q-fab>
       <Loading :visible="isCurrentNotesLoading" />
+      <ImportDialog ref="ImportDialog" />
     </q-pull-to-refresh>
   </div>
 </template>
 
 <script>
 import NoteItem from './ui/NoteItem'
+import ImportDialog from './ui/dialog/ImportDialog.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Loading from './ui/Loading'
 import helper from '../utils/helper'
 const { mapGetters, mapState, mapActions } = createNamespacedHelpers('server')
 export default {
   name: 'NoteList',
-  components: { Loading, NoteItem },
+  components: { Loading, NoteItem, ImportDialog },
   computed: {
     thumbStyle () {
       return {
@@ -118,7 +134,7 @@ export default {
         width: '7px'
       }
     },
-    showDeleteCategoryFab: function () {
+    isRootCategory: function () {
       return !helper.isNullOrEmpty(this.currentCategory)
     },
     category: function () {
@@ -141,7 +157,7 @@ export default {
       return this.$q.dark.isActive ? 'warning' : 'primary'
     },
     isTagCategory: function () {
-      return this.tags.map(t => t.tagGuid).includes(this.currentCategory)
+      return this.tags?.map(t => t.tagGuid).includes(this.currentCategory)
     },
     ...mapGetters(['activeNote', 'currentNotes']),
     ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags'])

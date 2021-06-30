@@ -8,5 +8,6 @@ export default {
   signUp: '注册',
   fieldIsRequired: '该字段必须填写',
   rememberPassword: '记住密码',
-  autoLogin: '自动登录'
+  autoLogin: '自动登录',
+  quit: '退出'
 }

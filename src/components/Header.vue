@@ -73,15 +73,15 @@
       v-ripple
       @click.stop="
         () => {
-          toggleChanged({ key: 'enableVditor', value: !enableVditor })
+          toggleChanged({ key: 'enablePreviewEditor', value: !enablePreviewEditor })
         }
       "
     >
-      <q-icon :name="enableVditor ? 'lock_open' : 'lock'" color="#16A2B8" />
+      <q-icon :name="enablePreviewEditor ? 'lock_open' : 'lock'" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
         content-class="bg-amber-9 text-white shadow-4  text-h7"
-        >{{ enableVditor ? $t('lock') : $t('unlock') }}
+        >{{ enablePreviewEditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -195,6 +195,8 @@ import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
 import defaultAvatarBase64 from 'src/assets/default-avatar'
 import TagDialog from 'components/ui/dialog/TagDialog'
+import bus from 'components/bus'
+import events from 'src/constants/events'
 const {
   mapState: mapServerState,
   mapGetters: mapServerGetters,
@@ -213,7 +215,7 @@ export default {
       'shrinkInTray',
       'autoLogin',
       'noteListVisible',
-      'enableVditor'
+      'enablePreviewEditor'
     ]),
     darkMode: function () {
       return this.$q.dark.isActive
@@ -273,7 +275,8 @@ export default {
     },
 
     closeApp () {
-      this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
+      // this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
+      this.$q.electron.remote.app.quit()
     },
     loginHandler: function () {
       if (!this.isLogin) {
@@ -305,6 +308,12 @@ export default {
         value: !this.noteListVisible
       })
     },
+    lockModeHandler: function () {
+      this.toggleChanged({
+        key: 'enablePreviewEditor',
+        value: !this.enablePreviewEditor
+      })
+    },
     clearInputHandler: function () {
       this.searchText = ''
       this.getCategoryNotes({ category: this.currentCategory })
@@ -321,6 +330,8 @@ export default {
     if (!this.autoLogin && !this.isLogin) {
       this.$refs.loginDialog.toggle()
     }
+    bus.$on(events.VIEW_SHORTCUT_CALL.switchView, this.switchViewHandler)
+    bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
   },
   watch: {
     isLogin: function (currentData) {

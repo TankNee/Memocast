@@ -9,5 +9,6 @@ export default {
   cancel: 'Cancel',
   fieldIsRequired: 'Field is required',
   rememberPassword: 'Remember Password',
-  autoLogin: 'Auto Login'
+  autoLogin: 'Auto Login',
+  quit: 'Quit'
 }

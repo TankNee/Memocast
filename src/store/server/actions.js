@@ -19,7 +19,6 @@ export async function _getContent (kbGuid, docGuid) {
       downloadInfo: 1
     }
   })
-  // dataModified
   const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
   const note = ClientFileStorage.getCachedNote(info, cacheKey)
   let result
@@ -226,8 +225,8 @@ export default {
     const { docGuid } = payload
     const result = await _getContent(kbGuid, docGuid)
 
-    commit(types.UPDATE_CURRENT_NOTE, result)
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
+    commit(types.UPDATE_CURRENT_NOTE, result)
   },
   /**
    * 设置当前显示的笔记文件夹，并在显示之前从网络刷新文件夹的内容
@@ -270,6 +269,7 @@ export default {
       docGuid,
       data: payload
     })
+    commit(types.UPDATE_CURRENT_NOTE, payload)
     this.dispatch('server/getCategoryNotes')
   },
   /**
@@ -286,8 +286,10 @@ export default {
     const {
       kbGuid,
       docGuid,
-      category
+      category,
+      noteState
     } = state.currentNote.info
+    if (noteState === 'default') return
     let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
@@ -380,6 +382,36 @@ export default {
     //   commit(types.js.UPDATE_CURRENT_NOTE, result)
     // }
   },
+  importNote ({
+    commit,
+    state
+  }, importFile) {
+    const {
+      kbGuid,
+      currentCategory = ''
+    } = state
+    const title = importFile.name
+    const userId = ClientFileStorage.getItemFromStore('userId')
+    const isLite = currentCategory.replace(/\//g, '') === 'Lite'
+    const reader = new FileReader()
+    reader.readAsText(importFile)
+    reader.onload = async () => {
+      const text = reader.result
+      const result = await api.KnowledgeBaseApi.createNote({
+        kbGuid,
+        data: {
+          category: currentCategory,
+          kbGuid,
+          title,
+          owner: userId,
+          html: helper.embedMDNote(text, [], { wrapWithPreTag: isLite }),
+          type: isLite ? 'lite/markdown' : 'document'
+        }
+      })
+      await this.dispatch('server/getNoteContent', result)
+      await this.dispatch('server/getCategoryNotes')
+    }
+  },
   /**
    * 删除笔记
    * @param commit
@@ -423,8 +455,17 @@ export default {
   }, childCategoryName) {
     const {
       kbGuid,
-      currentCategory
+      currentCategory,
+      categories
     } = state
+    if (helper.checkCategoryExistence(categories, currentCategory, childCategoryName)) {
+      Notify.create({
+        color: 'red-10',
+        message: i18n.t('categoryExisted'),
+        icon: 'error'
+      })
+      return
+    }
     await api.KnowledgeBaseApi.createCategory({
       kbGuid,
       data: {

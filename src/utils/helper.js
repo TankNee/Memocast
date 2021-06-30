@@ -3,13 +3,15 @@ import wizMarkdownParser from '@altairwei/wiz-markdown'
 import { i18n } from 'boot/i18n'
 import { Platform } from 'quasar'
 import TurndownService from 'turndown'
-import VditorPreview from 'vditor/dist/method.min'
 import cheerio from 'cheerio'
+import bus from 'components/bus'
+import events from 'src/constants/events'
 
 const turndownService = new TurndownService({
   codeBlockStyle: 'fenced',
   headingStyle: 'atx'
 })
+
 function isNullOrEmpty (obj) {
   obj = _.toString(obj)
   return _.isNull(obj) || _.isEmpty(obj)
@@ -230,6 +232,7 @@ function generateTagNodeTree (tags = []) {
   result.forEach(t => seekLeafTags(t))
   return result
 }
+
 /**
  * 获取文件的拓展名
  * @param filePath 文件路径
@@ -250,106 +253,6 @@ function isCtrl (event) {
   }
   return !event.metaKey && event.ctrlKey
 }
-function filterParentElement (dom, root, filterFn, self = false) {
-  if (dom) {
-    let parent = self ? dom : dom.parentElement
-    while (parent) {
-      if (parent === root) {
-        break
-      }
-      if (filterFn(parent)) {
-        return parent
-      }
-      parent = parent.parentElement
-    }
-  }
-  return null
-}
-
-/**
- * 更新笔记目录数据结构
- * @param {HTMLElement} editorRootElement
- */
-async function updateContentsList (editorRootElement) {
-  const list = []
-  for (let i = 0; i < editorRootElement.childElementCount; i++) {
-    const tagName = editorRootElement.children[i].tagName.toLowerCase()
-    // 如果是标题类的标签，那么就进行解析
-    if (/^h[1-6]$/.test(tagName)) {
-      // 解出标签的等级，h1到h6
-      const rank = parseInt(tagName[1], 10)
-      let innerText = editorRootElement.children[i].innerText
-      const titleHTML = await VditorPreview.md2html(innerText)
-      innerText = cheerio.load(titleHTML).text()
-
-      if (list.length) {
-        let target = list
-        for (let j = 1; j < rank; j++) {
-          if (target.length === 0 || rank === target[0].rank) {
-            break
-          } else if (!target[target.length - 1].children) {
-            target[target.length - 1].children = []
-          }
-          // 放到最后一个元素的子元素集合中
-          target = target[target.length - 1].children
-        }
-        target.push({
-          key: `${i}-${rank}`,
-          label: innerText,
-          element: editorRootElement.children[i],
-          selectable: true,
-          rank: rank
-        })
-      } else {
-        // 处理第一个标题元素
-        list.push({})
-        const item = list[list.length - 1]
-        for (let j = 0; j < rank; j++) {
-          if (j === rank - 1) {
-            // 生成唯一key，整个编辑器中第i个元素的第j等级的标题
-            item.key = `${i}-${j}`
-            item.label = innerText
-            item.selectable = true
-            item.rank = rank
-            item.element = editorRootElement.children[i]
-          }
-        }
-      }
-    }
-  }
-  return list
-}
-
-/**
- * 根据key查找node对象
- * @param {node[]} nodeList
- * @param {string} key
- * @returns {null|*}
- */
-function findNodeByNodeKey (nodeList, key) {
-  for (let i = 0; i < nodeList.length; i++) {
-    if (nodeList[i].key === key) return nodeList[i]
-    if (!nodeList[i].children) continue
-    const node = findNodeByNodeKey(nodeList[i].children, key)
-    if (node) return node
-  }
-  return null
-}
-/**
- * 根据label查找node对象
- * @param {node[]} nodeList
- * @param {string} label
- * @returns {null|*}
- */
-function findNodeByNodeLabel (nodeList, label) {
-  for (let i = 0; i < nodeList.length; i++) {
-    if (nodeList[i].label.replace(/\s/g, '') === label) return nodeList[i]
-    if (!nodeList[i].children) continue
-    const node = findNodeByNodeLabel(nodeList[i].children, label)
-    if (node) return node
-  }
-  return null
-}
 
 /**
  * @param {{}[]} targetArray
@@ -357,6 +260,110 @@ function findNodeByNodeLabel (nodeList, label) {
 function generateRandomResult (targetArray) {
   const rnd = Math.floor(Math.random() * targetArray.length)
   return targetArray[rnd]
+}
+
+/**
+ * extract content
+ * @param {string} markdown
+ * @returns {string}
+ */
+function extractMarkdownContent (markdown) {
+  const linkPattern = /!?\[(.*)\]\(.*\)/
+  const emphasizePattern = /\*?(.*)\*?/
+  if (linkPattern.test(markdown)) {
+    const matches = markdown.match(linkPattern)
+    markdown = matches[1]
+  }
+  if (emphasizePattern.test(markdown)) {
+    const matches = markdown.match(emphasizePattern)
+    markdown = matches[1]
+  }
+  return markdown
+}
+
+class Node {
+  constructor (item) {
+    const {
+      parent,
+      lvl,
+      content,
+      key
+    } = item
+    this.parent = parent
+    this.lvl = lvl
+    this.label = extractMarkdownContent(content || '').replace(/#*\s?/, '')
+    this.key = key
+    this.handler = (v) => {
+      bus.$emit(events.SCROLL_TO_HEADER, v.key)
+    }
+    this.children = []
+  }
+
+  // Add child node.
+  addChild (node) {
+    this.children.push(node)
+  }
+}
+
+const findParent = (item, lastNode, rootNode) => {
+  if (!lastNode) {
+    return rootNode
+  }
+  const { lvl: lastLvl } = lastNode
+  const { lvl } = item
+
+  if (lvl < lastLvl) {
+    return findParent(item, lastNode.parent, rootNode)
+  } else if (lvl === lastLvl) {
+    return lastNode.parent
+  } else {
+    return lastNode
+  }
+}
+
+const updateContentsList = list => {
+  list = list.map(i => {
+    i.key = i.slug
+    delete i.slug
+    return i
+  })
+  const rootNode = new Node({
+    parent: null,
+    lvl: null,
+    content: null,
+    key: null
+  })
+  let lastNode = null
+
+  for (const item of list) {
+    const parent = findParent(item, lastNode, rootNode)
+
+    const node = new Node({ parent, ...item })
+    parent.addChild(node)
+    lastNode = node
+  }
+
+  return rootNode.children
+}
+
+/**
+ * 检查同名文件夹是否存在
+ * @param {string[]} categories
+ * @param {string} parentCategory
+ * @param {string} childCategory
+ */
+function checkCategoryExistence (categories, parentCategory, childCategory) {
+  parentCategory = isNullOrEmpty(parentCategory) ? '/' : parentCategory
+  const absolutePath = `${parentCategory}${childCategory}/`
+  return categories.includes(absolutePath)
+}
+
+function checkTagExistence (tags, newTag) {
+  const tagTree = generateTagNodeTree(tags)
+  for (const tagTreeElement of tagTree) {
+    if (tagTreeElement.label === newTag) return true
+  }
+  return false
 }
 
 export default {
@@ -372,7 +379,6 @@ export default {
   updateContentsList,
   getFileNameWithExt,
   isCtrl,
-  filterParentElement,
-  findNodeByNodeKey,
-  findNodeByNodeLabel
+  checkCategoryExistence,
+  checkTagExistence
 }

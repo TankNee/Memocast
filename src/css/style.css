@@ -20,28 +20,38 @@
   /* border-radius: 10px; */
   background: transparent;
 }
+
+div {
+  outline-color: transparent;
+}
+
 .exclude-header {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   height: 93.5vh !important;
 }
+
 body {
   margin: 0;
   overflow: hidden;
   background: #ffffff !important;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
+
 body.body {
   background: #ffffff !important;
 }
+
 body.body--dark {
-  background: #2d2d2d !important;
+  background: #34383e !important;
 }
+
 .text-h7 {
   font-size: 15px;
   font-weight: bold;
 }
+
 .bg-blur {
   position: fixed;
   top: 0;
@@ -53,12 +63,18 @@ body.body--dark {
   opacity: 0.9;
   box-shadow: 0px 1px 16px 0px rgba(0, 0, 0, 0.31);
 }
+
 .tooltip {
   font-size: 17px;
 }
-.vditor-toolbar {
-  border: none !important;
-  display: none;
+
+.ag-image-toolbar li.item div.tooltip {
+  font-size: 14px;
+}
+
+div.ag-show-quick-insert-hint[contenteditable=false] {
+  /*background: green;*/
+  mso-foreground: #1c1c1c;
 }
 
 /*Note Item CSS*/
@@ -67,27 +83,34 @@ body.body--dark {
   background-color: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, 黑体;
 }
+
 .note-item-dark {
-  background-color: #2d2d2d;
+  background-color: #34383e;
 }
+
 .active-note-item,
 .active-note-item-dark {
   color: #212121;
   background-color: #e4e4e4;
 }
+
 .active-note-item-dark {
-  background-color: #393939;
+  background-color: #1c232b;
 }
+
 .note-list {
   background-color: #ffffff;
 }
+
 .note-list-dark {
-  background-color: #2d2d2d;
+  background-color: #34383e;
 }
+
 .note-list,
 .note-list-dark {
   font-weight: bold;
 }
+
 /*Note List CSS*/
 .note-card,
 .note-card-dark {
@@ -96,9 +119,11 @@ body.body--dark {
   border-radius: 0px;
   user-select: none;
 }
+
 .note-card-dark {
-  border-bottom: 1px solid #262626;
+  border-bottom: 1px solid #35373e;
 }
+
 .note-item-title,
 .note-item-title-dark {
   color: #343a40;
@@ -106,16 +131,19 @@ body.body--dark {
   font-weight: bold;
   margin-bottom: 3px;
 }
+
 .note-item-summary,
 .note-item-summary-dark {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, Consolas;
   color: #acacac;
   font-size: 14px;
 }
+
 .note-item-summary,
 .note-item-summary-dark > span {
   color: #8f8f8f;
 }
+
 .note-item-title > em,
 .note-item-title-dark > em,
 .note-item-summary > em,
@@ -123,53 +151,54 @@ body.body--dark {
   background-color: #f7c049;
   color: #282828;
 }
+
 .note-item-title-dark {
   color: #dadada;
 }
+
 .note-item-summary-dark {
   color: #919191;
 }
+
 .note-info-tag {
   display: flex;
   align-items: center;
 }
+
 .note-info-tag > i {
   padding-right: 3px;
 }
+
 /*fab button*/
 .fab-btn {
   margin: 10px;
 }
+
 .fab-icon {
   margin: 40px;
 }
+
 /*base dialog*/
 .base-dialog {
   width: 500px !important;
   max-width: 50vw;
   font-weight: bold;
 }
+
 .neeto-icon {
   color: #000000;
 }
+
 .neeto-icon-dark {
   color: #ffffff;
 }
-span[data-type='a']:not(.vditor-ir__node--expand) {
-  padding-right: 25px;
-  position: relative;
+
+body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div.q-uploader.column.no-wrap.q-uploader--flat.no-shadow > div.q-uploader__header > div > div > div.q-uploader__subtitle{
+  display: none;
 }
-span[data-type='a']:not(.vditor-ir__node--expand)::after {
-  display: block;
-  content: '';
-  width: 20px;
-  height: 20px;
-  background: url(./link.svg) no-repeat center center;
-  background-size: 18px 18px;
-  position: absolute;
-  right: 3px;
-  bottom: 0;
-  cursor: pointer;
+
+body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog__inner.flex.no-pointer-events.q-dialog__inner--minimized.q-dialog__inner--standard.fixed-full.flex-center > div > div.q-uploader.column.no-wrap.q-uploader--flat.no-shadow > div.q-uploader__list.scroll > div > div > div > div.q-uploader__subtitle.row.items-center.no-wrap {
+  display: none;
 }
 
 .tag-tooltip {
