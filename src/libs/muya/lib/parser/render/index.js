@@ -5,6 +5,7 @@ import { patch, toVNode, toHTML, h } from './snabbdom'
 import { beginRules } from '../rules'
 import renderInlines from './renderInlines'
 import renderBlock from './renderBlock'
+import { i18n } from 'boot/i18n'
 
 class StateRender {
   constructor (muya) {
@@ -112,7 +113,7 @@ class StateRender {
           target.innerHTML = code
           mermaid.init(undefined, target)
         } catch (err) {
-          target.innerHTML = '< Invalid Mermaid Codes >'
+          target.innerHTML = i18n.t('invalidMermaid')
           target.classList.add(CLASS_OR_ID.AG_MATH_ERROR)
         }
       }
@@ -157,7 +158,14 @@ class StateRender {
             await render(key, JSON.parse(code), options)
           }
         } catch (err) {
-          target.innerHTML = `< Invalid ${functionType === 'flowchart' ? 'Flow Chart' : 'Sequence'} Codes >`
+          if(functionType === 'flowchart'){
+            target.innerHTML = i18n.t('invalidFlowChart')
+          }else if(functionType === 'sequence'){
+            target.innerHTML = i18n.t('invalidSequence')
+          }else{
+            target.innerHTML = i18n.t('invalidVega')
+          }
+          // target.innerHTML = `< Invalid ${functionType === 'flowchart' ? 'Flow Chart' : 'Sequence'} Codes >`
           target.classList.add(CLASS_OR_ID.AG_MATH_ERROR)
         }
       }
