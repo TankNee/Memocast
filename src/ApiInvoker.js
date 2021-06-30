@@ -35,9 +35,15 @@ async function importImages () {
 async function uploadImages (imagePaths) {
   return await ipcRenderer.invoke(channels.uploadImages, imagePaths)
 }
+
+async function checkUpdate () {
+  return await ipcRenderer.invoke(channels.checkUpdate)
+}
+
 export {
   exportMarkdownFile,
   exportMarkdownFiles,
   importImages,
-  uploadImages
+  uploadImages,
+  checkUpdate
 }

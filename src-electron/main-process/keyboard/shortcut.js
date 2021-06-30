@@ -56,8 +56,8 @@ export default class KeyBindings {
       ['format.image', 'CmdOrCtrl+Shift+I'],
       ['format.clear-format', 'Shift+CmdOrCtrl+R'],
       // View Shortcut
-      ['view.switch-view', 'CmdOrCtrl+,'],
-      ['view.source-mode', 'CmdOrCtrl+.'],
+      ['view.switch-view', 'CmdOrCtrl+Shift+,'],
+      ['view.source-mode', 'CmdOrCtrl+Shift+.'],
       ['view.lock-mode', 'CmdOrCtrl+Shift+L']
     ])
   }
