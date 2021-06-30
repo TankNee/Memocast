@@ -40,10 +40,20 @@ async function checkUpdate () {
   return await ipcRenderer.invoke(channels.checkUpdate)
 }
 
+async function needUpdate () {
+  return await ipcRenderer.invoke(channels.needUpdate)
+}
+
+async function quitAndUpdate () {
+  return await ipcRenderer.invoke(channels.quitAndUpdate)
+}
+
 export {
   exportMarkdownFile,
   exportMarkdownFiles,
   importImages,
   uploadImages,
-  checkUpdate
+  checkUpdate,
+  needUpdate,
+  quitAndUpdate
 }

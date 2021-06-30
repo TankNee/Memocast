@@ -61,16 +61,20 @@ export const checkUpdates = browserWindow => {
   if (!runningUpdate) {
     runningUpdate = true
     win = browserWindow
-    autoUpdater.checkForUpdates()
+    autoUpdater.checkForUpdates().catch(err => throw err)
   }
 }
 
 export const needUpdate = (need) => {
   if (need) {
-    autoUpdater.downloadUpdate()
+    autoUpdater.downloadUpdate().catch(err => throw err)
   } else {
     runningUpdate = false
   }
+}
+
+export const quitAndInstall = () => {
+  setImmediate(() => autoUpdater.quitAndInstall())
 }
 
 // ipcMain.on('need-update', (e, { needUpdate }) => {

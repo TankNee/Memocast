@@ -3,7 +3,7 @@
 
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
-import { checkUpdates, needUpdate } from './menu/actions/memocast'
+import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
 
 const { uploadImages } = require('./3rd-part/PicGoUtils')
 
@@ -148,6 +148,10 @@ export default {
 
     handleApi('need-update', async (e, need) => {
       needUpdate(need)
+    }).catch(err => throw err)
+
+    handleApi('quit-and-install', async (e) => {
+      quitAndInstall()
     }).catch(err => throw err)
   }
 }

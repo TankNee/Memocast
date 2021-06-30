@@ -28,6 +28,10 @@ export default {
     lockMode: 'view.shortcut.lock.code.call'
   },
   UPDATE_EVENTS: {
-    UPDATE_AVAILABLE: 'update.events.update.available'
+    UPDATE_AVAILABLE: 'update.events.update.available',
+    UPDATE_NOT_AVAILABLE: 'update.events.update.not.available',
+    UPDATE_DOWNLOADING: 'update.events.update.downloading',
+    UPDATE_DOWNLOADED: 'update.events.update.downloaded',
+    UPDATE_ERROR: 'update.events.update.error'
   }
 }
