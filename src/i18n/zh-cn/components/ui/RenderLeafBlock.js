@@ -5,8 +5,8 @@ export default {
   emptyMermaid: '<空白Mermaid>',
   emptyDiagram: '<空白图例>',
   loading: '加载中...',
-  invalidMermaid: '<不合法的Mermaid公式>',
-  invalidFlowChart: '<不合法的流程图公式>',
-  invalidSequence: '<不合法的时序图公式>',
-  invalidVega: '<不合法的Vega公式>'
+  invalidMermaid: '<不合法的Mermaid表达式>',
+  invalidFlowChart: '<不合法的流程图表达式>',
+  invalidSequence: '<不合法的时序图表达式>',
+  invalidVega: '<不合法的Vega表达式>'
 }

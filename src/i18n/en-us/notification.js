@@ -5,5 +5,7 @@ export default {
   sendToFlomoSuccessfully: 'Send to Flomo Successfully',
   uploadNoteError: 'Upload Note Error',
   uploadNoteSuccessfully: 'Upload Note Successfully',
-  uploading: 'uploading'
+  uploading: 'uploading',
+  categoryExisted: 'This category has existed!',
+  tagExisted: 'This tag has existed!'
 }

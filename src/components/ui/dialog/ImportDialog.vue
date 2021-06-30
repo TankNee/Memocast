@@ -1,9 +1,10 @@
 <template>
-  <q-dialog ref="dialog" persistent>
+  <q-dialog ref="dialog">
     <q-card>
-      <q-uploader :label="$t('restrictedToMarkdown')" multiple accept=".md" flat :factory="factoryFn"/>
+      <q-uploader ref='uploader' :label="$t('restrictedToMarkdown')" multiple accept=".md" flat :factory="factoryFn"/>
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" color="primary" v-close-popup />
+        <q-btn flat :label="$t('upload')" color="primary" @click='$refs.uploader.upload()' />
       </q-card-actions>
       </q-card>
   </q-dialog>

@@ -39,7 +39,7 @@ jobs:
       - name: Rename Package
         run: |
           cd dist/electron/Packaged
-          ren Memocast-Setup-*.exe Memocast-Setup.exe
+          ren Memocast*.exe Memocast-Setup.exe
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: Linux_Dist
-          path: dist/electron/PackagedMemocast-x86_64.AppImage
+          path: dist/electron/Packaged/Memocast-x86_64.AppImage
       - name: Upload latest-linux.yml
         uses: actions/upload-artifact@v1
         with:

@@ -77,6 +77,7 @@ export default {
     paragraphHandler: function (type) {
       if (this.active && this.enablePreviewEditor && this.contentEditor) {
         this.contentEditor.updateParagraph(type)
+        this.updateContentsList(this.contentEditor.getTOC())
       }
     },
     formatHandler: function (type) {
@@ -191,6 +192,21 @@ export default {
         attachThemeColor('light')
       }
 
+      this.contentEditor.on('muya-click', (event) => {
+        if (event.target.type === 'checkbox') {
+          const curData = this.contentEditor.getMarkdown()
+          // eslint-disable-next-line eqeqeq
+          if (curData != this.currentNote) {
+            this.updateNoteState('changed')
+            this.updateContentsList(this.contentEditor.getTOC())
+          } else {
+            this.updateNoteState('default')
+          }
+        }
+      })
+
+      this.contentEditor.on('change', () => this.updateContentsList(this.contentEditor.getTOC()))
+
       document.addEventListener('keydown', (e) => {
         if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
         const curData = this.contentEditor.getMarkdown()
@@ -201,6 +217,7 @@ export default {
         } else {
           this.updateNoteState('default')
         }
+        this.updateContentsList(this.contentEditor.getTOC())
         const cursor = this.contentEditor.getCursor()
         if (cursor.anchor.line >= this.contentEditor.getWordCount(curData).line - 2) {
           bus.$emit(events.SCROLL_DOWN)
@@ -243,6 +260,7 @@ export default {
       document.querySelector('.ag-show-quick-insert-hint').setAttribute('contenteditable', val)
     },
     data: function (val) {
+      this.contentEditor.clearHistory()
       this.contentEditor.setMarkdown(val)
       this.updateContentsList(this.contentEditor.getTOC())
     }

@@ -19,6 +19,8 @@ import flowchartIcon from '../../assets/pngicon/flowchart/2.png'
 import sequenceIcon from '../../assets/pngicon/sequence/2.png'
 import mermaidIcon from '../../assets/pngicon/mermaid/2.png'
 import vegaIcon from '../../assets/pngicon/chart/2.png'
+import imageIcon from '../../assets/pngicon/image/2.png'
+import linkIcon from '../../assets/pngicon/format_link/2.png'
 import { isOsx } from '../../config'
 import { i18n } from 'boot/i18n'
 
@@ -48,49 +50,61 @@ export const quickInsertObj = {
     icon: hrIcon
   }, {
     title: () => i18n.t('frontMatter'),
-    subTitle: () => '--- '+i18n.t('frontMatter')+' ---',
+    subTitle: () => '--- ' + i18n.t('frontMatter') + ' ---',
     label: 'front-matter',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+Y`,
     icon: frontMatterIcon
   }],
   header: [{
     title: () => i18n.t('header1'),
-    subTitle: () => '# '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '# ' + i18n.t('shortSubTitle') + '...',
     label: 'heading 1',
     shortCut: `${COMMAND_KEY}+1`,
     icon: header1Icon
   }, {
     title: () => i18n.t('header2'),
-    subTitle: () => '## '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '## ' + i18n.t('shortSubTitle') + '...',
     label: 'heading 2',
     shortCut: `${COMMAND_KEY}+2`,
     icon: header2Icon
   }, {
     title: () => i18n.t('header3'),
-    subTitle: () => '### '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '### ' + i18n.t('shortSubTitle') + '...',
     label: 'heading 3',
     shortCut: `${COMMAND_KEY}+3`,
     icon: header3Icon
   }, {
     title: () => i18n.t('header4'),
-    subTitle: () => '#### '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '#### ' + i18n.t('shortSubTitle') + '...',
     label: 'heading 4',
     shortCut: `${COMMAND_KEY}+4`,
     icon: header4Icon
   }, {
     title: () => i18n.t('header5'),
-    subTitle: () => '##### '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '##### ' + i18n.t('shortSubTitle') + '...',
     label: 'heading 5',
     shortCut: `${COMMAND_KEY}+5`,
     icon: header5Icon
   }, {
     title: () => i18n.t('header6'),
-    subTitle: () => '###### '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '###### ' + i18n.t('shortSubTitle') + '...',
     label: 'heading 6',
     shortCut: `${COMMAND_KEY}+6`,
     icon: header6Icon
   }],
   'advanced block': [{
+    title: () => i18n.t('image'),
+    subTitle: () => i18n.t('imageBlockSubTitle'),
+    label: 'image',
+    shortCut: `${SHIFT_KEY}+${COMMAND_KEY}+I`,
+    icon: imageIcon
+  }, {
+    title: () => i18n.t('link'),
+    subTitle: () => i18n.t('linkBlockSubTitle'),
+    label: 'link',
+    shortCut: `${COMMAND_KEY}+L`,
+    icon: linkIcon
+  }, {
     title: () => i18n.t('tableBlock'),
     subTitle: () => i18n.t('tableBlockSubTitle'),
     label: 'table',
@@ -98,44 +112,44 @@ export const quickInsertObj = {
     icon: newTableIcon
   }, {
     title: () => i18n.t('displayMath'),
-    subTitle: () => '$$ '+i18n.t('shortSubTitle')+' $$',
+    subTitle: () => '$$ ' + i18n.t('shortSubTitle') + ' $$',
     label: 'mathblock',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+M`,
     icon: mathblockIcon
   }, {
     title: () => i18n.t('HTMLBlock'),
-    subTitle: () => '<div> '+i18n.t('shortSubTitle')+' <div>',
+    subTitle: () => '<div> ' + i18n.t('shortSubTitle') + ' <div>',
     label: 'html',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+J`,
     icon: htmlIcon
   }, {
     title: () => i18n.t('codeBlock'),
-    subTitle: () => '```java '+i18n.t('shortSubTitle')+' ```',
+    subTitle: () => '```java ' + i18n.t('shortSubTitle') + ' ```',
     label: 'pre',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+C`,
     icon: codeIcon
   }, {
     title: () => i18n.t('quoteBlock'),
-    subTitle: () => '>'+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '>' + i18n.t('shortSubTitle') + '...',
     label: 'blockquote',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+Q`,
     icon: quoteIcon
   }],
   'list block': [{
     title: () => i18n.t('orderList'),
-    subTitle: () => '1. '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '1. ' + i18n.t('shortSubTitle') + '...',
     label: 'ol-order',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+O`,
     icon: orderListIcon
   }, {
     title: () => i18n.t('bulletList'),
-    subTitle: () => '- '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '- ' + i18n.t('shortSubTitle') + '...',
     label: 'ul-bullet',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+U`,
     icon: bulletListIcon
   }, {
     title: () => i18n.t('toDoList'),
-    subTitle: () => '- [x] '+i18n.t('shortSubTitle')+'...',
+    subTitle: () => '- [x] ' + i18n.t('shortSubTitle') + '...',
     label: 'ul-task',
     shortCut: `${OPTION_KEY}+${COMMAND_KEY}+X`,
     icon: todoListIcon
@@ -150,12 +164,12 @@ export const quickInsertObj = {
     subTitle: () => i18n.t('flowChartSubTitle'),
     label: 'flowchart',
     icon: flowchartIcon
-  }, {
+  },/* {
     title: () => i18n.t('sequenceDiagram'),
     subTitle: () => i18n.t('sequenceDiagramSubTitle'),
     label: 'sequence',
     icon: sequenceIcon
-  }, {
+  }, */ {
     title: () => i18n.t('mermaid'),
     subTitle: () => i18n.t('mermaidSubTitle'),
     label: 'mermaid',
