@@ -157,7 +157,7 @@ app.setAboutPanelOptions({
   applicationName: 'Memocast',
   copyright: 'TankNee',
   website: 'https://github.com/TankNee/Memocast',
-  iconPath: path.resolve('src-electron/icons', 'icon.ico'),
+  iconPath: path.resolve('src-electron/icons', 'linux-512x512.png'),
   applicationVersion: packageJSON.version
 })
 

@@ -23,7 +23,6 @@
   "dependencies": {
     "@altairwei/wiz-markdown": "^1.0.13",
     "@quasar/extras": "^1.0.0",
-    "about-window": "^1.14.0",
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.3",
     "core-js": "^3.6.5",
