@@ -1,3 +1,4 @@
 export default {
-  update: 'Update'
+  hide: 'Hide',
+  install: 'Install'
 }

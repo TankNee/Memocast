@@ -1,3 +1,4 @@
 export default {
-  update: '更新'
+  hide: '隐藏',
+  install: '安装'
 }

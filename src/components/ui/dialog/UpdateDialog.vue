@@ -18,6 +18,10 @@
           <q-linear-progress dark stripe rounded size='20px' :value='progress' color='red' class='q-mt-sm' />
         </div>
       </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat :label="$t('hide')" color="primary" v-close-popup />
+        <q-btn flat :disable='!downloaded' :label="$t('install')" color="primary" @click='installHandler' />
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
@@ -31,7 +35,8 @@ export default {
   name: 'UpdateDialog',
   data () {
     return {
-      progress: 0
+      progress: 0,
+      downloaded: false
     }
   },
   methods: {
@@ -40,6 +45,9 @@ export default {
       this.progress = percent
     },
     downloadedHandler: function () {
+      this.downloaded = true
+    },
+    installHandler: function () {
       quitAndUpdate()
     },
     toggle: function () {
