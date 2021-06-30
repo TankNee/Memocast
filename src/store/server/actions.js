@@ -396,8 +396,7 @@ export default {
     const reader = new FileReader()
     reader.readAsText(importFile)
     reader.onload = async () => {
-      var text = reader.result
-      console.log(text)
+      const text = reader.result
       const result = await api.KnowledgeBaseApi.createNote({
         kbGuid,
         data: {

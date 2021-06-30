@@ -291,7 +291,7 @@ class Node {
     } = item
     this.parent = parent
     this.lvl = lvl
-    this.label = extractMarkdownContent(content || '')
+    this.label = extractMarkdownContent(content || '').replace(/#*\s?/, '')
     this.key = key
     this.handler = (v) => {
       bus.$emit(events.SCROLL_TO_HEADER, v.key)
