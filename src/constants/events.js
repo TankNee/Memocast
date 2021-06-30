@@ -27,5 +27,8 @@ export default {
     switchView: 'view.shortcut.switch.view.call',
     sourceMode: 'view.shortcut.source.code.call',
     lockMode: 'view.shortcut.lock.code.call'
+  },
+  UPDATE_EVENTS: {
+    UPDATE_AVAILABLE: 'update.events.update.available'
   }
 }

@@ -156,8 +156,9 @@
 import { createNamespacedHelpers } from 'vuex'
 import ImageUploadServiceDialog from './ImageUploadServiceDialog'
 import { i18n } from 'boot/i18n'
+import bus from 'components/bus'
+import events from 'src/constants/events'
 import { version } from '../../../../package.json'
-import VditorPreview from 'vditor/dist/method.min'
 
 const {
   mapState,
@@ -215,58 +216,8 @@ export default {
       )
       this.updateStateAndStore({ imageUploadService: servicePlain })
     },
-    checkUpdateHandler: async function () {
-      // eslint-disable-next-line camelcase
-      const { tag_name, html_url, body, author: { avatar_url } } = await this.getLatestVersion()
-      const latestVersion = tag_name.replace('v', '')
-      const that = this
-
-      if (version !== latestVersion) {
-        VditorPreview.md2html(body).then(bodyContent => {
-          this.$q.notify({
-            message: bodyContent,
-            color: 'primary',
-            actions: [
-              {
-                label: that.$t('update'),
-                color: 'white',
-                handler: () => {
-                  that.$q.electron.shell.openExternal(html_url)
-                }
-              }
-            ],
-            caption: that.$t('getNewerVersion', { version: latestVersion }),
-            avatar: avatar_url,
-            html: true,
-            multiLine: true
-          })
-        }).catch(err => {
-          console.log(err)
-          this.$q.notify({
-            message: body,
-            color: 'primary',
-            actions: [
-              {
-                label: that.$t('update'),
-                color: 'white',
-                handler: () => {
-                  that.$q.electron.shell.openExternal(html_url)
-                }
-              }
-            ],
-            caption: that.$t('getNewerVersion', { version: latestVersion }),
-            avatar: avatar_url,
-            html: true,
-            multiLine: true
-          })
-        })
-      } else {
-        this.$q.notify({
-          message: that.$t('noNewerVersion'),
-          color: 'green',
-          icon: 'check'
-        })
-      }
+    checkUpdateHandler: function () {
+      this.checkUpdate()
     },
     flomoSettingHandler: async function () {
       this.$q.dialog({
@@ -291,8 +242,13 @@ export default {
       'toggleDarkMode',
       'toggleChanged',
       'updateStateAndStore',
-      'getLatestVersion'
+      'checkUpdate'
     ])
+  },
+  mounted () {
+    bus.$on(events.UPDATE_EVENTS.UPDATE_AVAILABLE, (info) => {
+      //
+    })
   }
 }
 </script>

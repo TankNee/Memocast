@@ -5,7 +5,7 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import _ from 'lodash'
-import { importImages, uploadImages } from 'src/ApiInvoker'
+import { checkUpdate, importImages, uploadImages } from 'src/ApiInvoker'
 
 export default {
   initClientStore ({ commit, state }) {
@@ -26,8 +26,8 @@ export default {
     commit(types.UPDATE_STATES, options)
     commit(types.SAVE_ITEMS_TO_LOCAL_STORE_SYNC, options)
   },
-  async getLatestVersion () {
-    return await api.ThirdPartApi.getLatestVersion()
+  async checkUpdate () {
+    return checkUpdate()
   },
   async sendToFlomo ({ state, rootState }, docGuid) {
     const { flomoApiUrl } = state

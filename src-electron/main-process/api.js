@@ -2,6 +2,8 @@
 // import i18n from 'boot/i18n'
 
 import { sendNotification } from './api-invoker'
+import { BrowserWindow } from 'electron'
+import { checkUpdates, needUpdate } from './menu/actions/memocast'
 
 const { uploadImages } = require('./3rd-part/PicGoUtils')
 
@@ -137,6 +139,15 @@ export default {
         }
       })
       return uploadResult
+    }).catch(err => throw err)
+
+    handleApi('check-update', async (e) => {
+      const win = BrowserWindow.fromWebContents(e.sender)
+      checkUpdates(win)
+    }).catch(err => throw err)
+
+    handleApi('need-update', async (e, need) => {
+      needUpdate(need)
     }).catch(err => throw err)
   }
 }

@@ -65,15 +65,23 @@ export const checkUpdates = browserWindow => {
   }
 }
 
-ipcMain.on('updater-need-update', (e, { needUpdate }) => {
-  if (needUpdate) {
+export const needUpdate = (need) => {
+  if (need) {
     autoUpdater.downloadUpdate()
   } else {
     runningUpdate = false
   }
-})
+}
 
-ipcMain.on('updater-check-update', e => {
-  const win = BrowserWindow.fromWebContents(e.sender)
-  checkUpdates(win)
-})
+// ipcMain.on('need-update', (e, { needUpdate }) => {
+//   if (needUpdate) {
+//     autoUpdater.downloadUpdate()
+//   } else {
+//     runningUpdate = false
+//   }
+// })
+
+// ipcMain.on('check-update', e => {
+//   const win = BrowserWindow.fromWebContents(e.sender)
+//   checkUpdates(win)
+// })
