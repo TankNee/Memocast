@@ -40,8 +40,8 @@ async function checkUpdate () {
   return await ipcRenderer.invoke(channels.checkUpdate)
 }
 
-async function needUpdate () {
-  return await ipcRenderer.invoke(channels.needUpdate)
+async function needUpdate (need) {
+  return await ipcRenderer.invoke(channels.needUpdate, need)
 }
 
 async function quitAndUpdate () {

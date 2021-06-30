@@ -161,6 +161,7 @@ import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import { version } from '../../../../package.json'
+import { needUpdate } from 'src/ApiInvoker'
 
 const {
   mapState,
@@ -255,13 +256,14 @@ export default {
       console.log(info)
       // this.$refs.updateDialog.toggle()
       this.$q.notify({
-        caption: this.$t('getNewerVersion', info.version),
+        caption: this.$t('getNewerVersion', { version: info.version }),
         message: info.releaseNotes,
         actions: [
           {
             label: this.$t('update'),
             color: 'white',
             handler: () => {
+              needUpdate(true)
               this.$refs.updateDialog.toggle()
             }
           }
