@@ -205,7 +205,7 @@ kbd {
 @media not print {
 
   #ag-editor-id {
-    max-width: var(--editorAreaWidth);
+    max-width: 80%;
     min-width: 400px;
     min-height: 100%;
     margin: 0 auto;

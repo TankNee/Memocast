@@ -6,7 +6,6 @@ export default {
   INSERT_IMAGE: 'insert.image',
   INSERT_IMAGES: 'insert.images',
   INSERT_TEXT: 'insert.text',
-  SAVE_NOTE: 'save.note',
   SCROLL_TO_HEADER: 'scroll.to.header',
   SCROLL_DOWN: 'scroll.down',
   PARAGRAPH_SHORTCUT_CALL: 'paragraph.shortcut.call',

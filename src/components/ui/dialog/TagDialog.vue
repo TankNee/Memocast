@@ -70,6 +70,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import helper from 'src/utils/helper'
 const {
   mapState: mapServerState,
   mapActions: mapServerActions,
@@ -115,6 +116,14 @@ export default {
      * 在输入框中创建了一个新的标签时会调用的回调
      */
     newValueHandler: async function (val, done) {
+      if (helper.checkTagExistence(this.tags, val)) {
+        this.$q.notify({
+          color: 'red-10',
+          message: this.$t('tagExisted'),
+          icon: 'error'
+        })
+        return
+      }
       if (val.length > 0) {
         const createResult = await this.createTag({ name: val })
         await this.attachTag(createResult)

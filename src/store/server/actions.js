@@ -269,6 +269,7 @@ export default {
       docGuid,
       data: payload
     })
+    commit(types.UPDATE_CURRENT_NOTE, payload)
     this.dispatch('server/getCategoryNotes')
   },
   /**
@@ -285,8 +286,10 @@ export default {
     const {
       kbGuid,
       docGuid,
-      category
+      category,
+      noteState
     } = state.currentNote.info
+    if (noteState === 'default') return
     let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
@@ -453,8 +456,17 @@ export default {
   }, childCategoryName) {
     const {
       kbGuid,
-      currentCategory
+      currentCategory,
+      categories
     } = state
+    if (helper.checkCategoryExistence(categories, currentCategory, childCategoryName)) {
+      Notify.create({
+        color: 'red-10',
+        message: i18n.t('categoryExisted'),
+        icon: 'error'
+      })
+      return
+    }
     await api.KnowledgeBaseApi.createCategory({
       kbGuid,
       data: {

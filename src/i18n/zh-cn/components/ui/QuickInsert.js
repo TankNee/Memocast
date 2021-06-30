@@ -12,6 +12,8 @@ export default {
   header6: '标题6',
   tableBlock: '表格',
   tableBlockSubTitle: '| 标题1 | 标题2 |',
+  imageBlockSubTitle: '![ 图片标题 ]( 图片路径 )',
+  linkBlockSubTitle: '[ 链接标题 ]( 链接路径 )',
   displayMath: '数学公式',
   HTMLBlock: 'HTML代码',
   codeBlock: '代码块',

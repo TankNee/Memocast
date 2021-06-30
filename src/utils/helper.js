@@ -346,6 +346,26 @@ const updateContentsList = list => {
   return rootNode.children
 }
 
+/**
+ * 检查同名文件夹是否存在
+ * @param {string[]} categories
+ * @param {string} parentCategory
+ * @param {string} childCategory
+ */
+function checkCategoryExistence (categories, parentCategory, childCategory) {
+  parentCategory = isNullOrEmpty(parentCategory) ? '/' : parentCategory
+  const absolutePath = `${parentCategory}${childCategory}/`
+  return categories.includes(absolutePath)
+}
+
+function checkTagExistence (tags, newTag) {
+  const tagTree = generateTagNodeTree(tags)
+  for (const tagTreeElement of tagTree) {
+    if (tagTreeElement.label === newTag) return true
+  }
+  return false
+}
+
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
@@ -358,5 +378,7 @@ export default {
   displayDateElegantly,
   updateContentsList,
   getFileNameWithExt,
-  isCtrl
+  isCtrl,
+  checkCategoryExistence,
+  checkTagExistence
 }

@@ -12,6 +12,8 @@ export default {
   header6: 'Header 6',
   tableBlock: 'Table Block',
   tableBlockSubTitle: '|Lorem | Ipsum is simply |',
+  imageBlockSubTitle: '![ Pic Title ]( Pic Url )',
+  linkBlockSubTitle: '[ Link Title ]( Link Url )',
   displayMath: 'Display Math',
   HTMLBlock: 'HTML Block',
   codeBlock: 'Code Block',

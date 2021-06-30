@@ -191,6 +191,19 @@ export default {
         attachThemeColor('light')
       }
 
+      this.contentEditor.on('muya-click', (event) => {
+        if (event.target.type === 'checkbox') {
+          const curData = this.contentEditor.getMarkdown()
+          // eslint-disable-next-line eqeqeq
+          if (curData != this.currentNote) {
+            this.updateNoteState('changed')
+            this.updateContentsList(this.contentEditor.getTOC())
+          } else {
+            this.updateNoteState('default')
+          }
+        }
+      })
+
       document.addEventListener('keydown', (e) => {
         if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
         const curData = this.contentEditor.getMarkdown()
@@ -243,6 +256,7 @@ export default {
       document.querySelector('.ag-show-quick-insert-hint').setAttribute('contenteditable', val)
     },
     data: function (val) {
+      this.contentEditor.clearHistory()
       this.contentEditor.setMarkdown(val)
       this.updateContentsList(this.contentEditor.getTOC())
     }
