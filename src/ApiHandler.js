@@ -63,7 +63,27 @@ export default {
     handleApi('updater-update-available', (event, info) => {
       console.log(info)
       bus.$emit(events.UPDATE_EVENTS.UPDATE_AVAILABLE, info)
-    })
+    }).catch(err => throw err)
+
+    handleApi('updater-update-not-available', (event, info) => {
+      console.log(info)
+      bus.$emit(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, info)
+    }).catch(err => throw err)
+
+    handleApi('updater-update-downloading', (event, progress) => {
+      console.log(progress)
+      bus.$emit(events.UPDATE_EVENTS.UPDATE_DOWNLOADING, progress)
+    }).catch(err => throw err)
+
+    handleApi('updater-update-downloaded', (event, info) => {
+      console.log(info)
+      bus.$emit(events.UPDATE_EVENTS.UPDATE_DOWNLOADED)
+    }).catch(err => throw err)
+
+    handleApi('updater-update-error', (event, error) => {
+      console.log(error)
+      bus.$emit(events.UPDATE_EVENTS.UPDATE_DOWNLOADED)
+    }).catch(err => throw err)
   },
   UnregisterApiHandler () {
     console.log('[API Handler] Render Process unregisters handler successfully!')

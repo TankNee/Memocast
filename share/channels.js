@@ -4,5 +4,6 @@ export default {
   importImages: 'import-images',
   uploadImages: 'upload-images',
   checkUpdate: 'check-update',
-  needUpdate: 'need-update'
+  needUpdate: 'need-update',
+  quitAndUpdate: 'quit-and-update'
 }
