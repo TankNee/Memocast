@@ -1,6 +1,6 @@
 {
   "name": "cn.memocast.app",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Memocast",
   "author": "tanknee <nee@tanknee.cn>",
@@ -55,7 +55,6 @@
     "turndown": "^6.0.0",
     "underscore": "^1.9.2",
     "unsplash-js": "^6.0.0",
-    "vditor": "^3.8.5",
     "vega": "^5.10.0",
     "vega-embed": "^6.4.0",
     "vega-lite": "^4.7.0",
