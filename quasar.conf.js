@@ -197,10 +197,15 @@ module.exports = function (/* ctx */) {
         electronDownload: {
           mirror: 'https://npm.taobao.org/mirrors/electron/'
         },
+        publish: {
+          provider: 'github',
+          releaseType: 'draft'
+        },
         mac: {
           target: [
             'dmg'
-          ]
+          ],
+          artifactName: 'Memocast.dmg'
         },
         win: {
           target: [
@@ -209,6 +214,7 @@ module.exports = function (/* ctx */) {
           legalTrademarks: 'Memocast'
         },
         nsis: {
+          artifactName: 'Memocast-setup.exe',
           perMachine: false,
           oneClick: false,
           allowToChangeInstallationDirectory: true
@@ -217,7 +223,8 @@ module.exports = function (/* ctx */) {
           target: [
             'AppImage'
           ],
-          vendor: 'Memocast'
+          vendor: 'Memocast',
+          artifactName: 'Memocast-x86_64.AppImage'
         },
         files: [
           '**/*',
