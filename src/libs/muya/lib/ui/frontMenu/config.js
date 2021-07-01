@@ -4,6 +4,7 @@ import deleteIcon from '../../assets/pngicon/delete/2.png'
 import turnIcon from '../../assets/pngicon/turninto/2.png'
 import { isOsx } from '../../config'
 import { quickInsertObj } from '../quickInsert/config'
+import { i18n } from 'boot/i18n'
 
 const wholeSubMenu = Object.keys(quickInsertObj).reduce((acc, key) => {
   const items = quickInsertObj[key]
@@ -15,21 +16,21 @@ const COMMAND_KEY = isOsx ? '⌘' : '⌃'
 export const menu = [{
   icon: copyIcon,
   label: 'duplicate',
-  text: 'Duplicate',
+  text: () => i18n.t('copy'),
   shortCut: `⇧${COMMAND_KEY}P`
 }, {
   icon: turnIcon,
   label: 'turnInto',
-  text: 'Turn Into'
+  text: () => i18n.t('turnInto'),
 }, {
   icon: newIcon,
   label: 'new',
-  text: 'New Paragraph',
+  text: () => i18n.t('newParagraph'),
   shortCut: `⇧${COMMAND_KEY}N`
 }, {
   icon: deleteIcon,
   label: 'delete',
-  text: 'Delete',
+  text: () => i18n.t('delete'),
   shortCut: `⇧${COMMAND_KEY}D`
 }]
 

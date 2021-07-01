@@ -10,14 +10,24 @@
       <q-item clickable v-close-popup v-ripple @click="moveTo">
         <q-item-section>{{ $t('move') }}</q-item-section>
       </q-item>
-      <q-item clickable v-close-popup v-ripple @click="exportTo">
+      <q-item clickable  v-ripple>
         <q-item-section>{{ $t('export') }}</q-item-section>
+        <q-item-section side>
+          <q-icon color="primary" name="navigate_next"></q-icon>
+        </q-item-section>
+        <q-menu anchor="top end" self="top start">
+          <q-list dense>
+            <q-item clickable v-close-popup v-ripple @click="exportToMarkdown">
+              <q-item-section>Markdown</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup v-ripple @click="exportToPdf">
+              <q-item-section>PDF</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
       </q-item>
       <q-item clickable v-close-popup v-ripple @click="flomo">
         <q-item-section>{{ $t('flomo') }}</q-item-section>
-      </q-item>
-      <q-item clickable v-close-popup v-ripple>
-        <q-item-section>{{ $t('share') }}</q-item-section>
       </q-item>
       <q-separator />
       <q-item clickable v-close-popup v-ripple @click="del">
@@ -47,7 +57,11 @@ export default {
       types: Function,
       default: () => {}
     },
-    exportTo: {
+    exportToMarkdown: {
+      types: Function,
+      default: () => {}
+    },
+    exportToPdf: {
       types: Function,
       default: () => {}
     },

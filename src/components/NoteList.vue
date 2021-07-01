@@ -41,7 +41,7 @@
       >
         <q-fab-action
           color="red-7"
-          v-if="showDeleteCategoryFab"
+          v-if="isRootCategory"
           icon="delete_forever"
           @click="handleDeleteCategory"
         >
@@ -54,7 +54,7 @@
           >
         </q-fab-action>
         <q-fab-action
-          v-if="showDeleteCategoryFab"
+          v-if="isRootCategory"
           :color="color"
           icon="import_export"
           @click="handleExportCategory"
@@ -68,7 +68,7 @@
           >
         </q-fab-action>
         <q-fab-action
-          v-if="showDeleteCategoryFab"
+          v-if="isRootCategory"
           :color="color"
           icon="add"
           @click="$refs.ImportDialog.toggle()"
@@ -81,7 +81,7 @@
             >{{ $t('import') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action :color="color" icon="note_add" @click="handleAddNote">
+        <q-fab-action v-if="isRootCategory" :color="color" icon="note_add" @click="handleAddNote">
           <q-tooltip
             anchor="center right"
             self="center left"
@@ -134,7 +134,7 @@ export default {
         width: '7px'
       }
     },
-    showDeleteCategoryFab: function () {
+    isRootCategory: function () {
       return !helper.isNullOrEmpty(this.currentCategory)
     },
     category: function () {

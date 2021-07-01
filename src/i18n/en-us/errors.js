@@ -4,7 +4,7 @@ export default {
   301: 'Invalid Token',
   304: 'Traffic Limit',
   305: 'Storage Limit',
-  2000: 'Parameter errors, usually missing parameters, or parameter errors',
+  2000: 'The category has notes so that it cannot be delete directly.',
   31001: 'Invalid Username',
   31002: 'Invalid Password',
   31004: 'Over Logging',

@@ -1,9 +1,10 @@
 // import oneDarkTheme from 'src/css/dark.theme.css'
 // import oneDarkPrismTheme from 'src/css/prism/dark.theme.css'
-// import ulyssesTheme from 'src/css/ulyssess.theme.css'
+// import lightTheme from 'src/css/lights.theme.css'
 
 const oneDarkTheme = `:root {
   --backgroundColor: #35373e;
+  --editorAreaWidth: 90%;
 
   /*editor*/
   --themeColor: #409eff;
@@ -18,7 +19,7 @@ const oneDarkTheme = `:root {
   --themeColor10: rgba(64, 158, 255, .1);
 
   --highlightColor: rgba(102, 177, 255, .6);
-  --selectionColor: rgba(102, 177, 255, .3);
+  --selectionColor: rgba(0, 0, 0, .1);
   --editorColor: rgba(255, 255, 255, .7);
   --editorColor80: rgba(255, 255, 255, .8);
   --editorColor60: rgba(255, 255, 255, .6);
@@ -60,7 +61,7 @@ const oneDarkTheme = `:root {
   --buttonPrimaryBorderActive: var(--buttonPrimaryBorder);
   --buttonPrimaryFocusBorder: none;
   --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(24, 26, 31, 0.5), 0 0 0 1px var(--themeColor);
-  --tableBorderColor: #363839;
+  --tableBorderColor: rgb(158, 158, 158);
 
   /*marktext*/
   --sideBarColor: rgba(255, 255, 255, .6);
@@ -78,68 +79,11 @@ const oneDarkTheme = `:root {
   --floatShadow: rgba(0, 0, 0, 0.2);
   --maskColor: rgba(0, 0, 0, .7);
   --editorAreaWidth: 750px;
+  --floatShadow: rgba(15, 15, 15, 0.03) 0px 0px 0px 1px, rgba(15, 15, 15, 0.04) 0px 3px 6px, rgba(15, 15, 15, 0.05) 0px 9px 24px;
 }
 
 ::-webkit-scrollbar {
   background: var(--editorBgColor);
-}
-
-.ag-front-menu .submenu,
-.ag-float-wrapper {
-  box-shadow: 0 4px 8px 0 var(--floatShadow) !important;
-}
-
-.title-bar .frameless-titlebar-button > div > svg {
-  fill: #ffffff;
-}
-.title-bar .frameless-titlebar-minimize:hover,
-.title-bar .frameless-titlebar-toggle:hover {
-  background-color: rgb(255, 255, 255, .05);
-}
-
-.side-bar {
-  border-right: 1px solid #1d1d1d !important;
-}
-
-.recent-files-projects a,
-.open-project a {
-  box-shadow: none !important;
-}
-
-.editor-tabs {
-  box-shadow: none !important;
-}
-.editor-tabs:after {
-  position: absolute;
-  content: '';
-  border-bottom: 1px solid #1d1d1d;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
-.editor-tabs ul.tabs-container:after {
-  position: absolute;
-  content: '';
-  border-bottom: 1px solid #1d1d1d;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-}
-
-.tabs-container > li,
-.tabs-container > li.active {
-  background: var(--editorBgColor) !important;
-}
-
-.aidou .search-wrapper {
-  box-shadow: none;
-}
-
-.open-project button,
-.recent-files-projects button {
-  box-shadow: none !important;
 }
 
 /* ------------------------------------ */
@@ -158,13 +102,6 @@ p:not(.ag-active)[data-role="hr"]::before {
 figure.ag-active.ag-container-block > div.ag-container-preview {
   box-shadow: 0 3px 8px 0 var(--floatShadow) !important;
 }
-
-/*
- * Prism.js theme (override light theme)
- */
-
-/* @import url("prismjs/dark.theme.css"); */
-
 `
 
 const oneDarkPrismTheme = `/**
@@ -306,7 +243,7 @@ pre.ag-paragraph {
 }
 `
 
-const ulyssesTheme = `/* Common CSS use by both light and dark themes */
+const lightTheme = `/* Common CSS use by both light and dark themes */
 :root {
   --titleBarHeight: 32px;
   --editorAreaWidth: 90%;
@@ -483,6 +420,6 @@ export const oneDark = () => {
   return oneDarkTheme + '\n' + oneDarkPrismTheme
 }
 
-export const ulysses = () => {
-  return ulyssesTheme + '\n' + lightPrismTheme
+export const light = () => {
+  return lightTheme + '\n' + lightPrismTheme
 }

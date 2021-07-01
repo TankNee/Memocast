@@ -10,6 +10,7 @@ import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
 import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiInvoker'
+import html2Pdf from 'src/mixins/Html2Pdf'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -269,6 +270,7 @@ export default {
       docGuid,
       data: payload
     })
+    commit(types.UPDATE_CURRENT_NOTE, payload)
     this.dispatch('server/getCategoryNotes')
   },
   /**
@@ -285,8 +287,10 @@ export default {
     const {
       kbGuid,
       docGuid,
-      category
+      category,
+      noteState
     } = state.currentNote.info
+    if (noteState === 'default') return
     let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
@@ -393,8 +397,7 @@ export default {
     const reader = new FileReader()
     reader.readAsText(importFile)
     reader.onload = async () => {
-      var text = reader.result
-      console.log(text)
+      const text = reader.result
       const result = await api.KnowledgeBaseApi.createNote({
         kbGuid,
         data: {
@@ -453,8 +456,17 @@ export default {
   }, childCategoryName) {
     const {
       kbGuid,
-      currentCategory
+      currentCategory,
+      categories
     } = state
+    if (helper.checkCategoryExistence(categories, currentCategory, childCategoryName)) {
+      Notify.create({
+        color: 'red-10',
+        message: i18n.t('categoryExisted'),
+        icon: 'error'
+      })
+      return
+    }
     await api.KnowledgeBaseApi.createCategory({
       kbGuid,
       data: {
@@ -821,6 +833,18 @@ export default {
       )
     }
     await exportMarkdownFile(content)
+  },
+  async exportPdf ({
+    commit,
+    state
+  }, noteField) {
+    const { kbGuid } = state
+    const { docGuid } = noteField
+    const result = await _getContent(kbGuid, docGuid)
+    const title = result.info.title
+    const s = title.lastIndexOf('.')
+    console.log(title)
+    await html2Pdf.downloadPDF(document.getElementById('muya'), title.substring(0, s))
   },
   /**
    * 批量导出markdown笔记到本地
