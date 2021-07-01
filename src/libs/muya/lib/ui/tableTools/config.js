@@ -1,32 +1,33 @@
+import { i18n } from 'boot/i18n'
 export const toolList = {
   left: [{
-    label: 'Insert Row Above',
+    label: () => i18n.t('insertRowAbove'),
     action: 'insert',
     location: 'previous',
     target: 'row'
   }, {
-    label: 'Insert Row Below',
+    label: () => i18n.t('insertRowBelow'),
     action: 'insert',
     location: 'next',
     target: 'row'
   }, {
-    label: 'Remove Row',
+    label: () => i18n.t('removeRow'),
     action: 'remove',
     location: 'current',
     target: 'row'
   }],
   bottom: [{
-    label: 'Insert Column Left',
+    label: () => i18n.t('insertColumnLeft'),
     action: 'insert',
     location: 'left',
     target: 'column'
   }, {
-    label: 'Insert Column Right',
+    label: () => i18n.t('insertColumnRight'),
     action: 'insert',
     location: 'right',
     target: 'column'
   }, {
-    label: 'Remove Column',
+    label: () => i18n.t('removeColumn'),
     action: 'remove',
     location: 'current',
     target: 'column'

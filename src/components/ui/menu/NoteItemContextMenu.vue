@@ -29,9 +29,6 @@
       <q-item clickable v-close-popup v-ripple @click="flomo">
         <q-item-section>{{ $t('flomo') }}</q-item-section>
       </q-item>
-      <q-item clickable v-close-popup v-ripple>
-        <q-item-section>{{ $t('share') }}</q-item-section>
-      </q-item>
       <q-separator />
       <q-item clickable v-close-popup v-ripple @click="del">
         <q-item-section class="text-red">{{ $t('delete') }}</q-item-section>

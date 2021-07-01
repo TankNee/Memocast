@@ -7,10 +7,10 @@ class ClickEvent {
   constructor (muya) {
     this.muya = muya
     this.clickBinding()
-    this.contextClickBingding()
+    this.contextClickBinding()
   }
 
-  contextClickBingding () {
+  contextClickBinding () {
     const { container, eventCenter, contentState } = this.muya
     const handler = event => {
       event.preventDefault()
@@ -227,6 +227,9 @@ class ClickEvent {
       if (target.tagName === 'INPUT' && target.classList.contains(CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX)) {
         contentState.listItemCheckBoxClick(target)
       }
+
+      eventCenter.dispatch('muya-click', event)
+
       contentState.clickHandler(event)
     }
 

@@ -5,8 +5,8 @@ export default function (keybindings) {
     label: 'Memocast',
     submenu: [{
       label: 'About Memocast',
-      click (menuItem, browserWindow) {
-        // showAboutDialog(browserWindow)
+      click () {
+        app.showAboutPanel()
       }
     }, {
       label: 'Open Devtools',
@@ -36,7 +36,7 @@ export default function (keybindings) {
       type: 'separator'
     }, {
       label: 'Quit Memocast',
-      accelerator: keybindings.getAccelerator('file.quit'),
+      accelerator: keybindings.getAccelerator('mc.quit'),
       click: app.quit
     }]
   }

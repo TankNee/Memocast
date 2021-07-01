@@ -3,7 +3,7 @@ import { CLASS_OR_ID } from '../../../config'
 import { htmlToVNode } from '../snabbdom'
 
 import 'katex/dist/katex.min.css'
-
+import { i18n } from 'boot/i18n'
 export default function displayMath (h, cursor, block, token, outerClass) {
   const className = this.getClassName(outerClass, block, token, cursor)
   const mathSelector = className === CLASS_OR_ID.AG_HIDE
@@ -35,7 +35,7 @@ export default function displayMath (h, cursor, block, token, outerClass) {
       mathVnode = htmlToVNode(html)
       loadMathMap.set(key, mathVnode)
     } catch (err) {
-      mathVnode = '< Invalid Mathematical Formula >'
+      mathVnode = i18n.t('invalidMath')
       previewSelector += `.${CLASS_OR_ID.AG_MATH_ERROR}`
     }
   }

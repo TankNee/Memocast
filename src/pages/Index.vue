@@ -27,7 +27,6 @@
             v-show='!isSourceMode'
           >
             <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
-            <VditorContextMenu />
           </q-scroll-area>
           <Monaco ref='monaco' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
           <transition-group
@@ -105,7 +104,6 @@ import helper from 'src/utils/helper'
 import { createNamespacedHelpers } from 'vuex'
 import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
-import VditorContextMenu from 'components/ui/menu/VditorContextMenu'
 import Monaco from 'components/ui/editor/Monaco'
 import Muya from 'components/ui/editor/Muya'
 
@@ -120,7 +118,6 @@ export default {
   components: {
     Muya,
     Monaco,
-    VditorContextMenu,
     Loading,
     NoteOutlineDrawer,
     // Vditor,
@@ -164,7 +161,7 @@ export default {
   },
   methods: {
     refreshCurrentNote: function () {
-      bus.$emit(events.SAVE_NOTE)
+      bus.$emit(events.EDIT_SHORTCUT_CALL.save)
     },
     outlineDrawerChangeHandler: function (state) {
       this.isOutlineShow = state

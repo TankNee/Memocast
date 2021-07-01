@@ -4,7 +4,7 @@
     :value='false'
     :mini-width='200'
     :breakpoint='700'
-    content-class='bg-primary text-white'
+    content-class='bg-primary text-white hide-scrollbar'
     overlay
     elevated
     side='right'

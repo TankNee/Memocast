@@ -59,6 +59,11 @@ export default {
       console.log(type)
       bus.$emit(events.VIEW_SHORTCUT_CALL[type], type)
     }).catch(err => throw err)
+
+    handleApi('updater-update-available', (event, info) => {
+      console.log(info)
+      bus.$emit(events.UPDATE_EVENTS.UPDATE_AVAILABLE, info)
+    })
   },
   UnregisterApiHandler () {
     console.log('[API Handler] Render Process unregisters handler successfully!')

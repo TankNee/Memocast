@@ -4,7 +4,7 @@
  *  @license Simplified BSD license.
  */
 import _ from 'underscore'
-import Snap from 'snapsvg'
+import Snap from './snap.svg-min'
 import WebFont from 'webfontloader'
 
 function Diagram() {
@@ -436,26 +436,26 @@ var parser = function() {
         parse: function(input) {
             function lex() {
                 var token;
-                return token = lexer.lex() || EOF, "number" != typeof token && (token = self.symbols_[token] || token), 
+                return token = lexer.lex() || EOF, "number" != typeof token && (token = self.symbols_[token] || token),
                 token;
             }
             var self = this, stack = [ 0 ], vstack = [ null ], lstack = [], table = this.table, yytext = "", yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1, args = lstack.slice.call(arguments, 1), lexer = Object.create(this.lexer), sharedState = {
                 yy: {}
             };
             for (var k in this.yy) Object.prototype.hasOwnProperty.call(this.yy, k) && (sharedState.yy[k] = this.yy[k]);
-            lexer.setInput(input, sharedState.yy), sharedState.yy.lexer = lexer, sharedState.yy.parser = this, 
+            lexer.setInput(input, sharedState.yy), sharedState.yy.lexer = lexer, sharedState.yy.parser = this,
             "undefined" == typeof lexer.yylloc && (lexer.yylloc = {});
             var yyloc = lexer.yylloc;
             lstack.push(yyloc);
             var ranges = lexer.options && lexer.options.ranges;
             "function" == typeof sharedState.yy.parseError ? this.parseError = sharedState.yy.parseError : this.parseError = Object.getPrototypeOf(this).parseError;
             for (var symbol, preErrorSymbol, state, action, r, p, len, newState, expected, yyval = {}; ;) {
-                if (state = stack[stack.length - 1], this.defaultActions[state] ? action = this.defaultActions[state] : (null !== symbol && "undefined" != typeof symbol || (symbol = lex()), 
+                if (state = stack[stack.length - 1], this.defaultActions[state] ? action = this.defaultActions[state] : (null !== symbol && "undefined" != typeof symbol || (symbol = lex()),
                 action = table[state] && table[state][symbol]), "undefined" == typeof action || !action.length || !action[0]) {
                     var errStr = "";
                     expected = [];
                     for (p in table[state]) this.terminals_[p] && p > TERROR && expected.push("'" + this.terminals_[p] + "'");
-                    errStr = lexer.showPosition ? "Parse error on line " + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(", ") + ", got '" + (this.terminals_[symbol] || symbol) + "'" : "Parse error on line " + (yylineno + 1) + ": Unexpected " + (symbol == EOF ? "end of input" : "'" + (this.terminals_[symbol] || symbol) + "'"), 
+                    errStr = lexer.showPosition ? "Parse error on line " + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(", ") + ", got '" + (this.terminals_[symbol] || symbol) + "'" : "Parse error on line " + (yylineno + 1) + ": Unexpected " + (symbol == EOF ? "end of input" : "'" + (this.terminals_[symbol] || symbol) + "'"),
                     this.parseError(errStr, {
                         text: lexer.match,
                         token: this.terminals_[symbol] || symbol,
@@ -467,24 +467,24 @@ var parser = function() {
                 if (action[0] instanceof Array && action.length > 1) throw new Error("Parse Error: multiple actions possible at state: " + state + ", token: " + symbol);
                 switch (action[0]) {
                   case 1:
-                    stack.push(symbol), vstack.push(lexer.yytext), lstack.push(lexer.yylloc), stack.push(action[1]), 
-                    symbol = null, preErrorSymbol ? (symbol = preErrorSymbol, preErrorSymbol = null) : (yyleng = lexer.yyleng, 
+                    stack.push(symbol), vstack.push(lexer.yytext), lstack.push(lexer.yylloc), stack.push(action[1]),
+                    symbol = null, preErrorSymbol ? (symbol = preErrorSymbol, preErrorSymbol = null) : (yyleng = lexer.yyleng,
                     yytext = lexer.yytext, yylineno = lexer.yylineno, yyloc = lexer.yylloc, recovering > 0 && recovering--);
                     break;
 
                   case 2:
-                    if (len = this.productions_[action[1]][1], yyval.$ = vstack[vstack.length - len], 
+                    if (len = this.productions_[action[1]][1], yyval.$ = vstack[vstack.length - len],
                     yyval._$ = {
                         first_line: lstack[lstack.length - (len || 1)].first_line,
                         last_line: lstack[lstack.length - 1].last_line,
                         first_column: lstack[lstack.length - (len || 1)].first_column,
                         last_column: lstack[lstack.length - 1].last_column
-                    }, ranges && (yyval._$.range = [ lstack[lstack.length - (len || 1)].range[0], lstack[lstack.length - 1].range[1] ]), 
-                    r = this.performAction.apply(yyval, [ yytext, yyleng, yylineno, sharedState.yy, action[1], vstack, lstack ].concat(args)), 
+                    }, ranges && (yyval._$.range = [ lstack[lstack.length - (len || 1)].range[0], lstack[lstack.length - 1].range[1] ]),
+                    r = this.performAction.apply(yyval, [ yytext, yyleng, yylineno, sharedState.yy, action[1], vstack, lstack ].concat(args)),
                     "undefined" != typeof r) return r;
-                    len && (stack = stack.slice(0, -1 * len * 2), vstack = vstack.slice(0, -1 * len), 
-                    lstack = lstack.slice(0, -1 * len)), stack.push(this.productions_[action[1]][0]), 
-                    vstack.push(yyval.$), lstack.push(yyval._$), newState = table[stack[stack.length - 2]][stack[stack.length - 1]], 
+                    len && (stack = stack.slice(0, -1 * len * 2), vstack = vstack.slice(0, -1 * len),
+                    lstack = lstack.slice(0, -1 * len)), stack.push(this.productions_[action[1]][0]),
+                    vstack.push(yyval.$), lstack.push(yyval._$), newState = table[stack[stack.length - 2]][stack[stack.length - 1]],
                     stack.push(newState);
                     break;
 
@@ -503,8 +503,8 @@ var parser = function() {
             },
             // resets the lexer, sets new input
             setInput: function(input, yy) {
-                return this.yy = yy || this.yy || {}, this._input = input, this._more = this._backtrack = this.done = !1, 
-                this.yylineno = this.yyleng = 0, this.yytext = this.matched = this.match = "", this.conditionStack = [ "INITIAL" ], 
+                return this.yy = yy || this.yy || {}, this._input = input, this._more = this._backtrack = this.done = !1,
+                this.yylineno = this.yyleng = 0, this.yytext = this.matched = this.match = "", this.conditionStack = [ "INITIAL" ],
                 this.yylloc = {
                     first_line: 1,
                     first_column: 0,
@@ -517,18 +517,18 @@ var parser = function() {
                 var ch = this._input[0];
                 this.yytext += ch, this.yyleng++, this.offset++, this.match += ch, this.matched += ch;
                 var lines = ch.match(/(?:\r\n?|\n).*/g);
-                return lines ? (this.yylineno++, this.yylloc.last_line++) : this.yylloc.last_column++, 
-                this.options.ranges && this.yylloc.range[1]++, this._input = this._input.slice(1), 
+                return lines ? (this.yylineno++, this.yylloc.last_line++) : this.yylloc.last_column++,
+                this.options.ranges && this.yylloc.range[1]++, this._input = this._input.slice(1),
                 ch;
             },
             // unshifts one char (or a string) into the input
             unput: function(ch) {
                 var len = ch.length, lines = ch.split(/(?:\r\n?|\n)/g);
-                this._input = ch + this._input, this.yytext = this.yytext.substr(0, this.yytext.length - len), 
+                this._input = ch + this._input, this.yytext = this.yytext.substr(0, this.yytext.length - len),
                 //this.yyleng -= len;
                 this.offset -= len;
                 var oldLines = this.match.split(/(?:\r\n?|\n)/g);
-                this.match = this.match.substr(0, this.match.length - 1), this.matched = this.matched.substr(0, this.matched.length - 1), 
+                this.match = this.match.substr(0, this.match.length - 1), this.matched = this.matched.substr(0, this.matched.length - 1),
                 lines.length - 1 && (this.yylineno -= lines.length - 1);
                 var r = this.yylloc.range;
                 return this.yylloc = {
@@ -536,7 +536,7 @@ var parser = function() {
                     last_line: this.yylineno + 1,
                     first_column: this.yylloc.first_column,
                     last_column: lines ? (lines.length === oldLines.length ? this.yylloc.first_column : 0) + oldLines[oldLines.length - lines.length].length - lines[0].length : this.yylloc.first_column - len
-                }, this.options.ranges && (this.yylloc.range = [ r[0], r[0] + this.yyleng - len ]), 
+                }, this.options.ranges && (this.yylloc.range = [ r[0], r[0] + this.yyleng - len ]),
                 this.yyleng = this.yytext.length, this;
             },
             // When called from action, caches matched text and appends it on next action
@@ -593,16 +593,16 @@ var parser = function() {
                     yy: this.yy,
                     conditionStack: this.conditionStack.slice(0),
                     done: this.done
-                }, this.options.ranges && (backup.yylloc.range = this.yylloc.range.slice(0))), lines = match[0].match(/(?:\r\n?|\n).*/g), 
+                }, this.options.ranges && (backup.yylloc.range = this.yylloc.range.slice(0))), lines = match[0].match(/(?:\r\n?|\n).*/g),
                 lines && (this.yylineno += lines.length), this.yylloc = {
                     first_line: this.yylloc.last_line,
                     last_line: this.yylineno + 1,
                     first_column: this.yylloc.last_column,
                     last_column: lines ? lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length : this.yylloc.last_column + match[0].length
-                }, this.yytext += match[0], this.match += match[0], this.matches = match, this.yyleng = this.yytext.length, 
-                this.options.ranges && (this.yylloc.range = [ this.offset, this.offset += this.yyleng ]), 
-                this._more = !1, this._backtrack = !1, this._input = this._input.slice(match[0].length), 
-                this.matched += match[0], token = this.performAction.call(this, this.yy, this, indexed_rule, this.conditionStack[this.conditionStack.length - 1]), 
+                }, this.yytext += match[0], this.match += match[0], this.matches = match, this.yyleng = this.yytext.length,
+                this.options.ranges && (this.yylloc.range = [ this.offset, this.offset += this.yyleng ]),
+                this._more = !1, this._backtrack = !1, this._input = this._input.slice(match[0].length),
+                this.matched += match[0], token = this.performAction.call(this, this.yy, this, indexed_rule, this.conditionStack[this.conditionStack.length - 1]),
                 this.done && this._input && (this.done = !1), token) return token;
                 if (this._backtrack) {
                     // recover context
@@ -617,7 +617,7 @@ var parser = function() {
                 this._input || (this.done = !0);
                 var token, match, tempMatch, index;
                 this._more || (this.yytext = "", this.match = "");
-                for (var rules = this._currentRules(), i = 0; i < rules.length; i++) if (tempMatch = this._input.match(this.rules[rules[i]]), 
+                for (var rules = this._currentRules(), i = 0; i < rules.length; i++) if (tempMatch = this._input.match(this.rules[rules[i]]),
                 tempMatch && (!match || tempMatch[0].length > match[0].length)) {
                     if (match = tempMatch, index = i, this.options.backtrack_lexer) {
                         if (token = this.test_match(tempMatch, rules[i]), token !== !1) return token;
@@ -741,11 +741,11 @@ var parser = function() {
         };
         return lexer;
     }();
-    return parser.lexer = lexer, Parser.prototype = parser, parser.Parser = Parser, 
+    return parser.lexer = lexer, Parser.prototype = parser, parser.Parser = Parser,
     new Parser();
 }();
 
-"undefined" != typeof require && "undefined" != typeof exports && (exports.parser = parser, 
+"undefined" != typeof require && "undefined" != typeof exports && (exports.parser = parser,
 exports.Parser = parser.Parser, exports.parse = function() {
     return parser.parse.apply(parser, arguments);
 }, exports.main = function(args) {
