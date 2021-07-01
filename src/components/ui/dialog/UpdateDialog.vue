@@ -2,7 +2,6 @@
   <q-dialog ref='dialog' class='base-dialog' persistent>
     <q-card
       class='q-dialog base-dialog'
-      style='max-height: 60vh;min-height: 40vh;min-width: 60vw'
     >
       <q-toolbar>
         <q-icon name='update' class='text-primary' style='font-size: 1.5em' />
@@ -13,14 +12,21 @@
         >
         <q-btn flat round dense icon='close' v-close-popup />
       </q-toolbar>
+      <q-card-section>
+        <div class="text-h6">Our Changing Planet</div>
+      </q-card-section>
       <q-card-section class='hide-scrollbar'>
         <div class='q-pa-md'>
-          <q-linear-progress dark stripe rounded size='20px' :value='progress' color='red' class='q-mt-sm' />
+          <q-linear-progress stripe rounded size='35px' :value='progress' color='red' class='q-mt-sm'>
+            <div class='absolute-full flex flex-center'>
+              <q-badge color='white' text-color='accent' :label='progressLabel' />
+            </div>
+          </q-linear-progress>
         </div>
       </q-card-section>
-      <q-card-actions align="right">
-        <q-btn flat :label="$t('hide')" color="primary" v-close-popup />
-        <q-btn flat :disable='!downloaded' :label="$t('install')" color="primary" @click='installHandler' />
+      <q-card-actions align='right'>
+        <q-btn flat :label="$t('hide')" color='primary' v-close-popup />
+        <q-btn flat :disable='!downloaded' :label="$t('install')" color='primary' @click='installHandler' />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -39,10 +45,15 @@ export default {
       downloaded: false
     }
   },
+  computed: {
+    progressLabel () {
+      return `${this.progress * 100}%`
+    }
+  },
   methods: {
     downloadingHandler: function (progress) {
       const { percent } = progress
-      this.progress = percent
+      this.progress = percent / 100
     },
     downloadedHandler: function () {
       this.downloaded = true

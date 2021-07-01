@@ -236,8 +236,12 @@ export default {
             label: this.$t('update'),
             color: 'white',
             handler: () => {
-              needUpdate(true)
-              this.$refs.updateDialog.toggle()
+              if (this.$q.platform.is.mac) {
+                window.open('https://github.com/TankNee/Memocast')
+              } else {
+                needUpdate(true)
+                this.$refs.updateDialog.toggle()
+              }
             }
           }
         ]
@@ -251,11 +255,12 @@ export default {
         icon: 'check'
       })
     },
-    updateErrorHandler: function () {
+    updateErrorHandler: function (err) {
       this.$q.notify({
-        message: this.$t('updateError'),
+        caption: this.$t('updateError'),
         color: 'red-10',
-        icon: 'error'
+        icon: 'error',
+        message: err
       })
     },
     flomoSettingHandler: async function () {

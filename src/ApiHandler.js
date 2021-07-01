@@ -82,7 +82,7 @@ export default {
 
     handleApi('updater-update-error', (event, error) => {
       console.log(error)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_ERROR)
+      bus.$emit(events.UPDATE_EVENTS.UPDATE_ERROR, error)
     }).catch(err => throw err)
   },
   UnregisterApiHandler () {
