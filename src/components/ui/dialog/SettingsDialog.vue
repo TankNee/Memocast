@@ -225,6 +225,39 @@ export default {
     checkUpdateHandler: function () {
       this.checkUpdate()
     },
+    updateAvailableHandler: function (info) {
+      console.log(info)
+      // this.$refs.updateDialog.toggle()
+      this.$q.notify({
+        caption: this.$t('getNewerVersion', { version: info.version }),
+        message: info.releaseNotes,
+        actions: [
+          {
+            label: this.$t('update'),
+            color: 'white',
+            handler: () => {
+              needUpdate(true)
+              this.$refs.updateDialog.toggle()
+            }
+          }
+        ]
+      })
+    },
+    updateUnavailableHandler: function (info) {
+      console.log(info)
+      this.$q.notify({
+        message: this.$t('noNewerVersion'),
+        color: 'green',
+        icon: 'check'
+      })
+    },
+    updateErrorHandler: function () {
+      this.$q.notify({
+        message: this.$t('updateError'),
+        color: 'red-10',
+        icon: 'error'
+      })
+    },
     flomoSettingHandler: async function () {
       this.$q.dialog({
         prompt: {
@@ -252,33 +285,9 @@ export default {
     ])
   },
   mounted () {
-    bus.$on(events.UPDATE_EVENTS.UPDATE_AVAILABLE, (info) => {
-      console.log(info)
-      // this.$refs.updateDialog.toggle()
-      this.$q.notify({
-        caption: this.$t('getNewerVersion', { version: info.version }),
-        message: info.releaseNotes,
-        actions: [
-          {
-            label: this.$t('update'),
-            color: 'white',
-            handler: () => {
-              needUpdate(true)
-              this.$refs.updateDialog.toggle()
-            }
-          }
-        ]
-      })
-    })
-
-    bus.$on(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, (info) => {
-      console.log(info)
-      this.$q.notify({
-        message: this.$t('noNewerVersion'),
-        color: 'green',
-        icon: 'check'
-      })
-    })
+    bus.$on(events.UPDATE_EVENTS.UPDATE_AVAILABLE, this.updateAvailableHandler)
+    bus.$on(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, this.updateUnavailableHandler)
+    bus.$on(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, this.updateErrorHandler)
   }
 }
 </script>

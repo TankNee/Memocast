@@ -203,9 +203,11 @@ module.exports = function (/* ctx */) {
         },
         mac: {
           target: [
-            'dmg'
+            'dmg',
+            'zip'
           ],
-          artifactName: 'Memocast.dmg'
+          // eslint-disable-next-line no-template-curly-in-string
+          artifactName: 'Memocast.${ext}'
         },
         win: {
           target: [
