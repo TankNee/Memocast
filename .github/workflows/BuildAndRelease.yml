@@ -6,8 +6,6 @@ name: Memocast Release Action
 # events but only for the master branch
 on:
   push:
-    branches:
-      - master
     tags:
       - v*
 
@@ -37,15 +35,15 @@ jobs:
           npm run build-publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Rename Package
-        run: |
-          cd dist/electron/Packaged
-          ren Memocast*.exe Memocast-Setup.exe
+#       - name: Rename Package
+#         run: |
+#           cd dist/electron/Packaged
+#           ren Memocast*.exe Memocast-Setup.exe
       - name: Upload Win Package
         uses: actions/upload-artifact@v1
         with:
           name: Windows_Dist
-          path: dist/electron/Packaged/Memocast-Setup.exe
+          path: dist/electron/Packaged/Memocast*.exe
       - name: Upload latest.yml
         uses: actions/upload-artifact@v1
         with:
@@ -72,16 +70,16 @@ jobs:
           npm install
           npm run build-publish
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Rename Package
-        run: |
-          cd dist/electron/Packaged
-          cp Memocast*.AppImage Memocast-x86_64.AppImage
+           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Rename Package
+#         run: |
+#           cd dist/electron/Packaged
+#           cp Memocast*.AppImage Memocast-x86_64.AppImage
       - name: Upload Linux Package
         uses: actions/upload-artifact@v1
         with:
           name: Linux_Dist
-          path: dist/electron/Packaged/Memocast-x86_64.AppImage
+          path: dist/electron/Packaged/Memocast*.AppImage
       - name: Upload latest-linux.yml
         uses: actions/upload-artifact@v1
         with:
@@ -109,15 +107,15 @@ jobs:
           npm run build-publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Rename Package
-        run: |
-          cd dist/electron/Packaged
-          cp Memocast*.dmg Memocast.dmg
+#       - name: Rename Package
+#         run: |
+#           cd dist/electron/Packaged
+#           cp Memocast*.dmg Memocast.dmg
       - name: Upload Mac Package
         uses: actions/upload-artifact@v1
         with:
           name: MacOS_Dist
-          path: dist/electron/Packaged/Memocast.dmg
+          path: dist/electron/Packaged/Memocast*.dmg
       - name: Upload latest-mac.yml
         uses: actions/upload-artifact@v1
         with:
