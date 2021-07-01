@@ -199,7 +199,6 @@ module.exports = function (/* ctx */) {
         },
         publish: {
           provider: 'github',
-          repo: 'https://github.com/TankNee/Memocast',
           releaseType: 'draft'
         },
         mac: {
