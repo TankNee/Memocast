@@ -10,6 +10,7 @@ import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
 import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiInvoker'
+import html2Pdf from 'src/mixins/Html2Pdf'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -821,6 +822,18 @@ export default {
       )
     }
     await exportMarkdownFile(content)
+  },
+  async exportPdf ({
+    commit,
+    state
+  }, noteField) {
+    const { kbGuid } = state
+    const { docGuid } = noteField
+    const result = await _getContent(kbGuid, docGuid)
+    const title = result.info.title
+    const s = title.lastIndexOf('.')
+    console.log(title)
+    await html2Pdf.downloadPDF(document.getElementById('muya'), title.substring(0, s))
   },
   /**
    * 批量导出markdown笔记到本地
