@@ -25,6 +25,13 @@ export default function (keybindings) {
       click (menuItem, browserWindow) {
         actions.view(browserWindow, 'lockMode')
       }
+    }, {
+      id: 'devTool',
+      label: 'Open Devtool',
+      accelerator: keybindings.getAccelerator('view.devtool'),
+      click (menuItem, browserWindow) {
+        browserWindow.webContents.openDevTools()
+      }
     }]
   }
 }

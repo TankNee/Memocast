@@ -14,6 +14,7 @@ export default {
   currentVersion: '当前版本： {version}',
   getNewerVersion: '检查到最新版本: {version} !',
   update: '更新',
+  checking: '检查更新中',
   noNewerVersion: '当前已是最新版本 !',
   updateError: '更新失败',
   codeTheme: '代码主题',

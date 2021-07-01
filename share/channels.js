@@ -5,5 +5,5 @@ export default {
   uploadImages: 'upload-images',
   checkUpdate: 'check-update',
   needUpdate: 'need-update',
-  quitAndUpdate: 'quit-and-update'
+  quitAndUpdate: 'quit-and-install'
 }
