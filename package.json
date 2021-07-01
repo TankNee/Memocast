@@ -1,6 +1,6 @@
 {
   "name": "cn.memocast.app",
-  "version": "2.0.1",
+  "version": "1.0.6",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Memocast",
   "author": "tanknee <nee@tanknee.cn>",
@@ -14,7 +14,7 @@
     "lint": "eslint --ext .js,.vue ./",
     "dev": "quasar dev -m electron -t mat",
     "build-develop": "quasar build -m electron -d",
-    "build-publish": "quasar build -m electron -P",
+    "build-publish": "quasar build -m electron -P always",
     "build-all": "quasar build -m electron -T all -P",
     "build": "quasar build -m electron",
     "docs:dev": "vuepress dev docs",
