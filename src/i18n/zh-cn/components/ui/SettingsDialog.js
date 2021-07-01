@@ -15,6 +15,7 @@ export default {
   getNewerVersion: '检查到最新版本: {version} !',
   update: '更新',
   noNewerVersion: '当前已是最新版本 !',
+  updateError: '更新失败',
   codeTheme: '代码主题',
   lightCodeTheme: '日间模式代码主题',
   darkCodeTheme: '暗黑模式代码主题'
