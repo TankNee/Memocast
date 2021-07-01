@@ -207,7 +207,7 @@ module.exports = function (/* ctx */) {
             'zip'
           ],
           // eslint-disable-next-line no-template-curly-in-string
-          artifactName: 'Memocast.${ext}'
+          artifactName: 'Memocast-${version}-${arch}.${ext}'
         },
         win: {
           target: [
@@ -216,17 +216,21 @@ module.exports = function (/* ctx */) {
           legalTrademarks: 'Memocast'
         },
         nsis: {
-          artifactName: 'Memocast-setup.exe',
+          // eslint-disable-next-line no-template-curly-in-string
+          artifactName: 'Memocast-${version}-${arch}.${ext}',
           perMachine: false,
           oneClick: false,
           allowToChangeInstallationDirectory: true
         },
         linux: {
           target: [
-            'AppImage'
+            'AppImage',
+            'deb',
+            'rpm'
           ],
           vendor: 'Memocast',
-          artifactName: 'Memocast-x86_64.AppImage'
+          // eslint-disable-next-line no-template-curly-in-string
+          artifactName: 'Memocast-${version}-${arch}.${ext}'
         },
         files: [
           '**/*',

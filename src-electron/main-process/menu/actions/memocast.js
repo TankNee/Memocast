@@ -45,7 +45,7 @@ autoUpdater.on('update-downloaded', () => {
       'Update downloaded, application will be quit for update...'
     )
   }
-  setImmediate(() => autoUpdater.quitAndInstall())
+  // setImmediate(() => autoUpdater.quitAndInstall())
 })
 
 autoUpdater.on('download-progress', (progress) => {
