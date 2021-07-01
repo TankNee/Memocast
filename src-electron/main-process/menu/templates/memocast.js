@@ -9,11 +9,6 @@ export default function (keybindings) {
         app.showAboutPanel()
       }
     }, {
-      label: 'Open Devtools',
-      click (menuItem, browserWindow) {
-        browserWindow.webContents.openDevTools()
-      }
-    }, {
       type: 'separator'
     }, {
       label: 'Services',

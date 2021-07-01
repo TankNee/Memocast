@@ -58,7 +58,8 @@ export default class KeyBindings {
       // View Shortcut
       ['view.switch-view', 'CmdOrCtrl+Shift+,'],
       ['view.source-mode', 'CmdOrCtrl+Shift+.'],
-      ['view.lock-mode', 'CmdOrCtrl+Shift+L']
+      ['view.lock-mode', 'CmdOrCtrl+Shift+L'],
+      ['view.devtool', 'CmdOrCtrl+Shift+P']
     ])
   }
 

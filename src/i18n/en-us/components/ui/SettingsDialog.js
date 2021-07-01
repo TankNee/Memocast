@@ -14,6 +14,7 @@ export default {
   currentVersion: 'Current Version: {version}',
   getNewerVersion: 'New version detected: {version} !',
   update: 'Update',
+  checking: 'Checking',
   noNewerVersion: 'This is the latest version!',
   updateError: 'Fail to update',
   codeTheme: 'Code Theme',

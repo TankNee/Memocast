@@ -207,7 +207,7 @@ module.exports = function (/* ctx */) {
             'zip'
           ],
           // eslint-disable-next-line no-template-curly-in-string
-          artifactName: 'Memocast-${version}-${arch}.${ext}'
+          artifactName: 'Memocast-${version}-${arch}-mac.${ext}'
         },
         win: {
           target: [
@@ -217,7 +217,7 @@ module.exports = function (/* ctx */) {
         },
         nsis: {
           // eslint-disable-next-line no-template-curly-in-string
-          artifactName: 'Memocast-${version}-${arch}.${ext}',
+          artifactName: 'Memocast-${version}-${arch}-win.${ext}',
           perMachine: false,
           oneClick: false,
           allowToChangeInstallationDirectory: true
@@ -230,7 +230,7 @@ module.exports = function (/* ctx */) {
           ],
           vendor: 'Memocast',
           // eslint-disable-next-line no-template-curly-in-string
-          artifactName: 'Memocast-${version}-${arch}.${ext}'
+          artifactName: 'Memocast-${version}-${arch}-linux.${ext}'
         },
         files: [
           '**/*',

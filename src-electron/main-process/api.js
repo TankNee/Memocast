@@ -150,7 +150,7 @@ export default {
       needUpdate(need)
     }).catch(err => throw err)
 
-    handleApi('quit-and-update', async (e) => {
+    handleApi('quit-and-install', async (e) => {
       quitAndInstall()
     }).catch(err => throw err)
   }

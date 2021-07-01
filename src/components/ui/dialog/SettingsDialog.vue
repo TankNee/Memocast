@@ -223,7 +223,14 @@ export default {
       this.updateStateAndStore({ imageUploadService: servicePlain })
     },
     checkUpdateHandler: function () {
-      this.checkUpdate()
+      this.checkUpdate().then(() => {
+        this.$q.notify({
+          message: this.$t('checking'),
+          timeout: 5000,
+          spinner: true,
+          color: 'primary'
+        })
+      })
     },
     updateAvailableHandler: function (info) {
       console.log(info)

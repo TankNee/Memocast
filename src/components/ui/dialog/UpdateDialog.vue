@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     downloadingHandler: function (progress) {
-      const { percent } = progress
+      const { percent = 0 } = progress
       this.progress = percent / 100
     },
     downloadedHandler: function () {

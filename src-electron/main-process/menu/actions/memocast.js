@@ -15,34 +15,34 @@ autoUpdater.on('error', error => {
   }
 })
 
-autoUpdater.on('update-available', () => {
+autoUpdater.on('update-available', (info) => {
   if (win) {
     win.webContents.send(
       'updater-update-available',
-      'Found an update, do you want download and install now?'
+      info
     )
   }
   runningUpdate = false
 })
 
-autoUpdater.on('update-not-available', () => {
+autoUpdater.on('update-not-available', (info) => {
   if (win) {
     win.webContents.send(
       'updater-update-not-available',
-      'Current version is up-to-date.'
+      info
     )
   }
   runningUpdate = false
 })
 
-autoUpdater.on('update-downloaded', () => {
+autoUpdater.on('update-downloaded', (info) => {
   // TODO: We should ask the user, so that the user can save all documents and
   // not just force close the application.
 
   if (win) {
     win.webContents.send(
       'updater-update-downloaded',
-      'Update downloaded, application will be quit for update...'
+      info
     )
   }
   // setImmediate(() => autoUpdater.quitAndInstall())
