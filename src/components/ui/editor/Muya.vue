@@ -112,6 +112,7 @@ export default {
         this.updateNote(this.contentEditor.getMarkdown())
       }
     },
+
     selectAllHandler: function () {
       if (this.active && this.enablePreviewEditor && this.contentEditor) {
         this.contentEditor.selectAll()

@@ -20,8 +20,8 @@
             <q-item clickable v-close-popup v-ripple @click="exportToMarkdown">
               <q-item-section>Markdown</q-item-section>
             </q-item>
-            <q-item clickable v-close-popup v-ripple @click="exportToPdf">
-              <q-item-section>PDF</q-item-section>
+            <q-item clickable v-close-popup v-ripple @click="exportToPng">
+              <q-item-section>Png</q-item-section>
             </q-item>
           </q-list>
         </q-menu>
@@ -61,7 +61,7 @@ export default {
       types: Function,
       default: () => {}
     },
-    exportToPdf: {
+    exportToPng: {
       types: Function,
       default: () => {}
     },

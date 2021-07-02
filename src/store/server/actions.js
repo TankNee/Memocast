@@ -9,8 +9,8 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
-import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiInvoker'
-import html2Pdf from 'src/mixins/Html2Pdf'
+import { exportMarkdownFile, exportMarkdownFiles, exportPng } from 'src/ApiInvoker'
+import html2canvas from 'html2canvas'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -834,17 +834,24 @@ export default {
     }
     await exportMarkdownFile(content)
   },
-  async exportPdf ({
+  async exportPng ({
     commit,
     state
   }, noteField) {
-    const { kbGuid } = state
-    const { docGuid } = noteField
-    const result = await _getContent(kbGuid, docGuid)
-    const title = result.info.title
-    const s = title.lastIndexOf('.')
-    console.log(title)
-    await html2Pdf.downloadPDF(document.getElementById('muya'), title.substring(0, s))
+    const canvasID = document.getElementById('muya')
+    const a = document.createElement('a')
+    html2canvas(canvasID, {
+      useCORS: true,
+      allowTaint: true
+    }).then(canvas => {
+      const dom = document.body.appendChild(canvas)
+      dom.style.display = 'none'
+      a.style.display = 'none'
+      document.body.removeChild(dom)
+      const content = dom.toDataURL('image/png')
+      console.log(content)
+      exportPng(content)
+    })
   },
   /**
    * 批量导出markdown笔记到本地

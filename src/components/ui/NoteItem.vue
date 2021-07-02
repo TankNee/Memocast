@@ -13,7 +13,7 @@
       <span class="text-left note-info-tag"><q-icon name="category" size="17px"/> {{ category }}</span>
       <span class="text-right note-info-tag"><q-icon name="timer" size="17px"/> {{ modifiedDate }}</span>
     </div>
-    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" :export-to-markdown="exportMdHandler" :export-to-pdf ="exportPdfHandler" :flomo="flomoHandler" />
+    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" :export-to-markdown="exportMdHandler" :export-to-png ="exportPngHandler" :flomo="flomoHandler" />
     <CategoryDialog ref="categoryDialog" :note-info="data" :label="categoryDialogLabel" :handler="categoryDialogHandler" />
   </q-card>
 </template>
@@ -23,9 +23,10 @@ import { createNamespacedHelpers } from 'vuex'
 import NoteItemContextMenu from './menu/NoteItemContextMenu'
 import helper from 'src/utils/helper'
 import CategoryDialog from 'components/ui/dialog/CategoryDialog'
+import { Notify } from 'quasar'
+
 const { mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
 const { mapActions: mapClientActions } = createNamespacedHelpers('client')
-import { Notify } from 'quasar'
 export default {
   name: 'NoteItem',
   props: {
@@ -139,18 +140,12 @@ export default {
     exportMdHandler: function () {
       this.exportMarkdownFile(this.data)
     },
-    exportPdfHandler: function () {
-      console.log('start export PDF')
+    exportPngHandler: function () {
       try {
-        this.exportPdf(this.data)
-        Notify.create({
-          message: 'Export Successfully',
-          type: 'positive',
-          icon: 'check'
-        })
+        this.exportPng(this.data)
       } catch {
         Notify.create({
-          message: 'error',
+          message: 'Error',
           type: 'negative',
           icon: 'delete'
         })
@@ -172,7 +167,7 @@ export default {
         this.getNoteContent({ docGuid: this.docGuid })
       }
     },
-    ...mapServerActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile', 'exportPdf']),
+    ...mapServerActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile', 'exportPng']),
     ...mapClientActions(['sendToFlomo'])
   }
 }
