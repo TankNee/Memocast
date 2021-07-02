@@ -4,6 +4,7 @@
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
+import { cacheNoteImage } from './utlis/helper'
 
 const { uploadImages } = require('./3rd-part/PicGoUtils')
 
@@ -139,6 +140,14 @@ export default {
         }
       })
       return uploadResult
+    }).catch(err => throw err)
+
+    handleApi('get-cache-image', async (e, {
+      imageUrl,
+      kbGuid,
+      docGuid
+    }) => {
+      return await cacheNoteImage(imageUrl, kbGuid, docGuid)
     }).catch(err => throw err)
 
     handleApi('check-update', async (e) => {

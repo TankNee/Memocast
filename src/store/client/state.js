@@ -6,7 +6,7 @@ export default function () {
     darkMode: false,
     markdownOnly: false,
     enableSelfHostServer: false,
-    imageUploadService: 'customWebUploadService',
+    imageUploadService: 'none',
     imageUploadServiceParam: {},
     apiServerUrl: '',
     postParam: '',

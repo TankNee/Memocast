@@ -267,12 +267,14 @@ export default {
       })
     },
     updateErrorHandler: function (err) {
-      this.$q.notify({
-        caption: this.$t('updateError'),
-        color: 'red-10',
-        icon: 'error',
-        message: err
-      })
+      if (err) {
+        this.$q.notify({
+          caption: this.$t('updateError'),
+          color: 'red-10',
+          icon: 'error',
+          message: err
+        })
+      }
     },
     flomoSettingHandler: async function () {
       this.$q.dialog({

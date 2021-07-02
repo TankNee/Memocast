@@ -92,7 +92,6 @@ function createWindow () {
   mainWindowState.manage(mainWindow)
 
   mainWindow.loadURL(process.env.APP_URL).then()
-
   // mainWindow.on('closed', () => {
   //   mainWindow = null
   // })
