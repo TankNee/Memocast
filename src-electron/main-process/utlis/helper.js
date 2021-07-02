@@ -41,6 +41,13 @@ export async function cacheNoteImage (imageUrl, kbGuid, docGuid) {
   return saveFileInTempPath(base64, '.png', dir)
 }
 
+export function saveTempImage (file, kbGuid, docGuid) {
+  const dir = getTempNoteDir(kbGuid, docGuid)
+  const base64Data = file.replace(/^data:image\/\w+;base64,/, '')
+  const dataBuffer = Buffer.from(base64Data, 'base64')
+  return saveFileInTempPath(dataBuffer, '.png', dir)
+}
+
 export function isBase64 (str) {
   if (str === '' || str.trim() === '') {
     return false
