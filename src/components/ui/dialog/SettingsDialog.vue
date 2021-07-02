@@ -132,6 +132,16 @@
                 <q-separator />
                 <div>
                   <div class='text-h5 q-mb-md setting-item'>
+                    <span>{{ $t('noteOrder') }}</span>
+                    <q-select
+                      :value='$t(noteOrderType)'
+                      :options='noteOrderOptions'
+                      @input='noteOrderChangeHandler'
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div class='text-h5 q-mb-md setting-item'>
                     <span>{{ $t('flomo') }}</span>
                     <q-icon
                       name='settings'
@@ -185,17 +195,14 @@ export default {
         'picgoServer',
         'none'
       ],
+      noteOrderOptionsPlain: [
+        'orderByModifiedTime',
+        'orderByNoteTitle'
+      ],
       version: version
     }
   },
   computed: {
-    ...mapState([
-      'language',
-      'darkMode',
-      'markdownOnly',
-      'imageUploadService',
-      'flomoApiUrl'
-    ]),
     languageOptions: function () {
       return i18n.availableLocales.map(l => i18n.t(l))
     },
@@ -207,7 +214,21 @@ export default {
         this.$t('picgoServer'),
         this.$t('none')
       ]
-    }
+    },
+    noteOrderOptions: function () {
+      return [
+        this.$t('orderByModifiedTime'),
+        this.$t('orderByNoteTitle')
+      ]
+    },
+    ...mapState([
+      'language',
+      'darkMode',
+      'markdownOnly',
+      'imageUploadService',
+      'flomoApiUrl',
+      'noteOrderType'
+    ])
   },
   methods: {
     toggle: function () {
@@ -225,6 +246,12 @@ export default {
         i => this.$t(i) === service
       )
       this.updateStateAndStore({ imageUploadService: servicePlain })
+    },
+    noteOrderChangeHandler: function (type) {
+      const typePlain = this.noteOrderOptionsPlain.find(
+        i => this.$t(i) === type
+      )
+      this.updateStateAndStore({ noteOrderType: typePlain })
     },
     checkUpdateHandler: function () {
       this.checkUpdate().then(() => {

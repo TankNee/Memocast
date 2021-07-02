@@ -1,5 +1,5 @@
 <template>
-  <div id="q-app">
+  <div id='q-app'>
     <router-view />
   </div>
 </template>
@@ -14,15 +14,18 @@ const { RegisterScheduleJobs } = ScheduleHandler
 const { RegisterApiHandler } = ApiHandler
 
 const { mapActions: mapClientActions } = createNamespacedHelpers('client')
-const { mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
+const {
+  mapActions: mapServerActions,
+  mapState: mapServerState
+} = createNamespacedHelpers('server')
 export default {
   name: 'App',
   async mounted () {
     RegisterErrorHandler()
     RegisterScheduleJobs(this)
     RegisterApiHandler()
-    await this.initClientStore()
-    await this.initServerStore()
+    this.initClientStore()
+    this.initServerStore().then()
   },
   methods: {
     ...mapClientActions(['initClientStore']),

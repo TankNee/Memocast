@@ -15,6 +15,7 @@
         :nodes="items"
         node-key="key"
         selected-color="primary"
+        default-expand-all
         accordion
         :selected="currentCategory"
         @update:selected="
