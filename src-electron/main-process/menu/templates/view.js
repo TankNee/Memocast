@@ -26,6 +26,8 @@ export default function (keybindings) {
         actions.view(browserWindow, 'lockMode')
       }
     }, {
+      type: 'separator'
+    }, {
       id: 'devTool',
       label: 'Open Devtool',
       accelerator: keybindings.getAccelerator('view.devtool'),

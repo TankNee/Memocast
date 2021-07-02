@@ -11,6 +11,8 @@ export default {
   wizOfficialImageUploadService: '为知官方图片上传服务 （暂时不可用）',
   customWebUploadService: '自定义Web图片服务器',
   smmsImageUploadService: 'SMMS图片上传服务 （暂时不可用）',
+  picgoServer: 'PicGo 服务 （使用之前请确保PicGo已启动）',
+  none: '不使用上传服务 (使用文件本地路径)',
   currentVersion: '当前版本： {version}',
   getNewerVersion: '检查到最新版本: {version} !',
   update: '更新',

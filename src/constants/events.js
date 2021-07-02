@@ -33,5 +33,6 @@ export default {
     UPDATE_DOWNLOADING: 'update.events.update.downloading',
     UPDATE_DOWNLOADED: 'update.events.update.downloaded',
     UPDATE_ERROR: 'update.events.update.error'
-  }
+  },
+  EDITOR_SCROLL: 'editor.scroll'
 }

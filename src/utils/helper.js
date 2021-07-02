@@ -6,6 +6,7 @@ import TurndownService from 'turndown'
 import cheerio from 'cheerio'
 import bus from 'components/bus'
 import events from 'src/constants/events'
+// import { getCacheImage } from 'src/ApiInvoker'
 
 const turndownService = new TurndownService({
   codeBlockStyle: 'fenced',
@@ -50,6 +51,13 @@ function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
  * @returns {*}
  */
 function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
+  // for (const resource of resources) {
+  //   // getCacheImage(resource.url, kbGuid, docGuid)
+  //   html = html.replace(
+  //     new RegExp(`index_files/${resource.name}`, 'g'),
+  //     resource.url
+  //   )
+  // }
   resources.forEach(resource => {
     html = html.replace(
       new RegExp(`index_files/${resource.name}`, 'g'),

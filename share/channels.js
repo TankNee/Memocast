@@ -5,5 +5,6 @@ export default {
   uploadImages: 'upload-images',
   checkUpdate: 'check-update',
   needUpdate: 'need-update',
-  quitAndUpdate: 'quit-and-install'
+  quitAndUpdate: 'quit-and-install',
+  getCacheImage: 'get-cache-image'
 }

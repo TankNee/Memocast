@@ -179,9 +179,11 @@ export default {
       tab: 'general',
       splitterModel: 20,
       imageUploadServiceOptionsPlain: [
-        'wizOfficialImageUploadService',
-        'customWebUploadService',
-        'smmsImageUploadService'
+        // 'wizOfficialImageUploadService',
+        // 'customWebUploadService',
+        // 'smmsImageUploadService'
+        'picgoServer',
+        'none'
       ],
       version: version
     }
@@ -199,9 +201,11 @@ export default {
     },
     imageUploadServiceOptions: function () {
       return [
-        this.$t('wizOfficialImageUploadService'),
-        this.$t('customWebUploadService'),
-        this.$t('smmsImageUploadService')
+        // this.$t('wizOfficialImageUploadService'),
+        // this.$t('customWebUploadService'),
+        // this.$t('smmsImageUploadService')
+        this.$t('picgoServer'),
+        this.$t('none')
       ]
     }
   },
@@ -263,12 +267,14 @@ export default {
       })
     },
     updateErrorHandler: function (err) {
-      this.$q.notify({
-        caption: this.$t('updateError'),
-        color: 'red-10',
-        icon: 'error',
-        message: err
-      })
+      if (err) {
+        this.$q.notify({
+          caption: this.$t('updateError'),
+          color: 'red-10',
+          icon: 'error',
+          message: err
+        })
+      }
     },
     flomoSettingHandler: async function () {
       this.$q.dialog({

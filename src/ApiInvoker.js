@@ -29,7 +29,7 @@ async function importImages () {
 }
 
 /**
- * @param {string[]} imagePaths
+ * @param {({ext: string, file: (*|string)} | string)[]} imagePaths
  * @returns {Promise<any>}
  */
 async function uploadImages (imagePaths) {
@@ -48,6 +48,15 @@ async function quitAndUpdate () {
   return await ipcRenderer.invoke(channels.quitAndUpdate)
 }
 
+/**
+ * 拿到缓存在本地的文件
+ * @param {{imageUrl:string, kbGuid:string, docGuid:string}} bundle
+ * @returns {Promise<any>}
+ */
+async function getCacheImage (bundle) {
+  return await ipcRenderer.invoke(channels.getCacheImage, bundle)
+}
+
 export {
   exportMarkdownFile,
   exportMarkdownFiles,
@@ -55,5 +64,6 @@ export {
   uploadImages,
   checkUpdate,
   needUpdate,
-  quitAndUpdate
+  quitAndUpdate,
+  getCacheImage
 }
