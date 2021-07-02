@@ -9,7 +9,7 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
-import { exportMarkdownFile, exportMarkdownFiles } from 'src/ApiInvoker'
+import { exportMarkdownFile, exportMarkdownFiles, uploadImages } from 'src/ApiInvoker'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -36,6 +36,18 @@ export async function _getContent (kbGuid, docGuid) {
     ClientFileStorage.setCachedNote(result, cacheKey)
   }
   return result
+}
+
+function readFileAsync (f) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = event => {
+      const base64 = event.target.result
+      resolve(base64)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(f)
+  })
 }
 
 export default {
@@ -565,6 +577,31 @@ export default {
           customBody
         }
         break
+      case 'picgoServer':
+        // eslint-disable-next-line no-case-declarations
+        let base64 = ''
+        if (file instanceof File) {
+          base64 = await readFileAsync(file)
+          file = {
+            file: base64,
+            ext: file.name
+          }
+        }
+        // eslint-disable-next-line no-case-declarations
+        const res = await uploadImages([file])
+        if (!res.success) {
+          Notify.create({
+            message: i18n.t('failToUpload'),
+            type: 'negative',
+            icon: 'clear'
+          })
+          return helper.isNullOrEmpty(base64) ? file : base64
+        } else {
+          console.log(res.result)
+          return helper.isNullOrEmpty(res.result) ? file : helper.isNullOrEmpty(res.result[0]) ? file : res.result[0]
+        }
+      case 'none':
+        return file
       default:
         break
     }

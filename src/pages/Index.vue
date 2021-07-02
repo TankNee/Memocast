@@ -25,6 +25,7 @@
             :bar-style='barStyle'
             class='exclude-header overflow-hidden'
             v-show='!isSourceMode'
+            @scroll='editorScrollHandler'
           >
             <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
           </q-scroll-area>
@@ -168,6 +169,9 @@ export default {
     },
     sourceModeHandler: function () {
       this.isSourceMode = !this.isSourceMode
+    },
+    editorScrollHandler: function (e) {
+      bus.$emit(events.EDITOR_SCROLL, e)
     }
   },
   mounted () {

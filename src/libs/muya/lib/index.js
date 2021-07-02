@@ -425,6 +425,20 @@ class Muya {
     this.contentState.replaceWordInline(line, wordCursor, replacement, setCursor)
   }
 
+  getPositionReference () {
+    return this.contentState.getPositionReference()
+  }
+
+  getNextBlockKey (key) {
+    const currentBlock = this.contentState.getBlock(key)
+    if (!currentBlock) return null
+
+    const nextBlock = this.contentState.getNextSibling(currentBlock)
+    if (!nextBlock) return null
+
+    return nextBlock.key
+  }
+
   destroy () {
     this.contentState.clear()
     this.quickInsert.destroy()

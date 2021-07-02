@@ -29,7 +29,7 @@ async function importImages () {
 }
 
 /**
- * @param {string[]} imagePaths
+ * @param {({ext: string, file: (*|string)} | string)[]} imagePaths
  * @returns {Promise<any>}
  */
 async function uploadImages (imagePaths) {
