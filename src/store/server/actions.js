@@ -9,7 +9,7 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import FormData from 'form-data'
-import { exportMarkdownFile, exportMarkdownFiles, uploadImages } from 'src/ApiInvoker'
+import { exportMarkdownFile, exportMarkdownFiles, saveTempImage, uploadImages } from 'src/ApiInvoker'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -597,10 +597,17 @@ export default {
           })
           return helper.isNullOrEmpty(base64) ? file : base64
         } else {
-          console.log(res.result)
           return helper.isNullOrEmpty(res.result) ? file : helper.isNullOrEmpty(res.result[0]) ? file : res.result[0]
         }
       case 'none':
+        if (file instanceof File) {
+          const base64 = await readFileAsync(file)
+          file = await saveTempImage({
+            file: base64,
+            kbGuid,
+            docGuid
+          })
+        }
         return file
       default:
         break

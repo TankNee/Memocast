@@ -57,6 +57,15 @@ async function getCacheImage (bundle) {
   return await ipcRenderer.invoke(channels.getCacheImage, bundle)
 }
 
+/**
+ * 将文件保存到临时文件夹
+ * @param {{file:string, kbGuid:string, docGuid:string}} bundle
+ * @returns {string}
+ */
+async function saveTempImage (bundle) {
+  return await ipcRenderer.invoke(channels.saveTempImage, bundle)
+}
+
 export {
   exportMarkdownFile,
   exportMarkdownFiles,
@@ -65,5 +74,6 @@ export {
   checkUpdate,
   needUpdate,
   quitAndUpdate,
-  getCacheImage
+  getCacheImage,
+  saveTempImage
 }

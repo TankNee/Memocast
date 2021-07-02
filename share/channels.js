@@ -6,5 +6,6 @@ export default {
   checkUpdate: 'check-update',
   needUpdate: 'need-update',
   quitAndUpdate: 'quit-and-install',
-  getCacheImage: 'get-cache-image'
+  getCacheImage: 'get-cache-image',
+  saveTempImage: 'save-temp-image'
 }
