@@ -8,6 +8,7 @@ export default function () {
     enableSelfHostServer: false,
     imageUploadService: 'none',
     imageUploadServiceParam: {},
+    noteOrderType: 'orderByModifiedTime',
     apiServerUrl: '',
     postParam: '',
     jsonPath: '',
