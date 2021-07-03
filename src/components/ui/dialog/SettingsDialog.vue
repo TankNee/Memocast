@@ -189,7 +189,7 @@ export default {
       tab: 'general',
       splitterModel: 20,
       imageUploadServiceOptionsPlain: [
-        // 'wizOfficialImageUploadService',
+        'wizOfficialImageUploadService',
         // 'customWebUploadService',
         // 'smmsImageUploadService'
         'picgoServer',
@@ -208,7 +208,7 @@ export default {
     },
     imageUploadServiceOptions: function () {
       return [
-        // this.$t('wizOfficialImageUploadService'),
+        this.$t('wizOfficialImageUploadService'),
         // this.$t('customWebUploadService'),
         // this.$t('smmsImageUploadService')
         this.$t('picgoServer'),

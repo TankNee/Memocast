@@ -8,6 +8,7 @@ import configureMenu from './menu/templates'
 
 import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
 import KeyBindings from './keyboard/shortcut'
+import { registerMemocastProtocol } from './utlis/resource-loader'
 
 const { registerApiHandler } = Api
 unhandled({
@@ -82,6 +83,9 @@ function createWindow () {
       console.error('Failed to register protocol')
     }
   })
+
+  registerMemocastProtocol()
+
   if (!process.env.PROD) {
     mainWindow.webContents.openDevTools()
   }

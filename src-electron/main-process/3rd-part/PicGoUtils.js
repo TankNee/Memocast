@@ -9,7 +9,7 @@ const axios = require('axios')
  * @param {({ext: string, file: (*|string)} | string)[]} imagePaths
  * @returns Promise<response>
  */
-export async function uploadImages (imagePaths) {
+export async function uploadImagesByPicGo (imagePaths) {
   const uploadPaths = []
   for (let i = 0; i < imagePaths.length; i++) {
     const image = imagePaths[i]

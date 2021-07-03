@@ -7,5 +7,7 @@ export default {
   needUpdate: 'need-update',
   quitAndUpdate: 'quit-and-install',
   getCacheImage: 'get-cache-image',
-  saveTempImage: 'save-temp-image'
+  saveTempImage: 'save-temp-image',
+  getLocalFileData: 'get-local-file-data',
+  saveUploadedImage: 'save-uploaded-image'
 }

@@ -19,8 +19,8 @@ export function saveFileInTempPath (file, ext = '.png', specificPath = null) {
   return p
 }
 
-export function getTempNoteDir (kbGuid, docGuid) {
-  const root = path.join(app.getPath('temp'), 'MemocastTempDir')
+export function getTempNoteDir (kbGuid, docGuid, rootDir = 'temp') {
+  const root = path.join(app.getPath(rootDir), 'MemocastTempDir')
   if (!fs.existsSync(root)) {
     fs.mkdirSync(root)
   }
@@ -35,10 +35,11 @@ export function getTempNoteDir (kbGuid, docGuid) {
   return doc
 }
 
-export async function cacheNoteImage (imageUrl, kbGuid, docGuid) {
-  const dir = getTempNoteDir(kbGuid, docGuid)
-  const base64 = await axios.get(imageUrl, { responseType: 'arraybuffer' })
-  return saveFileInTempPath(base64, '.png', dir)
+export async function cacheNoteImage (imageUrl, kbGuid, docGuid, resName = 'image.png') {
+  const dir = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)
+  const result = await axios.get(imageUrl, { responseType: 'arraybuffer' })
+  fs.writeFileSync(dir, result.data)
+  return dir
 }
 
 export function saveTempImage (file, kbGuid, docGuid) {
@@ -46,6 +47,17 @@ export function saveTempImage (file, kbGuid, docGuid) {
   const base64Data = file.replace(/^data:image\/\w+;base64,/, '')
   const dataBuffer = Buffer.from(base64Data, 'base64')
   return saveFileInTempPath(dataBuffer, '.png', dir)
+}
+
+export function isResourceExist (kbGuid, docGuid, resName) {
+  const dir = getTempNoteDir(kbGuid, docGuid, 'appData')
+  return fs.existsSync(path.join(dir, resName))
+}
+
+export function saveBuffer (file, kbGuid, docGuid, resName) {
+  const dir = getTempNoteDir(kbGuid, docGuid, 'appData')
+  fs.writeFileSync(path.join(dir, resName), file)
+  return path.join(dir, resName)
 }
 
 export function isBase64 (str) {

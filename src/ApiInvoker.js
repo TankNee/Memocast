@@ -32,8 +32,8 @@ async function importImages () {
  * @param {({ext: string, file: (*|string)} | string)[]} imagePaths
  * @returns {Promise<any>}
  */
-async function uploadImages (imagePaths) {
-  return await ipcRenderer.invoke(channels.uploadImages, imagePaths)
+async function uploadImages (imagePaths, type, options = {}) {
+  return await ipcRenderer.invoke(channels.uploadImages, { imagePaths, type, options })
 }
 
 async function checkUpdate () {
@@ -66,6 +66,14 @@ async function saveTempImage (bundle) {
   return await ipcRenderer.invoke(channels.saveTempImage, bundle)
 }
 
+async function getLocalFileData (filePath) {
+  return await ipcRenderer.invoke(channels.getLocalFileData, filePath)
+}
+
+async function saveUploadedImage (buffer, kbGuid, docGuid, name) {
+  return await ipcRenderer.invoke(channels.saveUploadedImage, { buffer, kbGuid, docGuid, name })
+}
+
 export {
   exportMarkdownFile,
   exportMarkdownFiles,
@@ -75,5 +83,7 @@ export {
   needUpdate,
   quitAndUpdate,
   getCacheImage,
-  saveTempImage
+  saveTempImage,
+  getLocalFileData,
+  saveUploadedImage
 }
