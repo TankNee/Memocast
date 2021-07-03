@@ -21,7 +21,7 @@
               <q-item-section>Markdown</q-item-section>
             </q-item>
             <q-item clickable v-close-popup v-ripple @click="exportToPng">
-              <q-item-section>Png</q-item-section>
+              <q-item-section>PNG</q-item-section>
             </q-item>
           </q-list>
         </q-menu>

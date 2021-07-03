@@ -150,6 +150,7 @@ pre.ag-paragraph {
   -ms-hyphens: none;
   hyphens: none;
   overflow: visible;
+  font-family: JetBrains Mono;
 }
 
 /* Code Fence */
@@ -212,6 +213,7 @@ pre.ag-paragraph {
 .language-css .token.string,
 .style .token.string {
   color: #56b6c2;
+  background-color: transparent !important;
 }
 
 .token.atrule,
@@ -321,6 +323,7 @@ pre.ag-paragraph {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  font-family: JetBrains Mono;
 }
 
 /* Code Fence */
