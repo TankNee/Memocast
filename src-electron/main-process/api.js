@@ -1,6 +1,6 @@
 // import channels from 'app/share/channels'
 // import i18n from 'boot/i18n'
-
+import fs from 'fs-extra'
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
@@ -15,9 +15,6 @@ const {
   dialog
 } = require('electron')
 const sanitize = require('sanitize-filename')
-
-const fs = require('fs-extra')
-
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
  * @param {string} channel 频道名称
@@ -78,6 +75,37 @@ export default {
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
+    handleApi('export-png', (event, content) => {
+      return dialog.showSaveDialog({
+        title: 'Export',
+        defaultPath: app.getPath('documents'),
+        filters: [
+          {
+            name: 'Portable Network Graphics',
+            extensions: ['png']
+          }
+        ]
+      }).then((result) => {
+        if (result.canceled) return
+        const base64 = content.replace(/^data:image\/\w+;base64,/, '')
+        const baseUrl = Buffer.from(base64, 'base64')
+        fs.writeFile(result.filePath, baseUrl).then(() => {
+          sendNotification({
+            msg: 'Export Successfully',
+            type: 'positive',
+            icon: 'check'
+          }).catch(err => throw err)
+        })
+          .catch(err => {
+            sendNotification({
+              msg: err.msg,
+              type: 'negative',
+              icon: 'delete'
+            }).catch(err => throw err)
+          })
+      }).catch(err => throw err)
+    }).catch(err => throw err)
+
     /**
      * batch export notes
      */
