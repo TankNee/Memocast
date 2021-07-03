@@ -1,6 +1,6 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify, Dialog, Loading, QSpinnerGears } from 'quasar'
+import { Notify, Dialog, Loading, QSpinnerGears, Dark } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
@@ -856,17 +856,17 @@ export default {
     state
   }, noteField) {
     const canvasID = document.getElementById('muya')
-    const a = document.createElement('a')
+    const color = Dark.isActive
+    console.log(color)
     html2canvas(canvasID, {
       useCORS: true,
-      allowTaint: true
+      allowTaint: true,
+      backgroundColor: color ? '#35373e' : '#ffffff'
     }).then(canvas => {
       const dom = document.body.appendChild(canvas)
       dom.style.display = 'none'
-      a.style.display = 'none'
       document.body.removeChild(dom)
       const content = dom.toDataURL('image/png')
-      console.log(content)
       exportPng(content)
     })
   },

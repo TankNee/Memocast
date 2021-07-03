@@ -12,14 +12,14 @@
         >
         <q-btn flat round dense icon='close' v-close-popup />
       </q-toolbar>
-      <q-card-section>
-        <div class="text-h6">Our Changing Planet</div>
-      </q-card-section>
       <q-card-section class='hide-scrollbar'>
         <div class='q-pa-md'>
-          <q-linear-progress stripe rounded size='35px' :value='progress' color='red' class='q-mt-sm'>
+          <div style="font-size: 1.2rem;">{{ `${transferred}/${total} ${speed} Kbs` }}</div>
+        </div>
+        <div class='q-pa-md'>
+          <q-linear-progress rounded size='35px' :value='progress' color='primary' class='q-mt-sm'>
             <div class='absolute-full flex flex-center'>
-              <q-badge color='white' text-color='accent' :label='progressLabel' />
+              <q-badge color='white' text-color='primary' :label='progressLabel' />
             </div>
           </q-linear-progress>
         </div>
@@ -42,20 +42,27 @@ export default {
   data () {
     return {
       progress: 0,
-      downloaded: false
+      downloaded: false,
+      speed: 0,
+      transferred: 0,
+      total: 0
     }
   },
   computed: {
     progressLabel () {
-      return `${this.progress * 100}%`
+      return `${(this.progress * 100).toFixed(2)}%`
     }
   },
   methods: {
     downloadingHandler: function (progress) {
-      const { percent = 0 } = progress
-      this.progress = percent / 100
+      const { percent = 0, bytesPerSecond, transferred, total } = progress
+      this.progress = (percent / 100).toFixed(2)
+      this.speed = (bytesPerSecond / 1024).toFixed(2)
+      this.transferred = (transferred / (1024 * 1024)).toFixed(2)
+      this.total = (total / (1024 * 1024)).toFixed(2)
     },
     downloadedHandler: function () {
+      this.progress = 1
       this.downloaded = true
     },
     installHandler: function () {
@@ -69,7 +76,7 @@ export default {
   },
   mounted () {
     bus.$on(events.UPDATE_EVENTS.UPDATE_DOWNLOADING, this.downloadingHandler)
-    bus.$on(events.UPDATE_EVENTS.UPDATE_DOWNLOADING, this.downloadedHandler)
+    bus.$on(events.UPDATE_EVENTS.UPDATE_DOWNLOADED, this.downloadedHandler)
   }
 }
 </script>
