@@ -11,7 +11,7 @@ export default {
   imageUploadService: 'Image Upload Service',
   wizOfficialImageUploadService: 'WizNote Official Image Upload Service (unavailable)',
   customWebUploadService: 'Custom Web Image Upload Service',
-  smmsImageUploadService: 'SMMS Image Upload Service (unavailable)',
+  smmsImageUploadService: 'SMMS Image Upload Service (experiment)',
   picgoServer: 'PicGo Server (Please launch the PicGo in advance)',
   none: 'None (Use local file path)',
   orderByModifiedTime: 'Order by modified time',

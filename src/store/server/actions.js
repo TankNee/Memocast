@@ -3,13 +3,11 @@ import api from 'src/utils/api'
 import { Notify, Dialog, Loading, QSpinnerGears } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
-import bus from 'components/bus'
-import events from 'src/constants/events'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
-import FormData from 'form-data'
-import { exportMarkdownFile, exportMarkdownFiles, saveTempImage, uploadImages } from 'src/ApiInvoker'
+import { exportMarkdownFile, exportMarkdownFiles, saveTempImage, uploadImages, exportPng } from 'src/ApiInvoker'
+import html2canvas from 'html2canvas'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -306,7 +304,9 @@ export default {
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
     const html = helper.embedMDNote(markdown, resources, {
-      wrapWithPreTag: isLite
+      wrapWithPreTag: isLite,
+      kbGuid,
+      docGuid
     })
 
     const _updateNote = async title => {
@@ -533,53 +533,16 @@ export default {
       }
     } = state
 
-    const formData = new FormData()
     const {
       client: {
-        imageUploadService,
-        apiServerUrl,
-        postParam,
-        jsonPath,
-        customHeader,
-        customBody
+        imageUploadService
       }
     } = rootState
+    // eslint-disable-next-line no-case-declarations
+    let base64
 
-    let data = {},
-      options = {}
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
-        formData.append('data', file)
-        formData.append('kbGuid', kbGuid)
-        formData.append('docGuid', docGuid)
-        data = {
-          kbGuid,
-          docGuid,
-          formData: formData,
-          config: {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'X-Wiz-Token': token
-            }
-          }
-        }
-        break
-      case 'smmsImageUploadService':
-        data = file
-        break
-      case 'customWebUploadService':
-        data = file
-        options = {
-          apiServerUrl,
-          postParam,
-          jsonPath,
-          customHeader,
-          customBody
-        }
-        break
-      case 'picgoServer':
-        // eslint-disable-next-line no-case-declarations
-        let base64 = ''
         if (file instanceof File) {
           base64 = await readFileAsync(file)
           file = {
@@ -588,7 +551,29 @@ export default {
           }
         }
         // eslint-disable-next-line no-case-declarations
-        const res = await uploadImages([file])
+        const result = await uploadImages([file], imageUploadService, { kbGuid, docGuid, wizToken: token, baseUrl: api.KnowledgeBaseApi.getBaseUrl() })
+        commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result.result)
+        // await saveUploadedImage(buffer, kbGuid, docGuid, result.name)
+        if (!result.success) {
+          Notify.create({
+            message: i18n.t('failToUpload'),
+            type: 'negative',
+            icon: 'clear'
+          })
+          return helper.isNullOrEmpty(base64) ? file : base64
+        } else {
+          return helper.isNullOrEmpty(result.result) ? file : helper.isNullOrEmpty(result.result[0]) ? file : result.result[0].url
+        }
+      case 'picgoServer':
+        if (file instanceof File) {
+          base64 = await readFileAsync(file)
+          file = {
+            file: base64,
+            ext: file.name
+          }
+        }
+        // eslint-disable-next-line no-case-declarations
+        const res = await uploadImages([file], imageUploadService)
         if (!res.success) {
           Notify.create({
             message: i18n.t('failToUpload'),
@@ -611,17 +596,6 @@ export default {
         return file
       default:
         break
-    }
-
-    const result = await api.UploadImageApi(imageUploadService, data, options)
-    if (result) {
-      bus.$emit(
-        events.INSERT_IMAGE,
-        getters.imageUrl(result, imageUploadService)
-      )
-    }
-    if (imageUploadService === 'wizOfficialImageUploadService') {
-      commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
     }
   },
   async moveNote ({ commit }, noteInfo) {
@@ -876,6 +850,25 @@ export default {
       )
     }
     await exportMarkdownFile(content)
+  },
+  async exportPng ({
+    commit,
+    state
+  }, noteField) {
+    const canvasID = document.getElementById('muya')
+    const a = document.createElement('a')
+    html2canvas(canvasID, {
+      useCORS: true,
+      allowTaint: true
+    }).then(canvas => {
+      const dom = document.body.appendChild(canvas)
+      dom.style.display = 'none'
+      a.style.display = 'none'
+      document.body.removeChild(dom)
+      const content = dom.toDataURL('image/png')
+      console.log(content)
+      exportPng(content)
+    })
   },
   /**
    * 批量导出markdown笔记到本地

@@ -9,6 +9,13 @@ async function sendNotification (notificationPayload) {
   return wcs.send('show-notification', notificationPayload)
 }
 
+// async function requestResourceTempUrl (kbGuid, docGuid, resName) {
+//   if (!wcs) {
+//     wcs = webContents.getFocusedWebContents()
+//   }
+//   return wcs.send('request-resource-temp-url', { kbGuid, docGuid, resName })
+// }
+
 export {
   sendNotification
 }

@@ -1,12 +1,13 @@
 // import channels from 'app/share/channels'
 // import i18n from 'boot/i18n'
-
+import fs from 'fs-extra'
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
-import { cacheNoteImage, saveTempImage } from './utlis/helper'
+import { cacheNoteImage, saveTempImage, saveBuffer } from './utlis/helper'
+import { uploadImagesByWiz } from './utlis/wiz-resource-helper'
 
-const { uploadImages } = require('./3rd-part/PicGoUtils')
+const { uploadImagesByPicGo } = require('./3rd-part/PicGoUtils')
 
 const {
   ipcMain,
@@ -14,9 +15,6 @@ const {
   dialog
 } = require('electron')
 const sanitize = require('sanitize-filename')
-
-const fs = require('fs-extra')
-
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
  * @param {string} channel 频道名称
@@ -77,6 +75,37 @@ export default {
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
+    handleApi('export-png', (event, content) => {
+      return dialog.showSaveDialog({
+        title: 'Export',
+        defaultPath: app.getPath('documents'),
+        filters: [
+          {
+            name: 'Portable Network Graphics',
+            extensions: ['png']
+          }
+        ]
+      }).then((result) => {
+        if (result.canceled) return
+        const base64 = content.replace(/^data:image\/\w+;base64,/, '')
+        const baseUrl = Buffer.from(base64, 'base64')
+        fs.writeFile(result.filePath, baseUrl).then(() => {
+          sendNotification({
+            msg: 'Export Successfully',
+            type: 'positive',
+            icon: 'check'
+          }).catch(err => throw err)
+        })
+          .catch(err => {
+            sendNotification({
+              msg: err.msg,
+              type: 'negative',
+              icon: 'delete'
+            }).catch(err => throw err)
+          })
+      }).catch(err => throw err)
+    }).catch(err => throw err)
+
     /**
      * batch export notes
      */
@@ -129,17 +158,22 @@ export default {
     /**
      *  Upload Images
      */
-    handleApi('upload-images', async (event, imagePaths) => {
-      const uploadResult = await uploadImages(imagePaths).catch(err => {
-        if (err.errno === 'ECONNREFUSED') {
-          sendNotification({
-            msg: 'PicGo Upload Server Not Found!',
-            type: 'negative',
-            icon: 'delete'
-          }).catch(err => throw err)
-        }
-      })
-      return uploadResult
+    handleApi('upload-images', async (event, { imagePaths, type, options }) => {
+      if (type === 'picgoServer') {
+        const uploadResult = await uploadImagesByPicGo(imagePaths).catch(err => {
+          if (err.errno === 'ECONNREFUSED') {
+            sendNotification({
+              msg: 'PicGo Upload Server Not Found!',
+              type: 'negative',
+              icon: 'delete'
+            }).catch(err => throw err)
+          }
+        })
+        return uploadResult
+      } else if (type === 'wizOfficialImageUploadService') {
+        const uploadResult = await uploadImagesByWiz(imagePaths, options).then()
+        return uploadResult
+      }
     }).catch(err => throw err)
 
     handleApi('get-cache-image', async (e, {
@@ -156,6 +190,15 @@ export default {
       docGuid
     }) => {
       return saveTempImage(file, kbGuid, docGuid)
+    }).catch(err => throw err)
+
+    handleApi('get-local-file-data', async (e, filePath) => {
+      if (!fs.existsSync(filePath)) return null
+      return fs.readFileSync(filePath)
+    }).catch(err => throw err)
+
+    handleApi('save-uploaded-image', async (e, { buffer, name, kbGuid, docGuid }) => {
+      return saveBuffer(buffer, kbGuid, docGuid, name)
     }).catch(err => throw err)
 
     handleApi('check-update', async (e) => {
