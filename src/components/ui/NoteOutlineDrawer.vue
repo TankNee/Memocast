@@ -17,6 +17,7 @@
     >
       <q-tree
         :nodes='contentsList ? contentsList : []'
+        ref='tree'
         node-key='key'
         default-expand-all
         selected-color='secondary'
@@ -24,7 +25,6 @@
         :selected.sync='selected'
         :expanded.sync='expanded'
       />
-      <!--      <q-icon name="close" class="absolute-bottom" size="24px" color="#26A69A" />-->
     </q-scroll-area>
     <q-icon
       name='close'
@@ -102,6 +102,11 @@ export default {
       if (e.path[1] && e.path[1].className && e.path[1].className.indexOf('q-tree__node') !== -1) return
       if (this.$refs.drawer) that.hide()
     })
+  },
+  watch: {
+    contentsList () {
+      this.$refs.tree.expandAll()
+    }
   }
 }
 </script>

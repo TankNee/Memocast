@@ -2,11 +2,15 @@ import api from 'src/utils/api'
 import _ from 'lodash'
 import helper from 'src/utils/helper'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
+
 export default {
   avatarUrl: ({ userGuid }) => {
     return userGuid ? `${api.AccountServerApi.getBaseUrl()}/as/user/avatar/${userGuid}` : null
   },
-  imageUrl: ({ kbGuid, currentNote: { info: { docGuid } } }) => (url, imageUploadService) => {
+  imageUrl: ({
+    kbGuid,
+    currentNote: { info: { docGuid } }
+  }) => (url, imageUploadService) => {
     let img = ''
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
@@ -25,7 +29,7 @@ export default {
   currentNotes: ({ currentNotes }, getters, rootState) => {
     const _currentNotes = _.cloneDeep(currentNotes)
     if (_.isArray(_currentNotes)) {
-      return _currentNotes.map((note) => {
+      const filteredNotes = _currentNotes.map((note) => {
         if (_.endsWith(note.title, '.md')) {
           note.abstractText = helper.removeMarkdownTag(note.abstractText)
         }
@@ -36,6 +40,13 @@ export default {
         }
         return true
       })
+      if (rootState.client.noteOrderType === 'orderByNoteTitle') {
+        return filteredNotes.sort((n1, n2) => {
+          if (n1.title === n2.title) return 0
+          return n1.title > n2.title ? 1 : -1
+        })
+      }
+      return filteredNotes
     }
     return []
   },
@@ -43,7 +54,14 @@ export default {
     if (helper.isNullOrEmpty(currentNote) || Object.keys(currentNote).length === 0) return ''
     const isHtml = !_.endsWith(currentNote.info.title, '.md')
 
-    const { html, info: { docGuid, kbGuid }, resources } = currentNote
+    const {
+      html,
+      info: {
+        docGuid,
+        kbGuid
+      },
+      resources
+    } = currentNote
     let result = ''
     if (isHtml) {
       result = helper.convertHtml2Markdown(currentNote.html, kbGuid, docGuid, resources)
@@ -57,7 +75,12 @@ export default {
     return resources
   },
   currentNoteResourceUrl: ({ currentNote }) => {
-    const { info: { docGuid, kbGuid } } = currentNote
+    const {
+      info: {
+        docGuid,
+        kbGuid
+      }
+    } = currentNote
     return `${api.KnowledgeBaseApi.getBaseUrl()}/${kbGuid}/${docGuid}`
   },
   categories: ({ categories }) => {
@@ -69,7 +92,11 @@ export default {
   activeNote: ({ currentNote }) => ({ docGuid }) => {
     return currentNote.info && currentNote.info.docGuid === docGuid
   },
-  uploadImageUrl: ({ uploadImageUrl, kbGuid, currentNote }) => {
+  uploadImageUrl: ({
+    uploadImageUrl,
+    kbGuid,
+    currentNote
+  }) => {
     if (!helper.isNullOrEmpty(uploadImageUrl) || helper.isNullOrEmpty(currentNote.info)) return uploadImageUrl
     const { info: { docGuid } } = currentNote
     return `${api.KnowledgeBaseApi.getBaseUrl()}/ks/resource/upload/${kbGuid}/${docGuid}`
@@ -77,7 +104,10 @@ export default {
   wizNoteToken: () => {
     return ServerFileStorage.getValueFromLocalStorage('token')
   },
-  tagsOfCurrentNote: ({ currentNote, tags }) => {
+  tagsOfCurrentNote: ({
+    currentNote,
+    tags
+  }) => {
     if (helper.isNullOrEmpty(currentNote?.info?.tags)) return []
     const tagGuids = currentNote.info.tags.split('*')
     return tags.filter(t => tagGuids.includes(t.tagGuid))

@@ -128,31 +128,11 @@ export default {
         this.contentEditor.redo()
       }
     },
-    ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList']),
+    ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList', 'uploadImage']),
     ...mapClientActions(['importImagesFromLocal'])
   },
   created () {
     this.$nextTick(() => {
-      // const theme = document.createElement('style')
-      // theme.type = 'text/css'
-      // theme.id = 'muya-theme'
-      // theme.innerHTML = '  --titleBarHeight: 32px;\n' +
-      //   '  --editorAreaWidth: 90%;\n' +
-      //   '\n' +
-      //   '  /*editor*/\n' +
-      //   '  /*Theme color cluster*/\n' +
-      //   '  --themeColor: rgba(33, 181, 111, 1);\n' +
-      //   '  --themeColor90: rgba(33, 181, 111, .9);\n' +
-      //   '  --themeColor80: rgba(33, 181, 111, .8);\n' +
-      //   '  --themeColor70: rgba(33, 181, 111, .7);\n' +
-      //   '  --themeColor60: rgba(33, 181, 111, .6);\n' +
-      //   '  --themeColor50: rgba(33, 181, 111, .5);\n' +
-      //   '  --themeColor40: rgba(33, 181, 111, .4);\n' +
-      //   '  --themeColor30: rgba(33, 181, 111, .3);\n' +
-      //   '  --themeColor20: rgba(33, 181, 111, .2);\n' +
-      //   '  --themeColor10: rgba(33, 181, 111, .1);'
-      // document.getElementsByTagName('head').item(0).appendChild(theme)
-
       Muya.use(TablePicker)
       Muya.use(QuickInsert)
       Muya.use(CodePicker)
@@ -174,17 +154,19 @@ export default {
         imagePathPicker: () => {
           return new Promise((resolve, reject) => {
             this.importImagesFromLocal().then(paths => {
-              resolve(paths ? paths[0] : '')
               debugLogger.Info(paths)
+              resolve(paths ? paths[0] : '')
             }).catch(err => {
               debugLogger.Error(err)
+              reject(err)
             })
           })
           // const paths = this.importImagesFromLocal()
           // // TODO: 增加一个上传选项
           // console.log(paths)
           // return paths ? paths[0] : null
-        }
+        },
+        imageAction: this.uploadImage
       })
 
       if (this.darkMode) {

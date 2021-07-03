@@ -611,7 +611,7 @@ class ContentState {
     newBlock.nextSibling = oldBlock.nextSibling
   }
 
-  canInserFrontMatter (block) {
+  canInsertFrontMatter (block) {
     if (!block) return true
     const parent = this.getParent(block)
     return block.type === 'span' &&

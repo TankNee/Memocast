@@ -3,8 +3,12 @@
 import fs from 'fs-extra'
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
-import { checkUpdates, needUpdate } from './menu/actions/memocast'
-const { uploadImages } = require('./3rd-part/PicGoUtils')
+import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
+import { cacheNoteImage, saveTempImage, saveBuffer } from './utlis/helper'
+import { uploadImagesByWiz } from './utlis/wiz-resource-helper'
+
+const { uploadImagesByPicGo } = require('./3rd-part/PicGoUtils')
+
 const {
   ipcMain,
   app,
@@ -154,17 +158,47 @@ export default {
     /**
      *  Upload Images
      */
-    handleApi('upload-images', async (event, imagePaths) => {
-      const uploadResult = await uploadImages(imagePaths).catch(err => {
-        if (err.errno === 'ECONNREFUSED') {
-          sendNotification({
-            msg: 'PicGo Upload Server Not Found!',
-            type: 'negative',
-            icon: 'delete'
-          }).catch(err => throw err)
-        }
-      })
-      return uploadResult
+    handleApi('upload-images', async (event, { imagePaths, type, options }) => {
+      if (type === 'picgoServer') {
+        const uploadResult = await uploadImagesByPicGo(imagePaths).catch(err => {
+          if (err.errno === 'ECONNREFUSED') {
+            sendNotification({
+              msg: 'PicGo Upload Server Not Found!',
+              type: 'negative',
+              icon: 'delete'
+            }).catch(err => throw err)
+          }
+        })
+        return uploadResult
+      } else if (type === 'wizOfficialImageUploadService') {
+        const uploadResult = await uploadImagesByWiz(imagePaths, options).then()
+        return uploadResult
+      }
+    }).catch(err => throw err)
+
+    handleApi('get-cache-image', async (e, {
+      imageUrl,
+      kbGuid,
+      docGuid
+    }) => {
+      return await cacheNoteImage(imageUrl, kbGuid, docGuid)
+    }).catch(err => throw err)
+
+    handleApi('save-temp-image', async (e, {
+      file,
+      kbGuid,
+      docGuid
+    }) => {
+      return saveTempImage(file, kbGuid, docGuid)
+    }).catch(err => throw err)
+
+    handleApi('get-local-file-data', async (e, filePath) => {
+      if (!fs.existsSync(filePath)) return null
+      return fs.readFileSync(filePath)
+    }).catch(err => throw err)
+
+    handleApi('save-uploaded-image', async (e, { buffer, name, kbGuid, docGuid }) => {
+      return saveBuffer(buffer, kbGuid, docGuid, name)
     }).catch(err => throw err)
 
     handleApi('check-update', async (e) => {
@@ -174,6 +208,10 @@ export default {
 
     handleApi('need-update', async (e, need) => {
       needUpdate(need)
+    }).catch(err => throw err)
+
+    handleApi('quit-and-install', async (e) => {
+      quitAndInstall()
     }).catch(err => throw err)
   }
 }

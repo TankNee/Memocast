@@ -3,13 +3,10 @@ import api from 'src/utils/api'
 import { Notify, Dialog, Loading, QSpinnerGears, Dark } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
-import bus from 'components/bus'
-import events from 'src/constants/events'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
-import FormData from 'form-data'
-import { exportMarkdownFile, exportMarkdownFiles, exportPng } from 'src/ApiInvoker'
+import { exportMarkdownFile, exportMarkdownFiles, saveTempImage, uploadImages, exportPng } from 'src/ApiInvoker'
 import html2canvas from 'html2canvas'
 
 export async function _getContent (kbGuid, docGuid) {
@@ -37,6 +34,18 @@ export async function _getContent (kbGuid, docGuid) {
     ClientFileStorage.setCachedNote(result, cacheKey)
   }
   return result
+}
+
+function readFileAsync (f) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = event => {
+      const base64 = event.target.result
+      resolve(base64)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(f)
+  })
 }
 
 export default {
@@ -295,7 +304,9 @@ export default {
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
     const html = helper.embedMDNote(markdown, resources, {
-      wrapWithPreTag: isLite
+      wrapWithPreTag: isLite,
+      kbGuid,
+      docGuid
     })
 
     const _updateNote = async title => {
@@ -522,63 +533,69 @@ export default {
       }
     } = state
 
-    const formData = new FormData()
     const {
       client: {
-        imageUploadService,
-        apiServerUrl,
-        postParam,
-        jsonPath,
-        customHeader,
-        customBody
+        imageUploadService
       }
     } = rootState
+    // eslint-disable-next-line no-case-declarations
+    let base64
 
-    let data = {},
-      options = {}
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
-        formData.append('data', file)
-        formData.append('kbGuid', kbGuid)
-        formData.append('docGuid', docGuid)
-        data = {
-          kbGuid,
-          docGuid,
-          formData: formData,
-          config: {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'X-Wiz-Token': token
-            }
+        if (file instanceof File) {
+          base64 = await readFileAsync(file)
+          file = {
+            file: base64,
+            ext: file.name
           }
         }
-        break
-      case 'smmsImageUploadService':
-        data = file
-        break
-      case 'customWebUploadService':
-        data = file
-        options = {
-          apiServerUrl,
-          postParam,
-          jsonPath,
-          customHeader,
-          customBody
+        // eslint-disable-next-line no-case-declarations
+        const result = await uploadImages([file], imageUploadService, { kbGuid, docGuid, wizToken: token, baseUrl: api.KnowledgeBaseApi.getBaseUrl() })
+        commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result.result)
+        // await saveUploadedImage(buffer, kbGuid, docGuid, result.name)
+        if (!result.success) {
+          Notify.create({
+            message: i18n.t('failToUpload'),
+            type: 'negative',
+            icon: 'clear'
+          })
+          return helper.isNullOrEmpty(base64) ? file : base64
+        } else {
+          return helper.isNullOrEmpty(result.result) ? file : helper.isNullOrEmpty(result.result[0]) ? file : result.result[0].url
         }
-        break
+      case 'picgoServer':
+        if (file instanceof File) {
+          base64 = await readFileAsync(file)
+          file = {
+            file: base64,
+            ext: file.name
+          }
+        }
+        // eslint-disable-next-line no-case-declarations
+        const res = await uploadImages([file], imageUploadService)
+        if (!res.success) {
+          Notify.create({
+            message: i18n.t('failToUpload'),
+            type: 'negative',
+            icon: 'clear'
+          })
+          return helper.isNullOrEmpty(base64) ? file : base64
+        } else {
+          return helper.isNullOrEmpty(res.result) ? file : helper.isNullOrEmpty(res.result[0]) ? file : res.result[0]
+        }
+      case 'none':
+        if (file instanceof File) {
+          const base64 = await readFileAsync(file)
+          file = await saveTempImage({
+            file: base64,
+            kbGuid,
+            docGuid
+          })
+        }
+        return file
       default:
         break
-    }
-
-    const result = await api.UploadImageApi(imageUploadService, data, options)
-    if (result) {
-      bus.$emit(
-        events.INSERT_IMAGE,
-        getters.imageUrl(result, imageUploadService)
-      )
-    }
-    if (imageUploadService === 'wizOfficialImageUploadService') {
-      commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
     }
   },
   async moveNote ({ commit }, noteInfo) {

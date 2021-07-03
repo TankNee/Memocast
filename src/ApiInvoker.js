@@ -33,15 +33,49 @@ async function importImages () {
 }
 
 /**
- * @param {string[]} imagePaths
+ * @param {({ext: string, file: (*|string)} | string)[]} imagePaths
  * @returns {Promise<any>}
  */
-async function uploadImages (imagePaths) {
-  return await ipcRenderer.invoke(channels.uploadImages, imagePaths)
+async function uploadImages (imagePaths, type, options = {}) {
+  return await ipcRenderer.invoke(channels.uploadImages, { imagePaths, type, options })
 }
 
 async function checkUpdate () {
   return await ipcRenderer.invoke(channels.checkUpdate)
+}
+
+async function needUpdate (need) {
+  return await ipcRenderer.invoke(channels.needUpdate, need)
+}
+
+async function quitAndUpdate () {
+  return await ipcRenderer.invoke(channels.quitAndUpdate)
+}
+
+/**
+ * 拿到缓存在本地的文件
+ * @param {{imageUrl:string, kbGuid:string, docGuid:string}} bundle
+ * @returns {Promise<any>}
+ */
+async function getCacheImage (bundle) {
+  return await ipcRenderer.invoke(channels.getCacheImage, bundle)
+}
+
+/**
+ * 将文件保存到临时文件夹
+ * @param {{file:string, kbGuid:string, docGuid:string}} bundle
+ * @returns {string}
+ */
+async function saveTempImage (bundle) {
+  return await ipcRenderer.invoke(channels.saveTempImage, bundle)
+}
+
+async function getLocalFileData (filePath) {
+  return await ipcRenderer.invoke(channels.getLocalFileData, filePath)
+}
+
+async function saveUploadedImage (buffer, kbGuid, docGuid, name) {
+  return await ipcRenderer.invoke(channels.saveUploadedImage, { buffer, kbGuid, docGuid, name })
 }
 
 export {
@@ -50,5 +84,11 @@ export {
   exportMarkdownFiles,
   importImages,
   uploadImages,
-  checkUpdate
+  checkUpdate,
+  needUpdate,
+  quitAndUpdate,
+  getCacheImage,
+  saveTempImage,
+  getLocalFileData,
+  saveUploadedImage
 }
