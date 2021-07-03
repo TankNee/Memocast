@@ -13,7 +13,7 @@
       <span class="text-left note-info-tag"><q-icon name="category" size="17px"/> {{ category }}</span>
       <span class="text-right note-info-tag"><q-icon name="timer" size="17px"/> {{ modifiedDate }}</span>
     </div>
-    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" :export-to="exportHandler" :flomo="flomoHandler" />
+    <NoteItemContextMenu :rename="renameHandler" :del="deleteHandler" :copy-to="copyToHandler" :move-to="moveToHandler" :export-to-markdown="exportMdHandler" :export-to-png ="exportPngHandler" :flomo="flomoHandler" />
     <CategoryDialog ref="categoryDialog" :note-info="data" :label="categoryDialogLabel" :handler="categoryDialogHandler" />
   </q-card>
 </template>
@@ -23,7 +23,7 @@ import { createNamespacedHelpers } from 'vuex'
 import NoteItemContextMenu from './menu/NoteItemContextMenu'
 import helper from 'src/utils/helper'
 import CategoryDialog from 'components/ui/dialog/CategoryDialog'
-// import { exportMarkdownFile } from 'src/ApiHandler'
+
 const { mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
 const { mapActions: mapClientActions } = createNamespacedHelpers('client')
 export default {
@@ -136,8 +136,11 @@ export default {
     flomoHandler: function () {
       this.sendToFlomo(this.docGuid)
     },
-    exportHandler: function () {
+    exportMdHandler: function () {
       this.exportMarkdownFile(this.data)
+    },
+    exportPngHandler: function () {
+      this.exportPng(this.data)
     },
     noteItemClickHandler: function () {
       if (this.noteState !== 'default') {
@@ -155,7 +158,7 @@ export default {
         this.getNoteContent({ docGuid: this.docGuid })
       }
     },
-    ...mapServerActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile']),
+    ...mapServerActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile', 'exportPng']),
     ...mapClientActions(['sendToFlomo'])
   }
 }
