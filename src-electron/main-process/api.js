@@ -1,7 +1,6 @@
 // import channels from 'app/share/channels'
 // import i18n from 'boot/i18n'
 import fs from 'fs-extra'
-import path from 'path'
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
 import { checkUpdates, needUpdate } from './menu/actions/memocast'
@@ -12,7 +11,6 @@ const {
   dialog
 } = require('electron')
 const sanitize = require('sanitize-filename')
-const os = require('os')
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
  * @param {string} channel 频道名称

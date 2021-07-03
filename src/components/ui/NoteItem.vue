@@ -23,7 +23,6 @@ import { createNamespacedHelpers } from 'vuex'
 import NoteItemContextMenu from './menu/NoteItemContextMenu'
 import helper from 'src/utils/helper'
 import CategoryDialog from 'components/ui/dialog/CategoryDialog'
-import { Notify } from 'quasar'
 
 const { mapActions: mapServerActions, mapState: mapServerState } = createNamespacedHelpers('server')
 const { mapActions: mapClientActions } = createNamespacedHelpers('client')
@@ -141,15 +140,7 @@ export default {
       this.exportMarkdownFile(this.data)
     },
     exportPngHandler: function () {
-      try {
-        this.exportPng(this.data)
-      } catch {
-        Notify.create({
-          message: 'Error',
-          type: 'negative',
-          icon: 'delete'
-        })
-      }
+      this.exportPng(this.data)
     },
     noteItemClickHandler: function () {
       if (this.noteState !== 'default') {
