@@ -172,6 +172,7 @@ import bus from 'components/bus'
 import events from 'src/constants/events'
 import { version } from '../../../../package.json'
 import { needUpdate } from 'src/ApiInvoker'
+import helper from 'src/utils/helper'
 
 const {
   mapState,
@@ -199,7 +200,8 @@ export default {
         'orderByModifiedTime',
         'orderByNoteTitle'
       ],
-      version: version
+      version: version,
+      checkingNotify: null
     }
   },
   computed: {
@@ -255,9 +257,9 @@ export default {
     },
     checkUpdateHandler: function () {
       this.checkUpdate().then(() => {
-        this.$q.notify({
+        this.checkingNotify = this.$q.notify({
           message: this.$t('checking'),
-          timeout: 5000,
+          timeout: 0,
           spinner: true,
           color: 'primary'
         })
@@ -290,6 +292,10 @@ export default {
     },
     updateUnavailableHandler: function (info) {
       console.log(info)
+      if (this.checkingNotify && this.checkingNotify instanceof Function) {
+        this.checkingNotify()
+        this.checkingNotify = null
+      }
       this.$q.notify({
         message: this.$t('noNewerVersion'),
         color: 'green',
@@ -297,7 +303,12 @@ export default {
       })
     },
     updateErrorHandler: function (err) {
-      if (err) {
+      console.log(err)
+      if (this.checkingNotify && this.checkingNotify instanceof Function) {
+        this.checkingNotify()
+        this.checkingNotify = null
+      }
+      if (err && !helper.isNullOrEmpty(err)) {
         this.$q.notify({
           caption: this.$t('updateError'),
           color: 'red-10',
@@ -335,7 +346,7 @@ export default {
   mounted () {
     bus.$on(events.UPDATE_EVENTS.UPDATE_AVAILABLE, this.updateAvailableHandler)
     bus.$on(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, this.updateUnavailableHandler)
-    bus.$on(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, this.updateErrorHandler)
+    bus.$on(events.UPDATE_EVENTS.UPDATE_ERROR, this.updateErrorHandler)
   }
 }
 </script>
