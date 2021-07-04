@@ -19,7 +19,6 @@ import Muya from 'src/libs/muya/lib'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import 'src/libs/muya/themes/default.css'
-// import 'src/css/muya.css'
 import TablePicker from 'src/libs/muya/lib/ui/tablePicker'
 import QuickInsert from 'src/libs/muya/lib/ui/quickInsert'
 import CodePicker from 'src/libs/muya/lib/ui/codePicker'
@@ -34,6 +33,7 @@ import TableBarTools from 'src/libs/muya/lib/ui/tableTools'
 import Transformer from 'src/libs/muya/lib/ui/transformer'
 import debugLogger from 'src/utils/debugLogger'
 import { attachThemeColor } from 'src/utils/theme'
+import { showContextMenu as showEditorContextMenu } from 'src/contextMenu/muya'
 
 const {
   mapGetters: mapServerGetters,
@@ -78,6 +78,23 @@ export default {
       if (this.active && this.enablePreviewEditor && this.contentEditor) {
         this.contentEditor.updateParagraph(type)
         this.updateContentsList(this.contentEditor.getTOC())
+      }
+    },
+    insertParagraphHandler: function (location) {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor.insertParagraph(location)
+      }
+    },
+    formatDocumentByPanguHandler: function () {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        const before = this.contentEditor.getMarkdown()
+        helper.formatDocumentByRemarkPangu(before).then(after => {
+          if (before !== after) {
+            this.contentEditor.setMarkdown(after)
+            this.updateContentsList(this.contentEditor.getTOC())
+            this.updateNoteState('changed')
+          }
+        })
       }
     },
     formatHandler: function (type) {
@@ -190,6 +207,10 @@ export default {
 
       this.contentEditor.on('change', () => this.updateContentsList(this.contentEditor.getTOC()))
 
+      this.contentEditor.on('contextmenu', (event, selection) => {
+        showEditorContextMenu(event, selection)
+      })
+
       document.addEventListener('keydown', (e) => {
         if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
         const curData = this.contentEditor.getMarkdown()
@@ -219,10 +240,13 @@ export default {
       bus.$on(events.EDIT_SHORTCUT_CALL.selectAll, this.selectAllHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.createParagraph, this.editParagraphHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.deleteParagraph, this.editParagraphHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.insertParagraph, this.insertParagraphHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu, this.formatDocumentByPanguHandler)
     })
   },
   watch: {
     currentNote: function (currentData) {
+      this.contentEditor.clearHistory()
       try {
         this.contentEditor.setMarkdown(currentData)
         this.updateContentsList(this.contentEditor.getTOC())

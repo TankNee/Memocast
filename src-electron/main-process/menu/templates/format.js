@@ -88,6 +88,12 @@ export default function (keybindings) {
     }, {
       type: 'separator'
     }, {
+      label: 'Format Document',
+      accelerator: keybindings.getAccelerator('format.format-document'),
+      click (menuItem, browserWindow) {
+        actions.format(browserWindow, 'format-document')
+      }
+    }, {
       label: 'Clear Format',
       accelerator: keybindings.getAccelerator('format.clear-format'),
       click (menuItem, browserWindow) {

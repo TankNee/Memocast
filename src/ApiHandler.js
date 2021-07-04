@@ -52,6 +52,10 @@ export default {
     }).catch(err => throw err)
 
     handleApi('editor-format-action', (event, { type }) => {
+      if (type === 'format-document') {
+        bus.$emit(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu)
+        return
+      }
       bus.$emit(events.FORMAT_SHORTCUT_CALL, type)
     }).catch(err => throw err)
 
@@ -62,27 +66,27 @@ export default {
 
     handleApi('updater-update-available', (event, info) => {
       console.log(info)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_AVAILABLE, info)
+      bus.$emit(events.UPDATE_EVENTS.updateAvailable, info)
     }).catch(err => throw err)
 
     handleApi('updater-update-not-available', (event, info) => {
       console.log(info)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, info)
+      bus.$emit(events.UPDATE_EVENTS.updateNotAvailable, info)
     }).catch(err => throw err)
 
     handleApi('updater-update-downloading', (event, progress) => {
       console.log(progress)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_DOWNLOADING, progress)
+      bus.$emit(events.UPDATE_EVENTS.updateDownloading, progress)
     }).catch(err => throw err)
 
     handleApi('updater-update-downloaded', (event, info) => {
       console.log(info)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_DOWNLOADED)
+      bus.$emit(events.UPDATE_EVENTS.updateDownloaded)
     }).catch(err => throw err)
 
     handleApi('updater-update-error', (event, error) => {
       console.log(error)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_ERROR, error)
+      bus.$emit(events.UPDATE_EVENTS.updateError, error)
     }).catch(err => throw err)
   },
   UnregisterApiHandler () {

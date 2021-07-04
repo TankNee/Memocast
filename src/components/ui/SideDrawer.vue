@@ -15,7 +15,6 @@
         :nodes="items"
         node-key="key"
         selected-color="primary"
-        default-expand-all
         accordion
         :selected="currentCategory"
         @update:selected="
@@ -27,7 +26,13 @@
             })
           }
         "
-      />
+      >
+        <template v-slot:default-header="prop">
+          <div class="row items-center">
+            <div>{{ prop.node.label }}</div>
+          </div>
+        </template>
+      </q-tree>
     </q-scroll-area>
   </q-drawer>
 </template>
@@ -89,17 +94,17 @@ export default {
     ...mapClientActions(['toggleChanged'])
   },
   mounted () {
-    const that = this
-    document.addEventListener('click', e => {
-      if (
-        e.path[1] &&
-        e.path[1].className &&
-        e.path[1].className.indexOf('q-tree__node') !== -1
-      ) {
-        return
-      }
-      that.hide()
-    })
+    // const that = this
+    // document.addEventListener('click', e => {
+    //   if (
+    //     e.path[1] &&
+    //     e.path[1].className &&
+    //     e.path[1].className.indexOf('q-tree__node') !== -1
+    //   ) {
+    //     return
+    //   }
+    //   that.hide()
+    // })
   }
 }
 </script>

@@ -97,7 +97,6 @@
 </template>
 
 <script>
-// import Vditor from '../components/ui/editor/Vditor'
 import NoteList from '../components/NoteList'
 import bus from 'components/bus'
 import events from 'src/constants/events'
@@ -121,7 +120,6 @@ export default {
     Monaco,
     Loading,
     NoteOutlineDrawer,
-    // Vditor,
     NoteList
   },
   computed: {
