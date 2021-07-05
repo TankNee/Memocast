@@ -244,6 +244,22 @@ export default {
       bus.$on(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu, this.formatDocumentByPanguHandler)
     })
   },
+  beforeDestroy () {
+    bus.$off(events.PARAGRAPH_SHORTCUT_CALL)
+    bus.$off(events.FORMAT_SHORTCUT_CALL)
+    bus.$off(events.EDIT_SHORTCUT_CALL.undo)
+    bus.$off(events.EDIT_SHORTCUT_CALL.redo)
+    bus.$off(events.EDIT_SHORTCUT_CALL.save)
+    bus.$off(events.EDIT_SHORTCUT_CALL.copyAsMarkdown)
+    bus.$off(events.EDIT_SHORTCUT_CALL.copyAsHtml)
+    bus.$off(events.EDIT_SHORTCUT_CALL.pasteAsPlainText)
+    bus.$off(events.EDIT_SHORTCUT_CALL.duplicate)
+    bus.$off(events.EDIT_SHORTCUT_CALL.selectAll)
+    bus.$off(events.EDIT_SHORTCUT_CALL.createParagraph)
+    bus.$off(events.EDIT_SHORTCUT_CALL.deleteParagraph)
+    bus.$off(events.EDIT_SHORTCUT_CALL.insertParagraph)
+    bus.$off(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu)
+  },
   watch: {
     currentNote: function (currentData) {
       this.contentEditor.clearHistory()

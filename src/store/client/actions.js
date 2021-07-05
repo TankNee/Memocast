@@ -72,5 +72,8 @@ export default {
   },
   setRightClickNoteItem ({ commit }, docGuid) {
     commit(types.TOGGLE_CHANGED, { key: 'rightClickNoteItem', value: docGuid })
+  },
+  setRightClickCategoryItem ({ commit }, categoryPath) {
+    commit(types.TOGGLE_CHANGED, { key: 'rightClickCategoryItem', value: categoryPath })
   }
 }

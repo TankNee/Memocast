@@ -39,7 +39,7 @@
         class="absolute-bottom-right fab-btn"
         v-if="isLogin && !isTagCategory"
       >
-        <q-fab-action
+        <!-- <q-fab-action
           color="red-7"
           v-if="isRootCategory"
           icon="delete_forever"
@@ -52,7 +52,7 @@
             content-class="bg-red-10 text-white shadow-4  text-h7"
             >{{ $t('deleteCategory') }}</q-tooltip
           >
-        </q-fab-action>
+        </q-fab-action> -->
         <q-fab-action
           v-if="isRootCategory"
           :color="color"
@@ -90,7 +90,7 @@
             >{{ $t('createNote') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action
+        <!-- <q-fab-action
           :color="color"
           icon="create_new_folder"
           @click="handleAddCategory"
@@ -102,7 +102,7 @@
             :content-class="`bg-${color} text-white shadow-4  text-h7`"
             >{{ $t('createCategory') }}</q-tooltip
           >
-        </q-fab-action>
+        </q-fab-action> -->
       </q-fab>
       <Loading :visible="isCurrentNotesLoading" />
       <ImportDialog ref="ImportDialog" />
@@ -116,7 +116,10 @@ import ImportDialog from './ui/dialog/ImportDialog.vue'
 import { createNamespacedHelpers } from 'vuex'
 import Loading from './ui/Loading'
 import helper from '../utils/helper'
-const { mapGetters, mapState, mapActions } = createNamespacedHelpers('server')
+import bus from './bus'
+import events from 'src/constants/events'
+const { mapGetters: mapServerGetters, mapState: mapServerState, mapActions: mapServerActions } = createNamespacedHelpers('server')
+const { mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'NoteList',
   components: { Loading, NoteItem, ImportDialog },
@@ -160,8 +163,9 @@ export default {
     isTagCategory: function () {
       return this.tags?.map(t => t.tagGuid).includes(this.currentCategory)
     },
-    ...mapGetters(['activeNote', 'currentNotes']),
-    ...mapState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags'])
+    ...mapServerGetters(['activeNote', 'currentNotes']),
+    ...mapServerState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags']),
+    ...mapClientState(['rightClickCategoryItem'])
   },
   methods: {
     handleAddNote: function () {
@@ -195,18 +199,21 @@ export default {
           cancel: true
         })
         .onOk(data => {
-          this.createCategory(data)
+          this.createCategory({
+            childCategoryName: data,
+            parentCategory: helper.isNullOrEmpty(this.currentCategory) ? '' : this.rightClickCategoryItem
+          })
         })
     },
     handleDeleteCategory: function () {
-      if (helper.isNullOrEmpty(this.currentCategory)) return
+      if (helper.isNullOrEmpty(this.rightClickCategoryItem)) return
       this.$q
         .dialog({
           title: this.$t('deleteCategory'),
           cancel: true
         })
         .onOk(() => {
-          this.deleteCategory(this.currentCategory)
+          this.deleteCategory(this.rightClickCategoryItem)
         })
     },
     handleExportCategory: function () {
@@ -222,13 +229,19 @@ export default {
       })
       done()
     },
-    ...mapActions([
+    ...mapServerActions([
       'createNote',
       'createCategory',
       'deleteCategory',
       'updateCurrentCategory',
       'exportMarkdownFiles'
     ])
+  },
+  mounted () {
+    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.createCategory, this.handleAddCategory)
+    // bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.createNote, this.handleAddNote)
+    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.exportCategory.markdown, this.handleExportCategory)
+    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.delete, this.handleDeleteCategory)
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import { remote } from 'electron'
 import {
   OPEN_CATEGORY,
-  RENAME,
+  // RENAME,
   CREATE_CATEGORY,
   // CREATE_NOTE,
   EXPORT,
@@ -18,11 +18,13 @@ const {
  * Show editor context menu.
  *
  * @param {MouseEvent} event The native mouse event.
+ * @param {boolean} isCurrentCategory
  */
-export const showContextMenu = (event) => {
+export const showContextMenu = (event, isCurrentCategory) => {
   const menu = new Menu()
   const win = remote.getCurrentWindow()
-  const ITEMS = [OPEN_CATEGORY, RENAME, SEPARATOR, CREATE_CATEGORY, EXPORT, SEPARATOR, DELETE]
+  EXPORT.enabled = isCurrentCategory
+  const ITEMS = [OPEN_CATEGORY, SEPARATOR, CREATE_CATEGORY, EXPORT, SEPARATOR, DELETE]
 
   const MENU_ITEM = ITEMS.map(item => {
     if (item.type === 'separator') return item

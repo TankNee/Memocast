@@ -190,6 +190,15 @@ export default {
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png, this.exportPngHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.flomo, this.flomoHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.delete, this.deleteHandler)
+  },
+  beforeDestroy () {
+    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.rename)
+    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.copy)
+    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.move)
+    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.exportNote.markdown)
+    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png)
+    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.flomo)
+    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.delete)
   }
 }
 </script>

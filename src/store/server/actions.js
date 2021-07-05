@@ -464,13 +464,13 @@ export default {
   async createCategory ({
     commit,
     state
-  }, childCategoryName) {
+  }, { childCategoryName, parentCategory }) {
     const {
       kbGuid,
-      currentCategory,
+      // currentCategory,
       categories
     } = state
-    if (helper.checkCategoryExistence(categories, currentCategory, childCategoryName)) {
+    if (helper.checkCategoryExistence(categories, parentCategory, childCategoryName)) {
       Notify.create({
         color: 'red-10',
         message: i18n.t('categoryExisted'),
@@ -481,7 +481,7 @@ export default {
     await api.KnowledgeBaseApi.createCategory({
       kbGuid,
       data: {
-        parent: helper.isNullOrEmpty(currentCategory) ? '/' : currentCategory,
+        parent: helper.isNullOrEmpty(parentCategory) ? '/' : parentCategory,
         pos: Math.floor(Date.now() / 1000).toFixed(0),
         child: childCategoryName
       }
@@ -491,9 +491,9 @@ export default {
       'server/updateCurrentCategory', {
         data:
           helper
-            .isNullOrEmpty(currentCategory)
+            .isNullOrEmpty(parentCategory)
             ? `/${childCategoryName}/`
-            : `${currentCategory}${childCategoryName}/`,
+            : `${parentCategory}${childCategoryName}/`,
         type: 'category'
       }
     )

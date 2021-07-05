@@ -19,6 +19,6 @@ export default function () {
     flomoApiUrl: '',
     enablePreviewEditor: true,
     rightClickNoteItem: '',
-    rightClickCategoryItem: {}
+    rightClickCategoryItem: ''
   }
 }

@@ -347,6 +347,11 @@ export default {
     bus.$on(events.UPDATE_EVENTS.updateAvailable, this.updateAvailableHandler)
     bus.$on(events.UPDATE_EVENTS.updateNotAvailable, this.updateUnavailableHandler)
     bus.$on(events.UPDATE_EVENTS.updateError, this.updateErrorHandler)
+  },
+  beforeDestroy () {
+    bus.$off(events.UPDATE_EVENTS.updateAvailable)
+    bus.$off(events.UPDATE_EVENTS.updateNotAvailable)
+    bus.$off(events.UPDATE_EVENTS.updateError)
   }
 }
 </script>
