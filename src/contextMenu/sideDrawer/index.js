@@ -1,8 +1,9 @@
 import { remote } from 'electron'
 import {
-  OPEN_FOLDER,
-  CREATE_FOLDER,
-  CREATE_NOTE,
+  OPEN_CATEGORY,
+  RENAME,
+  CREATE_CATEGORY,
+  // CREATE_NOTE,
   EXPORT,
   DELETE,
   SEPARATOR
@@ -21,7 +22,7 @@ const {
 export const showContextMenu = (event) => {
   const menu = new Menu()
   const win = remote.getCurrentWindow()
-  const ITEMS = [OPEN_FOLDER, CREATE_FOLDER, CREATE_NOTE, SEPARATOR, EXPORT, SEPARATOR, DELETE]
+  const ITEMS = [OPEN_CATEGORY, RENAME, SEPARATOR, CREATE_CATEGORY, EXPORT, SEPARATOR, DELETE]
 
   const MENU_ITEM = ITEMS.map(item => {
     if (item.type === 'separator') return item

@@ -18,6 +18,7 @@ export default function () {
     noteListVisible: true,
     flomoApiUrl: '',
     enablePreviewEditor: true,
-    rightClickItem: ''
+    rightClickNoteItem: '',
+    rightClickCategoryItem: {}
   }
 }

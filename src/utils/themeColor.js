@@ -19,7 +19,7 @@ const oneDarkTheme = `:root {
   --themeColor10: rgba(64, 158, 255, .1);
 
   --highlightColor: rgba(102, 177, 255, .6);
-  --selectionColor: rgba(0, 0, 0, .1);
+  --selectionColor: rgba(11, 44, 128, .8);
   --editorColor: rgba(255, 255, 255, .7);
   --editorColor80: rgba(255, 255, 255, .8);
   --editorColor60: rgba(255, 255, 255, .6);
@@ -264,7 +264,7 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --themeColor10: rgba(33, 181, 111, .1);
 
   --highlightColor: rgba(33, 181, 111, .4);
-  --selectionColor: rgba(0, 0, 0, .1);
+  --selectionColor: #DAE3E9;
   --editorColor: rgba(0, 0, 0, .7);
   --editorColor80: rgba(0, 0, 0, .8);
   --editorColor60: rgba(0, 0, 0, .6);

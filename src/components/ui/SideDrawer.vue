@@ -28,7 +28,7 @@
         "
       >
         <template v-slot:default-header="prop">
-          <div class="row items-center">
+          <div class="row items-center" @contextmenu="contextMenuHandler">
             <div>{{ prop.node.label }}</div>
           </div>
         </template>
@@ -39,6 +39,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import { showContextMenu as showSideDrawerContextMenu } from 'src/contextMenu/sideDrawer'
 const {
   mapGetters: mapServerGetters,
   mapActions: mapServerActions,
@@ -90,8 +91,11 @@ export default {
         this.$refs.drawer.hide()
       }
     },
+    contextMenuHandler: function (e) {
+      showSideDrawerContextMenu(e)
+    },
     ...mapServerActions(['updateCurrentCategory']),
-    ...mapClientActions(['toggleChanged'])
+    ...mapClientActions(['toggleChanged', 'rightClickCategoryItem'])
   },
   mounted () {
     // const that = this

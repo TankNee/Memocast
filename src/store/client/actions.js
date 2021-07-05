@@ -70,7 +70,7 @@ export default {
   async uploadImages ({ state }, imagePaths) {
     return uploadImages(imagePaths)
   },
-  setRightClickItem ({ commit }, docGuid) {
-    commit(types.TOGGLE_CHANGED, { key: 'rightClickItem', value: docGuid })
+  setRightClickNoteItem ({ commit }, docGuid) {
+    commit(types.TOGGLE_CHANGED, { key: 'rightClickNoteItem', value: docGuid })
   }
 }

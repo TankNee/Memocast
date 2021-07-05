@@ -46,11 +46,12 @@ export default {
     delete: 'note.item.context.menu.delete'
   },
   SIDE_DRAWER_CONTEXT_MENU: {
-    openFolder: 'side.drawer.context.menu.open.folder',
-    createFolder: 'side.drawer.context.menu.create.folder',
+    openCategory: 'side.drawer.context.menu.open.category',
+    renameCategory: 'side.drawer.context.menu.rename.category',
+    createCategory: 'side.drawer.context.menu.create.category',
     createNote: 'side.drawer.context.menu.create.note',
-    delete: 'side.drawer.context.menu.delete.folder',
-    exportFolder: {
+    delete: 'side.drawer.context.menu.delete.category',
+    exportCategory: {
       markdown: 'side.drawer.context.menu.export.markdown'
     }
   }

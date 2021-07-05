@@ -1,27 +1,26 @@
 import * as contextMenu from './actions'
 
-// export const RENAME = {
-//   label: 'rename',
-//   id: 'renameMenuItem',
-//   click (menuItem, browserWindow, sth) {
-//     console.log(menuItem, browserWindow, sth)
-//     contextMenu.rename()
-//   }
-// }
-
-export const OPEN_FOLDER = {
-  label: 'openFolder',
-  id: 'openFolderMenuItem',
+export const OPEN_CATEGORY = {
+  label: 'open',
+  id: 'openCategoryMenuItem',
   click (menuItem, browserWindow) {
-    contextMenu.createFolder()
+    contextMenu.openCategory()
   }
 }
 
-export const CREATE_FOLDER = {
-  label: 'createFolder',
-  id: 'createFolderMenuItem',
+export const RENAME = {
+  label: 'rename',
+  id: 'renameCategoryMenuItem',
   click (menuItem, browserWindow) {
-    contextMenu.createFolder()
+    contextMenu.renameCategory()
+  }
+}
+
+export const CREATE_CATEGORY = {
+  label: 'createCategory',
+  id: 'createCategoryMenuItem',
+  click (menuItem, browserWindow) {
+    contextMenu.createCategory()
   }
 }
 
@@ -35,13 +34,13 @@ export const CREATE_NOTE = {
 
 export const EXPORT = {
   label: 'export',
-  id: 'exportFolderMenuItem',
+  id: 'exportCategoryMenuItem',
   submenu: [
     {
-      label: 'markdown',
-      id: 'exportFolderAsMarkdownMenuItem',
+      label: 'Markdown',
+      id: 'exportCategoryAsMarkdownMenuItem',
       click (menuItem, browserWindow) {
-        contextMenu.exportFolderAsMarkdown()
+        contextMenu.exportCategoryAsMarkdown()
       }
     }
   ]
@@ -51,7 +50,7 @@ export const DELETE = {
   label: 'delete',
   id: 'deleteFolderMenuItem',
   click (menuItem, browserWindow) {
-    contextMenu.deleteFolder()
+    contextMenu.deleteCategory()
   }
 }
 

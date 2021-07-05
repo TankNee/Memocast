@@ -1,22 +1,26 @@
 import bus from 'src/components/bus'
 import events from 'src/constants/events'
 
-export const openFolder = (menuItem, browserWindow) => {
-  bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.openFolder)
+export const openCategory = (menuItem, browserWindow) => {
+  bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.openCategory)
 }
 
-export const createFolder = (menuItem, browserWindow) => {
-  bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.createFolder)
+export const renameCategory = (menuItem, browserWindow) => {
+  bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.renameCategory)
+}
+
+export const createCategory = (menuItem, browserWindow) => {
+  bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.createCategory)
 }
 
 export const createNote = (menuItem, browserWindow) => {
   bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.createNote)
 }
 
-export const exportFolderAsMarkdown = (menuItem, browserWindow) => {
-  bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.exportFolder.markdown)
+export const exportCategoryAsMarkdown = (menuItem, browserWindow) => {
+  bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.exportCategory.markdown)
 }
 
-export const deleteFolder = (menuItem, browserWindow) => {
+export const deleteCategory = (menuItem, browserWindow) => {
   bus.$emit(events.SIDE_DRAWER_CONTEXT_MENU.delete)
 }

@@ -95,6 +95,7 @@ export default {
     category () {
       if (helper.isNullOrEmpty(this.data.category)) return ''
       try {
+        if (helper.wizIsPredefinedLocation(this.data.category)) return this.$t(this.data.category)
         const categoryList = this.data.category.split('/')
         return categoryList[categoryList.length - 2]
       } catch (e) {
@@ -102,11 +103,11 @@ export default {
       }
     },
     ...mapServerState(['noteState']),
-    ...mapClientState(['rightClickItem'])
+    ...mapClientState(['rightClickNoteItem'])
   },
   methods: {
     renameHandler: function () {
-      if (this.data.docGuid !== this.rightClickItem) return
+      if (this.data.docGuid !== this.rightClickNoteItem) return
       this.$q.dialog({
         title: this.$t('renameNote'),
         prompt: {
@@ -125,7 +126,7 @@ export default {
       })
     },
     deleteHandler: function () {
-      if (this.data.docGuid !== this.rightClickItem) return
+      if (this.data.docGuid !== this.rightClickNoteItem) return
       this.$q.dialog({
         title: this.$t('deleteNote'),
         cancel: true
@@ -134,27 +135,27 @@ export default {
       })
     },
     copyToHandler: function () {
-      if (this.data.docGuid !== this.rightClickItem) return
+      if (this.data.docGuid !== this.rightClickNoteItem) return
       this.categoryDialogLabel = 'copyToAnotherCategory'
       this.categoryDialogHandler = this.copyNote
       this.$refs.categoryDialog.toggle()
     },
     moveToHandler: function () {
-      if (this.data.docGuid !== this.rightClickItem) return
+      if (this.data.docGuid !== this.rightClickNoteItem) return
       this.categoryDialogLabel = 'moveToAnotherCategory'
       this.categoryDialogHandler = this.moveNote
       this.$refs.categoryDialog.toggle()
     },
     flomoHandler: function () {
-      if (this.data.docGuid !== this.rightClickItem) return
+      if (this.data.docGuid !== this.rightClickNoteItem) return
       this.sendToFlomo(this.docGuid)
     },
     exportMdHandler: function () {
-      if (this.data.docGuid !== this.rightClickItem) return
+      if (this.data.docGuid !== this.rightClickNoteItem) return
       this.exportMarkdownFile(this.data)
     },
     exportPngHandler: function () {
-      if (this.data.docGuid !== this.rightClickItem) return
+      if (this.data.docGuid !== this.rightClickNoteItem) return
       this.exportPng(this.data)
     },
     noteItemClickHandler: function () {
@@ -175,11 +176,11 @@ export default {
     },
     noteItemContextMenuHandler: function (event) {
       const { docGuid } = this.data
-      this.setRightClickItem(docGuid)
+      this.setRightClickNoteItem(docGuid)
       showNoteItemContextMenu(event)
     },
     ...mapServerActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile', 'exportPng']),
-    ...mapClientActions(['sendToFlomo', 'setRightClickItem'])
+    ...mapClientActions(['sendToFlomo', 'setRightClickNoteItem'])
   },
   mounted () {
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.rename, this.renameHandler)

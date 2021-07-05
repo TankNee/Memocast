@@ -146,6 +146,7 @@ export default {
         return this.tags[tagIndex].name
       } else {
         try {
+          if (helper.wizIsPredefinedLocation(this.currentCategory)) return this.$t(this.currentCategory)
           const categoryList = this.currentCategory.split('/')
           return categoryList[categoryList.length - 2]
         } catch (e) {

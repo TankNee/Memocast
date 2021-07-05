@@ -513,7 +513,7 @@ export default {
       data: ''
     })
     Notify.create({
-      color: 'red-10',
+      color: 'red-6',
       message: i18n.t('deleteCategorySuccessfully'),
       icon: 'delete'
     })
