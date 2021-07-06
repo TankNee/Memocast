@@ -44,7 +44,7 @@ export default {
           icon: icon,
           actions: [
             {
-              label: i18n.t('ok'),
+              label: 'open_in_new',
               textColor: 'white',
               handler: () => {
                 shell.showItemInFolder(filePath)
