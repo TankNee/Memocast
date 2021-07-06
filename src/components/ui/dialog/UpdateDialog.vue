@@ -75,8 +75,8 @@ export default {
     }
   },
   mounted () {
-    bus.$on(events.UPDATE_EVENTS.UPDATE_DOWNLOADING, this.downloadingHandler)
-    bus.$on(events.UPDATE_EVENTS.UPDATE_DOWNLOADED, this.downloadedHandler)
+    bus.$on(events.UPDATE_EVENTS.updateDownloading, this.downloadingHandler)
+    bus.$on(events.UPDATE_EVENTS.updateDownloaded, this.downloadedHandler)
   }
 }
 </script>

@@ -1,12 +1,14 @@
 import components from './components'
-import errors from 'src/i18n/en-us/errors'
-import notification from 'src/i18n/en-us/notification'
-import utils from 'src/i18n/en-us/utils'
-import other from 'src/i18n/en-us/other'
+import errors from './errors'
+import notification from './notification'
+import contextMenu from './contextMenu'
+import utils from './utils'
+import other from './other'
 export default {
   ...components,
   ...errors,
   ...notification,
+  ...contextMenu,
   ...utils,
   ...other
 }

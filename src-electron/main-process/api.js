@@ -1,6 +1,7 @@
 // import channels from 'app/share/channels'
 // import i18n from 'boot/i18n'
 import fs from 'fs-extra'
+import path from 'path'
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
@@ -61,9 +62,10 @@ export default {
         if (result.canceled) return
         fs.writeFile(result.filePath, content).then(() => {
           sendNotification({
-            msg: 'Export Successfully',
+            msg: 'ExportSuccessfully',
             type: 'positive',
-            icon: 'check'
+            icon: 'check',
+            filePath: result.filePath
           }).catch(err => throw err)
         })
           .catch(err => {
@@ -91,9 +93,10 @@ export default {
         const baseUrl = Buffer.from(base64, 'base64')
         fs.writeFile(result.filePath, baseUrl).then(() => {
           sendNotification({
-            msg: 'Export Successfully',
+            msg: 'ExportSuccessfully',
             type: 'positive',
-            icon: 'check'
+            icon: 'check',
+            filePath: result.filePath
           }).catch(err => throw err)
         })
           .catch(err => {
@@ -109,7 +112,7 @@ export default {
     /**
      * batch export notes
      */
-    handleApi('export-markdown-files', (event, contents) => {
+    handleApi('export-markdown-files', (event, { contents, category }) => {
       return dialog.showOpenDialog({
         title: 'Export',
         defaultPath: app.getPath('documents'),
@@ -119,19 +122,24 @@ export default {
         ],
         buttonLabel: 'Confirm'
       }).then((result) => {
+        const directoryPath = path.join(result.filePaths[0], category)
         if (result.canceled) return
+        if (!fs.existsSync(directoryPath)) {
+          fs.mkdirSync(directoryPath)
+        }
         const promises = contents.map(({
           content,
           title
         }) => {
           title = sanitize(title)
-          return fs.writeFile(`${result.filePaths[0]}/${title}.md`, content).catch(err => throw err)
+          return fs.writeFile(path.join(directoryPath, `${title}.md`), content).catch(err => throw err)
         })
         return Promise.all(promises).then(() => {
           sendNotification({
-            msg: 'Export Successfully',
+            msg: 'ExportSuccessfully',
             type: 'positive',
-            icon: 'check'
+            icon: 'check',
+            filePath: directoryPath
           }).catch(err => throw err)
         })
           .catch(err => {

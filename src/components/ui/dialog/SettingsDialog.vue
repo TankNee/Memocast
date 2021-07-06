@@ -93,32 +93,6 @@
                 <q-separator />
                 <div>
                   <div class='text-h5 q-mb-md setting-item'>
-                    <span>{{ $t('imageUploadService') }}</span>
-                    <q-select
-                      :value='$t(imageUploadService)'
-                      :options='imageUploadServiceOptions'
-                      @input='imageUploadServiceChangeHandler'
-                    >
-                      <template v-slot:after>
-                        <q-btn
-                          v-if="imageUploadService === 'customWebUploadService'"
-                          round
-                          dense
-                          flat
-                          icon='settings'
-                          @click='$refs.imageUploadServiceDialog.toggle()'
-                        />
-                      </template>
-                    </q-select>
-                  </div>
-                </div>
-              </q-tab-panel>
-
-              <q-tab-panel name='server'>
-                <div class='text-h4 q-mb-md'>{{ $t('server') }}</div>
-                <q-separator />
-                <div>
-                  <div class='text-h5 q-mb-md setting-item'>
                     <span>{{ $t('markdownOnly') }}</span>
                     <q-toggle
                       :value='markdownOnly'
@@ -138,6 +112,32 @@
                       :options='noteOrderOptions'
                       @input='noteOrderChangeHandler'
                     />
+                  </div>
+                </div>
+              </q-tab-panel>
+
+              <q-tab-panel name='server'>
+                <div class='text-h4 q-mb-md'>{{ $t('server') }}</div>
+                <q-separator/>
+                <div>
+                  <div class='text-h5 q-mb-md setting-item'>
+                    <span>{{ $t('imageUploadService') }}</span>
+                    <q-select
+                      :value='$t(imageUploadService)'
+                      :options='imageUploadServiceOptions'
+                      @input='imageUploadServiceChangeHandler'
+                    >
+                      <template v-slot:after>
+                        <q-btn
+                          v-if="imageUploadService === 'customWebUploadService'"
+                          round
+                          dense
+                          flat
+                          icon='settings'
+                          @click='$refs.imageUploadServiceDialog.toggle()'
+                        />
+                      </template>
+                    </q-select>
                   </div>
                 </div>
                 <div>
@@ -344,9 +344,14 @@ export default {
     ])
   },
   mounted () {
-    bus.$on(events.UPDATE_EVENTS.UPDATE_AVAILABLE, this.updateAvailableHandler)
-    bus.$on(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, this.updateUnavailableHandler)
-    bus.$on(events.UPDATE_EVENTS.UPDATE_ERROR, this.updateErrorHandler)
+    bus.$on(events.UPDATE_EVENTS.updateAvailable, this.updateAvailableHandler)
+    bus.$on(events.UPDATE_EVENTS.updateNotAvailable, this.updateUnavailableHandler)
+    bus.$on(events.UPDATE_EVENTS.updateError, this.updateErrorHandler)
+  },
+  beforeDestroy () {
+    bus.$off(events.UPDATE_EVENTS.updateAvailable)
+    bus.$off(events.UPDATE_EVENTS.updateNotAvailable)
+    bus.$off(events.UPDATE_EVENTS.updateError)
   }
 }
 </script>

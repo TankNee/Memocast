@@ -131,6 +131,28 @@ class Muya {
     return new ExportMarkdown(blocks, listIndentation).generate()
   }
 
+  /**
+   * We only lint plain text markdown blocks
+   */
+  lintMarkdown (lintCallBack) {
+    const blocks = this.contentState.getBlocks()
+    const travel = blocks => {
+      for (const block of blocks) {
+        if (/h\d/.test(block.type) || /span/.test(block.type)) {
+          block.text = lintCallBack(block.text)
+        }
+        if (/pre/.test(block.type)) continue
+        const { children } = block
+        if (children.length) {
+          travel(children)
+        }
+      }
+    }
+    travel(blocks)
+    const listIndentation = this.contentState.listIndentation
+    return new ExportMarkdown(blocks, listIndentation).generate()
+  }
+
   getHistory () {
     return this.contentState.getHistory()
   }

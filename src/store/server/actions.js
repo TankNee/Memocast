@@ -190,7 +190,7 @@ export default {
       this.dispatch('server/getTagNotes', { tag: currentCategory })
       return
     }
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const result = await api.KnowledgeBaseApi.getCategoryNotes({
       kbGuid,
       data: {
@@ -200,7 +200,7 @@ export default {
         withAbstract: true
       }
     })
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
   /**
@@ -464,13 +464,13 @@ export default {
   async createCategory ({
     commit,
     state
-  }, childCategoryName) {
+  }, { childCategoryName, parentCategory }) {
     const {
       kbGuid,
-      currentCategory,
+      // currentCategory,
       categories
     } = state
-    if (helper.checkCategoryExistence(categories, currentCategory, childCategoryName)) {
+    if (helper.checkCategoryExistence(categories, parentCategory, childCategoryName)) {
       Notify.create({
         color: 'red-10',
         message: i18n.t('categoryExisted'),
@@ -481,7 +481,7 @@ export default {
     await api.KnowledgeBaseApi.createCategory({
       kbGuid,
       data: {
-        parent: helper.isNullOrEmpty(currentCategory) ? '/' : currentCategory,
+        parent: helper.isNullOrEmpty(parentCategory) ? '/' : parentCategory,
         pos: Math.floor(Date.now() / 1000).toFixed(0),
         child: childCategoryName
       }
@@ -491,9 +491,9 @@ export default {
       'server/updateCurrentCategory', {
         data:
           helper
-            .isNullOrEmpty(currentCategory)
+            .isNullOrEmpty(parentCategory)
             ? `/${childCategoryName}/`
-            : `${currentCategory}${childCategoryName}/`,
+            : `${parentCategory}${childCategoryName}/`,
         type: 'category'
       }
     )
@@ -513,7 +513,7 @@ export default {
       data: ''
     })
     Notify.create({
-      color: 'red-10',
+      color: 'red-6',
       message: i18n.t('deleteCategorySuccessfully'),
       icon: 'delete'
     })
@@ -623,38 +623,17 @@ export default {
     const {
       kbGuid,
       docGuid,
-      category,
-      title,
-      type
+      category
     } = noteInfo
     const { currentCategory } = state
-    const userId = ClientFileStorage.getItemFromStore('userId')
-
-    const noteContent = await api.KnowledgeBaseApi.getNoteContent({
+    await api.KnowledgeBaseApi.copyNote({
       kbGuid,
       docGuid,
       data: {
-        downloadInfo: 1,
-        downloadData: 1
+        targetCategory: category
       }
     })
-    const { html } = noteContent
-    const isCurrentCategory = category === noteContent.info.category
-    await api.KnowledgeBaseApi.createNote({
-      kbGuid,
-      data: {
-        category: category,
-        kbGuid,
-        title: isCurrentCategory
-          ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${
-            title.indexOf('.md') !== -1 ? '.md' : ''
-          }`
-          : title,
-        owner: userId,
-        html,
-        type: category === '/Lite/' ? 'lite/markdown' : type
-      }
-    })
+    const isCurrentCategory = category === currentCategory
     if (isCurrentCategory || helper.isNullOrEmpty(currentCategory)) {
       await this.dispatch('server/getCategoryNotes')
     }
@@ -832,6 +811,10 @@ export default {
   async exportMarkdownFile ({ state }, noteField) {
     const { kbGuid } = state
     const { docGuid } = noteField
+    Loading.show({
+      spinner: QSpinnerGears,
+      message: i18n.t('prepareExportData')
+    })
     const result = await _getContent(kbGuid, docGuid)
     const isHtml = !_.endsWith(result.info.title, '.md')
     const {
@@ -849,12 +832,17 @@ export default {
         resources
       )
     }
+    Loading.hide()
     await exportMarkdownFile(content)
   },
   async exportPng ({
     commit,
     state
   }, noteField) {
+    Loading.show({
+      spinner: QSpinnerGears,
+      message: i18n.t('prepareExportData')
+    })
     const canvasID = document.getElementById('muya')
     const color = Dark.isActive
     console.log(color)
@@ -867,6 +855,7 @@ export default {
       dom.style.display = 'none'
       document.body.removeChild(dom)
       const content = dom.toDataURL('image/png')
+      Loading.hide()
       exportPng(content)
     })
   },
@@ -877,7 +866,7 @@ export default {
    * @returns {Promise<void>}
    */
   async exportMarkdownFiles ({ state }, noteFields = []) {
-    const { kbGuid } = state
+    const { kbGuid, currentCategory } = state
     const results = []
     Loading.show({
       spinner: QSpinnerGears,
@@ -912,6 +901,7 @@ export default {
       }
     })
     Loading.hide()
-    await exportMarkdownFiles(contents)
+    const category = currentCategory.split('/')[1]
+    await exportMarkdownFiles({ contents, category })
   }
 }

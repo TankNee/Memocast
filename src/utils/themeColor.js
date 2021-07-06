@@ -19,15 +19,15 @@ const oneDarkTheme = `:root {
   --themeColor10: rgba(64, 158, 255, .1);
 
   --highlightColor: rgba(102, 177, 255, .6);
-  --selectionColor: rgba(0, 0, 0, .1);
-  --editorColor: rgba(255, 255, 255, .7);
-  --editorColor80: rgba(255, 255, 255, .8);
-  --editorColor60: rgba(255, 255, 255, .6);
-  --editorColor50: rgba(255, 255, 255, .5);
-  --editorColor40: rgba(255, 255, 255, .4);
-  --editorColor30: rgba(255, 255, 255, .3);
-  --editorColor10: rgba(255, 255, 255, .1);
-  --editorColor04: rgba(255, 255, 255, .04);
+  --selectionColor: rgba(11, 44, 128, .8);
+  --editorColor: rgba(222, 222, 222, .7);
+  --editorColor80: rgba(222, 222, 222, .8);
+  --editorColor60: rgba(222, 222, 222, .6);
+  --editorColor50: rgba(222, 222, 222, .5);
+  --editorColor40: rgba(222, 222, 222, .4);
+  --editorColor30: rgba(222, 222, 222, .3);
+  --editorColor10: rgba(222, 222, 222, .1);
+  --editorColor04: rgba(222, 222, 222, .04);
   --editorBgColor: #282828;
   --deleteColor: #cf000f;
   --iconColor: rgba(255, 255, 255, .56);
@@ -63,6 +63,8 @@ const oneDarkTheme = `:root {
   --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(24, 26, 31, 0.5), 0 0 0 1px var(--themeColor);
   --tableBorderColor: rgb(158, 158, 158);
 
+  --treeNodeColor: rgb(174, 180, 187);
+  --noteStateIcon: rgb(170, 147, 114);
   /*marktext*/
   --sideBarColor: rgba(255, 255, 255, .6);
   --sideBarIconColor: var(--iconColor);
@@ -70,10 +72,10 @@ const oneDarkTheme = `:root {
   --sideBarTextColor: rgba(255, 255, 255, .4);
   --sideBarBgColor: #1e1e1e;
   --sideBarItemHoverBgColor: rgba(255, 255, 255, .03);
-  --itemBgColor: #3f3f3f;
+  --itemBgColor: #3C4650;
 
   --floatFontColor: rgba(255, 255, 255, .7);
-  --floatBgColor: #3f3f3f;
+  --floatBgColor: #3C4650;
   --floatHoverColor: rgba(255, 255, 255, .04);
   --floatBorderColor: rgba(0, 0, 0, .05);
   --floatShadow: rgba(0, 0, 0, 0.2);
@@ -84,6 +86,10 @@ const oneDarkTheme = `:root {
 
 ::-webkit-scrollbar {
   background: var(--editorBgColor);
+}
+
+#ag-editor-id {
+  color: #B8BFC6;
 }
 
 /* ------------------------------------ */
@@ -264,7 +270,7 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --themeColor10: rgba(33, 181, 111, .1);
 
   --highlightColor: rgba(33, 181, 111, .4);
-  --selectionColor: rgba(0, 0, 0, .1);
+  --selectionColor: #DAE3E9;
   --editorColor: rgba(0, 0, 0, .7);
   --editorColor80: rgba(0, 0, 0, .8);
   --editorColor60: rgba(0, 0, 0, .6);
@@ -284,6 +290,9 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --buttonShadow: rgba(0, 0, 0, 0.12);
   --buttonHover: #f2f2f2;
   --buttonActive: #e5e5e5;
+
+  --treeNodeColor: rgb(62, 43, 42);
+  --noteStateIcon: rgb(100, 203, 154);
 
   /*marktext*/
   --sideBarColor: rgba(0, 0, 0, .6);

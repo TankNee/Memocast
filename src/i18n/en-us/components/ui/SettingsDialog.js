@@ -9,7 +9,7 @@ export default {
   markdownOnly: 'Only Show Markdown Note',
   noteOrder: 'Note Order',
   imageUploadService: 'Image Upload Service',
-  wizOfficialImageUploadService: 'WizNote Official Image Upload Service (unavailable)',
+  wizOfficialImageUploadService: 'WizNote Official Image Upload Service (experiment)',
   customWebUploadService: 'Custom Web Image Upload Service',
   smmsImageUploadService: 'SMMS Image Upload Service (experiment)',
   picgoServer: 'PicGo Server (Please launch the PicGo in advance)',

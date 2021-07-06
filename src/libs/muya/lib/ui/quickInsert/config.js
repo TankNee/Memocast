@@ -19,8 +19,7 @@ import flowchartIcon from '../../assets/pngicon/flowchart/2.png'
 import sequenceIcon from '../../assets/pngicon/sequence/2.png'
 import mermaidIcon from '../../assets/pngicon/mermaid/2.png'
 import vegaIcon from '../../assets/pngicon/chart/2.png'
-import imageIcon from '../../assets/pngicon/image/2.png'
-import linkIcon from '../../assets/pngicon/format_link/2.png'
+import imageIcon from '../../assets/pngicon/format_image/2.png'
 import { isOsx } from '../../config'
 import { i18n } from 'boot/i18n'
 
@@ -99,12 +98,6 @@ export const quickInsertObj = {
     shortCut: `${SHIFT_KEY}+${COMMAND_KEY}+I`,
     icon: imageIcon
   }, {
-    title: () => i18n.t('link'),
-    subTitle: () => i18n.t('linkBlockSubTitle'),
-    label: 'link',
-    shortCut: `${COMMAND_KEY}+L`,
-    icon: linkIcon
-  }, {
     title: () => i18n.t('tableBlock'),
     subTitle: () => i18n.t('tableBlockSubTitle'),
     label: 'table',
@@ -164,12 +157,7 @@ export const quickInsertObj = {
     subTitle: () => i18n.t('flowChartSubTitle'),
     label: 'flowchart',
     icon: flowchartIcon
-  },/* {
-    title: () => i18n.t('sequenceDiagram'),
-    subTitle: () => i18n.t('sequenceDiagramSubTitle'),
-    label: 'sequence',
-    icon: sequenceIcon
-  }, */ {
+  }, {
     title: () => i18n.t('mermaid'),
     subTitle: () => i18n.t('mermaidSubTitle'),
     label: 'mermaid',

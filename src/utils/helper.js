@@ -7,6 +7,8 @@ import cheerio from 'cheerio'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import ClientFileStorage from './storage/ClientFileStorage'
+import remark from 'remark'
+import pangu from 'remark-pangu'
 // import { getCacheImage } from 'src/ApiInvoker'
 
 const turndownService = new TurndownService({
@@ -31,7 +33,7 @@ function convertHtml2Markdown (html, kbGuid, docGuid, resources) {
   try {
     resources.forEach(resource => {
       html = html.replace(new RegExp(`index_files/${resource.name}`, 'g'),
-      `memocast://memocast.app/${kbGuid}/${docGuid}/${resource.name}`
+        `memocast://memocast.app/${kbGuid}/${docGuid}/${resource.name}`
       )
     })
     ClientFileStorage.setItemInStore('currentResources', resources)
@@ -83,7 +85,10 @@ function extractMarkdownFromMDNote (html, kbGuid, docGuid, resources = []) {
  * @returns {string}
  */
 function embedMDNote (markdown, resources, options) {
-  const { kbGuid, docGuid } = options
+  const {
+    kbGuid,
+    docGuid
+  } = options
   resources.forEach(resource => {
     const imgReg = new RegExp(`memocast://memocast.app/${kbGuid}/${docGuid}/${resource.name}`, 'g')
     markdown = markdown.replace(imgReg, `index_files/${resource.name}`)
@@ -152,6 +157,22 @@ function displayDateElegantly (date) {
   }
 }
 
+function wizIsPredefinedLocation (strLocation) {
+  return [
+    '/Deleted Items/',
+    '/My Notes/',
+    '/My Journals/',
+    '/My Contacts/',
+    '/My Events/',
+    '/My Sticky Notes/',
+    '/My Emails/',
+    '/My Drafts/',
+    '/My Tasks/',
+    '/My Tasks/Inbox/',
+    '/My Tasks/Completed/'
+  ].includes(strLocation)
+}
+
 /**
  * generate categories tree
  * @param {string[] | string[][]} categories
@@ -180,24 +201,26 @@ function generateCategoryNodeTree (categories) {
     const category = categories[i]
     if (category.length === 1) {
       result.push({
-        label: category[0],
+        label: wizIsPredefinedLocation(`/${category[0]}/`) ? i18n.t(`/${category[0]}/`) : category[0],
+        originLabel: category[0],
         children: [],
         selectable: true,
         key: `/${category[0]}/`
       })
       continue
     }
-    const rootNodeIndex = result.findIndex(c => c.label === category[0])
+    const rootNodeIndex = result.findIndex(c => c.originLabel === category[0])
     let rootNode = result[rootNodeIndex]
     const nodeKey = `/${category.join('/')}/`
     let lastNodeLabel = category.shift()
     while (category.length > 0) {
       const children = rootNode.children
-      rootNode = children.find(c => c.label === category[0]) || rootNode
+      rootNode = children.find(c => c.originLabel === category[0]) || rootNode
       lastNodeLabel = category.shift()
     }
     rootNode.children.push({
-      label: lastNodeLabel,
+      label: wizIsPredefinedLocation(nodeKey) ? i18n.t(nodeKey) : lastNodeLabel,
+      originLabel: lastNodeLabel,
       children: [],
       selectable: true,
       key: nodeKey
@@ -377,10 +400,25 @@ function checkTagExistence (tags, newTag) {
   return false
 }
 
+function formatDocumentByRemarkPangu (markdown) {
+  return new Promise((resolve, reject) => {
+    remark().use(pangu, {
+      inlineCode: true
+    }).process(markdown, (err, res) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(res.contents)
+      }
+    })
+  })
+}
+
 export default {
   isNullOrEmpty,
   convertHtml2Markdown,
   extractMarkdownFromMDNote,
+  wizIsPredefinedLocation,
   generateCategoryNodeTree,
   generateTagNodeTree,
   generateRandomResult,
@@ -391,5 +429,6 @@ export default {
   getFileNameWithExt,
   isCtrl,
   checkCategoryExistence,
-  checkTagExistence
+  checkTagExistence,
+  formatDocumentByRemarkPangu
 }

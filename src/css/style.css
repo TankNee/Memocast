@@ -81,7 +81,8 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
 .note-item,
 .note-item-dark {
   background-color: #ffffff;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, 黑体;
+  font-family: 'Open Sans', 'JetBrains Mono', Helvetica, Arial, sans-serif, 黑体;
+  letter-spacing: 0.3px;
 }
 
 .note-item-dark {
@@ -137,6 +138,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, Consolas;
   color: #acacac;
   font-size: 14px;
+  font-weight: 400;
 }
 
 .note-item-summary,
@@ -204,4 +206,8 @@ body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog_
 .tag-tooltip {
   max-width: 500px;
   word-break: normal;
+}
+
+.memocast-tree-node {
+  color: var(--treeNodeColor)
 }

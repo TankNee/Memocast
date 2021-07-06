@@ -1,7 +1,8 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import { Notify } from 'quasar'
 import bus from 'components/bus'
 import events from 'src/constants/events'
+import { i18n } from '../src/boot/i18n'
 
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
@@ -35,12 +36,29 @@ export default {
     console.log('[API Handler] Render Process registers handler successfully!')
 
     handleApi('show-notification', (event, payload) => {
-      const { msg, type = 'primary', icon = 'check' } = payload
-      Notify.create({
-        type: type,
-        message: msg,
-        icon: icon
-      })
+      const { msg, type = 'primary', icon = 'check', filePath } = payload
+      if (filePath) {
+        Notify.create({
+          type: type,
+          message: i18n.t(msg),
+          icon: icon,
+          actions: [
+            {
+              label: 'open_in_new',
+              textColor: 'white',
+              handler: () => {
+                shell.showItemInFolder(filePath)
+              }
+            }
+          ]
+        })
+      } else {
+        Notify.create({
+          type: type,
+          message: msg,
+          icon: icon
+        })
+      }
     }).catch(err => throw err)
 
     handleApi('editor-paragraph-action', (event, { type }) => {
@@ -52,6 +70,10 @@ export default {
     }).catch(err => throw err)
 
     handleApi('editor-format-action', (event, { type }) => {
+      if (type === 'format-document') {
+        bus.$emit(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu)
+        return
+      }
       bus.$emit(events.FORMAT_SHORTCUT_CALL, type)
     }).catch(err => throw err)
 
@@ -62,27 +84,27 @@ export default {
 
     handleApi('updater-update-available', (event, info) => {
       console.log(info)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_AVAILABLE, info)
+      bus.$emit(events.UPDATE_EVENTS.updateAvailable, info)
     }).catch(err => throw err)
 
     handleApi('updater-update-not-available', (event, info) => {
       console.log(info)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_NOT_AVAILABLE, info)
+      bus.$emit(events.UPDATE_EVENTS.updateNotAvailable, info)
     }).catch(err => throw err)
 
     handleApi('updater-update-downloading', (event, progress) => {
       console.log(progress)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_DOWNLOADING, progress)
+      bus.$emit(events.UPDATE_EVENTS.updateDownloading, progress)
     }).catch(err => throw err)
 
     handleApi('updater-update-downloaded', (event, info) => {
       console.log(info)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_DOWNLOADED)
+      bus.$emit(events.UPDATE_EVENTS.updateDownloaded)
     }).catch(err => throw err)
 
     handleApi('updater-update-error', (event, error) => {
       console.log(error)
-      bus.$emit(events.UPDATE_EVENTS.UPDATE_ERROR, error)
+      bus.$emit(events.UPDATE_EVENTS.updateError, error)
     }).catch(err => throw err)
   },
   UnregisterApiHandler () {

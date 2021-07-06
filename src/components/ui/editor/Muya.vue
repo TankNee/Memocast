@@ -19,7 +19,6 @@ import Muya from 'src/libs/muya/lib'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import 'src/libs/muya/themes/default.css'
-// import 'src/css/muya.css'
 import TablePicker from 'src/libs/muya/lib/ui/tablePicker'
 import QuickInsert from 'src/libs/muya/lib/ui/quickInsert'
 import CodePicker from 'src/libs/muya/lib/ui/codePicker'
@@ -34,6 +33,7 @@ import TableBarTools from 'src/libs/muya/lib/ui/tableTools'
 import Transformer from 'src/libs/muya/lib/ui/transformer'
 import debugLogger from 'src/utils/debugLogger'
 import { attachThemeColor } from 'src/utils/theme'
+import { showContextMenu as showEditorContextMenu } from 'src/contextMenu/muya'
 
 const {
   mapGetters: mapServerGetters,
@@ -49,8 +49,14 @@ export default {
   name: 'Muya',
   props: {
     data: {
-      type: String,
-      default: ''
+      type: Object,
+      default: () => ({
+        markdown: '',
+        cursor: {
+          lineNumber: 0,
+          column: 0
+        }
+      })
     },
     active: {
       type: Boolean,
@@ -78,6 +84,23 @@ export default {
       if (this.active && this.enablePreviewEditor && this.contentEditor) {
         this.contentEditor.updateParagraph(type)
         this.updateContentsList(this.contentEditor.getTOC())
+      }
+    },
+    insertParagraphHandler: function (location) {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        this.contentEditor.insertParagraph(location)
+      }
+    },
+    formatDocumentByPanguHandler: function () {
+      if (this.active && this.enablePreviewEditor && this.contentEditor) {
+        const before = this.contentEditor.getMarkdown()
+        helper.formatDocumentByRemarkPangu(before).then(after => {
+          if (before !== after) {
+            this.contentEditor.setMarkdown(after)
+            this.updateContentsList(this.contentEditor.getTOC())
+            this.updateNoteState('changed')
+          }
+        })
       }
     },
     formatHandler: function (type) {
@@ -128,6 +151,25 @@ export default {
         this.contentEditor.redo()
       }
     },
+    getCursorPosition: function () {
+      const { line: lineNumber, ch: column } = this.contentEditor?.getCursor().focus
+      return { lineNumber, column }
+    },
+    setCursorPosition: function (position) {
+      const { lineNumber, column } = position
+      if (this.contentEditor) {
+        this.contentEditor.setCursor({
+          anchor: {
+            line: lineNumber,
+            ch: column
+          },
+          focus: {
+            line: lineNumber,
+            ch: column
+          }
+        })
+      }
+    },
     ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList', 'uploadImage']),
     ...mapClientActions(['importImagesFromLocal'])
   },
@@ -161,10 +203,6 @@ export default {
               reject(err)
             })
           })
-          // const paths = this.importImagesFromLocal()
-          // // TODO: 增加一个上传选项
-          // console.log(paths)
-          // return paths ? paths[0] : null
         },
         imageAction: this.uploadImage
       })
@@ -189,6 +227,10 @@ export default {
       })
 
       this.contentEditor.on('change', () => this.updateContentsList(this.contentEditor.getTOC()))
+
+      this.contentEditor.on('contextmenu', (event, selection) => {
+        showEditorContextMenu(event, selection)
+      })
 
       document.addEventListener('keydown', (e) => {
         if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
@@ -219,10 +261,29 @@ export default {
       bus.$on(events.EDIT_SHORTCUT_CALL.selectAll, this.selectAllHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.createParagraph, this.editParagraphHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.deleteParagraph, this.editParagraphHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.insertParagraph, this.insertParagraphHandler)
+      bus.$on(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu, this.formatDocumentByPanguHandler)
     })
+  },
+  beforeDestroy () {
+    bus.$off(events.PARAGRAPH_SHORTCUT_CALL)
+    bus.$off(events.FORMAT_SHORTCUT_CALL)
+    bus.$off(events.EDIT_SHORTCUT_CALL.undo)
+    bus.$off(events.EDIT_SHORTCUT_CALL.redo)
+    bus.$off(events.EDIT_SHORTCUT_CALL.save)
+    bus.$off(events.EDIT_SHORTCUT_CALL.copyAsMarkdown)
+    bus.$off(events.EDIT_SHORTCUT_CALL.copyAsHtml)
+    bus.$off(events.EDIT_SHORTCUT_CALL.pasteAsPlainText)
+    bus.$off(events.EDIT_SHORTCUT_CALL.duplicate)
+    bus.$off(events.EDIT_SHORTCUT_CALL.selectAll)
+    bus.$off(events.EDIT_SHORTCUT_CALL.createParagraph)
+    bus.$off(events.EDIT_SHORTCUT_CALL.deleteParagraph)
+    bus.$off(events.EDIT_SHORTCUT_CALL.insertParagraph)
+    bus.$off(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu)
   },
   watch: {
     currentNote: function (currentData) {
+      this.contentEditor.clearHistory()
       try {
         this.contentEditor.setMarkdown(currentData)
         this.updateContentsList(this.contentEditor.getTOC())
@@ -239,12 +300,11 @@ export default {
       }
     },
     enablePreviewEditor: function (val) {
-      console.log('Content Editable', document.querySelector('.ag-show-quick-insert-hint'))
       document.querySelector('.ag-show-quick-insert-hint').setAttribute('contenteditable', val)
     },
-    data: function (val) {
+    data: function ({ markdown }) {
       this.contentEditor.clearHistory()
-      this.contentEditor.setMarkdown(val)
+      this.contentEditor.setMarkdown(markdown)
       this.updateContentsList(this.contentEditor.getTOC())
     }
   }
