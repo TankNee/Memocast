@@ -63,7 +63,25 @@ const oneDarkTheme = `:root {
   --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(24, 26, 31, 0.5), 0 0 0 1px var(--themeColor);
   --tableBorderColor: rgb(158, 158, 158);
 
-  --treeNodeColor: rgb(184, 191, 198)
+  --treeNodeColor: rgb(174, 180, 187);
+  --noteStateIcon: rgb(170, 147, 114);
+  /*marktext*/
+  --sideBarColor: rgba(255, 255, 255, .6);
+  --sideBarIconColor: var(--iconColor);
+  --sideBarTitleColor: rgba(255, 255, 255, .8);
+  --sideBarTextColor: rgba(255, 255, 255, .4);
+  --sideBarBgColor: #1e1e1e;
+  --sideBarItemHoverBgColor: rgba(255, 255, 255, .03);
+  --itemBgColor: #3C4650;
+
+  --floatFontColor: rgba(255, 255, 255, .7);
+  --floatBgColor: #3C4650;
+  --floatHoverColor: rgba(255, 255, 255, .04);
+  --floatBorderColor: rgba(0, 0, 0, .05);
+  --floatShadow: rgba(0, 0, 0, 0.2);
+  --maskColor: rgba(0, 0, 0, .7);
+  --editorAreaWidth: 750px;
+  --floatShadow: rgba(15, 15, 15, 0.03) 0px 0px 0px 1px, rgba(15, 15, 15, 0.04) 0px 3px 6px, rgba(15, 15, 15, 0.05) 0px 9px 24px;
 }
 
 ::-webkit-scrollbar {
@@ -273,7 +291,22 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --buttonHover: #f2f2f2;
   --buttonActive: #e5e5e5;
 
-  --treeNodeColor: rgb(62, 43, 42)
+  --treeNodeColor: rgb(62, 43, 42);
+  --noteStateIcon: rgb(100, 203, 154);
+
+  /*marktext*/
+  --sideBarColor: rgba(0, 0, 0, .6);
+  --sideBarTitleColor: rgba(0, 0, 0, 1);
+  --sideBarTextColor: rgba(0, 0, 0, .4);
+  --sideBarBgColor: rgba(242, 242, 242, 0.9);
+  --sideBarItemHoverBgColor: rgba(0, 0, 0, .03);
+  --itemBgColor: rgba(255, 255, 255, 0.6);
+  --floatBgColor: #fff;
+  --floatHoverColor: rgba(0, 0, 0, .04);
+  --floatBorderColor: rgba(0, 0, 0, .1);
+  --floatShadow: rgba(15, 15, 15, 0.03) 0px 0px 0px 1px, rgba(15, 15, 15, 0.04) 0px 3px 6px, rgba(15, 15, 15, 0.05) 0px 9px 24px;
+  --maskColor: rgba(255, 255, 255, .7);
+  --tableBorderColor: rgb(158, 158, 158);
 }
 `
 

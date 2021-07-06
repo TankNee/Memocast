@@ -138,6 +138,7 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, Consolas;
   color: #acacac;
   font-size: 14px;
+  font-weight: 400;
 }
 
 .note-item-summary,

@@ -138,7 +138,7 @@
       style="cursor: pointer;"
       @click="$refs.tagDialog.toggle"
     >
-      <q-icon key="icon" name="book" size="19px" />
+      <q-icon v-show="noteState !== 'default'" class="note-state-icon" key="icon" name="fiber_manual_record" size="16px" />
       <q-tooltip
         v-if="tags.length > 0"
         :offset="[20, 10]"
@@ -232,9 +232,9 @@ export default {
             title.length - 12
           )}`
         }
-        if (this.noteState !== 'default') {
-          return `${title} —— ${this.$t(this.noteState)}`
-        }
+        // if (this.noteState !== 'default') {
+        //   return `${title} —— ${this.$t(this.noteState)}`
+        // }
         return title
       }
       return ''
@@ -352,5 +352,10 @@ export default {
   font-family: 'Open Sans', 'JetBrains Mono';
   margin-left: 7px;
   letter-spacing: 0.3px;
+  font-weight: 600;
+}
+
+.note-state-icon {
+  color: var(--noteStateIcon);
 }
 </style>
