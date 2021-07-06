@@ -203,10 +203,6 @@ export default {
               reject(err)
             })
           })
-          // const paths = this.importImagesFromLocal()
-          // // TODO: 增加一个上传选项
-          // console.log(paths)
-          // return paths ? paths[0] : null
         },
         imageAction: this.uploadImage
       })

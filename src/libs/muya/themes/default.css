@@ -189,7 +189,7 @@ code,
 code[class*="language-"],
 .CodeMirror,
 pre.ag-paragraph {
-  font-family: "DejaVu Sans Mono", "Source Code Pro", "Droid Sans Mono", Consolas, monospace;
+  font-family: "JetBrains Mono", "DejaVu Sans Mono", "Source Code Pro", "Droid Sans Mono", Consolas, monospace;
   font-size: 14px;
 }
 
