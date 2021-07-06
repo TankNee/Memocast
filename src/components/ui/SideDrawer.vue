@@ -28,7 +28,7 @@
         "
       >
         <template v-slot:default-header="prop">
-          <div class="row items-center full-width" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
+          <div class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
             <div>{{ prop.node.label }}</div>
           </div>
         </template>

@@ -154,7 +154,6 @@ class QuickInsert extends BaseScrollFloat {
         contentState.partialRender()
         break
       case 'image':
-      case 'link':
         contentState.format(item.label, true)
         break
       default:

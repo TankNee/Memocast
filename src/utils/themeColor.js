@@ -20,14 +20,14 @@ const oneDarkTheme = `:root {
 
   --highlightColor: rgba(102, 177, 255, .6);
   --selectionColor: rgba(11, 44, 128, .8);
-  --editorColor: rgba(255, 255, 255, .7);
-  --editorColor80: rgba(255, 255, 255, .8);
-  --editorColor60: rgba(255, 255, 255, .6);
-  --editorColor50: rgba(255, 255, 255, .5);
-  --editorColor40: rgba(255, 255, 255, .4);
-  --editorColor30: rgba(255, 255, 255, .3);
-  --editorColor10: rgba(255, 255, 255, .1);
-  --editorColor04: rgba(255, 255, 255, .04);
+  --editorColor: rgba(222, 222, 222, .7);
+  --editorColor80: rgba(222, 222, 222, .8);
+  --editorColor60: rgba(222, 222, 222, .6);
+  --editorColor50: rgba(222, 222, 222, .5);
+  --editorColor40: rgba(222, 222, 222, .4);
+  --editorColor30: rgba(222, 222, 222, .3);
+  --editorColor10: rgba(222, 222, 222, .1);
+  --editorColor04: rgba(222, 222, 222, .04);
   --editorBgColor: #282828;
   --deleteColor: #cf000f;
   --iconColor: rgba(255, 255, 255, .56);
@@ -63,27 +63,15 @@ const oneDarkTheme = `:root {
   --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(24, 26, 31, 0.5), 0 0 0 1px var(--themeColor);
   --tableBorderColor: rgb(158, 158, 158);
 
-  /*marktext*/
-  --sideBarColor: rgba(255, 255, 255, .6);
-  --sideBarIconColor: var(--iconColor);
-  --sideBarTitleColor: rgba(255, 255, 255, .8);
-  --sideBarTextColor: rgba(255, 255, 255, .4);
-  --sideBarBgColor: #1e1e1e;
-  --sideBarItemHoverBgColor: rgba(255, 255, 255, .03);
-  --itemBgColor: #3f3f3f;
-
-  --floatFontColor: rgba(255, 255, 255, .7);
-  --floatBgColor: #3f3f3f;
-  --floatHoverColor: rgba(255, 255, 255, .04);
-  --floatBorderColor: rgba(0, 0, 0, .05);
-  --floatShadow: rgba(0, 0, 0, 0.2);
-  --maskColor: rgba(0, 0, 0, .7);
-  --editorAreaWidth: 750px;
-  --floatShadow: rgba(15, 15, 15, 0.03) 0px 0px 0px 1px, rgba(15, 15, 15, 0.04) 0px 3px 6px, rgba(15, 15, 15, 0.05) 0px 9px 24px;
+  --treeNodeColor: rgb(184, 191, 198)
 }
 
 ::-webkit-scrollbar {
   background: var(--editorBgColor);
+}
+
+#ag-editor-id {
+  color: #B8BFC6;
 }
 
 /* ------------------------------------ */
@@ -285,19 +273,7 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --buttonHover: #f2f2f2;
   --buttonActive: #e5e5e5;
 
-  /*marktext*/
-  --sideBarColor: rgba(0, 0, 0, .6);
-  --sideBarTitleColor: rgba(0, 0, 0, 1);
-  --sideBarTextColor: rgba(0, 0, 0, .4);
-  --sideBarBgColor: rgba(242, 242, 242, 0.9);
-  --sideBarItemHoverBgColor: rgba(0, 0, 0, .03);
-  --itemBgColor: rgba(255, 255, 255, 0.6);
-  --floatBgColor: #fff;
-  --floatHoverColor: rgba(0, 0, 0, .04);
-  --floatBorderColor: rgba(0, 0, 0, .1);
-  --floatShadow: rgba(15, 15, 15, 0.03) 0px 0px 0px 1px, rgba(15, 15, 15, 0.04) 0px 3px 6px, rgba(15, 15, 15, 0.05) 0px 9px 24px;
-  --maskColor: rgba(255, 255, 255, .7);
-  --tableBorderColor: rgb(158, 158, 158);
+  --treeNodeColor: rgb(62, 43, 42)
 }
 `
 

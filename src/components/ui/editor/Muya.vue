@@ -49,8 +49,14 @@ export default {
   name: 'Muya',
   props: {
     data: {
-      type: String,
-      default: ''
+      type: Object,
+      default: () => ({
+        markdown: '',
+        cursor: {
+          lineNumber: 0,
+          column: 0
+        }
+      })
     },
     active: {
       type: Boolean,
@@ -143,6 +149,25 @@ export default {
     redoHandler: function () {
       if (this.active && this.enablePreviewEditor && this.contentEditor) {
         this.contentEditor.redo()
+      }
+    },
+    getCursorPosition: function () {
+      const { line: lineNumber, ch: column } = this.contentEditor?.getCursor().focus
+      return { lineNumber, column }
+    },
+    setCursorPosition: function (position) {
+      const { lineNumber, column } = position
+      if (this.contentEditor) {
+        this.contentEditor.setCursor({
+          anchor: {
+            line: lineNumber,
+            ch: column
+          },
+          focus: {
+            line: lineNumber,
+            ch: column
+          }
+        })
       }
     },
     ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList', 'uploadImage']),
@@ -279,12 +304,11 @@ export default {
       }
     },
     enablePreviewEditor: function (val) {
-      console.log('Content Editable', document.querySelector('.ag-show-quick-insert-hint'))
       document.querySelector('.ag-show-quick-insert-hint').setAttribute('contenteditable', val)
     },
-    data: function (val) {
+    data: function ({ markdown }) {
       this.contentEditor.clearHistory()
-      this.contentEditor.setMarkdown(val)
+      this.contentEditor.setMarkdown(markdown)
       this.updateContentsList(this.contentEditor.getTOC())
     }
   }
