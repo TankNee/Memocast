@@ -13,6 +13,7 @@ import FrontMenu from 'src/i18n/en-us/components/ui/FrontMenu'
 import TableTools from 'src/i18n/en-us/components/ui/TableTools'
 import RenderToolBar from 'src/i18n/en-us/components/ui/RenderToolBar'
 import RenderLeafBlock from 'src/i18n/en-us/components/ui/RenderLeafBlock'
+import UpdateDialog from 'src/i18n/en-us/components/ui/UpdateDialog'
 export default {
   ...LoginDialog,
   ...SettingsDialog,
@@ -28,5 +29,6 @@ export default {
   ...FrontMenu,
   ...TableTools,
   ...RenderToolBar,
-  ...RenderLeafBlock
+  ...RenderLeafBlock,
+  ...UpdateDialog
 }

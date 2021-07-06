@@ -25,6 +25,7 @@
             :bar-style='barStyle'
             class='exclude-header overflow-hidden'
             v-show='!isSourceMode'
+            @scroll='editorScrollHandler'
           >
             <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
           </q-scroll-area>
@@ -96,7 +97,6 @@
 </template>
 
 <script>
-// import Vditor from '../components/ui/editor/Vditor'
 import NoteList from '../components/NoteList'
 import bus from 'components/bus'
 import events from 'src/constants/events'
@@ -120,7 +120,6 @@ export default {
     Monaco,
     Loading,
     NoteOutlineDrawer,
-    // Vditor,
     NoteList
   },
   computed: {
@@ -156,7 +155,7 @@ export default {
       splitterModel: 300,
       isOutlineShow: false,
       isSourceMode: false,
-      tempNoteData: ''
+      tempNoteData: {}
     }
   },
   methods: {
@@ -168,6 +167,9 @@ export default {
     },
     sourceModeHandler: function () {
       this.isSourceMode = !this.isSourceMode
+    },
+    editorScrollHandler: function (e) {
+      bus.$emit(events.EDITOR_SCROLL, e)
     }
   },
   mounted () {
@@ -192,9 +194,16 @@ export default {
   watch: {
     isSourceMode: function (val, oldVal) {
       if (oldVal) {
-        this.tempNoteData = this.$refs.monaco.getValue()
+        this.tempNoteData = {
+          markdown: this.$refs.monaco.getValue(),
+          cursor: this.$refs.monaco.getCursorPosition()
+        }
+        // this.$refs.muya.setCursorPosition(this.$refs.monaco.getCursorPosition())
       } else {
-        this.tempNoteData = this.$refs.muya.getValue()
+        this.tempNoteData = {
+          markdown: this.$refs.muya.getValue(),
+          cursor: this.$refs.muya.getCursorPosition()
+        }
       }
     }
   }

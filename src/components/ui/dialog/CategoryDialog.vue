@@ -19,14 +19,18 @@
       </q-toolbar>
       <q-card-section class="scroll" style="height: 70vh;width: 70vw">
         <q-tree
-          ref="categoryTree"
           :nodes="categories"
           node-key="key"
           selected-color="primary"
           accordion
           :selected="noteInfo.category"
-          @update:selected="selectHandler"
-        />
+        >
+          <template v-slot:default-header="prop">
+            <div class="row items-center full-width" @click="(e) => selectHandler(prop.node.key)">
+              <div>{{ prop.node.label }}</div>
+            </div>
+          </template>
+        </q-tree>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -68,8 +72,9 @@ export default {
       this.$refs.dialog.toggle()
     },
     selectHandler: function (v) {
-      this.noteInfo.category = v || this.noteInfo.category
-      this.handler(this.noteInfo)
+      const info = JSON.parse(JSON.stringify(this.noteInfo))
+      info.category = v || this.noteInfo.category
+      this.handler(info)
       this.$refs.dialog.hide()
     },
     ...mapServerActions(['updateCurrentCategory'])

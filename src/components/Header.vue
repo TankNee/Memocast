@@ -135,7 +135,7 @@
     <div
       v-if="!$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn q-electron-drag--exception"
-      style="cursor: pointer;margin-left: 0;"
+      style="cursor: pointer;"
       @click="$refs.tagDialog.toggle"
     >
       <q-icon key="icon" name="book" size="19px" />
@@ -347,11 +347,10 @@ export default {
 .header-note-title {
   display: flex;
   align-items: center;
-  margin-left: 20%;
 }
 .header-note-title > span {
-  font-weight: bold;
-  font-family: Monaco, Consolas;
+  font-family: 'Open Sans', 'JetBrains Mono';
   margin-left: 7px;
+  letter-spacing: 0.3px;
 }
 </style>

@@ -15,24 +15,6 @@
       </q-toolbar>
       <q-card-section class="scroll" style="height: 70vh;width: 70vw">
         <div class="q-pa-md">
-          <div class="q-gutter-xs">
-            <q-chip
-              :color="randomColor(tagGuid)"
-              :selected="selectStatusHandler(tagGuid)"
-              icon="local_offer"
-              text-color="white"
-              v-for="{ name, tagGuid } in tags"
-              :key="tagGuid"
-              clickable
-              removable
-              @remove="deleteTagHandler(tagGuid)"
-              @click="attachTagHandler(tagGuid)"
-            >
-              {{ name }}
-            </q-chip>
-          </div>
-        </div>
-        <div class="q-pa-md">
           <q-select
             filled
             :value="noteTags"
@@ -62,6 +44,24 @@
               </q-item>
             </template>
           </q-select>
+        </div>
+        <div class="q-pa-md">
+          <div class="q-gutter-xs">
+            <q-chip
+              :color="randomColor(tagGuid)"
+              :selected="selectStatusHandler(tagGuid)"
+              icon="local_offer"
+              text-color="white"
+              v-for="{ name, tagGuid } in tags"
+              :key="tagGuid"
+              clickable
+              removable
+              @remove="deleteTagHandler(tagGuid)"
+              @click="attachTagHandler(tagGuid)"
+            >
+              {{ name }}
+            </q-chip>
+          </div>
         </div>
       </q-card-section>
     </q-card>

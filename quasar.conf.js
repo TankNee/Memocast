@@ -197,10 +197,17 @@ module.exports = function (/* ctx */) {
         electronDownload: {
           mirror: 'https://npm.taobao.org/mirrors/electron/'
         },
+        publish: {
+          provider: 'github',
+          releaseType: 'draft'
+        },
         mac: {
           target: [
-            'dmg'
-          ]
+            'dmg',
+            'zip'
+          ],
+          // eslint-disable-next-line no-template-curly-in-string
+          artifactName: 'Memocast-${version}-${arch}-mac.${ext}'
         },
         win: {
           target: [
@@ -209,15 +216,21 @@ module.exports = function (/* ctx */) {
           legalTrademarks: 'Memocast'
         },
         nsis: {
+          // eslint-disable-next-line no-template-curly-in-string
+          artifactName: 'Memocast-${version}-${arch}-win.${ext}',
           perMachine: false,
           oneClick: false,
           allowToChangeInstallationDirectory: true
         },
         linux: {
           target: [
-            'AppImage'
+            'AppImage',
+            'deb',
+            'rpm'
           ],
-          vendor: 'Memocast'
+          vendor: 'Memocast',
+          // eslint-disable-next-line no-template-curly-in-string
+          artifactName: 'Memocast-${version}-${arch}-linux.${ext}'
         },
         files: [
           '**/*',

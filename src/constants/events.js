@@ -1,8 +1,5 @@
 export default {
   REQUEST_ERROR: 'request.error',
-  SETTINGS_EVENT: {
-    SETTINGS_UPDATE: 'settings.update'
-  },
   INSERT_IMAGE: 'insert.image',
   INSERT_IMAGES: 'insert.images',
   INSERT_TEXT: 'insert.text',
@@ -19,7 +16,9 @@ export default {
     selectAll: 'edit.shortcut.selectAll.call',
     duplicate: 'edit.shortcut.duplicate.call',
     createParagraph: 'edit.shortcut.create.paragraph.call',
-    deleteParagraph: 'edit.shortcut.delete.paragraph.call'
+    deleteParagraph: 'edit.shortcut.delete.paragraph.call',
+    insertParagraph: 'edit.shortcut.insert.paragraph.call',
+    formatDocumentByPangu: 'edit.shortcut.format.document.by.pangu.call'
   },
   FORMAT_SHORTCUT_CALL: 'format.shortcut.call',
   VIEW_SHORTCUT_CALL: {
@@ -28,6 +27,32 @@ export default {
     lockMode: 'view.shortcut.lock.code.call'
   },
   UPDATE_EVENTS: {
-    UPDATE_AVAILABLE: 'update.events.update.available'
+    updateAvailable: 'update.events.update.available',
+    updateNotAvailable: 'update.events.update.not.available',
+    updateDownloading: 'update.events.update.downloading',
+    updateDownloaded: 'update.events.update.downloaded',
+    updateError: 'update.events.update.error'
+  },
+  EDITOR_SCROLL: 'editor.scroll',
+  NOTE_ITEM_CONTEXT_MENU: {
+    rename: 'note.item.context.menu.rename',
+    copy: 'note.item.context.menu.copy',
+    move: 'note.item.context.menu.',
+    exportNote: {
+      markdown: 'note.item.context.menu.export.markdown',
+      png: 'note.item.context.menu.export.png'
+    },
+    flomo: 'note.item.context.menu.flomo',
+    delete: 'note.item.context.menu.delete'
+  },
+  SIDE_DRAWER_CONTEXT_MENU: {
+    openCategory: 'side.drawer.context.menu.open.category',
+    renameCategory: 'side.drawer.context.menu.rename.category',
+    createCategory: 'side.drawer.context.menu.create.category',
+    createNote: 'side.drawer.context.menu.create.note',
+    delete: 'side.drawer.context.menu.delete.category',
+    exportCategory: {
+      markdown: 'side.drawer.context.menu.export.markdown'
+    }
   }
 }

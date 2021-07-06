@@ -28,8 +28,14 @@ export default {
   name: 'Monaco',
   props: {
     data: {
-      type: String,
-      default: ''
+      type: Object,
+      default: () => ({
+        markdown: '',
+        cursor: {
+          lineNumber: 0,
+          column: 0
+        }
+      })
     },
     active: {
       type: Boolean,
@@ -61,8 +67,8 @@ export default {
         colors: {
           // 相关颜色属性配置
           // 'editor.foreground': '#000000',
-          'editor.background': '#34383e'
-          // 'editorCursor.foreground': '#8B0000',
+          'editor.background': '#34383e',
+          'editorCursor.foreground': '#FFCC00'
           // 'editor.lineHighlightBackground': '#0000FF20',
           // 'editorLineNumber.foreground': '#008800',
           // 'editor.selectionBackground': '#88000030',
@@ -76,8 +82,8 @@ export default {
         colors: {
           // 相关颜色属性配置
           // 'editor.foreground': '#000000',
-          'editor.background': '#ffffff'
-          // 'editorCursor.foreground': '#8B0000',
+          'editor.background': '#ffffff',
+          'editorCursor.foreground': '#FFCC00'
           // 'editor.lineHighlightBackground': '#0000FF20',
           // 'editorLineNumber.foreground': '#008800',
           // 'editor.selectionBackground': '#88000030',
@@ -85,7 +91,7 @@ export default {
         }
       })
       this.contentEditor = monaco.editor.create(document.getElementById('monaco'), {
-        value: this.data,
+        value: this.data.markdown,
         language: 'markdown',
         automaticLayout: true,
         theme: this.darkMode ? 'Memocast-Dark' : 'Memocast-Light',
@@ -106,6 +112,8 @@ export default {
           this.updateNoteState('default')
         }
       })
+      this.contentEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.US_COMMA, () => bus.$emit(events.VIEW_SHORTCUT_CALL.switchView, 'switchView'))
+      this.contentEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.US_DOT, () => bus.$emit(events.VIEW_SHORTCUT_CALL.sourceMode, 'sourceMode'))
     },
     saveHandler: function () {
       if (this.active && this.contentEditor) {
@@ -114,6 +122,15 @@ export default {
     },
     getValue: function () {
       return this.contentEditor?.getValue()
+    },
+    getCursorPosition: function () {
+      return this.contentEditor?.getPosition()
+    },
+    setCursorPosition: function (position) {
+      if (this.contentEditor) {
+        this.contentEditor.setPosition(position)
+        this.contentEditor.revealPositionInCenter(position, 0)
+      }
     },
     ...mapServerActions(['updateNote', 'updateNoteState'])
   },
@@ -134,8 +151,10 @@ export default {
       const currentTheme = darkMode ? 'Memocast-Dark' : 'Memocast-Light'
       monaco.editor.setTheme(currentTheme)
     },
-    data: function (val) {
-      this.contentEditor.setValue(val)
+    data: function ({ markdown, cursor }) {
+      this.contentEditor.setValue(markdown)
+      this.setCursorPosition(cursor)
+      this.contentEditor.focus()
     }
   }
 }

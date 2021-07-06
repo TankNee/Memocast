@@ -11,6 +11,7 @@ const CIRCLE_RADIO = 6
 
 class Transformer {
   static pluginName = 'transformer'
+
   constructor (muya, options) {
     this.muya = muya
     this.options = options
@@ -29,7 +30,10 @@ class Transformer {
   }
 
   listen () {
-    const { eventCenter, container } = this.muya
+    const {
+      eventCenter,
+      container
+    } = this.muya
     const scrollHandler = event => {
       if (typeof this.lastScrollTop !== 'number') {
         this.lastScrollTop = event.target.scrollTop
@@ -41,7 +45,10 @@ class Transformer {
       }
     }
     eventCenter.attachDOMEvent(document, 'click', this.hide.bind(this))
-    eventCenter.subscribe('muya-transformer', ({ reference, imageInfo }) => {
+    eventCenter.subscribe('muya-transformer', ({
+      reference,
+      imageInfo
+    }) => {
       this.reference = reference
       if (reference) {
         this.imageInfo = imageInfo
@@ -56,6 +63,9 @@ class Transformer {
     eventCenter.attachDOMEvent(container, 'scroll', scrollHandler)
     eventCenter.attachDOMEvent(this.container, 'dragstart', event => event.preventDefault())
     eventCenter.attachDOMEvent(document.body, 'mousedown', this.mouseDown)
+    if (this.options.attachScrollEvent) {
+      this.options.attachScrollEvent(scrollHandler)
+    }
   }
 
   render () {

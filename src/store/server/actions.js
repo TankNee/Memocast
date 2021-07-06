@@ -1,15 +1,12 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify, Dialog, Loading, QSpinnerGears } from 'quasar'
+import { Notify, Dialog, Loading, QSpinnerGears, Dark } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
-import bus from 'components/bus'
-import events from 'src/constants/events'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
-import FormData from 'form-data'
-import { exportMarkdownFile, exportMarkdownFiles, exportPng } from 'src/ApiInvoker'
+import { exportMarkdownFile, exportMarkdownFiles, saveTempImage, uploadImages, exportPng } from 'src/ApiInvoker'
 import html2canvas from 'html2canvas'
 
 export async function _getContent (kbGuid, docGuid) {
@@ -37,6 +34,18 @@ export async function _getContent (kbGuid, docGuid) {
     ClientFileStorage.setCachedNote(result, cacheKey)
   }
   return result
+}
+
+function readFileAsync (f) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = event => {
+      const base64 = event.target.result
+      resolve(base64)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(f)
+  })
 }
 
 export default {
@@ -181,7 +190,7 @@ export default {
       this.dispatch('server/getTagNotes', { tag: currentCategory })
       return
     }
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const result = await api.KnowledgeBaseApi.getCategoryNotes({
       kbGuid,
       data: {
@@ -191,7 +200,7 @@ export default {
         withAbstract: true
       }
     })
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
   /**
@@ -295,7 +304,9 @@ export default {
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
     const html = helper.embedMDNote(markdown, resources, {
-      wrapWithPreTag: isLite
+      wrapWithPreTag: isLite,
+      kbGuid,
+      docGuid
     })
 
     const _updateNote = async title => {
@@ -453,13 +464,13 @@ export default {
   async createCategory ({
     commit,
     state
-  }, childCategoryName) {
+  }, { childCategoryName, parentCategory }) {
     const {
       kbGuid,
-      currentCategory,
+      // currentCategory,
       categories
     } = state
-    if (helper.checkCategoryExistence(categories, currentCategory, childCategoryName)) {
+    if (helper.checkCategoryExistence(categories, parentCategory, childCategoryName)) {
       Notify.create({
         color: 'red-10',
         message: i18n.t('categoryExisted'),
@@ -470,7 +481,7 @@ export default {
     await api.KnowledgeBaseApi.createCategory({
       kbGuid,
       data: {
-        parent: helper.isNullOrEmpty(currentCategory) ? '/' : currentCategory,
+        parent: helper.isNullOrEmpty(parentCategory) ? '/' : parentCategory,
         pos: Math.floor(Date.now() / 1000).toFixed(0),
         child: childCategoryName
       }
@@ -480,9 +491,9 @@ export default {
       'server/updateCurrentCategory', {
         data:
           helper
-            .isNullOrEmpty(currentCategory)
+            .isNullOrEmpty(parentCategory)
             ? `/${childCategoryName}/`
-            : `${currentCategory}${childCategoryName}/`,
+            : `${parentCategory}${childCategoryName}/`,
         type: 'category'
       }
     )
@@ -502,7 +513,7 @@ export default {
       data: ''
     })
     Notify.create({
-      color: 'red-10',
+      color: 'red-6',
       message: i18n.t('deleteCategorySuccessfully'),
       icon: 'delete'
     })
@@ -522,63 +533,69 @@ export default {
       }
     } = state
 
-    const formData = new FormData()
     const {
       client: {
-        imageUploadService,
-        apiServerUrl,
-        postParam,
-        jsonPath,
-        customHeader,
-        customBody
+        imageUploadService
       }
     } = rootState
+    // eslint-disable-next-line no-case-declarations
+    let base64
 
-    let data = {},
-      options = {}
     switch (imageUploadService) {
       case 'wizOfficialImageUploadService':
-        formData.append('data', file)
-        formData.append('kbGuid', kbGuid)
-        formData.append('docGuid', docGuid)
-        data = {
-          kbGuid,
-          docGuid,
-          formData: formData,
-          config: {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'X-Wiz-Token': token
-            }
+        if (file instanceof File) {
+          base64 = await readFileAsync(file)
+          file = {
+            file: base64,
+            ext: file.name
           }
         }
-        break
-      case 'smmsImageUploadService':
-        data = file
-        break
-      case 'customWebUploadService':
-        data = file
-        options = {
-          apiServerUrl,
-          postParam,
-          jsonPath,
-          customHeader,
-          customBody
+        // eslint-disable-next-line no-case-declarations
+        const result = await uploadImages([file], imageUploadService, { kbGuid, docGuid, wizToken: token, baseUrl: api.KnowledgeBaseApi.getBaseUrl() })
+        commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result.result)
+        // await saveUploadedImage(buffer, kbGuid, docGuid, result.name)
+        if (!result.success) {
+          Notify.create({
+            message: i18n.t('failToUpload'),
+            type: 'negative',
+            icon: 'clear'
+          })
+          return helper.isNullOrEmpty(base64) ? file : base64
+        } else {
+          return helper.isNullOrEmpty(result.result) ? file : helper.isNullOrEmpty(result.result[0]) ? file : result.result[0].url
         }
-        break
+      case 'picgoServer':
+        if (file instanceof File) {
+          base64 = await readFileAsync(file)
+          file = {
+            file: base64,
+            ext: file.name
+          }
+        }
+        // eslint-disable-next-line no-case-declarations
+        const res = await uploadImages([file], imageUploadService)
+        if (!res.success) {
+          Notify.create({
+            message: i18n.t('failToUpload'),
+            type: 'negative',
+            icon: 'clear'
+          })
+          return helper.isNullOrEmpty(base64) ? file : base64
+        } else {
+          return helper.isNullOrEmpty(res.result) ? file : helper.isNullOrEmpty(res.result[0]) ? file : res.result[0]
+        }
+      case 'none':
+        if (file instanceof File) {
+          const base64 = await readFileAsync(file)
+          file = await saveTempImage({
+            file: base64,
+            kbGuid,
+            docGuid
+          })
+        }
+        return file
       default:
         break
-    }
-
-    const result = await api.UploadImageApi(imageUploadService, data, options)
-    if (result) {
-      bus.$emit(
-        events.INSERT_IMAGE,
-        getters.imageUrl(result, imageUploadService)
-      )
-    }
-    if (imageUploadService === 'wizOfficialImageUploadService') {
-      commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result)
     }
   },
   async moveNote ({ commit }, noteInfo) {
@@ -606,38 +623,17 @@ export default {
     const {
       kbGuid,
       docGuid,
-      category,
-      title,
-      type
+      category
     } = noteInfo
     const { currentCategory } = state
-    const userId = ClientFileStorage.getItemFromStore('userId')
-
-    const noteContent = await api.KnowledgeBaseApi.getNoteContent({
+    await api.KnowledgeBaseApi.copyNote({
       kbGuid,
       docGuid,
       data: {
-        downloadInfo: 1,
-        downloadData: 1
+        targetCategory: category
       }
     })
-    const { html } = noteContent
-    const isCurrentCategory = category === noteContent.info.category
-    await api.KnowledgeBaseApi.createNote({
-      kbGuid,
-      data: {
-        category: category,
-        kbGuid,
-        title: isCurrentCategory
-          ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${
-            title.indexOf('.md') !== -1 ? '.md' : ''
-          }`
-          : title,
-        owner: userId,
-        html,
-        type: category === '/Lite/' ? 'lite/markdown' : type
-      }
-    })
+    const isCurrentCategory = category === currentCategory
     if (isCurrentCategory || helper.isNullOrEmpty(currentCategory)) {
       await this.dispatch('server/getCategoryNotes')
     }
@@ -848,14 +844,15 @@ export default {
       message: i18n.t('prepareExportData')
     })
     const canvasID = document.getElementById('muya')
-    const a = document.createElement('a')
+    const color = Dark.isActive
+    console.log(color)
     html2canvas(canvasID, {
       useCORS: true,
-      allowTaint: true
+      allowTaint: true,
+      backgroundColor: color ? '#35373e' : '#ffffff'
     }).then(canvas => {
       const dom = document.body.appendChild(canvas)
       dom.style.display = 'none'
-      a.style.display = 'none'
       document.body.removeChild(dom)
       const content = dom.toDataURL('image/png')
       Loading.hide()

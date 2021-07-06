@@ -6,8 +6,9 @@ export default function () {
     darkMode: false,
     markdownOnly: false,
     enableSelfHostServer: false,
-    imageUploadService: 'customWebUploadService',
+    imageUploadService: 'wizOfficialImageUploadService',
     imageUploadServiceParam: {},
+    noteOrderType: 'orderByModifiedTime',
     apiServerUrl: '',
     postParam: '',
     jsonPath: '',
@@ -16,6 +17,8 @@ export default function () {
     shrinkInTray: false,
     noteListVisible: true,
     flomoApiUrl: '',
-    enablePreviewEditor: true
+    enablePreviewEditor: true,
+    rightClickNoteItem: {},
+    rightClickCategoryItem: ''
   }
 }

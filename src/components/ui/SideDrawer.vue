@@ -26,20 +26,29 @@
             })
           }
         "
-      />
+      >
+        <template v-slot:default-header="prop">
+          <div class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
+            <div>{{ prop.node.label }}</div>
+          </div>
+        </template>
+      </q-tree>
     </q-scroll-area>
   </q-drawer>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import { showContextMenu as showSideDrawerContextMenu } from 'src/contextMenu/sideDrawer'
+import bus from '../bus'
+import events from 'src/constants/events'
 const {
   mapGetters: mapServerGetters,
   mapActions: mapServerActions,
   mapState: mapServerState
 } = createNamespacedHelpers('server')
 
-const { mapActions: mapClientActions } = createNamespacedHelpers('client')
+const { mapActions: mapClientActions, mapState: mapClientState } = createNamespacedHelpers('client')
 
 export default {
   name: 'CategoryDrawer',
@@ -66,9 +75,9 @@ export default {
       }
       return []
     },
-
     ...mapServerGetters(['categories', 'tags']),
-    ...mapServerState(['currentCategory'])
+    ...mapServerState(['currentCategory']),
+    ...mapClientState(['rightClickCategoryItem'])
   },
   methods: {
     toggle: function () {
@@ -84,21 +93,23 @@ export default {
         this.$refs.drawer.hide()
       }
     },
+    contextMenuHandler: function (e, node) {
+      if (this.type !== 'category') return
+      this.setRightClickCategoryItem(node.key)
+      showSideDrawerContextMenu(e, this.currentCategory === node.key)
+    },
+    openCategoryHandler: function () {
+      this.updateCurrentCategory({ data: this.rightClickCategoryItem, type: this.type })
+      this.toggleChanged({
+        key: 'noteListVisible',
+        value: true
+      })
+    },
     ...mapServerActions(['updateCurrentCategory']),
-    ...mapClientActions(['toggleChanged'])
+    ...mapClientActions(['toggleChanged', 'setRightClickCategoryItem'])
   },
   mounted () {
-    const that = this
-    document.addEventListener('click', e => {
-      if (
-        e.path[1] &&
-        e.path[1].className &&
-        e.path[1].className.indexOf('q-tree__node') !== -1
-      ) {
-        return
-      }
-      that.hide()
-    })
+    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.openCategory, this.openCategoryHandler)
   }
 }
 </script>

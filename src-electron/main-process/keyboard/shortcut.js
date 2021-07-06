@@ -54,11 +54,13 @@ export default class KeyBindings {
       ['format.strike', 'CmdOrCtrl+D'],
       ['format.hyperlink', 'CmdOrCtrl+L'],
       ['format.image', 'CmdOrCtrl+Shift+I'],
+      ['format.format-document', 'Shift+CmdOrCtrl+K'],
       ['format.clear-format', 'Shift+CmdOrCtrl+R'],
       // View Shortcut
       ['view.switch-view', 'CmdOrCtrl+Shift+,'],
       ['view.source-mode', 'CmdOrCtrl+Shift+.'],
-      ['view.lock-mode', 'CmdOrCtrl+Shift+L']
+      ['view.lock-mode', 'CmdOrCtrl+Shift+L'],
+      ['view.devtool', 'CmdOrCtrl+Shift+P']
     ])
   }
 

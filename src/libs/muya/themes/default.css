@@ -175,9 +175,11 @@
 
 
 #ag-editor-id {
-  font-family: "JetBrains Mono", "Open Sans", "Clear Sans", "Helvetica Neue", Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial, sans-serif, Microsoft YaHei, Helvetica, Arial, sans-serif;
+  font-family:  "Open Sans", "JetBrains Mono", "Clear Sans", "Helvetica Neue", Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial, sans-serif, Microsoft YaHei, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
+  letter-spacing: 0.2px;
+  font-weight: 400;
 }
 
 span code,

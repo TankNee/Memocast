@@ -3,6 +3,7 @@ import paragraph from './paragraph'
 import edit from './edit'
 import format from './format'
 import view from './view'
+import help from './help'
 
 export default function (keybindings) {
   return [
@@ -10,6 +11,7 @@ export default function (keybindings) {
     paragraph(keybindings),
     edit(keybindings),
     format(keybindings),
-    view(keybindings)
+    view(keybindings),
+    help()
   ]
 }
