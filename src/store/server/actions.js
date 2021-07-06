@@ -815,6 +815,10 @@ export default {
   async exportMarkdownFile ({ state }, noteField) {
     const { kbGuid } = state
     const { docGuid } = noteField
+    Loading.show({
+      spinner: QSpinnerGears,
+      message: i18n.t('prepareExportData')
+    })
     const result = await _getContent(kbGuid, docGuid)
     const isHtml = !_.endsWith(result.info.title, '.md')
     const {
@@ -832,12 +836,17 @@ export default {
         resources
       )
     }
+    Loading.hide()
     await exportMarkdownFile(content)
   },
   async exportPng ({
     commit,
     state
   }, noteField) {
+    Loading.show({
+      spinner: QSpinnerGears,
+      message: i18n.t('prepareExportData')
+    })
     const canvasID = document.getElementById('muya')
     const a = document.createElement('a')
     html2canvas(canvasID, {
@@ -849,7 +858,7 @@ export default {
       a.style.display = 'none'
       document.body.removeChild(dom)
       const content = dom.toDataURL('image/png')
-      console.log(content)
+      Loading.hide()
       exportPng(content)
     })
   },
@@ -860,7 +869,7 @@ export default {
    * @returns {Promise<void>}
    */
   async exportMarkdownFiles ({ state }, noteFields = []) {
-    const { kbGuid } = state
+    const { kbGuid, currentCategory } = state
     const results = []
     Loading.show({
       spinner: QSpinnerGears,
@@ -895,6 +904,7 @@ export default {
       }
     })
     Loading.hide()
-    await exportMarkdownFiles(contents)
+    const category = currentCategory.split('/')[1]
+    await exportMarkdownFiles({ contents, category })
   }
 }

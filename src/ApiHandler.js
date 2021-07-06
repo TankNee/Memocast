@@ -1,7 +1,8 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import { Notify } from 'quasar'
 import bus from 'components/bus'
 import events from 'src/constants/events'
+import { i18n } from '../src/boot/i18n'
 
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
@@ -35,12 +36,29 @@ export default {
     console.log('[API Handler] Render Process registers handler successfully!')
 
     handleApi('show-notification', (event, payload) => {
-      const { msg, type = 'primary', icon = 'check' } = payload
-      Notify.create({
-        type: type,
-        message: msg,
-        icon: icon
-      })
+      const { msg, type = 'primary', icon = 'check', filePath } = payload
+      if (filePath) {
+        Notify.create({
+          type: type,
+          message: i18n.t(msg),
+          icon: icon,
+          actions: [
+            {
+              label: i18n.t('ok'),
+              textColor: 'white',
+              handler: () => {
+                shell.showItemInFolder(filePath)
+              }
+            }
+          ]
+        })
+      } else {
+        Notify.create({
+          type: type,
+          message: msg,
+          icon: icon
+        })
+      }
     }).catch(err => throw err)
 
     handleApi('editor-paragraph-action', (event, { type }) => {

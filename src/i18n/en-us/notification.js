@@ -7,5 +7,6 @@ export default {
   uploadNoteSuccessfully: 'Upload Note Successfully',
   uploading: 'uploading',
   categoryExisted: 'This category has existed!',
-  tagExisted: 'This tag has existed!'
+  tagExisted: 'This tag has existed!',
+  ExportSuccessfully: 'Export Successfully，Do You Want To Show In explorer?'
 }
