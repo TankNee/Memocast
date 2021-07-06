@@ -4,7 +4,6 @@ export const RENAME = {
   label: 'rename',
   id: 'renameMenuItem',
   click (menuItem, browserWindow, sth) {
-    console.log(menuItem, browserWindow, sth)
     contextMenu.rename()
   }
 }
@@ -44,14 +43,6 @@ export const EXPORT = {
       }
     }
   ]
-}
-
-export const FLOMO = {
-  label: 'flomo',
-  id: 'flomoNoteMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.flomo()
-  }
 }
 
 export const DELETE = {

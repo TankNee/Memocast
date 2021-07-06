@@ -171,6 +171,14 @@ const KnowledgeBaseApi = {
     )
   },
 
+  async copyNote (params) {
+    return await execRequest(
+      'POST',
+      `${this.getBaseUrl()}/ks/note/copy/${params.kbGuid}/${params.docGuid}`,
+      params.data
+    )
+  },
+
   /**
    * 创建新笔记
    * @param params

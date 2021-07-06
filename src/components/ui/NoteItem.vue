@@ -4,7 +4,6 @@
     flat
     :class='`note-card${darkTag} bg-transparent`'
     @click='noteItemClickHandler'
-    @contextmenu='noteItemContextMenuHandler'
   >
     <div :class='`note-item-title${darkTag}`' v-html='title'></div>
 
@@ -14,24 +13,17 @@
       <span class='text-left note-info-tag'><q-icon name='category' size='17px' /> {{ category }}</span>
       <span class='text-right note-info-tag'><q-icon name='timer' size='17px' /> {{ modifiedDate }}</span>
     </div>
-    <CategoryDialog ref='categoryDialog' :note-info='data' :label='categoryDialogLabel'
-                    :handler='categoryDialogHandler' />
   </q-card>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
-import CategoryDialog from 'components/ui/dialog/CategoryDialog'
-import { showContextMenu as showNoteItemContextMenu } from 'src/contextMenu/noteList'
-import bus from 'components/bus'
-import events from 'src/constants/events'
 
 const {
   mapActions: mapServerActions,
   mapState: mapServerState
 } = createNamespacedHelpers('server')
-const { mapActions: mapClientActions, mapState: mapClientState } = createNamespacedHelpers('client')
 export default {
   name: 'NoteItem',
   props: {
@@ -49,7 +41,11 @@ export default {
       type: Number,
       default: 40
     },
-    markdown: Boolean
+    markdown: Boolean,
+    contextmenuHandler: {
+      type: Function,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -58,7 +54,6 @@ export default {
       count: 0
     }
   },
-  components: { CategoryDialog },
   computed: {
     summary () {
       if (helper.isNullOrEmpty(this.data.abstractText) && !helper.isNullOrEmpty(this.data.highlight)) {
@@ -102,62 +97,9 @@ export default {
         return ''
       }
     },
-    ...mapServerState(['noteState']),
-    ...mapClientState(['rightClickNoteItem'])
+    ...mapServerState(['noteState', 'currentCategory'])
   },
   methods: {
-    renameHandler: function () {
-      if (this.data.docGuid !== this.rightClickNoteItem) return
-      this.$q.dialog({
-        title: this.$t('renameNote'),
-        prompt: {
-          model: this.title,
-          type: 'text',
-          attrs: {
-            spellcheck: false
-          }
-        },
-        cancel: true
-      }).onOk(data => {
-        const info = JSON.parse(JSON.stringify(this.data))
-        info.title = data
-        info.infoModified = new Date().getTime()
-        this.updateNoteInfo(info)
-      })
-    },
-    deleteHandler: function () {
-      if (this.data.docGuid !== this.rightClickNoteItem) return
-      this.$q.dialog({
-        title: this.$t('deleteNote'),
-        cancel: true
-      }).onOk(() => {
-        this.deleteNote(this.data)
-      })
-    },
-    copyToHandler: function () {
-      if (this.data.docGuid !== this.rightClickNoteItem) return
-      this.categoryDialogLabel = 'copyToAnotherCategory'
-      this.categoryDialogHandler = this.copyNote
-      this.$refs.categoryDialog.toggle()
-    },
-    moveToHandler: function () {
-      if (this.data.docGuid !== this.rightClickNoteItem) return
-      this.categoryDialogLabel = 'moveToAnotherCategory'
-      this.categoryDialogHandler = this.moveNote
-      this.$refs.categoryDialog.toggle()
-    },
-    flomoHandler: function () {
-      if (this.data.docGuid !== this.rightClickNoteItem) return
-      this.sendToFlomo(this.docGuid)
-    },
-    exportMdHandler: function () {
-      if (this.data.docGuid !== this.rightClickNoteItem) return
-      this.exportMarkdownFile(this.data)
-    },
-    exportPngHandler: function () {
-      if (this.data.docGuid !== this.rightClickNoteItem) return
-      this.exportPng(this.data)
-    },
     noteItemClickHandler: function () {
       if (this.noteState !== 'default') {
         this.$q.dialog({
@@ -174,31 +116,7 @@ export default {
         this.getNoteContent({ docGuid: this.docGuid })
       }
     },
-    noteItemContextMenuHandler: function (event) {
-      const { docGuid } = this.data
-      this.setRightClickNoteItem(docGuid)
-      showNoteItemContextMenu(event)
-    },
-    ...mapServerActions(['getNoteContent', 'updateNoteInfo', 'deleteNote', 'moveNote', 'copyNote', 'exportMarkdownFile', 'exportPng']),
-    ...mapClientActions(['sendToFlomo', 'setRightClickNoteItem'])
-  },
-  mounted () {
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.rename, this.renameHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.copy, this.copyToHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.move, this.moveToHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.markdown, this.exportMdHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png, this.exportPngHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.flomo, this.flomoHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.delete, this.deleteHandler)
-  },
-  beforeDestroy () {
-    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.rename)
-    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.copy)
-    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.move)
-    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.exportNote.markdown)
-    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png)
-    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.flomo)
-    bus.$off(events.NOTE_ITEM_CONTEXT_MENU.delete)
+    ...mapServerActions(['getNoteContent', 'updateNoteInfo'])
   }
 }
 </script>

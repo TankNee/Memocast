@@ -21,10 +21,6 @@ export const exportAsPNG = (menuItem, browserWindow) => {
   bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png)
 }
 
-export const flomo = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.flomo)
-}
-
 export const deleteNote = (menuItem, browserWindow) => {
   bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.delete)
 }

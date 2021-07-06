@@ -1,8 +1,7 @@
-/** * @Description: Note List which can scroll infinitely * @Author: TankNee *
-@Date: 9/5/2020 6:21 PM **/
+
 <template>
   <div>
-    <q-pull-to-refresh @refresh="handleRefreshNoteList">
+    <q-pull-to-refresh @refresh="refreshNoteListHandler">
       <q-scroll-area
         :thumb-style="thumbStyle"
         :bar-style="barStyle"
@@ -19,7 +18,9 @@
             :active-class="`active-note-item${$q.dark.isActive ? '-dark' : ''}`"
           >
             <q-item-section>
-              <NoteItem :data="noteField" />
+              <div @contextmenu="(e) => noteItemContextMenuHandler(e, noteField)">
+                <NoteItem :data="noteField"/>
+              </div>
             </q-item-section>
           </q-item>
         </q-list>
@@ -39,25 +40,11 @@
         class="absolute-bottom-right fab-btn"
         v-if="isLogin && !isTagCategory"
       >
-        <!-- <q-fab-action
-          color="red-7"
-          v-if="isRootCategory"
-          icon="delete_forever"
-          @click="handleDeleteCategory"
-        >
-          <q-tooltip
-            anchor="center right"
-            self="center left"
-            :offset="[20, 10]"
-            content-class="bg-red-10 text-white shadow-4  text-h7"
-            >{{ $t('deleteCategory') }}</q-tooltip
-          >
-        </q-fab-action> -->
         <q-fab-action
           v-if="isRootCategory"
           :color="color"
           icon="import_export"
-          @click="handleExportCategory"
+          @click="exportCategoryHandler"
         >
           <q-tooltip
             anchor="center right"
@@ -81,7 +68,7 @@
             >{{ $t('import') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action v-if="isRootCategory" :color="color" icon="note_add" @click="handleAddNote">
+        <q-fab-action v-if="isRootCategory" :color="color" icon="note_add" @click="addNoteHandler">
           <q-tooltip
             anchor="center right"
             self="center left"
@@ -90,22 +77,11 @@
             >{{ $t('createNote') }}</q-tooltip
           >
         </q-fab-action>
-        <!-- <q-fab-action
-          :color="color"
-          icon="create_new_folder"
-          @click="handleAddCategory"
-        >
-          <q-tooltip
-            anchor="center right"
-            self="center left"
-            :offset="[20, 10]"
-            :content-class="`bg-${color} text-white shadow-4  text-h7`"
-            >{{ $t('createCategory') }}</q-tooltip
-          >
-        </q-fab-action> -->
       </q-fab>
       <Loading :visible="isCurrentNotesLoading" />
       <ImportDialog ref="ImportDialog" />
+    <CategoryDialog ref='categoryDialog' :note-info='rightClickNoteItem' :label='categoryDialogLabel'
+                    :handler='categoryDialogHandler' />
     </q-pull-to-refresh>
   </div>
 </template>
@@ -113,16 +89,24 @@
 <script>
 import NoteItem from './ui/NoteItem'
 import ImportDialog from './ui/dialog/ImportDialog.vue'
+import CategoryDialog from './ui/dialog/CategoryDialog'
 import { createNamespacedHelpers } from 'vuex'
 import Loading from './ui/Loading'
 import helper from '../utils/helper'
 import bus from './bus'
 import events from 'src/constants/events'
+import { showContextMenu as showNoteItemContextMenu } from 'src/contextMenu/noteList'
 const { mapGetters: mapServerGetters, mapState: mapServerState, mapActions: mapServerActions } = createNamespacedHelpers('server')
-const { mapState: mapClientState } = createNamespacedHelpers('client')
+const { mapState: mapClientState, mapActions: mapClientActions } = createNamespacedHelpers('client')
 export default {
   name: 'NoteList',
-  components: { Loading, NoteItem, ImportDialog },
+  components: { Loading, NoteItem, ImportDialog, CategoryDialog },
+  data () {
+    return {
+      categoryDialogLabel: '',
+      categoryDialogHandler: () => {}
+    }
+  },
   computed: {
     thumbStyle () {
       return {
@@ -165,10 +149,10 @@ export default {
     },
     ...mapServerGetters(['activeNote', 'currentNotes']),
     ...mapServerState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags']),
-    ...mapClientState(['rightClickCategoryItem'])
+    ...mapClientState(['rightClickCategoryItem', 'rightClickNoteItem'])
   },
   methods: {
-    handleAddNote: function () {
+    addNoteHandler: function () {
       this.$q
         .dialog({
           title: this.$t('createNote'),
@@ -185,7 +169,7 @@ export default {
           this.createNote(data)
         })
     },
-    handleAddCategory: function () {
+    addCategoryHandler: function () {
       this.$q
         .dialog({
           title: this.$t('createCategory'),
@@ -205,7 +189,7 @@ export default {
           })
         })
     },
-    handleDeleteCategory: function () {
+    deleteCategoryHandler: function () {
       if (helper.isNullOrEmpty(this.rightClickCategoryItem)) return
       this.$q
         .dialog({
@@ -216,10 +200,10 @@ export default {
           this.deleteCategory(this.rightClickCategoryItem)
         })
     },
-    handleExportCategory: function () {
+    exportCategoryHandler: function () {
       this.exportMarkdownFiles(this.currentNotes)
     },
-    handleRefreshNoteList: async function (done) {
+    refreshNoteListHandler: async function (done) {
       const tagIndex = this.tags.findIndex(
         t => t.tagGuid === this.currentCategory
       )
@@ -229,19 +213,79 @@ export default {
       })
       done()
     },
+    /** NoteItem Action Following */
+    renameNoteHandler: function () {
+      this.$q.dialog({
+        title: this.$t('renameNote'),
+        prompt: {
+          model: this.rightClickNoteItem.title,
+          type: 'text',
+          attrs: {
+            spellcheck: false
+          }
+        },
+        cancel: true
+      }).onOk(data => {
+        const info = JSON.parse(JSON.stringify(this.rightClickNoteItem))
+        info.title = data
+        info.infoModified = new Date().getTime()
+        this.updateNoteInfo(info)
+      })
+    },
+    deleteNoteHandler: function () {
+      this.$q.dialog({
+        title: this.$t('deleteNote'),
+        cancel: true
+      }).onOk(() => {
+        this.deleteNote(this.rightClickNoteItem)
+      })
+    },
+    copyNoteHandler: function () {
+      this.categoryDialogLabel = 'copyToAnotherCategory'
+      this.categoryDialogHandler = this.copyNote
+      this.$refs.categoryDialog.toggle()
+    },
+    moveNoteHandler: function () {
+      this.categoryDialogLabel = 'moveToAnotherCategory'
+      this.categoryDialogHandler = this.moveNote
+      this.$refs.categoryDialog.toggle()
+    },
+    exportNoteAsMdHandler: function () {
+      this.exportMarkdownFile(this.rightClickNoteItem)
+    },
+    exportNoteAsPngHandler: function () {
+      this.exportPng(this.rightClickNoteItem)
+    },
+    noteItemContextMenuHandler: function (e, noteField) {
+      this.setRightClickNoteItem(noteField)
+      showNoteItemContextMenu(e)
+    },
     ...mapServerActions([
       'createNote',
       'createCategory',
       'deleteCategory',
       'updateCurrentCategory',
-      'exportMarkdownFiles'
-    ])
+      'exportMarkdownFiles',
+      'updateNoteInfo',
+      'deleteNote',
+      'moveNote',
+      'copyNote',
+      'exportMarkdownFile',
+      'exportPng'
+    ]),
+    ...mapClientActions(['setRightClickNoteItem'])
   },
   mounted () {
-    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.createCategory, this.handleAddCategory)
-    // bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.createNote, this.handleAddNote)
-    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.exportCategory.markdown, this.handleExportCategory)
-    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.delete, this.handleDeleteCategory)
+    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.createCategory, this.addCategoryHandler)
+    // bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.createNote, this.addNoteHandler)
+    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.exportCategory.markdown, this.exportCategoryHandler)
+    bus.$on(events.SIDE_DRAWER_CONTEXT_MENU.delete, this.deleteCategoryHandler)
+    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.rename, this.renameNoteHandler)
+    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.copy, this.copyNoteHandler)
+    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.move, this.moveNoteHandler)
+    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.markdown, this.exportNoteAsMdHandler)
+    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png, this.exportNoteAsPngHandler)
+    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.delete, this.deleteNoteHandler)
   }
 }
 </script>

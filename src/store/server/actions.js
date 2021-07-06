@@ -190,7 +190,7 @@ export default {
       this.dispatch('server/getTagNotes', { tag: currentCategory })
       return
     }
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const result = await api.KnowledgeBaseApi.getCategoryNotes({
       kbGuid,
       data: {
@@ -200,7 +200,7 @@ export default {
         withAbstract: true
       }
     })
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTES, result)
   },
   /**
@@ -623,38 +623,17 @@ export default {
     const {
       kbGuid,
       docGuid,
-      category,
-      title,
-      type
+      category
     } = noteInfo
     const { currentCategory } = state
-    const userId = ClientFileStorage.getItemFromStore('userId')
-
-    const noteContent = await api.KnowledgeBaseApi.getNoteContent({
+    await api.KnowledgeBaseApi.copyNote({
       kbGuid,
       docGuid,
       data: {
-        downloadInfo: 1,
-        downloadData: 1
+        targetCategory: category
       }
     })
-    const { html } = noteContent
-    const isCurrentCategory = category === noteContent.info.category
-    await api.KnowledgeBaseApi.createNote({
-      kbGuid,
-      data: {
-        category: category,
-        kbGuid,
-        title: isCurrentCategory
-          ? `${title.replace(/\.md/, '')}-${i18n.t('duplicate')}${
-            title.indexOf('.md') !== -1 ? '.md' : ''
-          }`
-          : title,
-        owner: userId,
-        html,
-        type: category === '/Lite/' ? 'lite/markdown' : type
-      }
-    })
+    const isCurrentCategory = category === currentCategory
     if (isCurrentCategory || helper.isNullOrEmpty(currentCategory)) {
       await this.dispatch('server/getCategoryNotes')
     }

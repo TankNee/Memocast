@@ -4,7 +4,6 @@ import {
   COPY,
   MOVE,
   EXPORT,
-  FLOMO,
   DELETE,
   SEPARATOR
 } from './menuItems'
@@ -22,7 +21,7 @@ const {
 export const showContextMenu = (event) => {
   const menu = new Menu()
   const win = remote.getCurrentWindow()
-  const ITEMS = [RENAME, COPY, SEPARATOR, MOVE, EXPORT, FLOMO, SEPARATOR, DELETE]
+  const ITEMS = [RENAME, COPY, SEPARATOR, MOVE, EXPORT, SEPARATOR, DELETE]
 
   const MENU_ITEM = ITEMS.map(item => {
     if (item.type === 'separator') return item
