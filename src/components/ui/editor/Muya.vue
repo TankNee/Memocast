@@ -1,12 +1,6 @@
 <template>
-  <div class='flex justify-center full-height full-width'>
-    <div
-      id='muya'
-      class='full-height full-width animated fadeIn'
-      v-show='!isCurrentNoteLoading && dataLoaded'
-      v-close-popup
-    >
-      <div ref='muya'></div>
+  <div class='exclude-header' v-show='!isCurrentNoteLoading && dataLoaded'>
+    <div ref='muya' id='muya' class='editor-component' v-close-popup>
     </div>
   </div>
 </template>
@@ -151,12 +145,34 @@ export default {
         this.contentEditor.redo()
       }
     },
+    scrollToHeaderHandler: function (slug) {
+      this.scrollToElementHandler(`#${slug}`)
+    },
+    scrollToElementHandler: function (selector) {
+      const { container } = this.contentEditor
+      const anchor = document.querySelector(selector)
+      if (anchor) {
+        const STANDARD_Y = window.innerHeight * 0.065
+        const { y } = anchor.getBoundingClientRect()
+        const DURATION = 300
+        helper.animatedScrollTo(container, container.scrollTop + y - STANDARD_Y, DURATION)
+      }
+    },
     getCursorPosition: function () {
-      const { line: lineNumber, ch: column } = this.contentEditor?.getCursor().focus
-      return { lineNumber, column }
+      const {
+        line: lineNumber,
+        ch: column
+      } = this.contentEditor?.getCursor().focus
+      return {
+        lineNumber,
+        column
+      }
     },
     setCursorPosition: function (position) {
-      const { lineNumber, column } = position
+      const {
+        lineNumber,
+        column
+      } = position
       if (this.contentEditor) {
         this.contentEditor.setCursor({
           anchor: {
@@ -192,7 +208,7 @@ export default {
       Muya.use(Transformer)
       Muya.use(TableBarTools)
 
-      this.contentEditor = new Muya(this.$refs.muya, {
+      const { container } = this.contentEditor = new Muya(this.$refs.muya, {
         imagePathPicker: () => {
           return new Promise((resolve, reject) => {
             this.importImagesFromLocal().then(paths => {
@@ -232,6 +248,17 @@ export default {
         showEditorContextMenu(event, selection)
       })
 
+      this.contentEditor.on('selectionChange', changes => {
+        const { y } = changes.cursorCoords
+
+        // Used to fix #628: auto scroll cursor to visible if the cursor is too low.
+        if (container.clientHeight - y < 100) {
+          // editableHeight is the lowest cursor position(till to top) that editor allowed.
+          const editableHeight = container.clientHeight - 100
+          helper.animatedScrollTo(container, container.scrollTop + (y - editableHeight), 100)
+        }
+      })
+
       document.addEventListener('keydown', (e) => {
         if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
         const curData = this.contentEditor.getMarkdown()
@@ -249,6 +276,7 @@ export default {
         }
       })
 
+      bus.$on(events.SCROLL_TO_HEADER, this.scrollToHeaderHandler)
       bus.$on(events.PARAGRAPH_SHORTCUT_CALL, this.paragraphHandler)
       bus.$on(events.FORMAT_SHORTCUT_CALL, this.formatHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.undo, this.editCopyPasteHandler)
@@ -285,6 +313,7 @@ export default {
     currentNote: function (currentData) {
       this.contentEditor.clearHistory()
       try {
+        this.contentEditor.focus()
         this.contentEditor.setMarkdown(currentData)
         this.updateContentsList(this.contentEditor.getTOC())
       } catch (e) {
@@ -312,5 +341,9 @@ export default {
 </script>
 
 <style scoped>
-
+.editor-component {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
 </style>

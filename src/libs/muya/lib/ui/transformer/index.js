@@ -63,9 +63,6 @@ class Transformer {
     eventCenter.attachDOMEvent(container, 'scroll', scrollHandler)
     eventCenter.attachDOMEvent(this.container, 'dragstart', event => event.preventDefault())
     eventCenter.attachDOMEvent(document.body, 'mousedown', this.mouseDown)
-    if (this.options.attachScrollEvent) {
-      this.options.attachScrollEvent(scrollHandler)
-    }
   }
 
   render () {

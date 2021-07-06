@@ -280,8 +280,7 @@ export const MUYA_DEFAULT_OPTION = {
 
   // Markdown extensions
   superSubScript: false,
-  footnote: false,
-  hintLanguage: 'en'
+  footnote: false
 }
 
 // export const DIAGRAM_TEMPLATE = {

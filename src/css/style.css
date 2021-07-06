@@ -208,6 +208,16 @@ body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog_
   word-break: normal;
 }
 
-.memocast-tree-node {
-  color: var(--treeNodeColor)
+.save-dot {
+  margin-left: 3px;
+  width: 7px;
+  height: 7px;
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--highlightThemeColor);
+  opacity: .7;
+  visibility: hidden;
+}
+.save-dot.show {
+  visibility: visible;
 }
