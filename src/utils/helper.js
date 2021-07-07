@@ -402,16 +402,57 @@ function checkTagExistence (tags, newTag) {
 
 function formatDocumentByRemarkPangu (markdown) {
   return new Promise((resolve, reject) => {
-    remark().use(pangu, {
-      inlineCode: true
-    }).process(markdown, (err, res) => {
+    remark().use(pangu).process(markdown, (err, res) => {
       if (err) {
         reject(err)
       } else {
-        resolve(res.contents)
+        // * \[ ] 12312321
+        resolve(res.contents.replace(/\*\s*\\\[/g, '* ['))
       }
     })
   })
+}
+
+function animatedScrollTo (element, to, duration, callback) {
+  const start = element.scrollTop
+  const change = to - start
+  const animationStart = +new Date()
+  let animating = true
+  let lastPos = null
+  const easeInOutQuad = function (t, b, c, d) {
+    t /= d / 2
+    if (t < 1) return c / 2 * t * t + b
+    t--
+    return -c / 2 * (t * (t - 2) - 1) + b
+  }
+
+  const animateScroll = function () {
+    if (!animating) {
+      return
+    }
+    requestAnimationFrame(animateScroll)
+    const now = +new Date()
+    const val = Math.floor(easeInOutQuad(now - animationStart, start, change, duration))
+    if (lastPos) {
+      if (lastPos === element.scrollTop) {
+        lastPos = val
+        element.scrollTop = val
+      } else {
+        animating = false
+      }
+    } else {
+      lastPos = val
+      element.scrollTop = val
+    }
+    if (now > animationStart + duration) {
+      element.scrollTop = to
+      animating = false
+      if (callback) {
+        callback()
+      }
+    }
+  }
+  requestAnimationFrame(animateScroll)
 }
 
 export default {
@@ -430,5 +471,6 @@ export default {
   isCtrl,
   checkCategoryExistence,
   checkTagExistence,
-  formatDocumentByRemarkPangu
+  formatDocumentByRemarkPangu,
+  animatedScrollTo
 }

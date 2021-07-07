@@ -10,7 +10,7 @@
       style="cursor: pointer"
       @click="$refs.tagDialog.toggle"
     >
-      <q-icon key="icon" name="book" size="19px" />
+      <span class='save-dot' :class="{ 'show': this.noteState !== 'default' }"></span>
       <q-tooltip
         v-if="tags.length > 0"
         :offset="[20, 10]"
@@ -347,15 +347,13 @@ export default {
 .header-note-title {
   display: flex;
   align-items: center;
+  margin-left: 10%;
 }
 .header-note-title > span {
-  font-family: 'Open Sans', 'JetBrains Mono';
+  font-family: 'Open Sans', 'JetBrains Mono', serif;
   margin-left: 7px;
   letter-spacing: 0.3px;
   font-weight: 600;
 }
 
-.note-state-icon {
-  color: var(--noteStateIcon);
-}
 </style>

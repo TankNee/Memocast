@@ -41,7 +41,7 @@
         v-if="isLogin && !isTagCategory"
       >
         <q-fab-action
-          v-if="isRootCategory"
+          v-if="!isRootCategory"
           :color="color"
           icon="import_export"
           @click="exportCategoryHandler"
@@ -55,7 +55,7 @@
           >
         </q-fab-action>
         <q-fab-action
-          v-if="isRootCategory"
+          v-if="!isRootCategory"
           :color="color"
           icon="add"
           @click="$refs.ImportDialog.toggle()"
@@ -68,13 +68,27 @@
             >{{ $t('import') }}</q-tooltip
           >
         </q-fab-action>
-        <q-fab-action v-if="isRootCategory" :color="color" icon="note_add" @click="addNoteHandler">
+        <q-fab-action v-if="!isRootCategory" :color="color" icon="note_add" @click="addNoteHandler">
           <q-tooltip
             anchor="center right"
             self="center left"
             :offset="[20, 10]"
             :content-class="`bg-${color} text-white shadow-4  text-h7`"
             >{{ $t('createNote') }}</q-tooltip
+          >
+        </q-fab-action>
+        <q-fab-action
+          :color="color"
+          v-if="isRootCategory"
+          icon="create_new_folder"
+          @click="addCategoryHandler"
+        >
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[20, 10]"
+            :content-class="`bg-${color} text-white shadow-4  text-h7`"
+          >{{ $t('createCategory') }}</q-tooltip
           >
         </q-fab-action>
       </q-fab>
@@ -122,7 +136,7 @@ export default {
       }
     },
     isRootCategory: function () {
-      return !helper.isNullOrEmpty(this.currentCategory)
+      return helper.isNullOrEmpty(this.currentCategory)
     },
     category: function () {
       if (helper.isNullOrEmpty(this.currentCategory)) return ''
@@ -250,11 +264,11 @@ export default {
       this.categoryDialogHandler = this.moveNote
       this.$refs.categoryDialog.toggle()
     },
-    exportNoteAsMdHandler: function () {
-      this.exportMarkdownFile(this.rightClickNoteItem)
+    exportNoteAsMdHandler: function (current = false) {
+      this.exportMarkdownFile({ noteField: this.rightClickNoteItem, current })
     },
     exportNoteAsPngHandler: function () {
-      this.exportPng(this.rightClickNoteItem)
+      this.exportPng()
     },
     noteItemContextMenuHandler: function (e, noteField) {
       this.setRightClickNoteItem(noteField)
@@ -283,8 +297,8 @@ export default {
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.rename, this.renameNoteHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.copy, this.copyNoteHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.move, this.moveNoteHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.markdown, this.exportNoteAsMdHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png, this.exportNoteAsPngHandler)
+    bus.$on(events.NOTE_SHORTCUT_CALL.exportNoteAsMarkdown, this.exportNoteAsMdHandler)
+    bus.$on(events.NOTE_SHORTCUT_CALL.exportNoteAsPNG, this.exportNoteAsPngHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.delete, this.deleteNoteHandler)
   }
 }

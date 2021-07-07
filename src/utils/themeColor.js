@@ -19,7 +19,7 @@ const oneDarkTheme = `:root {
   --themeColor10: rgba(64, 158, 255, .1);
 
   --highlightColor: rgba(102, 177, 255, .6);
-  --selectionColor: rgba(11, 44, 128, .8);
+  --selectionColor: rgba(70, 122, 189, .7);
   --editorColor: rgba(222, 222, 222, .7);
   --editorColor80: rgba(222, 222, 222, .8);
   --editorColor60: rgba(222, 222, 222, .6);
@@ -28,7 +28,7 @@ const oneDarkTheme = `:root {
   --editorColor30: rgba(222, 222, 222, .3);
   --editorColor10: rgba(222, 222, 222, .1);
   --editorColor04: rgba(222, 222, 222, .04);
-  --editorBgColor: #282828;
+  --editorBgColor: rgb(53, 55, 62);
   --deleteColor: #cf000f;
   --iconColor: rgba(255, 255, 255, .56);
   --codeBgColor: #424344;
@@ -62,9 +62,9 @@ const oneDarkTheme = `:root {
   --buttonPrimaryFocusBorder: none;
   --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(24, 26, 31, 0.5), 0 0 0 1px var(--themeColor);
   --tableBorderColor: rgb(158, 158, 158);
+  --highlightThemeColor: rgb(170, 147, 114);
 
   --treeNodeColor: rgb(174, 180, 187);
-  --noteStateIcon: rgb(170, 147, 114);
   /*marktext*/
   --sideBarColor: rgba(255, 255, 255, .6);
   --sideBarIconColor: var(--iconColor);
@@ -292,7 +292,7 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --buttonActive: #e5e5e5;
 
   --treeNodeColor: rgb(62, 43, 42);
-  --noteStateIcon: rgb(100, 203, 154);
+  --highlightThemeColor: rgb(100, 203, 154);
 
   /*marktext*/
   --sideBarColor: rgba(0, 0, 0, .6);

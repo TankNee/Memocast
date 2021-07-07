@@ -44,7 +44,7 @@ export default {
           icon: icon,
           actions: [
             {
-              label: 'open_in_new',
+              icon: 'open_in_new',
               textColor: 'white',
               handler: () => {
                 shell.showItemInFolder(filePath)
@@ -80,6 +80,10 @@ export default {
     handleApi('editor-view-action', (event, { type }) => {
       console.log(type)
       bus.$emit(events.VIEW_SHORTCUT_CALL[type], type)
+    }).catch(err => throw err)
+
+    handleApi('editor-note-action', (event, { type }) => {
+      bus.$emit(events.NOTE_SHORTCUT_CALL[type], true)
     }).catch(err => throw err)
 
     handleApi('updater-update-available', (event, info) => {

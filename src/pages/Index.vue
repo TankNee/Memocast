@@ -19,17 +19,21 @@
       </template>
       <template v-slot:after>
         <div class='full-height'>
-          <q-scroll-area
-            ref='previewScrollArea'
-            :thumb-style='thumbStyle'
-            :bar-style='barStyle'
-            class='exclude-header overflow-hidden'
-            v-show='!isSourceMode'
-            @scroll='editorScrollHandler'
-          >
+          <!--          <q-scroll-area-->
+          <!--            ref='previewScrollArea'-->
+          <!--            id='muyaScrollContainer'-->
+          <!--            :thumb-style='thumbStyle'-->
+          <!--            :bar-style='barStyle'-->
+          <!--            class='exclude-header'-->
+          <!--            v-show='!isSourceMode'-->
+          <!--            @scroll='editorScrollHandler'-->
+          <!--          >-->
+          <!--            <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />-->
+          <!--          </q-scroll-area>-->
+          <div v-show='!isSourceMode'>
             <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
-          </q-scroll-area>
-          <Monaco ref='monaco' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
+          </div>
+          <Monaco v-if='dataLoaded' ref='monaco' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
           <transition-group
             appear
             enter-active-class='animated fadeIn'
@@ -173,21 +177,11 @@ export default {
     }
   },
   mounted () {
-    const that = this
-    bus.$on(events.SCROLL_TO_HEADER, item => {
-      const anchor = document.querySelector(`#${item}`)
-      if (anchor) {
-        const { top } = anchor.getBoundingClientRect()
-        const DURATION = 300
-        const STANDARD_Y = window.innerHeight * 0.065
-        const DISTANCE = that.$refs.previewScrollArea.getScrollPosition() + top - STANDARD_Y
-        that.$refs.previewScrollArea.setScrollPosition(DISTANCE, DURATION)
-      }
-    })
+    // const that = this
 
-    bus.$on(events.SCROLL_DOWN, () => {
-      that.$refs.previewScrollArea.setScrollPosition(that.$refs.previewScrollArea.scrollSize, 300)
-    })
+    // bus.$on(events.SCROLL_DOWN, () => {
+    //   that.$refs.previewScrollArea.setScrollPosition(that.$refs.previewScrollArea.scrollSize, 300)
+    // })
 
     bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
   },
@@ -198,7 +192,6 @@ export default {
           markdown: this.$refs.monaco.getValue(),
           cursor: this.$refs.monaco.getCursorPosition()
         }
-        // this.$refs.muya.setCursorPosition(this.$refs.monaco.getCursorPosition())
       } else {
         this.tempNoteData = {
           markdown: this.$refs.muya.getValue(),
@@ -209,3 +202,10 @@ export default {
   }
 }
 </script>
+<style>
+.editor-component {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+</style>

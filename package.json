@@ -1,6 +1,6 @@
 {
   "name": "cn.memocast.app",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Memocast",
   "author": "tanknee <nee@tanknee.cn>",
@@ -44,6 +44,8 @@
     "joplin-turndown-plugin-gfm": "^1.0.12",
     "katex": "^0.11.1",
     "lodash": "^4.17.21",
+    "markdown-it": "^8.4.2",
+    "markdown-it-pangu": "^1.0.2",
     "md5": "^2.3.0",
     "mermaid": "^8.4.8",
     "monaco-editor": "^0.25.2",

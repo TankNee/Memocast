@@ -9,6 +9,7 @@ import {
   SEPARATOR
 } from './menuItems'
 import { i18n } from 'boot/i18n'
+import helper from 'src/utils/helper'
 const {
   Menu,
   MenuItem
@@ -19,11 +20,16 @@ const {
  *
  * @param {MouseEvent} event The native mouse event.
  * @param {boolean} isCurrentCategory
+ * @param {string} category
  */
-export const showContextMenu = (event, isCurrentCategory) => {
+export const showContextMenu = (event, isCurrentCategory, category) => {
   const menu = new Menu()
   const win = remote.getCurrentWindow()
   EXPORT.enabled = isCurrentCategory
+  if (helper.isNullOrEmpty(category)) {
+    EXPORT.enabled = false
+    DELETE.enabled = false
+  }
   const ITEMS = [OPEN_CATEGORY, SEPARATOR, CREATE_CATEGORY, EXPORT, SEPARATOR, DELETE]
 
   const MENU_ITEM = ITEMS.map(item => {

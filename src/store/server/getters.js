@@ -68,6 +68,7 @@ export default {
     } else {
       result = helper.extractMarkdownFromMDNote(html, kbGuid, docGuid, resources)
     }
+
     return helper.isNullOrEmpty(result) ? `# ${currentNote.info.title}` : result
   },
   currentNoteResources: ({ currentNote }) => {

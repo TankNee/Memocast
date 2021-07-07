@@ -26,6 +26,11 @@ export default {
     sourceMode: 'view.shortcut.source.code.call',
     lockMode: 'view.shortcut.lock.code.call'
   },
+  NOTE_SHORTCUT_CALL: {
+    save: 'note.shortcut.save.call',
+    exportNoteAsMarkdown: 'note.shortcut.export.markdown.call',
+    exportNoteAsPNG: 'note.shortcut.export.png.call'
+  },
   UPDATE_EVENTS: {
     updateAvailable: 'update.events.update.available',
     updateNotAvailable: 'update.events.update.not.available',

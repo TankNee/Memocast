@@ -14,11 +14,11 @@ export const move = (menuItem, browserWindow) => {
 }
 
 export const exportAsMarkdown = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.exportNote.markdown)
+  bus.$emit(events.NOTE_SHORTCUT_CALL.exportNoteAsMarkdown)
 }
 
 export const exportAsPNG = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png)
+  bus.$emit(events.NOTE_SHORTCUT_CALL.exportNoteAsPNG)
 }
 
 export const deleteNote = (menuItem, browserWindow) => {

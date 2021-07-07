@@ -73,7 +73,7 @@ export default {
       'url'
     ])
     if (autoLogin) {
-      await this.dispatch('server/login', {
+      this.dispatch('server/login', {
         userId,
         password,
         url
@@ -131,7 +131,7 @@ export default {
       ...result,
       isLogin: true
     })
-    await this.dispatch('server/getAllTags')
+    this.dispatch('server/getAllTags')
     this.dispatch('server/getAllCategories')
     this.dispatch('server/getCategoryNotes')
 
@@ -158,7 +158,7 @@ export default {
       'password',
       'url'
     ])
-    await this.dispatch('server/login', {
+    this.dispatch('server/login', {
       userId,
       password,
       url
@@ -464,7 +464,10 @@ export default {
   async createCategory ({
     commit,
     state
-  }, { childCategoryName, parentCategory }) {
+  }, {
+    childCategoryName,
+    parentCategory
+  }) {
     const {
       kbGuid,
       // currentCategory,
@@ -551,7 +554,12 @@ export default {
           }
         }
         // eslint-disable-next-line no-case-declarations
-        const result = await uploadImages([file], imageUploadService, { kbGuid, docGuid, wizToken: token, baseUrl: api.KnowledgeBaseApi.getBaseUrl() })
+        const result = await uploadImages([file], imageUploadService, {
+          kbGuid,
+          docGuid,
+          wizToken: token,
+          baseUrl: api.KnowledgeBaseApi.getBaseUrl()
+        })
         commit(types.UPDATE_CURRENT_NOTE_RESOURCE, result.result)
         // await saveUploadedImage(buffer, kbGuid, docGuid, result.name)
         if (!result.success) {
@@ -806,11 +814,25 @@ export default {
    * 导出markdown文件到本地
    * @param state
    * @param noteField
+   * @param {boolean} current
    * @returns {Promise<void>}
    */
-  async exportMarkdownFile ({ state }, noteField) {
-    const { kbGuid } = state
-    const { docGuid } = noteField
+  async exportMarkdownFile ({ state }, {
+    noteField,
+    current
+  }) {
+    const {
+      kbGuid,
+      currentNote
+    } = state
+    let docGuid
+    if (current) {
+      docGuid = currentNote.info.docGuid
+    } else if (noteField) {
+      docGuid = noteField.docGuid
+    } else {
+      return
+    }
     Loading.show({
       spinner: QSpinnerGears,
       message: i18n.t('prepareExportData')
@@ -835,17 +857,15 @@ export default {
     Loading.hide()
     await exportMarkdownFile(content)
   },
-  async exportPng ({
-    commit,
-    state
-  }, noteField) {
+  async exportPng ({ state }) {
+    const { currentNote } = state
+    if (_.isEmpty(currentNote)) return
     Loading.show({
       spinner: QSpinnerGears,
       message: i18n.t('prepareExportData')
     })
-    const canvasID = document.getElementById('muya')
+    const canvasID = document.getElementById('ag-editor-id')
     const color = Dark.isActive
-    console.log(color)
     html2canvas(canvasID, {
       useCORS: true,
       allowTaint: true,
@@ -866,7 +886,10 @@ export default {
    * @returns {Promise<void>}
    */
   async exportMarkdownFiles ({ state }, noteFields = []) {
-    const { kbGuid, currentCategory } = state
+    const {
+      kbGuid,
+      currentCategory
+    } = state
     const results = []
     Loading.show({
       spinner: QSpinnerGears,
@@ -902,6 +925,9 @@ export default {
     })
     Loading.hide()
     const category = currentCategory.split('/')[1]
-    await exportMarkdownFiles({ contents, category })
+    await exportMarkdownFiles({
+      contents,
+      category
+    })
   }
 }

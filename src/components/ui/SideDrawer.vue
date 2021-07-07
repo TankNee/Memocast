@@ -10,6 +10,7 @@
       :thumb-style="thumbStyle"
       :bar-style="barStyle"
       :class="`exclude-header note-list${$q.dark.isActive ? '-dark' : ''}`"
+      @contextmenu='drawerContextMenuHandler'
     >
       <q-tree
         :nodes="items"
@@ -96,7 +97,14 @@ export default {
     contextMenuHandler: function (e, node) {
       if (this.type !== 'category') return
       this.setRightClickCategoryItem(node.key)
-      showSideDrawerContextMenu(e, this.currentCategory === node.key)
+      e.stopPropagation()
+      showSideDrawerContextMenu(e, this.currentCategory === node.key, node.key)
+    },
+    drawerContextMenuHandler: function (e) {
+      if (this.type !== 'category') return
+      this.setRightClickCategoryItem('')
+      e.stopPropagation()
+      showSideDrawerContextMenu(e, this.currentCategory === '', '')
     },
     openCategoryHandler: function () {
       this.updateCurrentCategory({ data: this.rightClickCategoryItem, type: this.type })
