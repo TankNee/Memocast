@@ -44,7 +44,7 @@ export default {
           icon: icon,
           actions: [
             {
-              label: 'open_in_new',
+              icon: 'open_in_new',
               textColor: 'white',
               handler: () => {
                 shell.showItemInFolder(filePath)
