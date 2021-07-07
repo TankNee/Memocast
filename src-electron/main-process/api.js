@@ -7,6 +7,7 @@ import { BrowserWindow } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
 import { cacheNoteImage, saveTempImage, saveBuffer } from './utlis/helper'
 import { uploadImagesByWiz } from './utlis/wiz-resource-helper'
+import { execRequest } from './service/request'
 
 const { uploadImagesByPicGo } = require('./3rd-part/PicGoUtils')
 
@@ -220,6 +221,10 @@ export default {
 
     handleApi('quit-and-install', async (e) => {
       quitAndInstall()
+    }).catch(err => throw err)
+
+    handleApi('remote-request', async (e, config) => {
+      return execRequest(config)
     }).catch(err => throw err)
   }
 }

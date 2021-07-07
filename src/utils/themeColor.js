@@ -28,7 +28,7 @@ const oneDarkTheme = `:root {
   --editorColor30: rgba(222, 222, 222, .3);
   --editorColor10: rgba(222, 222, 222, .1);
   --editorColor04: rgba(222, 222, 222, .04);
-  --editorBgColor: transparent;
+  --editorBgColor: rgb(53, 55, 62);
   --deleteColor: #cf000f;
   --iconColor: rgba(255, 255, 255, .56);
   --codeBgColor: #424344;

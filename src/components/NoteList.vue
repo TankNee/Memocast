@@ -79,7 +79,7 @@
         </q-fab-action>
         <q-fab-action
           :color="color"
-          v-if="!isRootCategory"
+          v-if="isRootCategory"
           icon="create_new_folder"
           @click="addCategoryHandler"
         >
@@ -264,11 +264,11 @@ export default {
       this.categoryDialogHandler = this.moveNote
       this.$refs.categoryDialog.toggle()
     },
-    exportNoteAsMdHandler: function () {
-      this.exportMarkdownFile(this.rightClickNoteItem)
+    exportNoteAsMdHandler: function (current = false) {
+      this.exportMarkdownFile({ noteField: this.rightClickNoteItem, current })
     },
     exportNoteAsPngHandler: function () {
-      this.exportPng(this.rightClickNoteItem)
+      this.exportPng()
     },
     noteItemContextMenuHandler: function (e, noteField) {
       this.setRightClickNoteItem(noteField)
@@ -297,8 +297,8 @@ export default {
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.rename, this.renameNoteHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.copy, this.copyNoteHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.move, this.moveNoteHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.markdown, this.exportNoteAsMdHandler)
-    bus.$on(events.NOTE_ITEM_CONTEXT_MENU.exportNote.png, this.exportNoteAsPngHandler)
+    bus.$on(events.NOTE_SHORTCUT_CALL.exportNoteAsMarkdown, this.exportNoteAsMdHandler)
+    bus.$on(events.NOTE_SHORTCUT_CALL.exportNoteAsPNG, this.exportNoteAsPngHandler)
     bus.$on(events.NOTE_ITEM_CONTEXT_MENU.delete, this.deleteNoteHandler)
   }
 }

@@ -402,13 +402,12 @@ function checkTagExistence (tags, newTag) {
 
 function formatDocumentByRemarkPangu (markdown) {
   return new Promise((resolve, reject) => {
-    remark().use(pangu, {
-      inlineCode: true
-    }).process(markdown, (err, res) => {
+    remark().use(pangu).process(markdown, (err, res) => {
       if (err) {
         reject(err)
       } else {
-        resolve(res.contents)
+        // * \[ ] 12312321
+        resolve(res.contents.replace(/\*\s*\\\[/g, '* ['))
       }
     })
   })

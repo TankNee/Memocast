@@ -8,11 +8,11 @@ const { ipcRenderer } = require('electron')
  * @returns {Promise<void>}
  */
 async function exportMarkdownFile (note) {
-  return await ipcRenderer.invoke(channels.exportMarkdownFile, note)
+  return ipcRenderer.invoke(channels.exportMarkdownFile, note)
 }
 
 async function exportPng (note) {
-  return await ipcRenderer.invoke(channels.exportPng, note)
+  return ipcRenderer.invoke(channels.exportPng, note)
 }
 
 /**
@@ -21,7 +21,7 @@ async function exportPng (note) {
  * @returns {Promise<any>}
  */
 async function exportMarkdownFiles (notes) {
-  return await ipcRenderer.invoke(channels.exportMarkdownFiles, notes)
+  return ipcRenderer.invoke(channels.exportMarkdownFiles, notes)
 }
 
 /**
@@ -29,7 +29,7 @@ async function exportMarkdownFiles (notes) {
  * @returns {Promise<string[]>}
  */
 async function importImages () {
-  return await ipcRenderer.invoke(channels.importImages)
+  return ipcRenderer.invoke(channels.importImages)
 }
 
 /**
@@ -37,19 +37,23 @@ async function importImages () {
  * @returns {Promise<any>}
  */
 async function uploadImages (imagePaths, type, options = {}) {
-  return await ipcRenderer.invoke(channels.uploadImages, { imagePaths, type, options })
+  return ipcRenderer.invoke(channels.uploadImages, { imagePaths, type, options })
 }
 
 async function checkUpdate () {
-  return await ipcRenderer.invoke(channels.checkUpdate)
+  return ipcRenderer.invoke(channels.checkUpdate)
 }
 
 async function needUpdate (need) {
-  return await ipcRenderer.invoke(channels.needUpdate, need)
+  return ipcRenderer.invoke(channels.needUpdate, need)
 }
 
 async function quitAndUpdate () {
-  return await ipcRenderer.invoke(channels.quitAndUpdate)
+  return ipcRenderer.invoke(channels.quitAndUpdate)
+}
+
+async function remoteRequest (config) {
+  return ipcRenderer.invoke(channels.remoteRequest, config)
 }
 
 /**
@@ -58,7 +62,7 @@ async function quitAndUpdate () {
  * @returns {Promise<any>}
  */
 async function getCacheImage (bundle) {
-  return await ipcRenderer.invoke(channels.getCacheImage, bundle)
+  return ipcRenderer.invoke(channels.getCacheImage, bundle)
 }
 
 /**
@@ -67,15 +71,15 @@ async function getCacheImage (bundle) {
  * @returns {string}
  */
 async function saveTempImage (bundle) {
-  return await ipcRenderer.invoke(channels.saveTempImage, bundle)
+  return ipcRenderer.invoke(channels.saveTempImage, bundle)
 }
 
 async function getLocalFileData (filePath) {
-  return await ipcRenderer.invoke(channels.getLocalFileData, filePath)
+  return ipcRenderer.invoke(channels.getLocalFileData, filePath)
 }
 
 async function saveUploadedImage (buffer, kbGuid, docGuid, name) {
-  return await ipcRenderer.invoke(channels.saveUploadedImage, { buffer, kbGuid, docGuid, name })
+  return ipcRenderer.invoke(channels.saveUploadedImage, { buffer, kbGuid, docGuid, name })
 }
 
 export {
@@ -87,6 +91,7 @@ export {
   checkUpdate,
   needUpdate,
   quitAndUpdate,
+  remoteRequest,
   getCacheImage,
   saveTempImage,
   getLocalFileData,

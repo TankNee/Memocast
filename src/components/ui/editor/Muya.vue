@@ -281,7 +281,6 @@ export default {
       bus.$on(events.FORMAT_SHORTCUT_CALL, this.formatHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.undo, this.editCopyPasteHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.redo, this.editCopyPasteHandler)
-      bus.$on(events.EDIT_SHORTCUT_CALL.save, this.saveHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.copyAsMarkdown, this.editCopyPasteHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.copyAsHtml, this.editCopyPasteHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.pasteAsPlainText, this.editCopyPasteHandler)
@@ -291,6 +290,7 @@ export default {
       bus.$on(events.EDIT_SHORTCUT_CALL.deleteParagraph, this.editParagraphHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.insertParagraph, this.insertParagraphHandler)
       bus.$on(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu, this.formatDocumentByPanguHandler)
+      bus.$on(events.NOTE_SHORTCUT_CALL.save, this.saveHandler)
     })
   },
   beforeDestroy () {

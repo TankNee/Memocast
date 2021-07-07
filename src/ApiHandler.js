@@ -82,6 +82,10 @@ export default {
       bus.$emit(events.VIEW_SHORTCUT_CALL[type], type)
     }).catch(err => throw err)
 
+    handleApi('editor-note-action', (event, { type }) => {
+      bus.$emit(events.NOTE_SHORTCUT_CALL[type], true)
+    }).catch(err => throw err)
+
     handleApi('updater-update-available', (event, info) => {
       console.log(info)
       bus.$emit(events.UPDATE_EVENTS.updateAvailable, info)

@@ -11,7 +11,7 @@ export default class KeyBindings {
       // Edit menu
       ['edit.undo', 'CmdOrCtrl+Z'],
       ['edit.redo', 'CmdOrCtrl+Shift+Z'],
-      ['edit.save', 'CmdOrCtrl+S'],
+      // ['edit.save', 'CmdOrCtrl+S'],
       ['edit.cut', 'CmdOrCtrl+X'],
       ['edit.copy', 'CmdOrCtrl+C'],
       ['edit.paste', 'CmdOrCtrl+V'],
@@ -60,7 +60,9 @@ export default class KeyBindings {
       ['view.switch-view', 'CmdOrCtrl+Shift+,'],
       ['view.source-mode', 'CmdOrCtrl+Shift+.'],
       ['view.lock-mode', 'CmdOrCtrl+Shift+L'],
-      ['view.devtool', 'CmdOrCtrl+Shift+P']
+      ['view.devtool', 'CmdOrCtrl+Shift+P'],
+      // Note Shortcut
+      ['note.save', 'CmdOrCtrl+S']
     ])
   }
 

@@ -127,7 +127,7 @@ class StateRender {
     if (cache.size) {
       const RENDER_MAP = {
         flowchart: await loadRenderer('flowchart'),
-        sequence: await loadRenderer('sequence'),
+        // sequence: await loadRenderer('sequence'),
         'vega-lite': await loadRenderer('vega-lite')
       }
 
