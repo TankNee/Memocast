@@ -117,3 +117,7 @@ GitHub Release：[Releases · TankNee/Memocast · GitHub](https://github.com/Tan
 感谢所有Memocast和Neeto-Vue的贡献者！
 
 Thanks to all Memocast's contributors as well as Neeto-Vue's contributors!
+
+## License
+
+MIT @[TankNee](https://github.com/TankNee)
