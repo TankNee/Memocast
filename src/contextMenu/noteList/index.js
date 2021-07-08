@@ -17,11 +17,13 @@ const {
  * Show editor context menu.
  *
  * @param {MouseEvent} event The native mouse event.
+ * @param {string} isCurrentNote
  */
-export const showContextMenu = (event) => {
+export const showContextMenu = (event, isCurrentNote) => {
   const menu = new Menu()
   const win = remote.getCurrentWindow()
   const ITEMS = [RENAME, COPY, SEPARATOR, MOVE, EXPORT, SEPARATOR, DELETE]
+  EXPORT.submenu.find(v => v.label === 'PNG').enabled = isCurrentNote
   const MENU_ITEM = ITEMS.map(item => {
     if (item.type === 'separator') return item
     return {
