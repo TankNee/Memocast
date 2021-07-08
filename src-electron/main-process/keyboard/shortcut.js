@@ -11,7 +11,6 @@ export default class KeyBindings {
       // Edit menu
       ['edit.undo', 'CmdOrCtrl+Z'],
       ['edit.redo', 'CmdOrCtrl+Shift+Z'],
-      // ['edit.save', 'CmdOrCtrl+S'],
       ['edit.cut', 'CmdOrCtrl+X'],
       ['edit.copy', 'CmdOrCtrl+C'],
       ['edit.paste', 'CmdOrCtrl+V'],
@@ -45,8 +44,8 @@ export default class KeyBindings {
       ['paragraph.front-matter', 'CmdOrCtrl+Alt+Y'],
 
       // Format menu
-      ['format.strong', 'CmdOrCtrl+B'],
-      ['format.emphasis', 'CmdOrCtrl+I'],
+      ['format.strong', 'CmdOrCtrl+Shift+B'],
+      ['format.emphasis', 'Alt+I'],
       ['format.underline', 'CmdOrCtrl+U'],
       ['format.highlight', 'Shift+CmdOrCtrl+H'],
       ['format.inline-code', 'CmdOrCtrl+`'],

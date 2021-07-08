@@ -259,8 +259,8 @@ export default {
         }
       })
 
-      document.addEventListener('keydown', (e) => {
-        if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
+      container.addEventListener('keydown', (e) => {
+        // if (!e.srcElement.className.includes('ag-') || helper.isCtrl(e)) return
         const curData = this.contentEditor.getMarkdown()
         // eslint-disable-next-line eqeqeq
         if (curData != this.currentNote) {
@@ -268,11 +268,6 @@ export default {
           this.updateContentsList(this.contentEditor.getTOC())
         } else {
           this.updateNoteState('default')
-        }
-        this.updateContentsList(this.contentEditor.getTOC())
-        const cursor = this.contentEditor.getCursor()
-        if (cursor.anchor.line >= this.contentEditor.getWordCount(curData).line - 2) {
-          bus.$emit(events.SCROLL_DOWN)
         }
       })
 
