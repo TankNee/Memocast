@@ -1,4 +1,4 @@
 export default {
-  resizeTable: 'resizeTable',
-  deleteTable: 'deleteTable'
+  resizeTable: 'Resize Table',
+  deleteTable: 'Delete Table'
 }
