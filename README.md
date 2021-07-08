@@ -1,6 +1,4 @@
-# 2.1.3 README.md
-
-<img title="" src="https://img.tanknee.cn/blogpicbed/2021/07/08/20210708fc3b67e797e90.png" alt="Template - Icon - App - P3 (3).png" data-align="center" width="185">
+<img title="" src="https://img.tanknee.cn/blogpicbed/2021/07/08/20210708fc3b67e797e90.png" alt="AppIcon" align="center" width="185">
 
 # Memocast
 
