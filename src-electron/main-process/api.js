@@ -175,7 +175,7 @@ export default {
               msg: 'PicGo Upload Server Not Found!',
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           }
         })
         return uploadResult
