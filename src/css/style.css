@@ -221,3 +221,11 @@ body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog_
 .save-dot.show {
   visibility: visible;
 }
+
+.bg-light {
+  background-color: #1976D2;
+}
+
+.bg-darkMode {
+  background-color: #F2c037;
+}
