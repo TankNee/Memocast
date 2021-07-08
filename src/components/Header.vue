@@ -8,6 +8,7 @@
       v-if="$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
       style="cursor: pointer"
+      :class="{ 'mac': $q.platform.is.mac }"
       @click="$refs.tagDialog.toggle"
     >
       <span class='save-dot' :class="{ 'show': this.noteState !== 'default' }"></span>
@@ -170,10 +171,12 @@
     <div
       v-if="!$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn q-electron-drag--exception"
+      :class="{ 'mac': $q.platform.is.mac }"
       style="cursor: pointer;"
       @click="$refs.tagDialog.toggle"
     >
-      <q-icon v-show="noteState !== 'default'" class="note-state-icon" key="icon" name="fiber_manual_record" size="16px" />
+      <span class="save-dot" :class="{'show': noteState !== 'default'}"></span>
+      <!-- <q-icon v-show="noteState !== 'default'" class="note-state-icon" key="icon" name="fiber_manual_record" size="16px" /> -->
       <q-tooltip
         v-if="tags.length > 0"
         :offset="[20, 10]"
@@ -223,7 +226,7 @@
     <div v-if="!$q.platform.is.mac">
       <q-btn dense flat icon="minimize" @click="minimize" />
       <q-btn dense flat icon="crop_square" @click="maximize" />
-      <q-btn dense flat icon="close" @click="closeApp" />
+      <q-btn dense flat icon="close" class="close-button" @click="closeApp" />
     </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
@@ -393,13 +396,20 @@ export default {
 .header-note-title {
   display: flex;
   align-items: center;
-  margin-left: 10%;
+  margin-left: 0;
+}
+.header-note-title.mac {
+  margin-left: 15%;
 }
 .header-note-title > span {
   font-family: 'Open Sans', 'JetBrains Mono', serif;
   margin-left: 7px;
   letter-spacing: 0.3px;
   font-weight: 600;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 0, 0, .6);
 }
 
 </style>

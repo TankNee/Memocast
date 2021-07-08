@@ -185,7 +185,7 @@ export default {
       start,
       count
     } = payload
-    const isTagCategory = tags.map(t => t.tagGuid).includes(helper.isNullOrEmpty(category) ? currentCategory : category)
+    const isTagCategory = tags?.map(t => t.tagGuid).includes(helper.isNullOrEmpty(category) ? currentCategory : category)
     if (isTagCategory) {
       this.dispatch('server/getTagNotes', { tag: currentCategory })
       return

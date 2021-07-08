@@ -69,7 +69,8 @@
             v-model='selfHostServer'
             :label="$t('selfHostServer')"
             :rules="[
-              val => (enableSelfHostServer && !!val) || $t('fieldIsRequired')
+              val => (enableSelfHostServer && !!val) || $t('fieldIsRequired'),
+              val => (enableSelfHostServer && /^(http)/.test(val)) || $t('fieldShouldStartWithHTTP')
             ]"
             spellcheck='false'
           />
@@ -143,7 +144,7 @@ export default {
       const loginPayload = {
         userId: this.username,
         password: this.password,
-        url: this.enableSelfHostServer ? this.selfHostServer : null
+        url: this.enableSelfHostServer ? this.selfHostServer.replace(/\/+$/, '') : null
       }
       try {
         await this.login(loginPayload)
@@ -158,7 +159,7 @@ export default {
     },
     signUpHandler: function () {
       this.$q.electron.shell.openExternal(
-        `${!(helper.isNullOrEmpty(this.selfHostServer) || !this.enableSelfHostServer) ? this.selfHostServer : 'https://wiz.cn'}/signup`
+        `${!(helper.isNullOrEmpty(this.selfHostServer) || !this.enableSelfHostServer) ? this.selfHostServer.replace(/\/+$/, '') : 'https://wiz.cn'}/signup`
       )
     },
     toggle: function () {

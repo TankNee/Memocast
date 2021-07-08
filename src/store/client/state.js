@@ -1,7 +1,6 @@
-const { app } = require('electron').remote
 export default function () {
   return {
-    language: app.getLocale().toLocaleLowerCase(),
+    language: null,
     autoLogin: false,
     rememberPassword: true,
     darkMode: false,
