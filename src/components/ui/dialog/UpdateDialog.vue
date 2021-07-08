@@ -14,7 +14,12 @@
       </q-toolbar>
       <q-card-section class='hide-scrollbar'>
         <div class='q-pa-md'>
-          <div style="font-size: 1.2rem;">{{ `${transferred}/${total} ${speed} Kbs` }}</div>
+          <p style="font-size: 0.9rem;">
+            <span>{{ `${$t('downloadSize')} ${transferred}/${total}` }}</span>
+          </p>
+          <p style="font-size: 0.9rem;">
+            <span>{{ `${$t('downloadSpeed')} ${speed}` }}</span>
+          </p>
         </div>
         <div class='q-pa-md'>
           <q-linear-progress rounded size='35px' :value='progress' color='primary' class='q-mt-sm'>
@@ -35,6 +40,7 @@
 <script>
 import bus from 'components/bus'
 import events from 'src/constants/events'
+import prettyBytes from 'pretty-bytes'
 import { quitAndUpdate } from 'src/ApiInvoker'
 
 export default {
@@ -43,9 +49,9 @@ export default {
     return {
       progress: 0,
       downloaded: false,
-      speed: 0,
-      transferred: 0,
-      total: 0
+      speed: '',
+      transferred: '',
+      total: ''
     }
   },
   computed: {
@@ -57,13 +63,25 @@ export default {
     downloadingHandler: function (progress) {
       const { percent = 0, bytesPerSecond, transferred, total } = progress
       this.progress = (percent / 100).toFixed(2)
-      this.speed = (bytesPerSecond / 1024).toFixed(2)
-      this.transferred = (transferred / (1024 * 1024)).toFixed(2)
-      this.total = (total / (1024 * 1024)).toFixed(2)
+      this.speed = prettyBytes(bytesPerSecond)
+      this.transferred = prettyBytes(transferred)
+      this.total = prettyBytes(total)
     },
     downloadedHandler: function () {
       this.progress = 1
       this.downloaded = true
+      this.$q.notify({
+        color: 'positive',
+        icon: 'check',
+        message: this.$t('downloadSuccessfully'),
+        actions: [{
+          icon: 'play_for_work',
+          color: 'white',
+          handler: () => {
+            this.installHandler()
+          }
+        }]
+      })
     },
     installHandler: function () {
       quitAndUpdate()

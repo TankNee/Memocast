@@ -255,7 +255,7 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
 :root {
   --titleBarHeight: 32px;
   --editorAreaWidth: 90%;
-  --backgroundColor: #35373e;
+  --backgroundColor: #ffffff;
   /*editor*/
   /*Theme color cluster*/
   --themeColor: rgba(33, 181, 111, 1);
