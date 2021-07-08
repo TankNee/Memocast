@@ -2,8 +2,7 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import messages from 'src/i18n'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
-const { app } = require('electron').remote
-const local = ClientFileStorage.getItemFromStore('language') || app.getLocale().toLocaleLowerCase()
+const local = ClientFileStorage.getItemFromStore('language')
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({

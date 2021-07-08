@@ -7,5 +7,7 @@ export default {
   prepareExportData: 'Preparing Export-Data',
   exportNoteSuccessfully: 'Export Note Successfully',
   sourceMode: 'Source Mode',
-  previewMode: 'Preview Mode'
+  previewMode: 'Preview Mode',
+  lockModeOn: 'Keyboard Locked',
+  lockModeOff: 'Keyboard Unlocked'
 }

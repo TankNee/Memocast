@@ -19,17 +19,6 @@
       </template>
       <template v-slot:after>
         <div class='full-height'>
-          <!--          <q-scroll-area-->
-          <!--            ref='previewScrollArea'-->
-          <!--            id='muyaScrollContainer'-->
-          <!--            :thumb-style='thumbStyle'-->
-          <!--            :bar-style='barStyle'-->
-          <!--            class='exclude-header'-->
-          <!--            v-show='!isSourceMode'-->
-          <!--            @scroll='editorScrollHandler'-->
-          <!--          >-->
-          <!--            <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />-->
-          <!--          </q-scroll-area>-->
           <div v-show='!isSourceMode'>
             <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
           </div>
@@ -54,37 +43,57 @@
                 </g>
               </svg>
             </q-icon>
-            <q-icon
-              name='format_align_center'
+            <q-btn
+              icon='format_align_center'
+              dense
+              flat
+              round
               class='absolute-top-right fab-icon cursor-pointer material-icons-round'
               @click.stop='$refs.outlineDrawer.show'
-              size='24px'
+              size='md'
               color='#26A69A'
               v-show='dataLoaded && contentsListLoaded && !isOutlineShow && !isSourceMode'
               v-ripple
               key='format_align_center'
             />
-            <q-icon
-              :name='isSourceMode ? "assignment" : "code"'
+            <q-btn
+              :icon='isSourceMode ? "assignment" : "code"'
+              dense
+              flat
+              round
               class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
-              style='bottom: 50px'
+              style='bottom: 100px'
               @click='isSourceMode = !isSourceMode'
-              size='24px'
+              size='md'
               color='#26A69A'
               v-show='dataLoaded && !isOutlineShow'
               v-ripple
               key='source_code'
+              :title="!isSourceMode ? $t('sourceMode') : $t('previewMode')"
             >
-              <q-tooltip anchor='top middle' self='bottom middle' :offset='[10, 10]'
-                         content-class='text-bold text-white shadow-4'
-              >{{ !isSourceMode ? $t('sourceMode') : $t('previewMode') }}
-              </q-tooltip>
-            </q-icon>
-            <q-icon
-              name='save'
+            </q-btn>
+            <q-btn
+              :icon='enablePreviewEditor ? "lock_open" : "lock"'
+              dense
+              flat
+              round
               class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
+              style='bottom: 50px'
+              @click='lockModeHandler'
+              size='md'
+              color='#26A69A'
+              v-show='dataLoaded && !isOutlineShow'
+              v-ripple
+              key='lock'
+            />
+            <q-btn
+              icon='save'
+              class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
+              dense
+              flat
+              round
               @click='refreshCurrentNote'
-              size='24px'
+              size='md'
               color='#26A69A'
               v-show='dataLoaded && !isOutlineShow'
               v-ripple
@@ -115,7 +124,7 @@ const {
   mapGetters: mapServerGetters,
   mapState: mapServerState
 } = createNamespacedHelpers('server')
-const { mapState: mapClientState } = createNamespacedHelpers('client')
+const { mapState: mapClientState, mapActions: mapClientActions } = createNamespacedHelpers('client')
 // import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
@@ -152,7 +161,7 @@ export default {
     },
     ...mapServerGetters(['currentNote']),
     ...mapServerState(['contentsList', 'isCurrentNoteLoading']),
-    ...mapClientState(['noteListVisible'])
+    ...mapClientState(['noteListVisible', 'enablePreviewEditor'])
   },
   data () {
     return {
@@ -164,7 +173,7 @@ export default {
   },
   methods: {
     refreshCurrentNote: function () {
-      bus.$emit(events.EDIT_SHORTCUT_CALL.save)
+      bus.$emit(events.NOTE_SHORTCUT_CALL.save)
     },
     outlineDrawerChangeHandler: function (state) {
       this.isOutlineShow = state
@@ -174,15 +183,22 @@ export default {
     },
     editorScrollHandler: function (e) {
       bus.$emit(events.EDITOR_SCROLL, e)
-    }
+    },
+    lockModeHandler: function () {
+      this.toggleChanged({
+        key: 'enablePreviewEditor',
+        value: !this.enablePreviewEditor
+      })
+      this.$q.notify({
+        color: 'primary',
+        icon: 'info',
+        message: this.enablePreviewEditor ? this.$t('lockModeOff') : this.$t('lockModeOn')
+      })
+    },
+    ...mapClientActions(['toggleChanged'])
   },
   mounted () {
-    // const that = this
-
-    // bus.$on(events.SCROLL_DOWN, () => {
-    //   that.$refs.previewScrollArea.setScrollPosition(that.$refs.previewScrollArea.scrollSize, 300)
-    // })
-
+    bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
     bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
   },
   watch: {

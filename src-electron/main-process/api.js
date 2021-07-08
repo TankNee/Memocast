@@ -49,10 +49,10 @@ export default {
     /**
      *  export single note
      */
-    handleApi('export-markdown-file', (event, content) => {
+    handleApi('export-markdown-file', (event, { content, title }) => {
       return dialog.showSaveDialog({
         title: 'Export',
-        defaultPath: app.getPath('documents'),
+        defaultPath: path.join(app.getPath('documents'), `${title}`),
         filters: [
           {
             name: 'Markdown File',
@@ -74,14 +74,14 @@ export default {
               msg: err.msg,
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
-    handleApi('export-png', (event, content) => {
+    handleApi('export-png', (event, { content, title }) => {
       return dialog.showSaveDialog({
         title: 'Export',
-        defaultPath: app.getPath('documents'),
+        defaultPath: path.join(app.getPath('documents'), `${title}`),
         filters: [
           {
             name: 'Portable Network Graphics',
@@ -98,14 +98,14 @@ export default {
             type: 'positive',
             icon: 'check',
             filePath: result.filePath
-          }).catch(err => throw err)
+          }, event).catch(err => throw err)
         })
           .catch(err => {
             sendNotification({
               msg: err.msg,
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
@@ -141,14 +141,14 @@ export default {
             type: 'positive',
             icon: 'check',
             filePath: directoryPath
-          }).catch(err => throw err)
+          }, event).catch(err => throw err)
         })
           .catch(err => {
             sendNotification({
               msg: err.msg,
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
@@ -175,7 +175,7 @@ export default {
               msg: 'PicGo Upload Server Not Found!',
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           }
         })
         return uploadResult

@@ -5,12 +5,26 @@ import unhandled from 'electron-unhandled'
 import path from 'path'
 import packageJSON from '../../package.json'
 import configureMenu from './menu/templates'
-
+import osLocale from 'os-locale'
 import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
 import KeyBindings from './keyboard/shortcut'
 import { registerMemocastProtocol } from './utlis/resource-loader'
+import Store from 'electron-store'
 
+const ClientStorage = new Store({
+  name: 'ClientFileStorage'
+})
 const { registerApiHandler } = Api
+// console.log(await osLocale())
+
+osLocale().then(locale => {
+  const cur = ClientStorage.get('language')
+  console.log(locale.toLocaleLowerCase(), cur)
+  if (!cur) {
+    ClientStorage.set('language', locale.toLocaleLowerCase() || 'en-us')
+  }
+})
+
 unhandled({
   reportButton: error => {
     openNewGitHubIssue({
@@ -66,8 +80,7 @@ function createWindow () {
       nodeIntegration: process.env.QUASAR_NODE_INTEGRATION,
       nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION,
       webSecurity: false,
-      experimentalFeatures: false,
-      enableRemoteModule: true
+      experimentalFeatures: false
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       // preload: path.resolve(__dirname, 'electron-preload.js')

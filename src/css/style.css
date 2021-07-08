@@ -34,17 +34,18 @@ div {
 body {
   margin: 0;
   overflow: hidden;
-  background: #ffffff !important;
+  /*background: #ffffff !important;*/
+  background: var(--backgroundColor);
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
   'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
 body.body {
-  background: #ffffff !important;
+  background: var(--backgroundColor) !important;
 }
 
 body.body--dark {
-  background: #34383e !important;
+  background: var(--backgroundColor) !important;
 }
 
 .text-h7 {
@@ -220,4 +221,12 @@ body > div.q-dialog.fullscreen.no-pointer-events.q-dialog--modal > div.q-dialog_
 }
 .save-dot.show {
   visibility: visible;
+}
+
+.bg-light {
+  background-color: #1976D2;
+}
+
+.bg-darkMode {
+  background-color: #F2c037;
 }

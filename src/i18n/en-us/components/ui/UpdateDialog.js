@@ -1,4 +1,7 @@
 export default {
   hide: 'Hide',
-  install: 'Install'
+  install: 'Install',
+  downloadSize: 'Download Size',
+  downloadSpeed: 'Download Speed',
+  downloadSuccessfully: 'Download Successfully'
 }

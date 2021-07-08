@@ -162,7 +162,7 @@ export default {
       return this.tags?.map(t => t.tagGuid).includes(this.currentCategory)
     },
     ...mapServerGetters(['activeNote', 'currentNotes']),
-    ...mapServerState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags']),
+    ...mapServerState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags', 'currentNote']),
     ...mapClientState(['rightClickCategoryItem', 'rightClickNoteItem'])
   },
   methods: {
@@ -267,12 +267,13 @@ export default {
     exportNoteAsMdHandler: function (current = false) {
       this.exportMarkdownFile({ noteField: this.rightClickNoteItem, current })
     },
-    exportNoteAsPngHandler: function () {
-      this.exportPng()
+    exportNoteAsPngHandler: function (current = false) {
+      this.exportPng({ noteField: this.rightClickNoteItem, current })
     },
     noteItemContextMenuHandler: function (e, noteField) {
+      const isCurrentNote = noteField.docGuid === this.currentNote.info.docGuid
       this.setRightClickNoteItem(noteField)
-      showNoteItemContextMenu(e)
+      showNoteItemContextMenu(e, isCurrentNote)
     },
     ...mapServerActions([
       'createNote',

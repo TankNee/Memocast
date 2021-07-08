@@ -8,6 +8,7 @@ export default {
   signUp: 'Sign Up',
   cancel: 'Cancel',
   fieldIsRequired: 'Field is required',
+  fieldShouldStartWithHTTP: 'The self host url should start with http',
   rememberPassword: 'Remember Password',
   autoLogin: 'Auto Login',
   quit: 'Quit'

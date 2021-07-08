@@ -1,3 +1,19 @@
+## <small>2.1.3 (2021-07-08)</small>
+
+* [feat]: update readme file ([281fe6f](https://github.com/TankNee/Memocast/commit/281fe6f))
+* [fix]: change delete icon, fix save error as well as optimize update dialog ([46d7ff6](https://github.com/TankNee/Memocast/commit/46d7ff6))
+* [fix]: export default name ([028006a](https://github.com/TankNee/Memocast/commit/028006a))
+* [fix]: fix init language and mac head title location ([caba2fb](https://github.com/TankNee/Memocast/commit/caba2fb))
+* [fix]: fix picgo server notification sender ([334498b](https://github.com/TankNee/Memocast/commit/334498b))
+* [fix]: fix save button and export notification ([9b933b8](https://github.com/TankNee/Memocast/commit/9b933b8))
+* [fix]: fix translation error in table tool bar ([1e17718](https://github.com/TankNee/Memocast/commit/1e17718))
+* [fix]: fix unsaved dot color in windows and disable export png in no-current note ([75b3521](https://github.com/TankNee/Memocast/commit/75b3521))
+* [fix]: optimize editor button and add lock notification ([b2b48ce](https://github.com/TankNee/Memocast/commit/b2b48ce))
+* [fix]: update readme file ([1886ee2](https://github.com/TankNee/Memocast/commit/1886ee2))
+* [fix]:theme header color ([6c20434](https://github.com/TankNee/Memocast/commit/6c20434))
+
+
+
 # CHANGE LOG
 
 ## 2021 01 17 Update 1.0.2

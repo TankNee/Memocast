@@ -8,6 +8,7 @@
       v-if="$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
       style="cursor: pointer"
+      :class="{ 'mac': $q.platform.is.mac }"
       @click="$refs.tagDialog.toggle"
     >
       <span class='save-dot' :class="{ 'show': this.noteState !== 'default' }"></span>
@@ -41,7 +42,7 @@
       <q-icon name="account_tree" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4 text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('noteCategory') }}
       </q-tooltip>
     </q-avatar>
@@ -63,25 +64,8 @@
       <q-icon name="local_offer" color="#16A2B8" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-amber-6 text-white shadow-4  text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('tag') }}
-      </q-tooltip>
-    </q-avatar>
-    <q-avatar
-      size="36px"
-      class="cursor-pointer q-electron-drag--exception"
-      v-ripple
-      @click.stop="
-        () => {
-          toggleChanged({ key: 'enablePreviewEditor', value: !enablePreviewEditor })
-        }
-      "
-    >
-      <q-icon :name="enablePreviewEditor ? 'lock_open' : 'lock'" color="#16A2B8" />
-      <q-tooltip
-        :offset="[20, 10]"
-        content-class="bg-amber-9 text-white shadow-4  text-h7"
-        >{{ enablePreviewEditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -93,7 +77,7 @@
       <img :src="avatarUrl ? avatarUrl : defaultAvatar" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-green-7 text-white shadow-4 text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ isLogin ? $t('logout') : $t('login') }}
       </q-tooltip>
     </q-avatar>
@@ -127,7 +111,7 @@
       </template>
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-amber-2 text-black shadow-4  text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
@@ -135,10 +119,12 @@
     <div
       v-if="!$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn q-electron-drag--exception"
+      :class="{ 'mac': $q.platform.is.mac }"
       style="cursor: pointer;"
       @click="$refs.tagDialog.toggle"
     >
-      <q-icon v-show="noteState !== 'default'" class="note-state-icon" key="icon" name="fiber_manual_record" size="16px" />
+      <span class="save-dot" :class="{'show': noteState !== 'default'}"></span>
+      <!-- <q-icon v-show="noteState !== 'default'" class="note-state-icon" key="icon" name="fiber_manual_record" size="16px" /> -->
       <q-tooltip
         v-if="tags.length > 0"
         :offset="[20, 10]"
@@ -160,7 +146,7 @@
       <q-icon name="table_chart" />
       <q-tooltip
         :offset="[20, 10]"
-        content-class="bg-brown-4 text-white shadow-4 text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('switchView') }}
       </q-tooltip>
     </q-avatar>
@@ -171,14 +157,14 @@
       @click="$refs.settingsDialog.toggle()"
     >
       <q-icon name="settings" />
-      <q-tooltip :offset="[20, 10]" content-class="text-white shadow-4 text-h7"
+      <q-tooltip :offset="[20, 10]" :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('settings') }}
       </q-tooltip>
     </q-avatar>
     <div v-if="!$q.platform.is.mac">
       <q-btn dense flat icon="minimize" @click="minimize" />
       <q-btn dense flat icon="crop_square" @click="maximize" />
-      <q-btn dense flat icon="close" @click="closeApp" />
+      <q-btn dense flat icon="close" class="close-button" @click="closeApp" />
     </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
@@ -307,12 +293,7 @@ export default {
         key: 'noteListVisible',
         value: !this.noteListVisible
       })
-    },
-    lockModeHandler: function () {
-      this.toggleChanged({
-        key: 'enablePreviewEditor',
-        value: !this.enablePreviewEditor
-      })
+      this.$refs.sideDrawer.hide()
     },
     clearInputHandler: function () {
       this.searchText = ''
@@ -331,7 +312,6 @@ export default {
       this.$refs.loginDialog.toggle()
     }
     bus.$on(events.VIEW_SHORTCUT_CALL.switchView, this.switchViewHandler)
-    bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
   },
   watch: {
     isLogin: function (currentData) {
@@ -347,13 +327,20 @@ export default {
 .header-note-title {
   display: flex;
   align-items: center;
-  margin-left: 10%;
+  margin-left: 0;
+}
+.header-note-title.mac {
+  margin-left: 15%;
 }
 .header-note-title > span {
   font-family: 'Open Sans', 'JetBrains Mono', serif;
   margin-left: 7px;
   letter-spacing: 0.3px;
   font-weight: 600;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 0, 0, .6);
 }
 
 </style>
