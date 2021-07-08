@@ -41,15 +41,8 @@
     >
       <q-icon name="account_tree" color="#16A2B8" />
       <q-tooltip
-        v-if='darkMode'
         :offset="[20, 10]"
-        content-class="bg-darkMode text-white shadow-4 text-h7"
-        >{{ $t('noteCategory') }}
-      </q-tooltip>
-      <q-tooltip
-        v-else
-        :offset="[20, 10]"
-        content-class="bg-light text-white shadow-4 text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('noteCategory') }}
       </q-tooltip>
     </q-avatar>
@@ -70,40 +63,9 @@
     >
       <q-icon name="local_offer" color="#16A2B8" />
       <q-tooltip
-        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-darkMode text-white shadow-4  text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('tag') }}
-      </q-tooltip>
-      <q-tooltip
-        v-else
-        :offset="[20, 10]"
-        content-class="bg-light text-white shadow-4  text-h7"
-        >{{ $t('tag') }}
-      </q-tooltip>
-    </q-avatar>
-    <q-avatar
-      size="36px"
-      class="cursor-pointer q-electron-drag--exception"
-      v-ripple
-      @click.stop="
-        () => {
-          toggleChanged({ key: 'enablePreviewEditor', value: !enablePreviewEditor })
-        }
-      "
-    >
-      <q-icon :name="enablePreviewEditor ? 'lock_open' : 'lock'" color="#16A2B8" />
-      <q-tooltip
-        v-if="darkMode"
-        :offset="[20, 10]"
-        content-class="bg-darkMode text-white shadow-4  text-h7"
-        >{{ enablePreviewEditor ? $t('lock') : $t('unlock') }}
-      </q-tooltip>
-      <q-tooltip
-        v-else
-        :offset="[20, 10]"
-        content-class="bg-light text-white shadow-4  text-h7"
-        >{{ enablePreviewEditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
     <q-avatar
@@ -114,15 +76,8 @@
     >
       <img :src="avatarUrl ? avatarUrl : defaultAvatar" />
       <q-tooltip
-        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-darkMode text-white shadow-4 text-h7"
-        >{{ isLogin ? $t('logout') : $t('login') }}
-      </q-tooltip>
-      <q-tooltip
-        v-else
-        :offset="[20, 10]"
-        content-class="bg-light text-white shadow-4 text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ isLogin ? $t('logout') : $t('login') }}
       </q-tooltip>
     </q-avatar>
@@ -155,15 +110,8 @@
         />
       </template>
       <q-tooltip
-        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-darkMode text-white shadow-4  text-h7"
-        >{{ $t('search') }}
-      </q-tooltip>
-      <q-tooltip
-        v-else
-        :offset="[20, 10]"
-        content-class="bg-light text-white shadow-4  text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
@@ -197,15 +145,8 @@
     >
       <q-icon name="table_chart" />
       <q-tooltip
-        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-darkMode text-white shadow-4 text-h7"
-        >{{ $t('switchView') }}
-      </q-tooltip>
-      <q-tooltip
-        v-else
-        :offset="[20, 10]"
-        content-class="bg-light text-white shadow-4 text-h7"
+        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('switchView') }}
       </q-tooltip>
     </q-avatar>
@@ -216,10 +157,7 @@
       @click="$refs.settingsDialog.toggle()"
     >
       <q-icon name="settings" />
-      <q-tooltip v-if="darkMode" :offset="[20, 10]" content-class="text-white shadow-4 text-h7 bg-darkMode"
-        >{{ $t('settings') }}
-      </q-tooltip>
-      <q-tooltip v-else :offset="[20, 10]" content-class="text-white shadow-4 text-h7 bg-light"
+      <q-tooltip :offset="[20, 10]" :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
         >{{ $t('settings') }}
       </q-tooltip>
     </q-avatar>
@@ -356,12 +294,6 @@ export default {
         value: !this.noteListVisible
       })
     },
-    lockModeHandler: function () {
-      this.toggleChanged({
-        key: 'enablePreviewEditor',
-        value: !this.enablePreviewEditor
-      })
-    },
     clearInputHandler: function () {
       this.searchText = ''
       this.getCategoryNotes({ category: this.currentCategory })
@@ -379,7 +311,6 @@ export default {
       this.$refs.loginDialog.toggle()
     }
     bus.$on(events.VIEW_SHORTCUT_CALL.switchView, this.switchViewHandler)
-    bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
   },
   watch: {
     isLogin: function (currentData) {
@@ -392,7 +323,6 @@ export default {
 </script>
 
 <style scoped>
-@import '../css/style.css';
 .header-note-title {
   display: flex;
   align-items: center;

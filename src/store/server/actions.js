@@ -838,6 +838,7 @@ export default {
       message: i18n.t('prepareExportData')
     })
     const result = await _getContent(kbGuid, docGuid)
+    const title = result.info.title.split('.')[0]
     const isHtml = !_.endsWith(result.info.title, '.md')
     const {
       html,
@@ -855,10 +856,26 @@ export default {
       )
     }
     Loading.hide()
-    await exportMarkdownFile(content)
+    await exportMarkdownFile({ content, title })
   },
-  async exportPng ({ state }) {
-    const { currentNote } = state
+  async exportPng ({ state }, {
+    noteField,
+    current
+  }) {
+    const {
+      kbGuid,
+      currentNote
+    } = state
+    let docGuid
+    if (current) {
+      docGuid = currentNote.info.docGuid
+    } else if (noteField) {
+      docGuid = noteField.docGuid
+    } else {
+      return
+    }
+    const result = await _getContent(kbGuid, docGuid)
+    const title = result.info.title.split('.')[0]
     if (_.isEmpty(currentNote)) return
     Loading.show({
       spinner: QSpinnerGears,
@@ -876,7 +893,7 @@ export default {
       document.body.removeChild(dom)
       const content = dom.toDataURL('image/png')
       Loading.hide()
-      exportPng(content)
+      exportPng({ content, title })
     })
   },
   /**

@@ -49,10 +49,10 @@ export default {
     /**
      *  export single note
      */
-    handleApi('export-markdown-file', (event, content) => {
+    handleApi('export-markdown-file', (event, { content, title }) => {
       return dialog.showSaveDialog({
         title: 'Export',
-        defaultPath: app.getPath('documents'),
+        defaultPath: path.join(app.getPath('documents'), `${title}`),
         filters: [
           {
             name: 'Markdown File',
@@ -78,10 +78,10 @@ export default {
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
-    handleApi('export-png', (event, content) => {
+    handleApi('export-png', (event, { content, title }) => {
       return dialog.showSaveDialog({
         title: 'Export',
-        defaultPath: app.getPath('documents'),
+        defaultPath: path.join(app.getPath('documents'), `${title}`),
         filters: [
           {
             name: 'Portable Network Graphics',
