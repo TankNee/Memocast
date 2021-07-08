@@ -261,14 +261,22 @@ export default {
           message: this.$t('checking'),
           timeout: 0,
           spinner: true,
-          color: 'primary'
+          color: 'primary',
+          actions: [{
+            icon: 'clear',
+            color: 'white',
+            handler: () => {}
+          }]
         })
       })
       // this.$refs.updateDialog.toggle()
     },
     updateAvailableHandler: function (info) {
       console.log(info)
-      // this.$refs.updateDialog.toggle()
+      if (this.checkingNotify && this.checkingNotify instanceof Function) {
+        this.checkingNotify()
+        this.checkingNotify = null
+      }
       this.$q.notify({
         caption: this.$t('getNewerVersion', { version: info.version }),
         message: info.releaseNotes,

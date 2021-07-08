@@ -293,6 +293,7 @@ export default {
         key: 'noteListVisible',
         value: !this.noteListVisible
       })
+      this.$refs.sideDrawer.hide()
     },
     clearInputHandler: function () {
       this.searchText = ''

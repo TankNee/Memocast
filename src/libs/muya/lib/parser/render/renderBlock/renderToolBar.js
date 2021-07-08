@@ -1,4 +1,4 @@
-// used for render table tookbar or others.
+// used for render table toolbar or others.
 import { h } from '../snabbdom'
 import { CLASS_OR_ID } from '../../../config'
 import TableIcon from '../../../assets/pngicon/table/table@2x.png'
