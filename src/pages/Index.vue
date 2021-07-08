@@ -173,7 +173,7 @@ export default {
   },
   methods: {
     refreshCurrentNote: function () {
-      bus.$emit(events.EDIT_SHORTCUT_CALL.save)
+      bus.$emit(events.NOTE_SHORTCUT_CALL.save)
     },
     outlineDrawerChangeHandler: function (state) {
       this.isOutlineShow = state
