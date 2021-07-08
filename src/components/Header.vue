@@ -355,12 +355,7 @@ export default {
         key: 'noteListVisible',
         value: !this.noteListVisible
       })
-    },
-    lockModeHandler: function () {
-      this.toggleChanged({
-        key: 'enablePreviewEditor',
-        value: !this.enablePreviewEditor
-      })
+      this.$refs.sideDrawer.hide()
     },
     clearInputHandler: function () {
       this.searchText = ''
@@ -379,7 +374,6 @@ export default {
       this.$refs.loginDialog.toggle()
     }
     bus.$on(events.VIEW_SHORTCUT_CALL.switchView, this.switchViewHandler)
-    bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
   },
   watch: {
     isLogin: function (currentData) {
