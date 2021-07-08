@@ -41,8 +41,15 @@
     >
       <q-icon name="account_tree" color="#16A2B8" />
       <q-tooltip
+        v-if='darkMode'
         :offset="[20, 10]"
-        content-class="bg-accent text-white shadow-4 text-h7"
+        content-class="bg-darkMode text-white shadow-4 text-h7"
+        >{{ $t('noteCategory') }}
+      </q-tooltip>
+      <q-tooltip
+        v-else
+        :offset="[20, 10]"
+        content-class="bg-light text-white shadow-4 text-h7"
         >{{ $t('noteCategory') }}
       </q-tooltip>
     </q-avatar>
@@ -63,8 +70,15 @@
     >
       <q-icon name="local_offer" color="#16A2B8" />
       <q-tooltip
+        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-amber-6 text-white shadow-4  text-h7"
+        content-class="bg-darkMode text-white shadow-4  text-h7"
+        >{{ $t('tag') }}
+      </q-tooltip>
+      <q-tooltip
+        v-else
+        :offset="[20, 10]"
+        content-class="bg-light text-white shadow-4  text-h7"
         >{{ $t('tag') }}
       </q-tooltip>
     </q-avatar>
@@ -80,8 +94,15 @@
     >
       <q-icon :name="enablePreviewEditor ? 'lock_open' : 'lock'" color="#16A2B8" />
       <q-tooltip
+        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-amber-9 text-white shadow-4  text-h7"
+        content-class="bg-darkMode text-white shadow-4  text-h7"
+        >{{ enablePreviewEditor ? $t('lock') : $t('unlock') }}
+      </q-tooltip>
+      <q-tooltip
+        v-else
+        :offset="[20, 10]"
+        content-class="bg-light text-white shadow-4  text-h7"
         >{{ enablePreviewEditor ? $t('lock') : $t('unlock') }}
       </q-tooltip>
     </q-avatar>
@@ -93,8 +114,15 @@
     >
       <img :src="avatarUrl ? avatarUrl : defaultAvatar" />
       <q-tooltip
+        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-green-7 text-white shadow-4 text-h7"
+        content-class="bg-darkMode text-white shadow-4 text-h7"
+        >{{ isLogin ? $t('logout') : $t('login') }}
+      </q-tooltip>
+      <q-tooltip
+        v-else
+        :offset="[20, 10]"
+        content-class="bg-light text-white shadow-4 text-h7"
         >{{ isLogin ? $t('logout') : $t('login') }}
       </q-tooltip>
     </q-avatar>
@@ -127,8 +155,15 @@
         />
       </template>
       <q-tooltip
+        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-amber-2 text-black shadow-4  text-h7"
+        content-class="bg-darkMode text-white shadow-4  text-h7"
+        >{{ $t('search') }}
+      </q-tooltip>
+      <q-tooltip
+        v-else
+        :offset="[20, 10]"
+        content-class="bg-light text-white shadow-4  text-h7"
         >{{ $t('search') }}
       </q-tooltip>
     </q-input>
@@ -162,8 +197,15 @@
     >
       <q-icon name="table_chart" />
       <q-tooltip
+        v-if="darkMode"
         :offset="[20, 10]"
-        content-class="bg-brown-4 text-white shadow-4 text-h7"
+        content-class="bg-darkMode text-white shadow-4 text-h7"
+        >{{ $t('switchView') }}
+      </q-tooltip>
+      <q-tooltip
+        v-else
+        :offset="[20, 10]"
+        content-class="bg-light text-white shadow-4 text-h7"
         >{{ $t('switchView') }}
       </q-tooltip>
     </q-avatar>
@@ -174,7 +216,10 @@
       @click="$refs.settingsDialog.toggle()"
     >
       <q-icon name="settings" />
-      <q-tooltip :offset="[20, 10]" content-class="text-white shadow-4 text-h7"
+      <q-tooltip v-if="darkMode" :offset="[20, 10]" content-class="text-white shadow-4 text-h7 bg-darkMode"
+        >{{ $t('settings') }}
+      </q-tooltip>
+      <q-tooltip v-else :offset="[20, 10]" content-class="text-white shadow-4 text-h7 bg-light"
         >{{ $t('settings') }}
       </q-tooltip>
     </q-avatar>
@@ -347,6 +392,7 @@ export default {
 </script>
 
 <style scoped>
+@import '../css/style.css';
 .header-note-title {
   display: flex;
   align-items: center;
