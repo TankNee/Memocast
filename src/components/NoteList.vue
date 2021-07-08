@@ -267,8 +267,8 @@ export default {
     exportNoteAsMdHandler: function (current = false) {
       this.exportMarkdownFile({ noteField: this.rightClickNoteItem, current })
     },
-    exportNoteAsPngHandler: function () {
-      this.exportPng()
+    exportNoteAsPngHandler: function (current = false) {
+      this.exportPng({ noteField: this.rightClickNoteItem, current })
     },
     noteItemContextMenuHandler: function (e, noteField) {
       const isCurrentNote = noteField.docGuid === this.currentNote.info.docGuid
