@@ -8,6 +8,7 @@
       v-if="$q.platform.is.mac && dataLoaded"
       class="header-note-title animated fadeIn"
       style="cursor: pointer"
+      :class="{ 'mac': $q.platform.is.mac }"
       @click="$refs.tagDialog.toggle"
     >
       <span class='save-dot' :class="{ 'show': this.noteState !== 'default' }"></span>
@@ -352,7 +353,7 @@ export default {
   margin-left: 0;
 }
 .header-note-title.mac {
-  margin-left: 10%;
+  margin-left: 15%;
 }
 .header-note-title > span {
   font-family: 'Open Sans', 'JetBrains Mono', serif;
