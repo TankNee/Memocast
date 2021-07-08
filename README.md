@@ -1,279 +1,123 @@
-<div align="center">
-  <h1>Neeto Vue</h1>
+<img title="" src="https://img.tanknee.cn/blogpicbed/2021/07/08/20210708fc3b67e797e90.png" alt="AppIcon" align="center" width="185">
 
-  <img src="./src-electron/icons/192.png" style="zoom: 33%;"  alt="logo"/>
+# Memocast
 
-  <h3>An Awesome Wiz Note Client</h3>
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION\&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
 
-  <h3>English | <a href="./README-zh_cn.md" target="_self">简体中文</a></h3>
+***
 
-  ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
+## Introduction
 
-</div>
+一款基于 Electron 、Muya 、Monaco 和为知笔记的编辑器，实现了类似 Typora 的编辑体验，并添加了更优秀的源代码模式，更好的图片服务，支持为知笔记私有部署，提供了众多快捷键。
 
-### Introduction
+## Download
 
-[In order to write notes, I develop a note application](https://www.tanknee.cn/2020/10/02/%E6%88%91%E4%B8%BA%E4%BA%86%E8%AE%B0%E7%AC%94%E8%AE%B0%E6%89%8B%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF/)
+你可以在 GitHub 的 Release 页面下载最新版本，与此同时，你也可以使用内置的更新按钮获取最新版本，注意 mac 并不支持直接使用内置更新，因为受限于 macOS 的安全策略，所有自动安装的应用应该被有效地签名。
 
-### Wiz Community
+GitHub Release：[Releases · TankNee/Memocast · GitHub](https://github.com/TankNee/Memocast/releases)
 
-Follow Wiz Community in WeChat：
+## Feature
 
-![qrcode_for_gh_wizcommunity](./screenshot/qrcode_for_gh_wizcommunity.png)
+1. 较为完整的为知服务的支持。
 
-If you intend to prompt the development of Wiz Community，join us pls！
+  1. 笔记增删查改
 
-### ScreenShot
+  2. 文件夹增删
 
-![image-20200925170200202](./screenshot/image-20200925170200202.png)
+  3. 笔记导出成 PNG、Markdown
 
-![image-20200925170301170](./screenshot/image-20200925170301170.png)
+  4. 笔记文件夹批量导出 Markdown
 
-![image-20200925170327136](./screenshot/image-20200925170327136.png)
+  5. 支持为知图片服务
 
-### Installation
+  6. 笔记标签增删查改
 
-[Releases](https://github.com/TankNee/Neeto-Vue/releases/latest)
+  7. 私有化部署服务器的支持
 
-You are also be able to check update in Neeto-Vue Settings Dialog
+2. 良好的 Markdown 编辑器体验
 
-![image-20201011103144579](./screenshot/image-20201011103144579.png)
+  1. 按下 @ 快捷输入
 
-#### Arch Linux
+  2. 完整的快捷键支持，并在 macOS 下支持菜单和帮助查询。
 
-Install and upgrade from [AUR](https://aur.archlinux.org/packages/neeto-vue-bin/)
+  3. 将为知的网页剪辑笔记轻松转换为可阅读的 Markdown 文件
 
-Thanks to [yjun123](https://github.com/yjun123)'s contribution.
+  4. 良好的图片支持，支持为知图片，支持 PicGo 上传图片，支持本地图片
 
-```bash
-# AUR helper
-# yay
-yay -S neeto-vue-bin
+  5. 相比 marktext ，编辑器做了很多的优化和本地化
 
-# pikaur
-pikaur -S neeto-vue-bin
-```
+  6. 支持笔记目录，支持目录跳转
 
-### Feature
+  7. 支持流程图，vega 图，mermaid 图等等
 
-- More Beautiful
+  8. 笔记锁定模式，锁定之后键盘无法输入，减少误触
 
-- More Powerful
+  9. 所见即所得，良好输入体验
 
-- Lighter Size
+  10. 支持 PicGo 图片服务，将笔记图片上传到指定图床
 
-- Better Dark Mode In Desktop Platform
+  11. 支持使用 pangu 格式化 markdown 文本，自动在中英文字符之间加入空格
 
-- Export single note or whole note folder to certain path
+      ```text
+      你好Memocast => 你好 Memocast
+      ```
 
-- Loading Animation
+3. 强大的源代码模式
 
-- New version check
+  1. 使用 Monaco 作为源代码编辑器
 
-- International, support English and Chinese(Simplified)
+  2. 使用 `CmdOrCtrl + Shift + .` 快捷切换源代码模式和 markdown 模式
 
-- Keymap: [vditor keymap](#Change Log and Keymap)
+  3. 语法高亮
 
-- Support to send note to flomo app
+  4. 侧边栏预览
 
-- Support note lock
+4. 完整开源， 项目 All in Github， 在网络畅通的情况下可以使用内置的自动更新，快速将软件更新到最新版。
 
-### Attention
+***
 
-- There's another problem with copying notes, Since I haven't handled the transfer of note resources, I don't recommend copying notes for the time being
-- Image upload service only supports drag and drop upload or fill in picture link directly
-- When using the wiz official image service, only the temporary address of the image will be displayed
-- For the time being, only the third-party Web upload service is available. (Settings > > editor > > image upload service) please refer to：[picgo-plugin-web-uploader](https://github.com/yuki-xin/picgo-plugin-web-uploader)
-  - `url`: Picture upload api url
-  - `paramName`: POST parameter name(eg:`image`)
-  - `jsonPath`: Jsonpath of the return value of the image URL`(eg:data.url)`
-  - `customHeader`: custom request http headers,using standard JSON schema(eg: `{"key":"value"}`)
-  - `customBody`: custom request body, using standard JSON schema(eg: `{"key":"value"}`)
+## Screenshot
 
-### Change Log and Keymap
+### 主界面
 
-<details>
-<summary>Version change log</summary>
+![](https://img.tanknee.cn/blogpicbed/2021/07/08/202107083870b7fefdc91.png)
 
-## 2021 06 22 Update 1.0.3
+### 编辑器
 
-1. fix #72，#73
-2. fix some issues of dependencies
+![](https://img.tanknee.cn/blogpicbed/2021/07/08/2021070803b63e24f9b6d.png)
 
-## 2021 01 17 Update 1.0.2
+### 快捷输入
 
-1. Remove the underline of links
-2. Extract source plain text from note content instead of using the origin markdown text
+![](https://img.tanknee.cn/blogpicbed/2021/07/08/20210708a8305ac3abc86.png)
 
-## 2020 12 22 Update 1.0.0
+### 源代码模式
 
-1. Realize the label system
-2. Right click to upload pictures, which depends on picgo
-3. Optimize a lot of details
+![](https://img.tanknee.cn/blogpicbed/2021/07/08/20210708b84241135796a.png)
 
-## 2020 12 22 Update 0.0.23
+更多特色功能还请下载之后体验
 
-1. To achieve a simpler image upload method: right click in the editor and select the image to upload.
-2. Temporarily abandon the drag upload mode.
+***
 
-## 2020 12 19 Update 0.0.22
+## Reference
 
-1. Add Chinese readme file
-2. Improve the readme description
-3. Add note locking function to make it easier to check notes.
+感谢 Quasar Framework、Monaco 以及 MarkText 项目，从他们身上学到了很多，Memocast 有很多的灵感都来自他们，笔记的所见即所得编辑器来自 MarkText 中的 Muya 编辑器，源代码模式使用的编辑器来自 Monaca-Editor 项目。
 
-## 2020 12 17 Update 0.0.21
+---
 
-1. Add flomo API support. Set > > Service > > flomo. Then use the right-click menu in the list to send notes to flomo
-2. Upgrade note editor to v3.7.1
-3. Cache key naming policy adjustment
+## Sponsor
 
-## 2020 12 03 Update 0.0.20
+| <img title="" src="https://avatars.githubusercontent.com/u/15263378?v=4" alt="" width="189" data-align="center"> |
+|:----------------------------------------------------------------------------------------------------------------:|
+| https://github.com/lifeend                                                                                       |
 
-1. Fixed the problem that the server could not display the folder when it returned the out of order folder list
+---
 
-## 2020 11 30 Update 0.0.19
+## Contributor
 
-1. Repair the export failure when there are illegal characters in the note name
+感谢所有Memocast和Neeto-Vue的贡献者！
 
-## 2020 11 27 Update 0.0.18
+Thanks to all Memocast's contributors as well as Neeto-Vue's contributors!
 
-1. Export a single file to markdown
-2. Export the entire folder to the specified directory in the format of markdown
+## License
 
-## 2020 09 27 Update 0.0.6
-
-1. Better login experience
-2. Optimize the interface without content
-3. Optimize code logic
-
-## 2020 09 26 Update 0.0.5
-
-1. Add GitHub to build automatically
-
-## 2020 09 25 Update 0.0.4
-
-1. Optimize the header display in MacOS
-2. Add vditor shortcut key, [shortcut key to check address]（ https://ld246.com/guide/markdown )
-3. Optimization Icon
-4. Add the Save button in the lower right corner of vdtor, but the outline button in the upper right corner has not been implemented
-5. Learn from wizlite to open the links in notes
-6. Optimize invalid code
-
-## 2020 09 22 Update 0.0.3
-
-1. Version updated to 0.0.3
-2. Add drag and drop image upload
-3. Drag the picture directly into the editor
-4. Remember to click the location of the image to be inserted first, otherwise it will be inserted directly into the place where I last clicked. I have no way to fix it for the time being
-5. Fix the size of editor area
-6. Add notes to modify the date display
-7. Fix the problem of missing translation
-
-</details>
-
-<details>
-<summary>Keymap reference </summary>
-
-
-[Origin Site](https://ld246.com/article/1582778815353#English)
-
-## English
-
-### Summary
-
-| Name                   | Keymap                | Remarks           |
-| ---------------------- | --------------------- | ----------------- |
-| Emoji                  | :/⌘ E                 |                   |
-| Headings               | Ctrl H / ⌘ H          | see below         |
-| Bold                   | Ctrl B / ⌘ B          |                   |
-| Italic                 | Ctrl I / ⌘ I          |                   |
-| Strikeout              | Ctrl S / ⌘ S          |                   |
-| Link                   | Ctrl K / ⌘ K          | see below         |
-| Unordered List         | Ctrl L / ⌘ L          | see below         |
-| Ordered List           | Ctrl O / ⌘ O          | see below         |
-| Task List              | Ctrl J / ⌘ J          | see below         |
-| Blockquote             | Ctrl ; / ⌘ ;          | see below         |
-| Horizontal             | Ctrl Shift H  / ⌘ ⇧ H |                   |
-| Code Block             | Ctrl U / ⌘ U          | see below         |
-| Inline Code            | Ctrl G / ⌘ G          |                   |
-| Insert Block to Before | Ctrl Shift B / ⌘ ⇧ B  | wysiwyg & ir mode |
-| Insert Block to End    | Ctrl Shift E / ⌘ ⇧ E  | wysiwyg & ir mode |
-| Table                  | Ctrl M / ⌘ M          | see below         |
-| Undo                   | Ctrl Z / ⌘ Z          |                   |
-| Redo                   | Ctrl Y / ⌘ Y          |                   |
-| Hide Edit              | Ctrl P / ⌘ P          | sv mode           |
-| Fullscreen             | Ctrl ' / ⌘ '          |                   |
-| Move Block to Up       | Ctrl Shift U / ⌘ ⇧ U  | wysiwyg & ir mode |
-| Move Block to Down     | Ctrl Shift D / ⌘ ⇧ D  | wysiwyg & ir mode |
-| Remove                 | Ctrl Shift X / ⌘ ⇧ X  | wysiwyg mode      |
-| At User                | @                     |                   |
-| Mistyped               | Backspace             |                   |
-
-### Headings Ctrl H / ⌘ H
-
-| Name    | Keymap                                 |
-| ------- | -------------------------------------- |
-| Bigger  | Ctrl + / ⌘ +                           |
-| Smaller | Ctrl - / ⌘ -                           |
-| H1-H6   | Ctrl Alt 1/2/3/4/5/6 / ⌘ ⌥ 1/2/3/4/5/6 |
-| Menu    | Ctrl H / ⌘ H                           |
-
-### Link Ctrl K / ⌘ K
-
-| Name                  | Keymap              |
-| --------------------- | ------------------- |
-| Toggle Input and Link | Alt Enter / ⌥ Enter |
-| Toggle Input          | Tab                 |
-
-### List Ctrl L/O/J / ⌘ L/O/J
-
-| Name         | Keymap                                       | Remarks                                               |
-| ------------ | -------------------------------------------- | ----------------------------------------------------- |
-| Indent       | Tab Ctrl Shift I / ⌘ ⇧ I                     | Tab: Caret must be at Zero                            |
-| Unindent     | Shift Tab / ⇧ Tab Ctrl Shift O / ⌘ ⇧ O Enter | Shift Tab / ⇧ Tab: Caret must be at Zero Enter: Empty |
-| Toggle Check | Ctrl Shift J / ⌘ ⇧ J                         | Task List                                             |
-
-### Blockquote Ctrl ; / ⌘ ;
-
-| Name                    | Keymap                     | Remarks                                               |
-| ----------------------- | -------------------------- | ----------------------------------------------------- |
-| Move Caret to Top Start | Ctrl Alt Enter / ⌘ ⌥ Enter | wysiwyg mode                                          |
-| Move Caret to Top End   | Alt Enter / ⌥ Enter        | wysiwyg mode                                          |
-| Insert Blockquote       | Ctrl Shift : / ⌘ ⇧ :  >    | Ctrl Shift : / ⌘ ⇧ :: Block Element >: Inline Element |
-| Toggle Blockquote       | Ctrl ; / ⌘ ;               |                                                       |
-
-### Code Block Ctrl U / ⌘ U
-
-| Name                        | Keymap              |
-| --------------------------- | ------------------- |
-| Toggle Input and Code Block | Alt Enter / ⌥ Enter |
-| Hide Edit                   | Escape              |
-| Select all Code Block       | Ctrl A / ⌘ A        |
-
-### Table Ctrl M / ⌘ M
-
-| Name                        | Keymap                      |
-| --------------------------- | --------------------------- |
-| Insert 1 above              | Ctrl + / ⌘ ⇧ F              |
-| Insert 1 below              | Ctrl + / ⌘ +                |
-| Delete Row                  | Ctrl - / ⌘ -                |
-| Insert 1 left               | Ctrl Shift + / ⌘ ⇧ G        |
-| Insert 1 right              | Ctrl Shift + / ⌘ ⇧ +        |
-| Delete Column               | Ctrl Shift - / ⌘ ⇧ -        |
-| Left Alignment              | Ctrl Shift L / ⌘ ⇧ L        |
-| Center Alignment            | Ctrl Shift C / ⌘ ⇧ C        |
-| Right Alignment             | Ctrl Shift R / ⌘ ⇧ R        |
-| Move Caret to Input         | Alt Enter / ⌥ Enter         |
-| Toggle Input                | Tab                         |
-| Move Caret to Previous Cell | Shift Tab / ⇧ Tab Backspace |
-| Move Caret to Next Cell     | Tab                         |
-
-</details>
-
-### License
-
-Copyright © 2021 [tanknee <nee@tanknee.cn>](https://github.com/TankNee).<br />
-This project is [MIT](https://github.com/TankNee/Neeto-Vue/blob/master/LICENSE) licensed.
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)
+MIT @[TankNee](https://github.com/TankNee)

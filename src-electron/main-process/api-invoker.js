@@ -1,10 +1,10 @@
-import { webContents } from 'electron'
+import { webContents, BrowserWindow } from 'electron'
 
 let wcs = webContents.getFocusedWebContents()
 
-async function sendNotification (notificationPayload) {
+async function sendNotification (notificationPayload, event) {
   if (!wcs) {
-    wcs = webContents.getFocusedWebContents()
+    wcs = BrowserWindow.fromWebContents(event.sender).webContents
   }
   return wcs.send('show-notification', notificationPayload)
 }

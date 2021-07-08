@@ -74,7 +74,7 @@ export default {
               msg: err.msg,
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
@@ -98,14 +98,14 @@ export default {
             type: 'positive',
             icon: 'check',
             filePath: result.filePath
-          }).catch(err => throw err)
+          }, event).catch(err => throw err)
         })
           .catch(err => {
             sendNotification({
               msg: err.msg,
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
@@ -141,14 +141,14 @@ export default {
             type: 'positive',
             icon: 'check',
             filePath: directoryPath
-          }).catch(err => throw err)
+          }, event).catch(err => throw err)
         })
           .catch(err => {
             sendNotification({
               msg: err.msg,
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
@@ -175,7 +175,7 @@ export default {
               msg: 'PicGo Upload Server Not Found!',
               type: 'negative',
               icon: 'delete'
-            }).catch(err => throw err)
+            }, event).catch(err => throw err)
           }
         })
         return uploadResult
