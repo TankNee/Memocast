@@ -1,5 +1,6 @@
 import menu from './menu'
-
+import api from './api'
 export default {
-  ...menu
+  ...menu,
+  ...api
 }

@@ -271,7 +271,7 @@ export default {
       this.exportPng({ noteField: this.rightClickNoteItem, current })
     },
     noteItemContextMenuHandler: function (e, noteField) {
-      const isCurrentNote = noteField.docGuid === this.currentNote.info.docGuid
+      const isCurrentNote = noteField.docGuid === this.currentNote?.info?.docGuid
       this.setRightClickNoteItem(noteField)
       showNoteItemContextMenu(e, isCurrentNote)
     },

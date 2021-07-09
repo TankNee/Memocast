@@ -8,6 +8,7 @@ import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocas
 import { cacheNoteImage, saveTempImage, saveBuffer } from './utlis/helper'
 import { uploadImagesByWiz } from './utlis/wiz-resource-helper'
 import { execRequest } from './service/request'
+import i18n from './i18n'
 
 const { uploadImagesByPicGo } = require('./3rd-part/PicGoUtils')
 
@@ -51,7 +52,7 @@ export default {
      */
     handleApi('export-markdown-file', (event, { content, title }) => {
       return dialog.showSaveDialog({
-        title: 'Export',
+        title: i18n.t('export'),
         defaultPath: path.join(app.getPath('documents'), `${title}`),
         filters: [
           {
@@ -67,7 +68,7 @@ export default {
             type: 'positive',
             icon: 'check',
             filePath: result.filePath
-          }).catch(err => throw err)
+          }, event).catch(err => throw err)
         })
           .catch(err => {
             sendNotification({
@@ -80,7 +81,7 @@ export default {
     }).catch(err => throw err)
     handleApi('export-png', (event, { content, title }) => {
       return dialog.showSaveDialog({
-        title: 'Export',
+        title: i18n.t('export'),
         defaultPath: path.join(app.getPath('documents'), `${title}`),
         filters: [
           {
@@ -115,7 +116,7 @@ export default {
      */
     handleApi('export-markdown-files', (event, { contents, category }) => {
       return dialog.showOpenDialog({
-        title: 'Export',
+        title: i18n.t('export'),
         defaultPath: app.getPath('documents'),
         properties: [
           'openDirectory',
@@ -155,11 +156,11 @@ export default {
     /**
      * batch import images
      */
-    handleApi('import-images', async (event) => {
+    handleApi('import-image', async (event) => {
       const result = await dialog.showOpenDialog({
-        title: 'Import Images',
+        title: i18n.t('importImage'),
         defaultPath: app.getPath('pictures'),
-        properties: ['multiSelections', 'openFile']
+        properties: ['openFile']
       })
       if (result.canceled) return
       return result.filePaths
@@ -172,7 +173,7 @@ export default {
         const uploadResult = await uploadImagesByPicGo(imagePaths).catch(err => {
           if (err.errno === 'ECONNREFUSED') {
             sendNotification({
-              msg: 'PicGo Upload Server Not Found!',
+              msg: i18n.t('picgoServerNoteFound'),
               type: 'negative',
               icon: 'delete'
             }, event).catch(err => throw err)

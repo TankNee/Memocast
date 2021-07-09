@@ -187,7 +187,7 @@ export default {
       }
     },
     ...mapServerActions(['updateNote', 'updateNoteState', 'updateContentsList', 'uploadImage']),
-    ...mapClientActions(['importImagesFromLocal'])
+    ...mapClientActions(['importImageFromLocal'])
   },
   created () {
     this.$nextTick(() => {
@@ -211,7 +211,7 @@ export default {
       const { container } = this.contentEditor = new Muya(this.$refs.muya, {
         imagePathPicker: () => {
           return new Promise((resolve, reject) => {
-            this.importImagesFromLocal().then(paths => {
+            this.importImageFromLocal().then(paths => {
               debugLogger.Info(paths)
               resolve(paths ? paths[0] : '')
             }).catch(err => {

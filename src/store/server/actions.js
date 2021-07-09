@@ -527,7 +527,6 @@ export default {
     state,
     rootState
   }, file) {
-    // TODO: 实现图片上传
     const token = getters.wizNoteToken
     const {
       kbGuid,
