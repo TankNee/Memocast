@@ -268,6 +268,11 @@ export default {
         } else {
           this.updateNoteState('default')
         }
+        this.updateContentsList(this.contentEditor.getTOC())
+        const cursor = this.contentEditor.getCursor()
+        if (cursor.anchor.line >= this.contentEditor.getWordCount(curData).line - 2) {
+          bus.$emit(events.SCROLL_DOWN)
+        }
       })
 
       bus.$on(events.SCROLL_TO_HEADER, this.scrollToHeaderHandler)
