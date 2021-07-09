@@ -103,7 +103,7 @@ function createWindow () {
   if (!process.env.PROD) {
     mainWindow.webContents.openDevTools()
   }
-  const menu = Menu.buildFromTemplate(configureMenu(new KeyBindings()))
+  const menu = Menu.buildFromTemplate(configureMenu(new KeyBindings(), mainWindow))
   Menu.setApplicationMenu(menu)
 
   mainWindow.isMainWindow = true

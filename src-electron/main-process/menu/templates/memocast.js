@@ -1,36 +1,37 @@
 import { app } from 'electron'
+import i18n from '../../i18n'
 
 export default function (keybindings) {
   return {
     label: 'Memocast',
     submenu: [{
-      label: 'About Memocast',
+      label: i18n.t('aboutMemocast'),
       click () {
         app.showAboutPanel()
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Services',
+      label: i18n.t('services'),
       role: 'services',
       submenu: []
     }, {
       type: 'separator'
     }, {
-      label: 'Hide Memocast',
+      label: i18n.t('hideMemocast'),
       accelerator: keybindings.getAccelerator('mc.hide'),
       role: 'hide'
     }, {
-      label: 'Hide Others',
+      label: i18n.t('hideOthers'),
       accelerator: keybindings.getAccelerator('mc.hide-others'),
       role: 'hideothers'
     }, {
-      label: 'Show All',
+      label: i18n.t('showAll'),
       role: 'unhide'
     }, {
       type: 'separator'
     }, {
-      label: 'Quit Memocast',
+      label: i18n.t('quitMemocast'),
       accelerator: keybindings.getAccelerator('mc.quit'),
       click: app.quit
     }]

@@ -1,63 +1,58 @@
 import * as actions from '../actions/edit'
+import i18n from '../../i18n'
 
 export default function (keybindings) {
   return {
-    label: '&Edit',
+    label: i18n.t('edit'),
     submenu: [{
-      label: 'Undo',
+      label: i18n.t('undo'),
       accelerator: keybindings.getAccelerator('edit.undo'),
       click: (menuItem, browserWindow) => {
         actions.edit(browserWindow, 'undo')
       }
     }, {
-      label: 'Redo',
+      label: i18n.t('redo'),
       accelerator: keybindings.getAccelerator('edit.redo'),
       click: (menuItem, browserWindow) => {
         actions.edit(browserWindow, 'redo')
       }
     }, {
-      label: 'Save',
-      accelerator: keybindings.getAccelerator('edit.save'),
-      click (menuItem, browserWindow) {
-        actions.edit(browserWindow, 'save')
-      }
-    }, {
       type: 'separator'
     }, {
-      label: 'Cut',
+      label: i18n.t('cut'),
       accelerator: keybindings.getAccelerator('edit.cut'),
       role: 'cut'
     }, {
-      label: 'Copy',
+      label: i18n.t('copy'),
       accelerator: keybindings.getAccelerator('edit.copy'),
       role: 'copy'
     }, {
-      label: 'Paste',
+      label: i18n.t('paste'),
       accelerator: keybindings.getAccelerator('edit.paste'),
       role: 'paste'
     }, {
       type: 'separator'
     }, {
-      label: 'Copy as Markdown',
+      label: i18n.t('copyAsMarkdown'),
       accelerator: keybindings.getAccelerator('edit.copy-as-markdown'),
       click (menuItem, browserWindow) {
         actions.edit(browserWindow, 'copyAsMarkdown')
       }
     }, {
-      label: 'Copy as HTML',
+      label: i18n.t('copyAsHtml'),
       click (menuItem, browserWindow) {
         actions.edit(browserWindow, 'copyAsHtml')
       }
     }, {
-      label: 'Paste as Plain Text',
-      accelerator: keybindings.getAccelerator('edit.copy-as-plaintext'),
+      label: i18n.t('pasteAsPlainText'),
+      accelerator: keybindings.getAccelerator('edit.paste-as-plaintext'),
       click (menuItem, browserWindow) {
         actions.edit(browserWindow, 'pasteAsPlainText')
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Select All',
+      label: i18n.t('selectAll'),
       accelerator: keybindings.getAccelerator('edit.select-all'),
       click (menuItem, browserWindow) {
         actions.edit(browserWindow, 'selectAll')
@@ -65,19 +60,19 @@ export default function (keybindings) {
     }, {
       type: 'separator'
     }, {
-      label: 'Duplicate',
+      label: i18n.t('duplicate'),
       accelerator: keybindings.getAccelerator('edit.duplicate'),
       click (menuItem, browserWindow) {
         actions.edit(browserWindow, 'duplicate')
       }
     }, {
-      label: 'Create Paragraph',
+      label: i18n.t('createParagraph'),
       accelerator: keybindings.getAccelerator('edit.create-paragraph'),
       click (menuItem, browserWindow) {
         actions.edit(browserWindow, 'createParagraph')
       }
     }, {
-      label: 'Delete Paragraph',
+      label: i18n.t('deleteParagraph'),
       accelerator: keybindings.getAccelerator('edit.delete-paragraph'),
       click (menuItem, browserWindow) {
         actions.edit(browserWindow, 'deleteParagraph')

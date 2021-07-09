@@ -1,0 +1,22 @@
+export default {
+  heading1: '一级标题',
+  heading2: '二级标题',
+  heading3: '三级标题',
+  heading4: '四级标题',
+  heading5: '五级标题',
+  heading6: '六级标题',
+  upgradeHeading: '标题提升',
+  degradeHeading: '标题降级',
+  table: '表格',
+  codeFences: '代码块',
+  quoteBlock: '引用',
+  mathBlock: '公式块',
+  htmlBlock: 'HTML 块',
+  orderList: '有序列表',
+  bulletList: '无序列表',
+  toDoList: '待办列表',
+  looseListItem: '列表项间隙调整',
+  paragraph: '段落',
+  horizontalLine: '水平分割线',
+  frontMatter: 'YAML Front Matter'
+}

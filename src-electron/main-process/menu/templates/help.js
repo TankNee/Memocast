@@ -1,37 +1,37 @@
 import { shell } from 'electron'
-
+import i18n from '../../i18n'
 export default function () {
   return {
-    label: '&Help',
+    label: i18n.t('help'),
     role: 'help',
     submenu: [{
-      label: 'Quick Start',
+      label: i18n.t('quickStart'),
       click () {
         shell.openExternal('https://github.com/TankNee/Memocast/blob/master/docs/README.md').then()
       }
     }, {
-      label: 'Changelog',
+      label: i18n.t('changelog'),
       click () {
-        shell.openExternal('https://github.com/TankNee/Memocast/blob/master/.github/CHANGELOG.md').then()
+        shell.openExternal('https://github.com/TankNee/Memocast/blob/master/CHANGELOG.md').then()
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Report Issue or Feature request',
+      label: i18n.t('reportIssue'),
       click () {
         shell.openExternal('https://github.com/TankNee/Memocast/issues').then()
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Watch on GitHub',
+      label: i18n.t('watchOnGithub'),
       click () {
         shell.openExternal('https://github.com/TankNee/Memocast').then()
       }
     }, {
       type: 'separator'
     }, {
-      label: 'License',
+      label: i18n.t('license'),
       click () {
         shell.openExternal('https://github.com/TankNee/Memocast/blob/master/LICENSE').then()
       }
