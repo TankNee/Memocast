@@ -29,6 +29,7 @@ export default {
             icon: 'check',
             message: this.$t('uploadNoteSuccessfully')
           })
+          this.$refs.uploader.reset()
         } catch (e) {
           Notify.create({
             color: 'red-10',
