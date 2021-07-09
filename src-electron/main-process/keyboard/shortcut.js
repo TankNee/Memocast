@@ -1,3 +1,5 @@
+import electronLocalshortcut from '@hfelix/electron-localshortcut'
+import { Menu } from 'electron'
 const isMac = process.platform === 'darwin'
 
 export default class KeyBindings {
@@ -11,12 +13,11 @@ export default class KeyBindings {
       // Edit menu
       ['edit.undo', 'CmdOrCtrl+Z'],
       ['edit.redo', 'CmdOrCtrl+Shift+Z'],
-      // ['edit.save', 'CmdOrCtrl+S'],
       ['edit.cut', 'CmdOrCtrl+X'],
       ['edit.copy', 'CmdOrCtrl+C'],
       ['edit.paste', 'CmdOrCtrl+V'],
       ['edit.copy-as-markdown', 'CmdOrCtrl+Shift+C'],
-      ['edit.copy-as-plaintext', 'CmdOrCtrl+Shift+V'],
+      ['edit.paste-as-plaintext', 'CmdOrCtrl+Shift+V'],
       ['edit.select-all', 'CmdOrCtrl+A'],
       ['edit.duplicate', 'CmdOrCtrl+Alt+D'],
       ['edit.create-paragraph', 'Shift+CmdOrCtrl+N'],
@@ -46,7 +47,7 @@ export default class KeyBindings {
 
       // Format menu
       ['format.strong', 'CmdOrCtrl+B'],
-      ['format.emphasis', 'CmdOrCtrl+I'],
+      ['format.italic', 'CmdOrCtrl+I'],
       ['format.underline', 'CmdOrCtrl+U'],
       ['format.highlight', 'Shift+CmdOrCtrl+H'],
       ['format.inline-code', 'CmdOrCtrl+`'],
@@ -72,5 +73,39 @@ export default class KeyBindings {
       return ''
     }
     return name
+  }
+
+  registerKeyHandlers (win, acceleratorMap) {
+    for (const item of acceleratorMap) {
+      const { accelerator } = item
+
+      // Register shortcuts on the BrowserWindow instead of using Chromium's native menu.
+      // This makes it possible to receive key down events before Chromium/Electron and we
+      // can handle reserved Chromium shortcuts. Afterwards prevent the default action of
+      // the event so the native menu is not triggered.
+      electronLocalshortcut.register(win, accelerator, () => {
+        console.log(`You pressed ${accelerator}`)
+        callMenuCallback(item, win)
+        return true // prevent default action
+      })
+    }
+  }
+}
+
+const callMenuCallback = (menuInfo, win) => {
+  const { click, id } = menuInfo
+  if (click) {
+    let menuItem = null
+    if (id) {
+      const menus = Menu.getApplicationMenu()
+      menuItem = menus.getMenuItemById(id)
+    }
+
+    // Allow all shortcuts/menus without id and only enabled menus with id (GH#980).
+    if (!menuItem || menuItem.enabled !== false) {
+      click(menuItem, win)
+    }
+  } else {
+    console.error('ERROR: callback function is not defined.')
   }
 }

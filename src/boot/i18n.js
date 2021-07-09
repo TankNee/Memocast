@@ -2,12 +2,12 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import messages from 'src/i18n'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
-const local = ClientFileStorage.getItemFromStore('language')
+const locale = ClientFileStorage.getItemFromStore('language')
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
-  locale: local,
-  fallbackLocale: local,
+  locale: locale,
+  fallbackLocale: locale,
   messages,
   availableLocales: ['en-us', 'zh-cn']
 })

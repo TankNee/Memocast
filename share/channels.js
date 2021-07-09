@@ -2,7 +2,7 @@ export default {
   exportMarkdownFile: 'export-markdown-file',
   exportPng: 'export-png',
   exportMarkdownFiles: 'export-markdown-files',
-  importImages: 'import-images',
+  importImage: 'import-image',
   uploadImages: 'upload-images',
   checkUpdate: 'check-update',
   needUpdate: 'need-update',

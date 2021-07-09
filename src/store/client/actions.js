@@ -5,7 +5,7 @@ import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import _ from 'lodash'
-import { checkUpdate, importImages, uploadImages } from 'src/ApiInvoker'
+import { checkUpdate, importImage, uploadImages } from 'src/ApiInvoker'
 
 export default {
   initClientStore ({ commit, state }) {
@@ -64,8 +64,8 @@ export default {
       icon: 'check'
     })
   },
-  async importImagesFromLocal () {
-    return importImages()
+  async importImageFromLocal () {
+    return importImage()
   },
   async uploadImages ({ state }, imagePaths) {
     return uploadImages(imagePaths)

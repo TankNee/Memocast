@@ -1,19 +1,20 @@
 import * as actions from '../actions/note'
+import i18n from '../../i18n'
 
 export default function (keybindings) {
   return {
     id: 'noteMenuItem',
-    label: '&Note',
+    label: i18n.t('note'),
     submenu: [{
       id: 'saveNote',
-      label: 'Save',
+      label: i18n.t('save'),
       accelerator: keybindings.getAccelerator('note.save'),
       click (menuItem, browserWindow) {
         actions.note(browserWindow, 'save')
       }
     }, {
       id: 'exportNote',
-      label: 'Export',
+      label: i18n.t('export'),
       submenu: [{
         id: 'exportNoteAsMarkdown',
         label: 'Markdown',

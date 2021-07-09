@@ -28,8 +28,8 @@ async function exportMarkdownFiles (notes) {
  * import images
  * @returns {Promise<string[]>}
  */
-async function importImages () {
-  return ipcRenderer.invoke(channels.importImages)
+async function importImage () {
+  return ipcRenderer.invoke(channels.importImage)
 }
 
 /**
@@ -86,7 +86,7 @@ export {
   exportMarkdownFile,
   exportPng,
   exportMarkdownFiles,
-  importImages,
+  importImage,
   uploadImages,
   checkUpdate,
   needUpdate,
