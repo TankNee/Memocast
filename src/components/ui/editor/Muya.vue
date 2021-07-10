@@ -154,7 +154,7 @@ export default {
       if (anchor) {
         const STANDARD_Y = window.innerHeight * 0.065
         const { y } = anchor.getBoundingClientRect()
-        const DURATION = 300
+        const DURATION = this.$q.platform.is.mac ? 300 : 0
         helper.animatedScrollTo(container, container.scrollTop + y - STANDARD_Y, DURATION)
       }
     },
@@ -255,7 +255,12 @@ export default {
         if (container.clientHeight - y < 100) {
           // editableHeight is the lowest cursor position(till to top) that editor allowed.
           const editableHeight = container.clientHeight - 100
-          helper.animatedScrollTo(container, container.scrollTop + (y - editableHeight), 100)
+          if (this.$q.platform.is.mac) {
+            helper.animatedScrollTo(container, container.scrollTop + (y - editableHeight), 100)
+          } else {
+            container.scrollTop = container.scrollTop + (y - editableHeight)
+          }
+          // helper.animatedScrollTo(container, container.scrollTop + (y - editableHeight), 100)
         }
       })
 
