@@ -211,7 +211,8 @@ module.exports = function (/* ctx */) {
         },
         win: {
           target: [
-            'nsis'
+            'nsis',
+            'zip'
           ],
           legalTrademarks: 'Memocast'
         },
