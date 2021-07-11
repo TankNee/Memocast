@@ -242,6 +242,11 @@ export default {
       })
       this.updateStateAndStore({ language: lan })
       i18n.locale = lan
+      this.$q.notify({
+        message: this.$t('switchLanguageHint'),
+        color: 'primary',
+        icon: 'info'
+      })
     },
     imageUploadServiceChangeHandler: function (service) {
       const servicePlain = this.imageUploadServiceOptionsPlain.find(
