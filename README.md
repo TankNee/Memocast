@@ -93,6 +93,26 @@ GitHub Release：[Releases · TankNee/Memocast · GitHub](https://github.com/Tan
 
 ![](https://img.tanknee.cn/blogpicbed/2021/07/08/20210708b84241135796a.png)
 
+### 编辑器与国际化
+
+![](https://img.tanknee.cn/blogpicbed/2021/07/13/202107135f7205e6b31ef.gif)
+
+### 图片快速插入
+
+![](https://img.tanknee.cn/blogpicbed/2021/07/13/202107133edb79c27785e.gif)
+
+### 编辑器快捷操作
+
+![](https://img.tanknee.cn/blogpicbed/2021/07/13/202107132123328bb83b9.gif)
+
+### 切换源代码模式
+
+![](https://img.tanknee.cn/blogpicbed/2021/07/13/20210713fd47059a2a7e6.gif)
+
+### 打字机模式
+
+![](https://img.tanknee.cn/blogpicbed/2021/07/13/20210713874ba9ea28ec8.gif)
+
 更多特色功能还请下载之后体验
 
 
@@ -100,6 +120,7 @@ GitHub Release：[Releases · TankNee/Memocast · GitHub](https://github.com/Tan
 
 感谢 Quasar Framework、Monaco 以及 MarkText 项目，从他们身上学到了很多，Memocast 有很多的灵感都来自他们，笔记的所见即所得编辑器来自 MarkText 中的 Muya 编辑器，源代码模式使用的编辑器来自 Monaca-Editor 项目。
 
+感谢 Quasar 中文网，他们的文档对我有很大帮助。http://www.quasarchs.com/
 
 ## Sponsor
 

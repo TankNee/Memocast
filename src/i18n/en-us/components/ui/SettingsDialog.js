@@ -5,6 +5,7 @@ export default {
   language: 'Language',
   'en-us': 'English (US)',
   'zh-cn': 'Chinese (Simplified)',
+  switchLanguageHint: 'Some changes require a reboot of Memocast to apply',
   darkMode: 'Dark Mode',
   markdownOnly: 'Only Show Markdown Note',
   noteOrder: 'Note Order',

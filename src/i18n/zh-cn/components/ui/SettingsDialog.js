@@ -5,6 +5,7 @@ export default {
   language: '语言',
   'en-us': '英语 (美国)',
   'zh-cn': '中文 (简体)',
+  switchLanguageHint: '部分更改需要重启 Memocast 以应用',
   darkMode: '暗黑模式',
   markdownOnly: '只显示Markdown笔记',
   noteOrder: '笔记排序方式',
