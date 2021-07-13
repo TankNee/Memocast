@@ -134,6 +134,14 @@ GitHub Release：[Releases · TankNee/Memocast · GitHub](https://github.com/Tan
 
 Thanks to all Memocast's contributors as well as Neeto-Vue's contributors!
 
+## Community
+
+关注为知社区订阅号，获取最新信息：
+
+![qrcode_for_gh_wizcommunity](./screenshot/qrcode_for_gh_wizcommunity.png)
+
+如果你愿意促进社区发展，那[加入我们](#Community)吧！
+
 ## License
 
 MIT @[TankNee](https://github.com/TankNee)
