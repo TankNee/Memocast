@@ -1,7 +1,7 @@
 <div align="center">
   <img title="" src="https://img.tanknee.cn/blogpicbed/2021/07/08/20210708fc3b67e797e90.png" alt="AppIcon" align="center" width="185">
   <h1>Memocast</h1>
-
+  
   ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
 
 </div>
@@ -10,6 +10,10 @@
 
 一款基于 Electron 、Muya 、Monaco 和为知笔记的编辑器，实现了类似 Typora 的编辑体验，并添加了更优秀的源代码模式，更好的图片服务，支持为知笔记私有部署，提供了众多快捷键。
 
+  <div>
+  <a href="https://www.producthunt.com/posts/memocast?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-memocast" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=305738&theme=light" alt="Memocast - an awesome wiznote client, online note. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+  </div>
+  
 ## Download
 
 你可以在 GitHub 的 Release 页面下载最新版本，与此同时，你也可以使用内置的更新按钮获取最新版本，注意 mac 并不支持直接使用内置更新，因为受限于 macOS 的安全策略，所有自动安装的应用应该被有效地签名。
@@ -144,4 +148,7 @@ Thanks to all Memocast's contributors as well as Neeto-Vue's contributors!
 
 ## License
 
-MIT @[TankNee](https://github.com/TankNee)
+Copyright © 2021 [TankNee](https://github.com/TankNee).<br />
+This project is [MIT](https://github.com/TankNee/Neeto-Vue/blob/master/LICENSE) licensed.
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTankNee%2FNeeto-Vue?ref=badge_large)
