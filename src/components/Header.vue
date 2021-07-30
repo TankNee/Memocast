@@ -333,7 +333,6 @@ export default {
   margin-left: 15%;
 }
 .header-note-title > span {
-  font-family: 'Open Sans', 'JetBrains Mono', serif;
   margin-left: 7px;
   letter-spacing: 0.3px;
   font-weight: 600;

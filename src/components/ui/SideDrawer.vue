@@ -14,6 +14,7 @@
     >
       <q-tree
         :nodes="items"
+        ref="tree"
         node-key="key"
         selected-color="primary"
         accordion
@@ -30,6 +31,7 @@
       >
         <template v-slot:default-header="prop">
           <div class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
+            <q-icon :name="nodeIconName(prop.node)" class="q-mr-sm" />
             <div>{{ prop.node.label }}</div>
           </div>
         </template>
@@ -93,6 +95,13 @@ export default {
       if (this.$refs.drawer) {
         this.$refs.drawer.hide()
       }
+    },
+    nodeIconName: function (node) {
+      if (this.type !== 'category') return 'local_offer'
+      if (this.$refs.tree.isExpanded(node.key)) {
+        return 'folder_open'
+      }
+      return 'folder'
     },
     contextMenuHandler: function (e, node) {
       if (this.type !== 'category') return

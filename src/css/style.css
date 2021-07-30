@@ -134,6 +134,11 @@ div.ag-show-quick-insert-hint[contenteditable=false] {
   margin-bottom: 3px;
 }
 
+.note-item-title.dense,
+.note-item-title-dark.dense {
+  margin-bottom: 7px;
+}
+
 .note-item-summary,
 .note-item-summary-dark {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif, Consolas;

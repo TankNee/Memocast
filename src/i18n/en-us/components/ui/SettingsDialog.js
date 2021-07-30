@@ -17,6 +17,7 @@ export default {
   none: 'None (Use local file path)',
   orderByModifiedTime: 'Order by modified time',
   orderByNoteTitle: 'Order by note name',
+  noteListDenseMode: 'Note List Dense Mode',
   currentVersion: 'Current Version: {version}',
   getNewerVersion: 'New version detected: {version} !',
   update: 'Update',

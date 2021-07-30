@@ -19,7 +19,7 @@
           >
             <q-item-section>
               <div @contextmenu="(e) => noteItemContextMenuHandler(e, noteField)">
-                <NoteItem :data="noteField"/>
+                <NoteItem :data="noteField" :dense="noteListDenseMode"/>
               </div>
             </q-item-section>
           </q-item>
@@ -163,7 +163,7 @@ export default {
     },
     ...mapServerGetters(['activeNote', 'currentNotes']),
     ...mapServerState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags', 'currentNote']),
-    ...mapClientState(['rightClickCategoryItem', 'rightClickNoteItem'])
+    ...mapClientState(['rightClickCategoryItem', 'rightClickNoteItem', 'noteListDenseMode'])
   },
   methods: {
     addNoteHandler: function () {
