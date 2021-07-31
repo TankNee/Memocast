@@ -5,7 +5,7 @@
 const oneDarkTheme = `:root {
   --backgroundColor: #35373e;
   --editorAreaWidth: 90%;
-
+  --activeItemBgColor: rgb(41, 42, 44);
   /*editor*/
   --themeColor: rgb(242, 192, 55);
   --themeColor90: rgba(242, 192, 55, .9);
@@ -262,6 +262,7 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --titleBarHeight: 32px;
   --editorAreaWidth: 90%;
   --backgroundColor: #ffffff;
+  --activeItemBgColor: rgb(204, 207, 214);
   /*editor*/
   /*Theme color cluster*/
   --themeColor: rgba(25, 118, 210, 1);

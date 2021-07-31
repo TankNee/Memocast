@@ -108,6 +108,11 @@ div.ag-show-quick-insert-hint[contenteditable='false'] {
   background-color: #34383e;
 } */
 
+.active-note-item,
+.active-note-item-dark {
+  background-color: var(--activeItemBgColor);
+}
+
 .note-list,
 .note-list-dark {
   font-weight: bold;
