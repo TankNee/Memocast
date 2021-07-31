@@ -1,12 +1,6 @@
 <template>
   <q-inner-loading :showing="visible">
-    <transition
-      appear
-      enter-active-class='animated fadeIn'
-      leave-active-class='animated fadeOut'
-    >
-      <q-spinner style="color:var(--themeColor)" size="6em" />
-    </transition>
+    <q-spinner-ball style="color:var(--themeColor)" size="6em" />
   </q-inner-loading>
 </template>
 

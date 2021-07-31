@@ -20,3 +20,7 @@ export const insertParagraph = location => {
 export const formatDocumentByPangu = (menuItem, browserWindow) => {
   bus.$emit(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu)
 }
+
+export const generateMindmap = (menuItem, browserWindow) => {
+  bus.$emit(events.GENERATE_MINDMAP)
+}

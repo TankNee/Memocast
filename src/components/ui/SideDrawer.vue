@@ -4,7 +4,7 @@
     :value="false"
     :mini-width="200"
     :breakpoint="700"
-    content-class="bg-primary text-white hide-scrollbar"
+    content-class="hide-scrollbar"
   >
     <q-scroll-area
       :thumb-style="thumbStyle"
@@ -26,7 +26,7 @@
             })
           }
         "
-        duration='150'
+        :duration='150'
       >
         <template v-slot:default-header="prop">
           <div :style="isNodeSelected(prop.node) ? 'color:var(--themeColor)' : ''" class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
@@ -97,7 +97,7 @@ export default {
     },
     nodeIconName: function (node) {
       if (this.type !== 'category') return 'local_offer'
-      if (this.$refs.tree.isExpanded(node.key) || this.currentCategory === node.key) {
+      if (this.currentCategory === node.key || (this.$refs.tree && this.$refs.tree.isExpanded(node.key))) {
         return 'folder_open'
       }
       return 'folder'

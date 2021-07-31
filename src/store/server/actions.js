@@ -1,6 +1,6 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify, Dialog, Loading, QSpinnerGears, Dark } from 'quasar'
+import { Notify, Dialog, Loading, QSpinnerGears, Dark, QSpinner } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
@@ -231,12 +231,16 @@ export default {
     commit,
     state
   }, payload) {
-    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
+    // commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
+    Loading.show({
+      spinner: QSpinner,
+      delay: 400
+    })
     const { kbGuid } = state
     const { docGuid } = payload
     const result = await _getContent(kbGuid, docGuid)
-
-    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
+    Loading.hide()
+    // commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTE, result)
   },
   /**
@@ -835,7 +839,8 @@ export default {
     }
     Loading.show({
       spinner: QSpinnerGears,
-      message: i18n.t('prepareExportData')
+      message: i18n.t('prepareExportData'),
+      delay: 400
     })
     const result = await _getContent(kbGuid, docGuid)
     const title = result.info.title.split('.')[0]
@@ -879,7 +884,8 @@ export default {
     if (_.isEmpty(currentNote)) return
     Loading.show({
       spinner: QSpinnerGears,
-      message: i18n.t('prepareExportData')
+      message: i18n.t('prepareExportData'),
+      delay: 400
     })
     const canvasID = document.getElementById('ag-editor-id')
     const color = Dark.isActive
@@ -910,7 +916,8 @@ export default {
     const results = []
     Loading.show({
       spinner: QSpinnerGears,
-      message: i18n.t('prepareExportData')
+      message: i18n.t('prepareExportData'),
+      delay: 400
     })
     for (const noteField of noteFields) {
       const { docGuid } = noteField

@@ -11,5 +11,6 @@ export default {
   lockModeOn: 'Keyboard Locked',
   lockModeOff: 'Keyboard Unlocked',
   title: 'Title',
-  confirm: 'Confirm'
+  confirm: 'Confirm',
+  mindmap: 'Mindmap'
 }

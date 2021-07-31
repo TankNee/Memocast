@@ -138,6 +138,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
+ #mind code {
+   color: inherit;
+   background: inherit;
+ }
+
 code[class*="language-"],
 pre.ag-paragraph {
   color: #ABB2BF;
@@ -164,6 +169,7 @@ pre.ag-paragraph {
   padding: 1em;
   margin: 1em 0;
   border-radius: 0.3em;
+  overflow: overlay;
 }
 
 /* Inline Code */
@@ -315,6 +321,11 @@ const lightPrismTheme = `/*
  * Prism.js light theme
  */
 
+ #mind code {
+   color: inherit;
+   background: inherit;
+ }
+
 code[class*="language-"],
 pre.ag-paragraph {
   color: black;
@@ -339,6 +350,7 @@ pre.ag-paragraph {
 pre.ag-paragraph {
   padding: 1em;
   margin: 1em 0;
+  overflow: overlay;
 }
 
 /* Inline Code */

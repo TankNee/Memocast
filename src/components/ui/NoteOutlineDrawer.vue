@@ -4,7 +4,7 @@
     :value='false'
     :mini-width='200'
     :breakpoint='700'
-    content-class='bg-primary text-white hide-scrollbar'
+    content-class='hide-scrollbar'
     overlay
     elevated
     side='right'
@@ -20,7 +20,6 @@
         ref='tree'
         node-key='key'
         default-expand-all
-        selected-color='secondary'
         class='non-selectable z-max'
         :selected.sync='selected'
         :expanded.sync='expanded'
@@ -99,7 +98,7 @@ export default {
   mounted () {
     const that = this
     document.addEventListener('click', (e) => {
-      if (e.path[1] && e.path[1].className && e.path[1].className.indexOf('q-tree__node') !== -1) return
+      if (e.path[1] && e.path[1].className && e.path[1].className.indexOf && e.path[1].className.indexOf('q-tree__node') !== -1) return
       if (this.$refs.drawer) that.hide()
     })
   },

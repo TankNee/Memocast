@@ -5,6 +5,7 @@ export default {
   INSERT_TEXT: 'insert.text',
   SCROLL_TO_HEADER: 'scroll.to.header',
   SCROLL_DOWN: 'scroll.down',
+  GENERATE_MINDMAP: 'generate.mindmap',
   PARAGRAPH_SHORTCUT_CALL: 'paragraph.shortcut.call',
   EDIT_SHORTCUT_CALL: {
     undo: 'edit.shortcut.undo.call',

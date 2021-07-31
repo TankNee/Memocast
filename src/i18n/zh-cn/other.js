@@ -11,5 +11,6 @@ export default {
   lockModeOn: '键盘输入已被锁定',
   lockModeOff: '键盘锁定已被解除',
   title: '标题',
-  confirm: '确认'
+  confirm: '确认',
+  mindmap: '思维导图'
 }

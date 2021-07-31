@@ -66,6 +66,14 @@ export const FORMAT_DOCUMENT_BY_PANGU = {
   }
 }
 
+export const GENERATE_MINDMAP = {
+  label: 'generateMindmap',
+  id: 'generateMindmapMenuItem',
+  click (menuItem, browserWindow) {
+    contextMenu.generateMindmap()
+  }
+}
+
 export const SEPARATOR = {
   type: 'separator'
 }

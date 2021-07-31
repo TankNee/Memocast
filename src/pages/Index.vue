@@ -22,7 +22,7 @@
           <div v-show='!isSourceMode'>
             <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
           </div>
-          <Monaco v-if='dataLoaded' ref='monaco' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
+          <Monaco ref='monaco' v-if='dataLoaded' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
           <transition-group
             appear
             enter-active-class='animated fadeIn'
@@ -104,6 +104,7 @@
         </div>
         <NoteOutlineDrawer ref='outlineDrawer' :change='outlineDrawerChangeHandler' />
         <Loading :visible='isCurrentNoteLoading' />
+        <MarkMapDialog ref="markMapDialog" />
       </template>
     </q-splitter>
   </q-page>
@@ -119,6 +120,7 @@ import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
 import Monaco from 'components/ui/editor/Monaco'
 import Muya from 'components/ui/editor/Muya'
+import MarkMapDialog from '../components/ui/dialog/MarkMapDialog'
 
 const {
   mapGetters: mapServerGetters,
@@ -129,6 +131,7 @@ const { mapState: mapClientState, mapActions: mapClientActions } = createNamespa
 export default {
   name: 'PageIndex',
   components: {
+    MarkMapDialog,
     Muya,
     Monaco,
     Loading,
@@ -168,6 +171,7 @@ export default {
       splitterModel: 300,
       isOutlineShow: false,
       isSourceMode: false,
+      isMindmapMode: false,
       tempNoteData: {}
     }
   },
@@ -180,6 +184,15 @@ export default {
     },
     sourceModeHandler: function () {
       this.isSourceMode = !this.isSourceMode
+    },
+    generateMindmapHandler: function () {
+      let markdown
+      if (this.isSourceMode) {
+        markdown = this.$refs.monaco.getValue()
+      } else {
+        markdown = this.$refs.muya.getValue()
+      }
+      this.$refs.markMapDialog.toggle(markdown)
     },
     editorScrollHandler: function (e) {
       bus.$emit(events.EDITOR_SCROLL, e)
@@ -200,10 +213,11 @@ export default {
   mounted () {
     bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
     bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
+    bus.$on(events.GENERATE_MINDMAP, this.generateMindmapHandler)
   },
   watch: {
-    isSourceMode: function (val, oldVal) {
-      if (oldVal) {
+    isSourceMode: function (val) {
+      if (!val) {
         this.tempNoteData = {
           markdown: this.$refs.monaco.getValue(),
           cursor: this.$refs.monaco.getCursorPosition()
