@@ -16,8 +16,6 @@
         :nodes="items"
         ref="tree"
         node-key="key"
-        selected-color="primary"
-        accordion
         :selected="currentCategory"
         @update:selected="
           v => {
@@ -28,9 +26,10 @@
             })
           }
         "
+        duration='150'
       >
         <template v-slot:default-header="prop">
-          <div class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
+          <div :style="isNodeSelected(prop.node) ? 'color:var(--themeColor)' : ''" class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
             <q-icon :name="nodeIconName(prop.node)" class="q-mr-sm" />
             <div>{{ prop.node.label }}</div>
           </div>
@@ -98,10 +97,13 @@ export default {
     },
     nodeIconName: function (node) {
       if (this.type !== 'category') return 'local_offer'
-      if (this.$refs.tree.isExpanded(node.key)) {
+      if (this.$refs.tree.isExpanded(node.key) || this.currentCategory === node.key) {
         return 'folder_open'
       }
       return 'folder'
+    },
+    isNodeSelected: function (node) {
+      return this.currentCategory === node.key
     },
     contextMenuHandler: function (e, node) {
       if (this.type !== 'category') return

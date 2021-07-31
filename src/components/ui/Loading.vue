@@ -5,7 +5,7 @@
       enter-active-class='animated fadeIn'
       leave-active-class='animated fadeOut'
     >
-      <q-spinner-hourglass :color="$q.dark.isActive ? 'warning' : 'primary'" size="6em" />
+      <q-spinner style="color:var(--themeColor)" size="6em" />
     </transition>
   </q-inner-loading>
 </template>

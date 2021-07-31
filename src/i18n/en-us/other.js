@@ -9,5 +9,7 @@ export default {
   sourceMode: 'Source Mode',
   previewMode: 'Preview Mode',
   lockModeOn: 'Keyboard Locked',
-  lockModeOff: 'Keyboard Unlocked'
+  lockModeOff: 'Keyboard Unlocked',
+  title: 'Title',
+  confirm: 'Confirm'
 }

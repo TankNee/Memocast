@@ -470,6 +470,7 @@ kbd {
   table tr {
     margin: 0;
     padding: 0;
+    border: 1px solid var(--tableBorderColor);
   }
 
   /* table thead tr,
@@ -501,7 +502,6 @@ kbd {
     right: 0;
     width: calc(100% + 1px);
     height: calc(100% + 1px);
-    border: 1px solid var(--tableBorderColor);
     box-sizing: border-box;
     pointer-events: none;
   }

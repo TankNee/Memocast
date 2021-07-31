@@ -176,8 +176,9 @@ function wizIsPredefinedLocation (strLocation) {
 /**
  * generate categories tree
  * @param {string[] | string[][]} categories
+ * @param {{}} categoriesPos
  */
-function generateCategoryNodeTree (categories) {
+function generateCategoryNodeTree (categories, categoriesPos) {
   const result = []
   categories = categories || []
   categories = categories.map(category => {
@@ -207,6 +208,13 @@ function generateCategoryNodeTree (categories) {
         selectable: true,
         key: `/${category[0]}/`
       })
+      result.sort((c1, c2) => {
+        if (categoriesPos[c1.key] && categoriesPos[c2.key]) {
+          return categoriesPos[c1.key] - categoriesPos[c2.key]
+        } else {
+          return c1.originLabel.localeCompare(c2.originLabel)
+        }
+      })
       continue
     }
     const rootNodeIndex = result.findIndex(c => c.originLabel === category[0])
@@ -224,6 +232,13 @@ function generateCategoryNodeTree (categories) {
       children: [],
       selectable: true,
       key: nodeKey
+    })
+    rootNode.children.sort((c1, c2) => {
+      if (categoriesPos[c1.key] && categoriesPos[c2.key]) {
+        return categoriesPos[c1.key] - categoriesPos[c2.key]
+      } else {
+        return c1.originLabel.localeCompare(c2.originLabel)
+      }
     })
   }
   return result

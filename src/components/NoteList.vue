@@ -175,9 +175,11 @@ export default {
             type: 'text',
             attrs: {
               spellcheck: false
-            }
+            },
+            label: this.$t('title')
           },
-          cancel: true
+          ok: this.$t('confirm'),
+          cancel: this.$t('cancel')
         })
         .onOk(data => {
           this.createNote(data)
@@ -194,7 +196,8 @@ export default {
               spellcheck: false
             }
           },
-          cancel: true
+          ok: this.$t('confirm'),
+          cancel: this.$t('cancel')
         })
         .onOk(data => {
           this.createCategory({
@@ -208,7 +211,8 @@ export default {
       this.$q
         .dialog({
           title: this.$t('deleteCategory'),
-          cancel: true
+          ok: this.$t('confirm'),
+          cancel: this.$t('cancel')
         })
         .onOk(() => {
           this.deleteCategory(this.rightClickCategoryItem)
@@ -236,9 +240,11 @@ export default {
           type: 'text',
           attrs: {
             spellcheck: false
-          }
+          },
+          label: this.$t('title')
         },
-        cancel: true
+        ok: this.$t('confirm'),
+        cancel: this.$t('cancel')
       }).onOk(data => {
         const info = JSON.parse(JSON.stringify(this.rightClickNoteItem))
         info.title = data
@@ -249,7 +255,8 @@ export default {
     deleteNoteHandler: function () {
       this.$q.dialog({
         title: this.$t('deleteNote'),
-        cancel: true
+        ok: this.$t('confirm'),
+        cancel: this.$t('cancel')
       }).onOk(() => {
         this.deleteNote(this.rightClickNoteItem)
       })

@@ -98,7 +98,11 @@ const KnowledgeBaseApi = {
   async getCategories (params) {
     return await execRequest(
       'GET',
-      `${this.getBaseUrl()}/ks/category/all/${params.kbGuid}`
+      `${this.getBaseUrl()}/ks/category/all/${params.kbGuid}`,
+      {},
+      null,
+      {},
+      true
     )
   },
 
@@ -127,8 +131,7 @@ const KnowledgeBaseApi = {
       `${this.getBaseUrl()}/ks/note/download/${params.kbGuid}/${params.docGuid}`,
       null,
       null,
-      { params: params.data },
-      true
+      { params: params.data }
     )
   },
 
@@ -255,8 +258,7 @@ const KnowledgeBaseApi = {
       `${this.getBaseUrl()}/ks/note/search/${params.kbGuid}`,
       null,
       null,
-      { params: params.data },
-      true
+      { params: params.data }
     )
   },
 

@@ -253,14 +253,12 @@ export default {
 
         // Used to fix #628: auto scroll cursor to visible if the cursor is too low.
         if (container.clientHeight - y < 100) {
-          // editableHeight is the lowest cursor position(till to top) that editor allowed.
           const editableHeight = container.clientHeight - 100
           if (this.$q.platform.is.mac) {
             helper.animatedScrollTo(container, container.scrollTop + (y - editableHeight), 100)
           } else {
             container.scrollTop = container.scrollTop + (y - editableHeight)
           }
-          // helper.animatedScrollTo(container, container.scrollTop + (y - editableHeight), 100)
         }
       })
 
@@ -274,10 +272,6 @@ export default {
           this.updateNoteState('default')
         }
         this.updateContentsList(this.contentEditor.getTOC())
-        const cursor = this.contentEditor.getCursor()
-        if (cursor.anchor.line >= this.contentEditor.getWordCount(curData).line - 2) {
-          bus.$emit(events.SCROLL_DOWN)
-        }
       })
 
       bus.$on(events.SCROLL_TO_HEADER, this.scrollToHeaderHandler)

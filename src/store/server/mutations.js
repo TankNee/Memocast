@@ -67,6 +67,10 @@ export default {
     state.categories = payload
     return state
   },
+  [types.UPDATE_CATEGORIES_POS] (state, payload) {
+    state.categoriesPos = payload
+    return state
+  },
   [types.UPDATE_CURRENT_CATEGORY] (state, category) {
     state.currentCategory = category
     return state

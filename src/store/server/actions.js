@@ -215,8 +215,9 @@ export default {
   }) {
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
     const { kbGuid } = state
-    const result = await api.KnowledgeBaseApi.getCategories({ kbGuid })
-    commit(types.UPDATE_ALL_CATEGORIES, result)
+    const res = await api.KnowledgeBaseApi.getCategories({ kbGuid })
+    commit(types.UPDATE_ALL_CATEGORIES, res.result)
+    commit(types.UPDATE_CATEGORIES_POS, res.pos)
     commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
   },
   /**
