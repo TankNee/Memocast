@@ -140,7 +140,7 @@ SOFTWARE.
 
  #mind code {
    color: inherit;
-   background: inherit;
+   background: transparent;
  }
 
 code[class*="language-"],
@@ -323,7 +323,7 @@ const lightPrismTheme = `/*
 
  #mind code {
    color: inherit;
-   background: inherit;
+   background: transparent;
  }
 
 code[class*="language-"],
@@ -338,11 +338,12 @@ pre.ag-paragraph {
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
-
+  text-shadow: none;
   -webkit-hyphens: none;
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  overflow: visible !important;
   font-family: JetBrains Mono;
 }
 
