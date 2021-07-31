@@ -160,7 +160,6 @@ pre.ag-paragraph {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-  overflow: visible;
   font-family: JetBrains Mono;
 }
 
@@ -169,7 +168,6 @@ pre.ag-paragraph {
   padding: 1em;
   margin: 1em 0;
   border-radius: 0.3em;
-  overflow: overlay;
 }
 
 /* Inline Code */
@@ -344,7 +342,6 @@ pre.ag-paragraph {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-  overflow: visible !important;
   font-family: JetBrains Mono;
 }
 
@@ -352,7 +349,6 @@ pre.ag-paragraph {
 pre.ag-paragraph {
   padding: 1em;
   margin: 1em 0;
-  overflow: overlay;
 }
 
 /* Inline Code */
