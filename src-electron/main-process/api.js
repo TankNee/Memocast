@@ -79,10 +79,11 @@ export default {
           })
       }).catch(err => throw err)
     }).catch(err => throw err)
+
     handleApi('export-png', (event, { content, title }) => {
       return dialog.showSaveDialog({
         title: i18n.t('export'),
-        defaultPath: path.join(app.getPath('documents'), `${title}`),
+        defaultPath: path.join(app.getPath('pictures'), `${title}`),
         filters: [
           {
             name: 'Portable Network Graphics',
@@ -94,6 +95,37 @@ export default {
         const base64 = content.replace(/^data:image\/\w+;base64,/, '')
         const baseUrl = Buffer.from(base64, 'base64')
         fs.writeFile(result.filePath, baseUrl).then(() => {
+          sendNotification({
+            msg: 'ExportSuccessfully',
+            type: 'positive',
+            icon: 'check',
+            filePath: result.filePath
+          }, event).catch(err => throw err)
+        })
+          .catch(err => {
+            sendNotification({
+              msg: err.msg,
+              type: 'negative',
+              icon: 'delete'
+            }, event).catch(err => throw err)
+          })
+      }).catch(err => throw err)
+    }).catch(err => throw err)
+
+    handleApi('export-file', (event, { content, fileName, fileType }) => {
+      console.log({ fileName, fileType })
+      return dialog.showSaveDialog({
+        title: i18n.t('export'),
+        defaultPath: path.join(app.getPath('documents'), `${fileName}`),
+        filters: [
+          {
+            name: 'Export File',
+            extensions: [fileType]
+          }
+        ]
+      }).then((result) => {
+        if (result.canceled) return
+        fs.writeFile(result.filePath, content).then(() => {
           sendNotification({
             msg: 'ExportSuccessfully',
             type: 'positive',

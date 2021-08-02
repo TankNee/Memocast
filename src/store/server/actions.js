@@ -6,8 +6,16 @@ import { i18n } from 'boot/i18n'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
-import { exportMarkdownFile, exportMarkdownFiles, saveTempImage, uploadImages, exportPng } from 'src/ApiInvoker'
+import {
+  exportMarkdownFile,
+  exportMarkdownFiles,
+  saveTempImage,
+  uploadImages,
+  exportPng,
+  exportFile
+} from 'src/ApiInvoker'
 import html2canvas from 'html2canvas'
+import debugLogger from 'src/utils/debugLogger'
 
 export async function _getContent (kbGuid, docGuid) {
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
@@ -863,9 +871,18 @@ export default {
     Loading.hide()
     await exportMarkdownFile({ content, title })
   },
+  /**
+   * 导出为png
+   * @param state
+   * @param noteField
+   * @param current
+   * @param elementId
+   * @returns {Promise<void>}
+   */
   async exportPng ({ state }, {
     noteField,
-    current
+    current,
+    elementId = 'ag-editor-id'
   }) {
     const {
       kbGuid,
@@ -881,13 +898,14 @@ export default {
     }
     const result = await _getContent(kbGuid, docGuid)
     const title = result.info.title.split('.')[0]
+    // const title = _.endsWith(result.info.title, '.md') ? result.info.title.replace('.md') : result.info.title
     if (_.isEmpty(currentNote)) return
     Loading.show({
       spinner: QSpinnerGears,
       message: i18n.t('prepareExportData'),
       delay: 400
     })
-    const canvasID = document.getElementById('ag-editor-id')
+    const canvasID = document.getElementById(elementId)
     const color = Dark.isActive
     html2canvas(canvasID, {
       useCORS: true,
@@ -900,7 +918,23 @@ export default {
       const content = dom.toDataURL('image/png')
       Loading.hide()
       exportPng({ content, title })
+    }).catch(e => {
+      debugLogger.Error(e)
+      Loading.hide()
     })
+  },
+  async exportFile ({ state }, {
+    content,
+    fileName,
+    fileType
+  }) {
+    fileName = fileName.split('.')[0]
+    // fileName = _.endsWith(fileName, '.md') ? fileName.replace('.md') : fileName
+    exportFile({
+      content,
+      fileName,
+      fileType
+    }).then()
   },
   /**
    * 批量导出markdown笔记到本地

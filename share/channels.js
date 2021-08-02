@@ -1,6 +1,7 @@
 export default {
   exportMarkdownFile: 'export-markdown-file',
   exportPng: 'export-png',
+  exportFile: 'export-file',
   exportMarkdownFiles: 'export-markdown-files',
   importImage: 'import-image',
   uploadImages: 'upload-images',

@@ -10,6 +10,7 @@ import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron
 import KeyBindings from './keyboard/shortcut'
 import { registerMemocastProtocol } from './utlis/resource-loader'
 import Store from 'electron-store'
+import i18n from './i18n'
 
 const ClientStorage = new Store({
   name: 'ClientFileStorage'
@@ -132,10 +133,10 @@ function createWindow () {
     }
     dialog.showMessageBox(mainWindow, {
       type: 'question',
-      title: 'Open link url in your default browser!',
-      message: 'Open link url in your default browser!',
+      title: i18n.t('openLinkHint'),
+      message: i18n.t('openLinkHint'),
       detail: linkUrl,
-      buttons: ['Confirm', 'Cancel']
+      buttons: [i18n.t('confirm'), i18n.t('cancel')]
     }).then((res) => {
       if (!res.response) {
         shell.openExternal(linkUrl).then()

@@ -60,5 +60,10 @@ export default {
     exportCategory: {
       markdown: 'side.drawer.context.menu.export.markdown'
     }
+  },
+  MARK_MAP_CONTEXT_MENU: {
+    saveAsPNG: 'mark.map.context.menu.save.as.png',
+    saveAsSVG: 'mark.map.context.menu.save.as.svg',
+    saveAsHTML: 'mark.map.context.menu.save.as.html'
   }
 }

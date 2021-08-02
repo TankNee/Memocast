@@ -1,24 +1,25 @@
 <template>
-  <div style="height: 70vh;">
+  <div id="mind-container" style="height: 70vh;" @click="containerClickHandler" @contextmenu="contextMenuHandler">
     <svg
       id="mind"
-      class='full-height full-width'
-      v-show='!isCurrentNoteLoading && dataLoaded'
+      style="height: 100%; width: 100%;"
       ></svg>
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import helper from 'src/utils/helper'
 import { Transformer } from 'markmap-lib'
 import * as markmap from 'markmap-view'
+import { showContextMenu as showMarkMapContextMenu } from 'src/contextMenu/markMap'
+import bus from '../../bus'
+import events from '../../../constants/events'
 
 const transformer = new Transformer()
 const { Markmap, loadJS } = markmap
 const {
-  mapGetters: mapServerGetters,
-  mapState: mapServerState
+  mapState: mapServerState,
+  mapActions: mapServerActions
 } = createNamespacedHelpers('server')
 
 export default {
@@ -35,11 +36,7 @@ export default {
     }
   },
   computed: {
-    dataLoaded: function () {
-      return !helper.isNullOrEmpty(this.currentNote)
-    },
-    ...mapServerState(['isCurrentNoteLoading']),
-    ...mapServerGetters(['currentNote'])
+    ...mapServerState(['isCurrentNoteLoading', 'currentNote'])
   },
   methods: {
     generate: function () {
@@ -50,12 +47,47 @@ export default {
       if (this.markMap) this.markMap.destroy()
       const svgEl = document.querySelector('#mind')
       this.markMap = Markmap.create(svgEl, null, root)
-    }
+    },
+    contextMenuHandler: function (e) {
+      showMarkMapContextMenu(e)
+    },
+    containerClickHandler: function (e) {
+      const ele = e.srcElement || e.target
+      if (ele.nodeName.toLowerCase() === 'a') {
+        e.preventDefault()
+        window.open(ele.href)
+      }
+      console.log(e, ele)
+    },
+    saveAsPNGHandler: function () {
+      const tempContainer = document.createElement('div')
+      tempContainer.innerHTML = document.getElementById('mind-container').innerHTML
+      tempContainer.id = 'temp-container'
+      document.body.append(tempContainer)
+      this.exportPng({ current: true, elementId: 'temp-container' }).finally(() => {
+        tempContainer.remove()
+      })
+    },
+    saveAsSVGHandler: function () {
+      this.exportFile({ content: document.getElementById('mind-container').innerHTML, fileName: this.currentNote.info.title, fileType: 'svg' })
+    },
+    saveAsHTMLHandler: function () {
+      this.exportFile({ content: document.getElementById('mind-container').innerHTML, fileName: this.currentNote.info.title, fileType: 'html' })
+    },
+    ...mapServerActions(['exportPng', 'exportFile'])
   },
   mounted () {
     setTimeout(() => {
       this.generate()
-    }, 300)
+    }, 150)
+    bus.$on(events.MARK_MAP_CONTEXT_MENU.saveAsPNG, this.saveAsPNGHandler)
+    bus.$on(events.MARK_MAP_CONTEXT_MENU.saveAsSVG, this.saveAsSVGHandler)
+    bus.$on(events.MARK_MAP_CONTEXT_MENU.saveAsHTML, this.saveAsHTMLHandler)
+  },
+  beforeDestroy () {
+    bus.$off(events.MARK_MAP_CONTEXT_MENU.saveAsPNG, this.saveAsPNGHandler)
+    bus.$off(events.MARK_MAP_CONTEXT_MENU.saveAsSVG, this.saveAsSVGHandler)
+    bus.$off(events.MARK_MAP_CONTEXT_MENU.saveAsHTML, this.saveAsHTMLHandler)
   }
 }
 </script>

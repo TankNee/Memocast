@@ -15,6 +15,10 @@ async function exportPng (note) {
   return ipcRenderer.invoke(channels.exportPng, note)
 }
 
+async function exportFile (file) {
+  return ipcRenderer.invoke(channels.exportFile, file)
+}
+
 /**
  * 批量导出markdown文件
  * @param notes 笔记列表
@@ -85,6 +89,7 @@ async function saveUploadedImage (buffer, kbGuid, docGuid, name) {
 export {
   exportMarkdownFile,
   exportPng,
+  exportFile,
   exportMarkdownFiles,
   importImage,
   uploadImages,
