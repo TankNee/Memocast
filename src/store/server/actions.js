@@ -1,6 +1,6 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify, Dialog, Loading, QSpinnerGears, Dark, QSpinner } from 'quasar'
+import { Notify, Dialog, Loading, QSpinnerGears, Dark } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
@@ -239,16 +239,16 @@ export default {
     commit,
     state
   }, payload) {
-    // commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
-    Loading.show({
-      spinner: QSpinner,
-      delay: 400
-    })
+    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
+    // Loading.show({
+    //   spinner: QSpinner,
+    //   delay: 400
+    // })
     const { kbGuid } = state
     const { docGuid } = payload
     const result = await _getContent(kbGuid, docGuid)
     Loading.hide()
-    // commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
+    commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTE, result)
   },
   /**
