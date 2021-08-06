@@ -8,11 +8,11 @@
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <item>
-            <title><![CDATA[Welcome]]></title>
+            <title><![CDATA[欢迎来到 Memocast 的开发博客]]></title>
             <link>https://www.tanknee.cn/Memocast/blog/Welcome</link>
             <guid>Welcome</guid>
             <pubDate>Fri, 06 Aug 2021 00:00:00 GMT</pubDate>
-            <description><![CDATA[Memocast 的第一篇博客]]></description>
+            <description><![CDATA[Quasar + Electron + Muya + Monaco + WizNote = ？]]></description>
         </item>
     </channel>
 </rss>

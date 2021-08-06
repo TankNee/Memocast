@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmemocast_document=self.webpackChunkmemocast_document||[]).push([[535],{5641:function(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"\u6b22\u8fce\u6765\u5230 Memocast \u7684\u5f00\u53d1\u535a\u5ba2","permalink":"/Memocast/blog/Welcome"}]}')}}]);

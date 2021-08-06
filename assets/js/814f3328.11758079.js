@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmemocast_document=self.webpackChunkmemocast_document||[]).push([[535],{5641:function(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Welcome","permalink":"/Memocast/blog/Welcome"}]}')}}]);
