@@ -57,7 +57,6 @@ export default {
         e.preventDefault()
         window.open(ele.href)
       }
-      console.log(e, ele)
     },
     saveAsPNGHandler: function () {
       const tempContainer = document.createElement('div')

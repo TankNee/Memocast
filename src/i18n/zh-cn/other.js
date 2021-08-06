@@ -12,5 +12,9 @@ export default {
   lockModeOff: '键盘锁定已被解除',
   title: '标题',
   confirm: '确认',
-  mindmap: '思维导图'
+  mindmap: '思维导图',
+  wordCount: '字数统计',
+  'word:': '词: {word}',
+  'paragraph:': '段落: {paragraph}',
+  'character:': '字符: {character}'
 }

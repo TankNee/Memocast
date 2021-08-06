@@ -244,6 +244,8 @@ export default {
 
       this.contentEditor.on('change', () => this.updateContentsList(this.contentEditor.getTOC()))
 
+      this.contentEditor.on('change', () => bus.$emit(events.UPDATE_WORD_COUNT, this.contentEditor.getWordCount(this.contentEditor.getMarkdown())))
+
       this.contentEditor.on('contextmenu', (event, selection) => {
         showEditorContextMenu(event, selection)
       })

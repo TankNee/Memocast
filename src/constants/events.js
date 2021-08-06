@@ -6,6 +6,7 @@ export default {
   SCROLL_TO_HEADER: 'scroll.to.header',
   SCROLL_DOWN: 'scroll.down',
   GENERATE_MINDMAP: 'generate.mindmap',
+  UPDATE_WORD_COUNT: 'update.word.count',
   PARAGRAPH_SHORTCUT_CALL: 'paragraph.shortcut.call',
   EDIT_SHORTCUT_CALL: {
     undo: 'edit.shortcut.undo.call',

@@ -125,14 +125,14 @@ export default {
     thumbStyle () {
       return {
         backgroundColor: '#E8ECF1',
-        width: '7px',
+        width: '5px',
         opacity: 0.75
       }
     },
 
     barStyle () {
       return {
-        width: '7px'
+        width: '5px'
       }
     },
     isRootCategory: function () {

@@ -12,5 +12,9 @@ export default {
   lockModeOff: 'Keyboard Unlocked',
   title: 'Title',
   confirm: 'Confirm',
-  mindmap: 'Mindmap'
+  mindmap: 'Mindmap',
+  wordCount: 'Word Count',
+  'word:': 'Words: {word}',
+  'paragraph:': 'Paragraph: {paragraph}',
+  'character:': 'Characters: {character}'
 }

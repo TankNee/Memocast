@@ -57,6 +57,38 @@
               key='format_align_center'
             />
             <q-btn
+              icon='dashboard'
+              dense
+              flat
+              round
+              class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
+              style='bottom: 150px'
+              size='md'
+              color='#26A69A'
+              v-show='dataLoaded && !isOutlineShow && !isSourceMode'
+              v-ripple
+              key='wordCount'
+              :title="$t('wordCount')"
+            >
+              <q-tooltip
+                transition-show="fade"
+                transition-hide="fade"
+                anchor="center left" self="center right"
+              >
+                <div class="text-body2">
+                  <p>
+                    {{ `${$t('word:', wordCount)}` }}
+                  </p>
+                  <p>
+                    {{ `${$t('character:', wordCount)}` }}
+                  </p>
+                  <p>
+                    {{ `${$t('paragraph:', wordCount)}` }}
+                  </p>
+                </div>
+              </q-tooltip>
+            </q-btn>
+            <q-btn
               :icon='isSourceMode ? "assignment" : "code"'
               dense
               flat
@@ -85,6 +117,7 @@
               v-show='dataLoaded && !isOutlineShow'
               v-ripple
               key='lock'
+              :title="enablePreviewEditor ? $t('lock') : $t('unlock')"
             />
             <q-btn
               icon='save'
@@ -142,14 +175,14 @@ export default {
     thumbStyle () {
       return {
         backgroundColor: '#E8ECF1',
-        width: '7px',
+        width: '5px',
         opacity: 0.75
       }
     },
 
     barStyle () {
       return {
-        width: '7px'
+        width: '5px'
       }
     },
     dataLoaded: function () {
@@ -172,7 +205,12 @@ export default {
       isOutlineShow: false,
       isSourceMode: false,
       isMindmapMode: false,
-      tempNoteData: {}
+      tempNoteData: {},
+      wordCount: {
+        word: '0',
+        paragraph: '0',
+        character: '0'
+      }
     }
   },
   methods: {
@@ -185,14 +223,25 @@ export default {
     sourceModeHandler: function () {
       this.isSourceMode = !this.isSourceMode
     },
-    generateMindmapHandler: function () {
+    getTempValue: function () {
       let markdown
       if (this.isSourceMode) {
-        markdown = this.$refs.monaco.getValue()
+        markdown = this.$refs.monaco?.getValue()
       } else {
-        markdown = this.$refs.muya.getValue()
+        markdown = this.$refs.muya?.getValue()
       }
+      return markdown
+    },
+    generateMindmapHandler: function () {
+      const markdown = this.getTempValue()
       this.$refs.markMapDialog.toggle(markdown)
+    },
+    wordCountUpdateHandler: function (wordCount) {
+      this.wordCount = Object.assign({
+        word: '',
+        paragraph: '',
+        character: ''
+      }, wordCount)
     },
     editorScrollHandler: function (e) {
       bus.$emit(events.EDITOR_SCROLL, e)
@@ -214,6 +263,7 @@ export default {
     bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
     bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
     bus.$on(events.GENERATE_MINDMAP, this.generateMindmapHandler)
+    bus.$on(events.UPDATE_WORD_COUNT, this.wordCountUpdateHandler)
   },
   watch: {
     isSourceMode: function (val) {
