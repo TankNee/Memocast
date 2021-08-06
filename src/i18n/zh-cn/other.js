@@ -9,5 +9,12 @@ export default {
   sourceMode: '源代码模式',
   previewMode: '预览模式',
   lockModeOn: '键盘输入已被锁定',
-  lockModeOff: '键盘锁定已被解除'
+  lockModeOff: '键盘锁定已被解除',
+  title: '标题',
+  confirm: '确认',
+  mindmap: '思维导图',
+  wordCount: '字数统计',
+  'word:': '词: {word}',
+  'paragraph:': '段落: {paragraph}',
+  'character:': '字符: {character}'
 }

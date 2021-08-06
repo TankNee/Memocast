@@ -133,6 +133,9 @@ export default {
         this.contentEditor.revealPositionInCenter(position, 0)
       }
     },
+    getWordCount: function (markdown) {
+      return this.contentEditor.getWordCount(markdown)
+    },
     ...mapServerActions(['updateNote', 'updateNoteState'])
   },
   mounted () {

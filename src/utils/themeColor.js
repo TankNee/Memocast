@@ -5,18 +5,18 @@
 const oneDarkTheme = `:root {
   --backgroundColor: #35373e;
   --editorAreaWidth: 90%;
-
+  --activeItemBgColor: rgb(41, 42, 44);
   /*editor*/
-  --themeColor: #409eff;
-  --themeColor90: rgba(64, 158, 255, .9);
-  --themeColor80: rgba(64, 158, 255, .8);
-  --themeColor70: rgba(64, 158, 255, .7);
-  --themeColor60: rgba(64, 158, 255, .6);
-  --themeColor50: rgba(64, 158, 255, .5);
-  --themeColor40: rgba(64, 158, 255, .4);
-  --themeColor30: rgba(64, 158, 255, .3);
-  --themeColor20: rgba(64, 158, 255, .2);
-  --themeColor10: rgba(64, 158, 255, .1);
+  --themeColor: rgb(242, 192, 55);
+  --themeColor90: rgba(242, 192, 55, .9);
+  --themeColor80: rgba(242, 192, 55, .8);
+  --themeColor70: rgba(242, 192, 55, .7);
+  --themeColor60: rgba(242, 192, 55, .6);
+  --themeColor50: rgba(242, 192, 55, .5);
+  --themeColor40: rgba(242, 192, 55, .4);
+  --themeColor30: rgba(242, 192, 55, .3);
+  --themeColor20: rgba(242, 192, 55, .2);
+  --themeColor10: rgba(242, 192, 55, .1);
 
   --highlightColor: rgba(102, 177, 255, .6);
   --selectionColor: rgba(70, 122, 189, .7);
@@ -138,6 +138,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
+ #mind code {
+   color: inherit;
+   background: transparent;
+ }
+
 code[class*="language-"],
 pre.ag-paragraph {
   color: #ABB2BF;
@@ -155,7 +160,6 @@ pre.ag-paragraph {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-  overflow: visible;
   font-family: JetBrains Mono;
 }
 
@@ -256,20 +260,21 @@ const lightTheme = `/* Common CSS use by both light and dark themes */
   --titleBarHeight: 32px;
   --editorAreaWidth: 90%;
   --backgroundColor: #ffffff;
+  --activeItemBgColor: rgb(204, 207, 214);
   /*editor*/
   /*Theme color cluster*/
-  --themeColor: rgba(33, 181, 111, 1);
-  --themeColor90: rgba(33, 181, 111, .9);
-  --themeColor80: rgba(33, 181, 111, .8);
-  --themeColor70: rgba(33, 181, 111, .7);
-  --themeColor60: rgba(33, 181, 111, .6);
-  --themeColor50: rgba(33, 181, 111, .5);
-  --themeColor40: rgba(33, 181, 111, .4);
-  --themeColor30: rgba(33, 181, 111, .3);
-  --themeColor20: rgba(33, 181, 111, .2);
-  --themeColor10: rgba(33, 181, 111, .1);
+  --themeColor: rgba(25, 118, 210, 1);
+  --themeColor90: rgba(25, 118, 210, .9);
+  --themeColor80: rgba(25, 118, 210, .8);
+  --themeColor70: rgba(25, 118, 210, .7);
+  --themeColor60: rgba(25, 118, 210, .6);
+  --themeColor50: rgba(25, 118, 210, .5);
+  --themeColor40: rgba(25, 118, 210, .4);
+  --themeColor30: rgba(25, 118, 210, .3);
+  --themeColor20: rgba(25, 118, 210, .2);
+  --themeColor10: rgba(25, 118, 210, .1);
 
-  --highlightColor: rgba(33, 181, 111, .4);
+  --highlightColor: rgba(25, 118, 210, .4);
   --selectionColor: #DAE3E9;
   --editorColor: rgba(0, 0, 0, .7);
   --editorColor80: rgba(0, 0, 0, .8);
@@ -315,6 +320,11 @@ const lightPrismTheme = `/*
  * Prism.js light theme
  */
 
+ #mind code {
+   color: inherit;
+   background: transparent;
+ }
+
 code[class*="language-"],
 pre.ag-paragraph {
   color: black;
@@ -327,7 +337,7 @@ pre.ag-paragraph {
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
-
+  text-shadow: none;
   -webkit-hyphens: none;
   -moz-hyphens: none;
   -ms-hyphens: none;

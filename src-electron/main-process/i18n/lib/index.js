@@ -5,7 +5,11 @@ export default class I18n {
       availableLocales,
       messages
     } = options
-    this._locale = locale
+    if (!availableLocales.includes(locale)) {
+      this._locale = availableLocales[0]
+    } else {
+      this._locale = locale
+    }
     this._availableLocales = availableLocales
     this._messages = messages
   }

@@ -4,7 +4,7 @@
     :value="false"
     :mini-width="200"
     :breakpoint="700"
-    content-class="bg-primary text-white hide-scrollbar"
+    content-class="hide-scrollbar"
   >
     <q-scroll-area
       :thumb-style="thumbStyle"
@@ -14,9 +14,8 @@
     >
       <q-tree
         :nodes="items"
+        ref="tree"
         node-key="key"
-        selected-color="primary"
-        accordion
         :selected="currentCategory"
         @update:selected="
           v => {
@@ -27,9 +26,11 @@
             })
           }
         "
+        :duration='150'
       >
         <template v-slot:default-header="prop">
-          <div class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
+          <div :style="isNodeSelected(prop.node) ? 'color:var(--themeColor)' : ''" class="row items-center full-width memocast-tree-node" @contextmenu="(e) => contextMenuHandler(e, prop.node)">
+            <q-icon :name="nodeIconName(prop.node)" class="q-mr-sm" />
             <div>{{ prop.node.label }}</div>
           </div>
         </template>
@@ -93,6 +94,16 @@ export default {
       if (this.$refs.drawer) {
         this.$refs.drawer.hide()
       }
+    },
+    nodeIconName: function (node) {
+      if (this.type !== 'category') return 'local_offer'
+      if (this.currentCategory === node.key || (this.$refs.tree && this.$refs.tree.isExpanded(node.key))) {
+        return 'folder_open'
+      }
+      return 'folder'
+    },
+    isNodeSelected: function (node) {
+      return this.currentCategory === node.key
     },
     contextMenuHandler: function (e, node) {
       if (this.type !== 'category') return

@@ -1,6 +1,6 @@
 {
   "name": "cn.memocast.app",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Memocast",
   "author": "tanknee <nee@tanknee.cn>",
@@ -47,6 +47,8 @@
     "lodash": "^4.17.21",
     "markdown-it": "^8.4.2",
     "markdown-it-pangu": "^1.0.2",
+    "markmap-lib": "^0.11.6",
+    "markmap-view": "^0.2.6",
     "md5": "^2.3.0",
     "mermaid": "^8.4.8",
     "monaco-editor": "^0.25.2",

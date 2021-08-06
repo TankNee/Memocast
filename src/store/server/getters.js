@@ -84,8 +84,8 @@ export default {
     } = currentNote
     return `${api.KnowledgeBaseApi.getBaseUrl()}/${kbGuid}/${docGuid}`
   },
-  categories: ({ categories }) => {
-    return helper.generateCategoryNodeTree(categories)
+  categories: ({ categories, categoriesPos }) => {
+    return helper.generateCategoryNodeTree(categories, categoriesPos)
   },
   tags: ({ tags }) => {
     return helper.generateTagNodeTree(tags)

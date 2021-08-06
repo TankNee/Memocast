@@ -5,6 +5,8 @@ export default {
   INSERT_TEXT: 'insert.text',
   SCROLL_TO_HEADER: 'scroll.to.header',
   SCROLL_DOWN: 'scroll.down',
+  GENERATE_MINDMAP: 'generate.mindmap',
+  UPDATE_WORD_COUNT: 'update.word.count',
   PARAGRAPH_SHORTCUT_CALL: 'paragraph.shortcut.call',
   EDIT_SHORTCUT_CALL: {
     undo: 'edit.shortcut.undo.call',
@@ -59,5 +61,10 @@ export default {
     exportCategory: {
       markdown: 'side.drawer.context.menu.export.markdown'
     }
+  },
+  MARK_MAP_CONTEXT_MENU: {
+    saveAsPNG: 'mark.map.context.menu.save.as.png',
+    saveAsSVG: 'mark.map.context.menu.save.as.svg',
+    saveAsHTML: 'mark.map.context.menu.save.as.html'
   }
 }

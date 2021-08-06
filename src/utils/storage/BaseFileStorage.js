@@ -88,11 +88,7 @@ class BaseFileStorage {
     if (note.info.dataModified === dataModified) {
       note.info = info
       this.setCachedNote(note, cacheKey, note.cachedDate)
-      const now = new Date().getTime()
-      // 没有资源文件的时候直接返回缓存，如果有资源文件但是缓存时间小于五分钟的也可以使用缓存
-      if ((note.resources && note.resources.length === 0) || (note.cachedDate && now - note.cachedDate < 5 * 60 * 1000)) {
-        return note
-      }
+      return note
     } else {
       this.removeItemFromStore(cacheKey)
     }

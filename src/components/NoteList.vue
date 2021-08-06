@@ -19,7 +19,7 @@
           >
             <q-item-section>
               <div @contextmenu="(e) => noteItemContextMenuHandler(e, noteField)">
-                <NoteItem :data="noteField"/>
+                <NoteItem :data="noteField" :dense="noteListDenseMode"/>
               </div>
             </q-item-section>
           </q-item>
@@ -125,14 +125,14 @@ export default {
     thumbStyle () {
       return {
         backgroundColor: '#E8ECF1',
-        width: '7px',
+        width: '5px',
         opacity: 0.75
       }
     },
 
     barStyle () {
       return {
-        width: '7px'
+        width: '5px'
       }
     },
     isRootCategory: function () {
@@ -163,7 +163,7 @@ export default {
     },
     ...mapServerGetters(['activeNote', 'currentNotes']),
     ...mapServerState(['isCurrentNotesLoading', 'currentCategory', 'isLogin', 'tags', 'currentNote']),
-    ...mapClientState(['rightClickCategoryItem', 'rightClickNoteItem'])
+    ...mapClientState(['rightClickCategoryItem', 'rightClickNoteItem', 'noteListDenseMode'])
   },
   methods: {
     addNoteHandler: function () {
@@ -175,9 +175,11 @@ export default {
             type: 'text',
             attrs: {
               spellcheck: false
-            }
+            },
+            label: this.$t('title')
           },
-          cancel: true
+          ok: this.$t('confirm'),
+          cancel: this.$t('cancel')
         })
         .onOk(data => {
           this.createNote(data)
@@ -194,7 +196,8 @@ export default {
               spellcheck: false
             }
           },
-          cancel: true
+          ok: this.$t('confirm'),
+          cancel: this.$t('cancel')
         })
         .onOk(data => {
           this.createCategory({
@@ -208,7 +211,8 @@ export default {
       this.$q
         .dialog({
           title: this.$t('deleteCategory'),
-          cancel: true
+          ok: this.$t('confirm'),
+          cancel: this.$t('cancel')
         })
         .onOk(() => {
           this.deleteCategory(this.rightClickCategoryItem)
@@ -236,9 +240,11 @@ export default {
           type: 'text',
           attrs: {
             spellcheck: false
-          }
+          },
+          label: this.$t('title')
         },
-        cancel: true
+        ok: this.$t('confirm'),
+        cancel: this.$t('cancel')
       }).onOk(data => {
         const info = JSON.parse(JSON.stringify(this.rightClickNoteItem))
         info.title = data
@@ -249,7 +255,8 @@ export default {
     deleteNoteHandler: function () {
       this.$q.dialog({
         title: this.$t('deleteNote'),
-        cancel: true
+        ok: this.$t('confirm'),
+        cancel: this.$t('cancel')
       }).onOk(() => {
         this.deleteNote(this.rightClickNoteItem)
       })

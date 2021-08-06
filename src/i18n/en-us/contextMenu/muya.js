@@ -7,5 +7,6 @@ export default {
   pasteAsPlainText: 'Paste As Plain Text',
   insertBefore: 'Insert Before',
   insertAfter: 'Insert After',
-  formatDocumentByPangu: 'Format Document'
+  formatDocumentByPangu: 'Format Document',
+  generateMindmap: 'Generate Mindmap'
 }

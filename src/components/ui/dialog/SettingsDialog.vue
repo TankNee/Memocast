@@ -68,7 +68,25 @@
                     <q-toggle
                       :value='darkMode'
                       color='black'
-                      @input='v => toggleDarkMode(v)'
+                      @input="
+                        v => {
+                          $q.dark.set(v)
+                          toggleChanged({ key: 'darkMode', value: v })
+                        }
+                      "
+                    />
+                  </div>
+                </div>
+                <q-separator />
+                <div>
+                  <div class='text-h5 q-mb-md setting-item'>
+                    <span>{{ $t('noteListDenseMode') }}</span>
+                    <q-toggle
+                      :value='noteListDenseMode'
+                      color='black'
+                      @input="
+                        v => toggleChanged({ key: 'noteListDenseMode', value: v })
+                      "
                     />
                   </div>
                 </div>
@@ -226,6 +244,7 @@ export default {
     ...mapState([
       'language',
       'darkMode',
+      'noteListDenseMode',
       'markdownOnly',
       'imageUploadService',
       'flomoApiUrl',
@@ -274,7 +293,6 @@ export default {
           }]
         })
       })
-      // this.$refs.updateDialog.toggle()
     },
     updateAvailableHandler: function (info) {
       console.log(info)
@@ -350,7 +368,6 @@ export default {
       // )
     },
     ...mapActions([
-      'toggleDarkMode',
       'toggleChanged',
       'updateStateAndStore',
       'checkUpdate'

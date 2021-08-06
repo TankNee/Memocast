@@ -27,6 +27,7 @@
     <q-avatar
       size="36px"
       class="cursor-pointer q-electron-drag--exception"
+      :title="$t('noteCategory')"
       v-ripple
       @click.stop="
         () => {
@@ -40,16 +41,12 @@
       "
     >
       <q-icon name="account_tree" color="#16A2B8" />
-      <q-tooltip
-        :offset="[20, 10]"
-        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
-        >{{ $t('noteCategory') }}
-      </q-tooltip>
     </q-avatar>
     <q-avatar
       size="36px"
       class="cursor-pointer q-electron-drag--exception "
       v-ripple
+      :title="$t('tag')"
       @click.stop="
         () => {
           if (isLogin) {
@@ -62,24 +59,15 @@
       "
     >
       <q-icon name="local_offer" color="#16A2B8" />
-      <q-tooltip
-        :offset="[20, 10]"
-        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
-        >{{ $t('tag') }}
-      </q-tooltip>
     </q-avatar>
     <q-avatar
       size="26px"
       class="cursor-pointer q-electron-drag--exception"
+      :title="isLogin ? $t('logout') : $t('login')"
       @click="loginHandler"
       v-ripple
     >
       <img :src="avatarUrl ? avatarUrl : defaultAvatar" />
-      <q-tooltip
-        :offset="[20, 10]"
-        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
-        >{{ isLogin ? $t('logout') : $t('login') }}
-      </q-tooltip>
     </q-avatar>
     <q-input
       dark
@@ -91,6 +79,7 @@
       ref="searchInput"
       style="width: 100px"
       spellcheck="false"
+      :title="$t('search')"
       @keydown.enter="searchNoteHandler"
     >
       <template v-slot:append>
@@ -109,11 +98,6 @@
           @click="clearInputHandler"
         />
       </template>
-      <q-tooltip
-        :offset="[20, 10]"
-        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
-        >{{ $t('search') }}
-      </q-tooltip>
     </q-input>
     <q-space v-if="!$q.platform.is.mac" />
     <div
@@ -139,27 +123,21 @@
     <q-space v-if="!$q.platform.is.mac" />
     <q-avatar
       size="36px"
-      class="cursor-pointer q-electron-drag--exception "
+      class="cursor-pointer q-electron-drag--exception"
+      :title="$t('switchView')"
       v-ripple
       @click="switchViewHandler"
     >
       <q-icon name="table_chart" />
-      <q-tooltip
-        :offset="[20, 10]"
-        :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
-        >{{ $t('switchView') }}
-      </q-tooltip>
     </q-avatar>
     <q-avatar
       size="36px"
-      class="cursor-pointer q-electron-drag--exception "
+      class="cursor-pointer q-electron-drag--exception"
+      :title="$t('settings')"
       v-ripple
       @click="$refs.settingsDialog.toggle()"
     >
       <q-icon name="settings" />
-      <q-tooltip :offset="[20, 10]" :content-class = '`${ darkMode ? "bg-darkMode" : "bg-light" } text-white shadow-4  text-h7`'
-        >{{ $t('settings') }}
-      </q-tooltip>
     </q-avatar>
     <div v-if="!$q.platform.is.mac">
       <q-btn dense flat icon="minimize" @click="minimize" />
@@ -333,7 +311,6 @@ export default {
   margin-left: 15%;
 }
 .header-note-title > span {
-  font-family: 'Open Sans', 'JetBrains Mono', serif;
   margin-left: 7px;
   letter-spacing: 0.3px;
   font-weight: 600;

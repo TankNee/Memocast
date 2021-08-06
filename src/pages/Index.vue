@@ -22,7 +22,7 @@
           <div v-show='!isSourceMode'>
             <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
           </div>
-          <Monaco v-if='dataLoaded' ref='monaco' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
+          <Monaco ref='monaco' v-if='dataLoaded' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
           <transition-group
             appear
             enter-active-class='animated fadeIn'
@@ -57,6 +57,38 @@
               key='format_align_center'
             />
             <q-btn
+              icon='dashboard'
+              dense
+              flat
+              round
+              class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
+              style='bottom: 150px'
+              size='md'
+              color='#26A69A'
+              v-show='dataLoaded && !isOutlineShow && !isSourceMode'
+              v-ripple
+              key='wordCount'
+              :title="$t('wordCount')"
+            >
+              <q-tooltip
+                transition-show="fade"
+                transition-hide="fade"
+                anchor="center left" self="center right"
+              >
+                <div class="text-body2">
+                  <p>
+                    {{ `${$t('word:', wordCount)}` }}
+                  </p>
+                  <p>
+                    {{ `${$t('character:', wordCount)}` }}
+                  </p>
+                  <p>
+                    {{ `${$t('paragraph:', wordCount)}` }}
+                  </p>
+                </div>
+              </q-tooltip>
+            </q-btn>
+            <q-btn
               :icon='isSourceMode ? "assignment" : "code"'
               dense
               flat
@@ -85,6 +117,7 @@
               v-show='dataLoaded && !isOutlineShow'
               v-ripple
               key='lock'
+              :title="enablePreviewEditor ? $t('lock') : $t('unlock')"
             />
             <q-btn
               icon='save'
@@ -104,6 +137,7 @@
         </div>
         <NoteOutlineDrawer ref='outlineDrawer' :change='outlineDrawerChangeHandler' />
         <Loading :visible='isCurrentNoteLoading' />
+        <MarkMapDialog ref="markMapDialog" />
       </template>
     </q-splitter>
   </q-page>
@@ -119,6 +153,7 @@ import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
 import Loading from 'components/ui/Loading'
 import Monaco from 'components/ui/editor/Monaco'
 import Muya from 'components/ui/editor/Muya'
+import MarkMapDialog from '../components/ui/dialog/MarkMapDialog'
 
 const {
   mapGetters: mapServerGetters,
@@ -129,6 +164,7 @@ const { mapState: mapClientState, mapActions: mapClientActions } = createNamespa
 export default {
   name: 'PageIndex',
   components: {
+    MarkMapDialog,
     Muya,
     Monaco,
     Loading,
@@ -139,14 +175,14 @@ export default {
     thumbStyle () {
       return {
         backgroundColor: '#E8ECF1',
-        width: '7px',
+        width: '5px',
         opacity: 0.75
       }
     },
 
     barStyle () {
       return {
-        width: '7px'
+        width: '5px'
       }
     },
     dataLoaded: function () {
@@ -168,7 +204,13 @@ export default {
       splitterModel: 300,
       isOutlineShow: false,
       isSourceMode: false,
-      tempNoteData: {}
+      isMindmapMode: false,
+      tempNoteData: {},
+      wordCount: {
+        word: '0',
+        paragraph: '0',
+        character: '0'
+      }
     }
   },
   methods: {
@@ -180,6 +222,26 @@ export default {
     },
     sourceModeHandler: function () {
       this.isSourceMode = !this.isSourceMode
+    },
+    getTempValue: function () {
+      let markdown
+      if (this.isSourceMode) {
+        markdown = this.$refs.monaco?.getValue()
+      } else {
+        markdown = this.$refs.muya?.getValue()
+      }
+      return markdown
+    },
+    generateMindmapHandler: function () {
+      const markdown = this.getTempValue()
+      this.$refs.markMapDialog.toggle(markdown)
+    },
+    wordCountUpdateHandler: function (wordCount) {
+      this.wordCount = Object.assign({
+        word: '',
+        paragraph: '',
+        character: ''
+      }, wordCount)
     },
     editorScrollHandler: function (e) {
       bus.$emit(events.EDITOR_SCROLL, e)
@@ -200,10 +262,12 @@ export default {
   mounted () {
     bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
     bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
+    bus.$on(events.GENERATE_MINDMAP, this.generateMindmapHandler)
+    bus.$on(events.UPDATE_WORD_COUNT, this.wordCountUpdateHandler)
   },
   watch: {
-    isSourceMode: function (val, oldVal) {
-      if (oldVal) {
+    isSourceMode: function (val) {
+      if (!val) {
         this.tempNoteData = {
           markdown: this.$refs.monaco.getValue(),
           cursor: this.$refs.monaco.getCursorPosition()

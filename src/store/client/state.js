@@ -4,6 +4,7 @@ export default function () {
     autoLogin: false,
     rememberPassword: true,
     darkMode: false,
+    noteListDenseMode: false,
     markdownOnly: false,
     enableSelfHostServer: false,
     imageUploadService: 'wizOfficialImageUploadService',

@@ -7,7 +7,7 @@
   font-style: normal;
   font-weight: 300;
   src: local('Open Sans Light'), local('OpenSans-Light'),
-  url('./fonts/open-sans-v15-latin_latin-ext-300.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-300.woff') format('woff');
 }
 
 @font-face {
@@ -15,7 +15,7 @@
   font-style: italic;
   font-weight: 300;
   src: local('Open Sans Light Italic'), local('OpenSans-LightItalic'),
-  url('./fonts/open-sans-v15-latin_latin-ext-300italic.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-300italic.woff') format('woff');
 }
 
 @font-face {
@@ -23,7 +23,7 @@
   font-style: normal;
   font-weight: 400;
   src: local('Open Sans Regular'), local('OpenSans-Regular'),
-  url('./fonts/open-sans-v15-latin_latin-ext-regular.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-regular.woff') format('woff');
 }
 
 @font-face {
@@ -31,7 +31,7 @@
   font-style: italic;
   font-weight: 400;
   src: local('Open Sans Italic'), local('OpenSans-Italic'),
-  url('./fonts/open-sans-v15-latin_latin-ext-italic.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-italic.woff') format('woff');
 }
 
 @font-face {
@@ -39,7 +39,7 @@
   font-style: normal;
   font-weight: 600;
   src: local('Open Sans SemiBold'), local('OpenSans-SemiBold'),
-  url('./fonts/open-sans-v15-latin_latin-ext-600.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-600.woff') format('woff');
 }
 
 @font-face {
@@ -47,7 +47,7 @@
   font-style: italic;
   font-weight: 600;
   src: local('Open Sans SemiBold Italic'), local('OpenSans-SemiBoldItalic'),
-  url('./fonts/open-sans-v15-latin_latin-ext-600italic.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-600italic.woff') format('woff');
 }
 
 @font-face {
@@ -55,7 +55,7 @@
   font-style: normal;
   font-weight: 700;
   src: local('Open Sans Bold'), local('OpenSans-Bold'),
-  url('./fonts/open-sans-v15-latin_latin-ext-700.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-700.woff') format('woff');
 }
 
 @font-face {
@@ -63,45 +63,45 @@
   font-style: italic;
   font-weight: 700;
   src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'),
-  url('./fonts/open-sans-v15-latin_latin-ext-700italic.woff') format('woff');
+    url('./fonts/open-sans-v15-latin_latin-ext-700italic.woff') format('woff');
 }
 
 /*
  * DejaVu Sans Mono
  */
 @font-face {
-  font-family: "DejaVu Sans Mono";
+  font-family: 'DejaVu Sans Mono';
   src: local('DejaVu Sans Mono'), url('./fonts/DejaVuSansMono.ttf');
 }
 
 @font-face {
-  font-family: "DejaVu Sans Mono";
+  font-family: 'DejaVu Sans Mono';
   font-weight: bold;
   src: url('./fonts/DejaVuSansMono-Bold.ttf');
 }
 
 @font-face {
-  font-family: "DejaVu Sans Mono";
+  font-family: 'DejaVu Sans Mono';
   font-style: oblique;
   font-weight: bold;
   src: url('./fonts/DejaVuSansMono-BoldOblique.ttf');
 }
 
 @font-face {
-  font-family: "DejaVu Sans Mono";
+  font-family: 'DejaVu Sans Mono';
   font-style: italic;
   font-weight: bold;
   src: url('./fonts/DejaVuSansMono-BoldOblique.ttf');
 }
 
 @font-face {
-  font-family: "DejaVu Sans Mono";
+  font-family: 'DejaVu Sans Mono';
   font-style: italic;
   src: url('./fonts/DejaVuSansMono-Oblique.ttf');
 }
 
 @font-face {
-  font-family: "DejaVu Sans Mono";
+  font-family: 'DejaVu Sans Mono';
   font-style: oblique;
   src: url('./fonts/DejaVuSansMono-Oblique.ttf');
 }
@@ -110,35 +110,35 @@
  * JetBrains Mono
  */
 @font-face {
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 300;
   src: local('JetBrains Mono Light'),
-  url('./fonts/JetBrainsMono-Light.woff2') format('woff');
+    url('./fonts/JetBrainsMono-Light.woff2') format('woff');
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: italic;
   font-weight: 300;
   src: local('JetBrains Mono Light Italic'),
-  url('./fonts/JetBrainsMono-LightItalic.woff2') format('woff');
+    url('./fonts/JetBrainsMono-LightItalic.woff2') format('woff');
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 400;
   src: local('JetBrains Mono Regular'),
-  url('./fonts/JetBrainsMono-Regular.woff2') format('woff');
+    url('./fonts/JetBrainsMono-Regular.woff2') format('woff');
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: italic;
   font-weight: 300;
   src: local('JetBrains Mono Regular Italic'),
-  url('./fonts/JetBrainsMono-Italic.woff2') format('woff');
+    url('./fonts/JetBrainsMono-Italic.woff2') format('woff');
 }
 
 @font-face {
@@ -146,15 +146,15 @@
   font-style: normal;
   font-weight: 600;
   src: local('JetBrains Mono Medium'),
-  url('./fonts/JetBrainsMono-Medium.woff2') format('woff');
+    url('./fonts/JetBrainsMono-Medium.woff2') format('woff');
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: italic;
   font-weight: 300;
   src: local('JetBrains Mono Medium Italic'),
-  url('./fonts/JetBrainsMono-MediumItalic.woff2') format('woff');
+    url('./fonts/JetBrainsMono-MediumItalic.woff2') format('woff');
 }
 
 @font-face {
@@ -162,20 +162,21 @@
   font-style: normal;
   font-weight: 700;
   src: local('JetBrains Mono Bold'),
-  url('./fonts/JetBrainsMono-Bold.woff2') format('woff');
+    url('./fonts/JetBrainsMono-Bold.woff2') format('woff');
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
   font-style: italic;
   font-weight: 300;
   src: local('JetBrains Mono Bold Italic'),
-  url('./fonts/JetBrainsMono-BoldItalic.woff2') format('woff');
+    url('./fonts/JetBrainsMono-BoldItalic.woff2') format('woff');
 }
 
-
 #ag-editor-id {
-  font-family:  "Open Sans", "JetBrains Mono", "Clear Sans", "Helvetica Neue", Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial, sans-serif, Microsoft YaHei, Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', 'JetBrains Mono', 'Clear Sans', 'Helvetica Neue',
+    Fira Code, Monaco, PingFang SC, Hiragino Sans GB, 微软雅黑, Arial,
+    sans-serif, Microsoft YaHei, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   letter-spacing: 0.2px;
@@ -186,10 +187,11 @@ span code,
 td code,
 th code,
 code,
-code[class*="language-"],
+code[class*='language-'],
 .CodeMirror,
 pre.ag-paragraph {
-  font-family: "JetBrains Mono", "DejaVu Sans Mono", "Source Code Pro", "Droid Sans Mono", Consolas, monospace;
+  font-family: 'JetBrains Mono', 'DejaVu Sans Mono', 'Source Code Pro',
+    'Droid Sans Mono', Consolas, monospace;
   font-size: 14px;
 }
 
@@ -199,13 +201,12 @@ kbd {
   border: 1px solid var(--floatBorderColor);
   border-radius: 4px;
   display: inline-block;
-  font-size: .8em;
+  font-size: 0.8em;
   padding: 0px 5px;
   box-shadow: inset 0 -1px 0 var(--floatBorderColor);
 }
 
 @media not print {
-
   #ag-editor-id {
     max-width: 80%;
     min-width: 400px;
@@ -215,7 +216,8 @@ kbd {
     box-sizing: border-box;
   }
 
-  #ag-editor-id, [contenteditable] {
+  #ag-editor-id,
+  [contenteditable] {
     outline: none;
   }
 
@@ -225,7 +227,7 @@ kbd {
   }
 
   .ag-header-tight-space {
-    margin-left: -.3em;
+    margin-left: -0.3em;
   }
 
   .ag-image-src {
@@ -465,11 +467,14 @@ kbd {
   table {
     padding: 0;
     word-break: initial;
+    box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
+      0 3px 1px -2px rgb(0 0 0 / 12%);
   }
 
   table tr {
     margin: 0;
     padding: 0;
+    border-radius: 4px;
   }
 
   /* table thead tr,
@@ -491,6 +496,15 @@ kbd {
     position: relative;
   }
 
+  table tr th::before {
+    border: 1px solid var(--tableBorderColor);
+  }
+  table tr td::before {
+    border-bottom: 1px solid var(--tableBorderColor);
+    border-left: 1px solid var(--tableBorderColor);
+    border-right: 1px solid var(--tableBorderColor);
+  }
+
   table tr th::before,
   table tr td::before {
     content: '';
@@ -501,7 +515,6 @@ kbd {
     right: 0;
     width: calc(100% + 1px);
     height: calc(100% + 1px);
-    border: 1px solid var(--tableBorderColor);
     box-sizing: border-box;
     pointer-events: none;
   }
@@ -528,7 +541,7 @@ kbd {
     border: 1px solid var(--iconColor);
     left: -11px;
     cursor: pointer;
-    opacity: .5;
+    opacity: 0.5;
   }
 
   table tr .ag-drag-handler.left::before,
@@ -548,7 +561,6 @@ kbd {
     top: 10px;
   }
 
-
   table tr .ag-drag-handler.bottom {
     position: absolute;
     left: 50%;
@@ -561,7 +573,7 @@ kbd {
     border: 1px solid var(--iconColor);
     bottom: -15px;
     cursor: pointer;
-    opacity: .5;
+    opacity: 0.5;
   }
 
   table tr .ag-drag-handler.bottom::before,
@@ -591,10 +603,10 @@ kbd {
   }
 
   table .ag-drag-cell {
-    opacity: .7;
+    opacity: 0.7;
     z-index: 1;
     background: var(--floatBgColor);
-    transition: left .3s ease-in-out, bottom .3s ease-in-out;
+    transition: left 0.3s ease-in-out, bottom 0.3s ease-in-out;
   }
 
   table .ag-drag-cell.ag-drag-left {
@@ -606,7 +618,7 @@ kbd {
   }
 
   table .ag-cell-transform {
-    transition: transform .3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
   }
 
   table .ag-cell-selected::before {
@@ -644,9 +656,9 @@ kbd {
     color: var(--editorColor);
   }
 
-  :not(pre) > code[class*="language-"],
+  :not(pre) > code[class*='language-'],
   pre:not(.CodeMirror-line),
-  pre[class*="language-"],
+  pre[class*='language-'],
   pre.ag-paragraph {
     overflow: visible;
     font-size: 90%;
@@ -681,7 +693,7 @@ kbd {
 
   #ag-editor-id pre.ag-html-block {
     background: transparent;
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
     margin-top: 0;
   }
 
@@ -704,7 +716,8 @@ kbd {
     background-size: cover;
   }
 
-  .ag-inline-image.ag-image-success .ag-image-marked-text.ag-image-fail::before {
+  .ag-inline-image.ag-image-success
+    .ag-image-marked-text.ag-image-fail::before {
     background-image: url(../lib/assets/icons/image_dark_fail.png);
     background-size: cover;
   }
@@ -750,34 +763,34 @@ kbd {
 }
 
 /* cover default flowchart.js and sequence style */
-figure[data-role] svg rect[fill="#ffffff"] {
+figure[data-role] svg rect[fill='#ffffff'] {
   fill: var(--editorBgColor);
 }
 
-figure[data-role] svg rect[stroke="#000000"] {
+figure[data-role] svg rect[stroke='#000000'] {
   stroke: var(--editorColor);
 }
 
-figure[data-role] svg text[fill="#000000"] {
+figure[data-role] svg text[fill='#000000'] {
   fill: var(--editorColor);
 }
 
-figure[data-role] svg path[stroke="#000000"] {
+figure[data-role] svg path[stroke='#000000'] {
   stroke: var(--editorColor);
 }
 
-figure[data-role] svg path[fill="#ffffff"] {
+figure[data-role] svg path[fill='#ffffff'] {
   fill: var(--editorBgColor);
 }
 
-figure[data-role] svg path[fill="#000000"] {
+figure[data-role] svg path[fill='#000000'] {
   fill: var(--editorColor);
 }
 
-figure[data-role] svg use[fill="black"] {
+figure[data-role] svg use[fill='black'] {
   fill: var(--editorColor);
 }
 
-figure[data-role] svg use[fill="#000000"] {
+figure[data-role] svg use[fill='#000000'] {
   fill: var(--editorColor);
 }

@@ -5,9 +5,9 @@
     :class='`note-card${darkTag} bg-transparent`'
     @click='noteItemClickHandler'
   >
-    <div :class='`note-item-title${darkTag}`' v-html='title'></div>
+    <div :class='`note-item-title${darkTag} ${denseTag} `' v-html='title'></div>
 
-    <div :class='`note-item-summary${darkTag}`' v-html='summary'></div>
+    <div v-if="!dense" :class='`note-item-summary${darkTag}`' v-html='summary'></div>
 
     <div :class='`note-item-summary${darkTag} flex justify-between no-wrap overflow-hidden fa-align-center`'>
       <span class='text-left note-info-tag'><q-icon name='category' size='17px' /> {{ category }}</span>
@@ -45,6 +45,10 @@ export default {
     contextmenuHandler: {
       type: Function,
       default: () => {}
+    },
+    dense: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -83,6 +87,9 @@ export default {
     },
     darkTag () {
       return this.darkMode ? '-dark' : ''
+    },
+    denseTag () {
+      return this.dense ? 'dense' : ''
     },
     modifiedDate () {
       return helper.displayDateElegantly(this.data.dataModified)

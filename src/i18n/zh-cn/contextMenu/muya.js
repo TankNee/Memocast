@@ -7,5 +7,6 @@ export default {
   pasteAsPlainText: '以纯文本形式粘贴',
   insertBefore: '在此之前插入段落',
   insertAfter: '在此之后插入段落',
-  formatDocumentByPangu: '格式化文档'
+  formatDocumentByPangu: '格式化文档',
+  generateMindmap: '生成思维导图'
 }

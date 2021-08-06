@@ -3,6 +3,7 @@ import { Notify } from 'quasar'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import { i18n } from '../src/boot/i18n'
+import debugLogger from './utils/debugLogger'
 
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
@@ -33,7 +34,7 @@ async function handleApi (channel, api) {
 
 export default {
   RegisterApiHandler () {
-    console.log('[API Handler] Render Process registers handler successfully!')
+    debugLogger.Info('[API Handler] Render Process registers handler successfully!')
 
     handleApi('show-notification', (event, payload) => {
       const { msg, type = 'primary', icon = 'check', filePath } = payload
@@ -78,7 +79,7 @@ export default {
     }).catch(err => throw err)
 
     handleApi('editor-view-action', (event, { type }) => {
-      console.log(type)
+      debugLogger.Log(type)
       bus.$emit(events.VIEW_SHORTCUT_CALL[type], type)
     }).catch(err => throw err)
 
@@ -87,32 +88,32 @@ export default {
     }).catch(err => throw err)
 
     handleApi('updater-update-available', (event, info) => {
-      console.log(info)
+      debugLogger.Log(info)
       bus.$emit(events.UPDATE_EVENTS.updateAvailable, info)
     }).catch(err => throw err)
 
     handleApi('updater-update-not-available', (event, info) => {
-      console.log(info)
+      debugLogger.Log(info)
       bus.$emit(events.UPDATE_EVENTS.updateNotAvailable, info)
     }).catch(err => throw err)
 
     handleApi('updater-update-downloading', (event, progress) => {
-      console.log(progress)
+      debugLogger.Log(progress)
       bus.$emit(events.UPDATE_EVENTS.updateDownloading, progress)
     }).catch(err => throw err)
 
     handleApi('updater-update-downloaded', (event, info) => {
-      console.log(info)
+      debugLogger.Log(info)
       bus.$emit(events.UPDATE_EVENTS.updateDownloaded)
     }).catch(err => throw err)
 
     handleApi('updater-update-error', (event, error) => {
-      console.log(error)
+      debugLogger.Log(error)
       bus.$emit(events.UPDATE_EVENTS.updateError, error)
     }).catch(err => throw err)
   },
   UnregisterApiHandler () {
-    console.log('[API Handler] Render Process unregisters handler successfully!')
+    debugLogger.Info('[API Handler] Render Process unregisters handler successfully!')
     ipcRenderer.removeAllListeners('show-notification')
   }
 }

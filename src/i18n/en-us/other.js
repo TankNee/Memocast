@@ -9,5 +9,12 @@ export default {
   sourceMode: 'Source Mode',
   previewMode: 'Preview Mode',
   lockModeOn: 'Keyboard Locked',
-  lockModeOff: 'Keyboard Unlocked'
+  lockModeOff: 'Keyboard Unlocked',
+  title: 'Title',
+  confirm: 'Confirm',
+  mindmap: 'Mindmap',
+  wordCount: 'Word Count',
+  'word:': 'Words: {word}',
+  'paragraph:': 'Paragraph: {paragraph}',
+  'character:': 'Characters: {character}'
 }

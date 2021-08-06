@@ -553,7 +553,7 @@ li.ag-task-list-item > input.ag-checkbox-checked::after {
 li.ag-task-list-item > input.ag-checkbox-checked::before {
   background: var(--themeColor);
   border-color: var(--themeColor);
-  box-shadow: 0 3px 12px 0 var(--selectionColor);
+  box-shadow: 0 3px 8px 0 var(--themeColor60);
 }
 
 /* li p .ag-hide:first-child {

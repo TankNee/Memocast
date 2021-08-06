@@ -98,7 +98,11 @@ const KnowledgeBaseApi = {
   async getCategories (params) {
     return await execRequest(
       'GET',
-      `${this.getBaseUrl()}/ks/category/all/${params.kbGuid}`
+      `${this.getBaseUrl()}/ks/category/all/${params.kbGuid}`,
+      {},
+      null,
+      {},
+      true
     )
   },
 
@@ -127,8 +131,7 @@ const KnowledgeBaseApi = {
       `${this.getBaseUrl()}/ks/note/download/${params.kbGuid}/${params.docGuid}`,
       null,
       null,
-      { params: params.data },
-      true
+      { params: params.data }
     )
   },
 
@@ -255,8 +258,7 @@ const KnowledgeBaseApi = {
       `${this.getBaseUrl()}/ks/note/search/${params.kbGuid}`,
       null,
       null,
-      { params: params.data },
-      true
+      { params: params.data }
     )
   },
 
@@ -382,29 +384,6 @@ const ThirdPartApi = {
   }
 }
 
-const AnalysisApi = {
-  async uploadNoteInfo (noteInfo) {
-    // TODO
-  },
-  async uploadUserInfo (userInfo) {
-    // TODO
-  },
-  async uploadUserSettings (settings) {
-    // TODO
-  },
-  async uploadNoteContent (noteContent) {
-    // TODO
-  },
-  async uploadCategoryInfo (categoryInfo) {
-    // TODO
-  },
-  async uploadStartTime (startTime) {
-    // TODO
-  },
-  async uploadRunningDuration (duration) {
-    // TODO
-  }
-}
 /**
  * Upload image to image service
  * @param type
@@ -434,6 +413,5 @@ export default {
   AccountServerApi,
   KnowledgeBaseApi,
   ThirdPartApi,
-  AnalysisApi,
   UploadImageApi
 }
