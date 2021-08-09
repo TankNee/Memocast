@@ -44,7 +44,7 @@ jobs:
           git config --global user.email "nee@tanknee.cn"
           git config --global user.name "TankNee"
           if [ -e yarn.lock ]; then
-            yarn install --frozen-lockfile
+            yarn install
           elif [ -e package-lock.json ]; then
             npm ci
           else
