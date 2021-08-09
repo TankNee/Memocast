@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 参与 Memocast 的开发
+# 🏃‍♂️参与 Memocast 的开发
 
 > Memocast 使用 Quasar + Electron 作为基本框架，因此可以支持 macOS ，Windows 以及 Linux 等多种系统，但由于精力有限，所以 Linux 下并没有经过充分的测试，macOS 也会因为某些原因而未经测试，所以一般来说放出的新版本往往只能在 Windows 平台上得到一定的保证。
 
