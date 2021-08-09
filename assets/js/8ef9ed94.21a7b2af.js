@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmemocast_document=self.webpackChunkmemocast_document||[]).push([[838],{4782:function(o){o.exports=JSON.parse('{"allTagsPath":"/Memocast/blog/tags","slug":"loading-component","name":"loading-component","count":1,"permalink":"/Memocast/blog/tags/loading-component"}')}}]);
