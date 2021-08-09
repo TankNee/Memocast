@@ -1,4 +1,31 @@
 /*!
+ * Lunr languages, `Chinese` language
+ * https://github.com/MihaiValentin/lunr-languages
+ *
+ * Copyright 2019, Felix Lian (repairearth)
+ * http://www.mozilla.org/MPL/
+ */
+
+/*!
+ * Snowball JavaScript Library v0.3
+ * http://code.google.com/p/urim/
+ * http://snowball.tartarus.org/
+ *
+ * Copyright 2010, Oleg Mazko
+ * http://www.mozilla.org/MPL/
+ */
+
+/*!
+ * based on
+ * Snowball zhvaScript Library v0.3
+ * http://code.google.com/p/urim/
+ * http://snowball.tartarus.org/
+ *
+ * Copyright 2010, Oleg Mazko
+ * http://www.mozilla.org/MPL/
+ */
+
+/*!
  * lunr.Builder
  * Copyright (C) 2020 Oliver Nightingale
  */
