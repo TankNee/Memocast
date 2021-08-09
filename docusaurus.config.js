@@ -106,5 +106,9 @@ module.exports = {
       },
     ],
   ],
-  plugins: [require.resolve('docusaurus-lunr-search')],
+  plugins: [
+    [require.resolve('docusaurus-lunr-search'), {
+        languages: ['en', 'zh'] // language codes
+    }]
+  ],
 };
