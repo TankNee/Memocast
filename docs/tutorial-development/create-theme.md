@@ -117,3 +117,26 @@ Memocast 提供了很多的实用 CSS 变量。
 ```
 
 你可以在这里找到默认主题：https://github.com/TankNee/Memocast/blob/master/src-electron/main-process/assets/css/Default-Dark.dark.css
+
+## Quasar 主题色设置
+
+Memocast 使用了 Quasar 作为框架，Quasar 中有许多的主题色，这些颜色决定了 Memocast 中许多组件的样式，你可以通过在主题文件中编写对应的主题色变量来改变这些颜色。
+
+主题色颜色变量的格式为 `--q-color-${name}`,其中 name 是主题名，有以下几种取值：
+
+- primary
+- secondary
+- accent
+- dark
+- positive
+- negative-
+- info
+- warning
+
+你可以在主题文件中直接写入：
+
+```css
+--q-color-secondary: rgba(123,123,123,.7);
+```
+
+来改变 secondary 的颜色！
