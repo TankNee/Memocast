@@ -16,5 +16,6 @@ export default {
   wordCount: 'Word Count',
   'word:': 'Words: {word}',
   'paragraph:': 'Paragraph: {paragraph}',
-  'character:': 'Characters: {character}'
+  'character:': 'Characters: {character}',
+  copyContent: 'Copy Content'
 }

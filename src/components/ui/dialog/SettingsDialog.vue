@@ -64,18 +64,19 @@
                 </div>
                 <div>
                   <div class='text-h5 q-mb-md setting-item'>
-                    <span>{{ $t('darkMode') }}</span>
-                    <q-toggle
-                      :value='darkMode'
-                      color='black'
-                      @input="
-                        v => {
-                          $q.dark.set(v)
-                          toggleChanged({ key: 'darkMode', value: v })
-                        }
-                      "
-                    />
+                    {{ $t('theme') }}
                   </div>
+                  <q-select
+                    :value='$t(theme)'
+                    :options='themeOptions'
+                    @input='themeChangeHandler'
+                  >
+                    <template v-slot:after>
+                      <q-btn round dense flat icon="contact_support" @click="themeHelpHandler" />
+                      <q-btn round dense flat icon="refresh" @click="refreshThemeFolderHandler" />
+                      <q-btn round dense flat icon="open_in_new" @click="openThemeFolderHandler" />
+                    </template>
+                  </q-select>
                 </div>
                 <q-separator />
                 <div>
@@ -145,29 +146,7 @@
                       :options='imageUploadServiceOptions'
                       @input='imageUploadServiceChangeHandler'
                     >
-                      <template v-slot:after>
-                        <q-btn
-                          v-if="imageUploadService === 'customWebUploadService'"
-                          round
-                          dense
-                          flat
-                          icon='settings'
-                          @click='$refs.imageUploadServiceDialog.toggle()'
-                        />
-                      </template>
                     </q-select>
-                  </div>
-                </div>
-                <div>
-                  <div class='text-h5 q-mb-md setting-item'>
-                    <span>{{ $t('flomo') }}</span>
-                    <q-icon
-                      name='settings'
-                      color='primary'
-                      style='margin-left: 5px'
-                      class='cursor-pointer'
-                      @click='flomoSettingHandler'
-                    />
                   </div>
                 </div>
               </q-tab-panel>
@@ -189,7 +168,7 @@ import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import { version } from '../../../../package.json'
-import { needUpdate } from 'src/ApiInvoker'
+import { needUpdate, openThemeFolder, refreshThemeFolder } from 'src/ApiInvoker'
 import helper from 'src/utils/helper'
 
 const {
@@ -209,8 +188,6 @@ export default {
       splitterModel: 20,
       imageUploadServiceOptionsPlain: [
         'wizOfficialImageUploadService',
-        // 'customWebUploadService',
-        // 'smmsImageUploadService'
         'picgoServer',
         'none'
       ],
@@ -226,11 +203,12 @@ export default {
     languageOptions: function () {
       return i18n.availableLocales.map(l => i18n.t(l))
     },
+    themeOptions: function () {
+      return this.themes.map(t => i18n.t(t.name))
+    },
     imageUploadServiceOptions: function () {
       return [
         this.$t('wizOfficialImageUploadService'),
-        // this.$t('customWebUploadService'),
-        // this.$t('smmsImageUploadService')
         this.$t('picgoServer'),
         this.$t('none')
       ]
@@ -247,8 +225,9 @@ export default {
       'noteListDenseMode',
       'markdownOnly',
       'imageUploadService',
-      'flomoApiUrl',
-      'noteOrderType'
+      'noteOrderType',
+      'theme',
+      'themes'
     ])
   },
   methods: {
@@ -266,6 +245,14 @@ export default {
         color: 'primary',
         icon: 'info'
       })
+    },
+    themeChangeHandler: function (theme) {
+      theme = this.themes.find(t => {
+        return i18n.t(t.name) === theme
+      })
+      this.updateStateAndStore({ theme: theme.name })
+      this.$q.dark.set(theme.dark)
+      this.toggleChanged({ key: 'darkMode', value: theme.dark })
     },
     imageUploadServiceChangeHandler: function (service) {
       const servicePlain = this.imageUploadServiceOptionsPlain.find(
@@ -293,6 +280,16 @@ export default {
           }]
         })
       })
+    },
+    openThemeFolderHandler: function () {
+      openThemeFolder()
+    },
+    refreshThemeFolderHandler: async function () {
+      const themes = await refreshThemeFolder()
+      this.toggleChanged({ key: 'themes', value: themes })
+    },
+    themeHelpHandler: function () {
+      this.$q.electron.shell.openExternal('https://www.tanknee.cn/Memocast/docs/tutorial-development/create-theme')
     },
     updateAvailableHandler: function (info) {
       console.log(info)
@@ -347,25 +344,6 @@ export default {
           message: err
         })
       }
-    },
-    flomoSettingHandler: async function () {
-      this.$q.dialog({
-        prompt: {
-          model: this.flomoApiUrl
-        },
-        title: this.$t('flomo'),
-        ok: {
-          label: this.$t('submit')
-        },
-        cancel: {
-          label: this.$t('cancel')
-        }
-      }).onOk(data => {
-        this.updateStateAndStore({ flomoApiUrl: data })
-      })
-      // this.$q.electron.shell.openExternal(
-      //   'https://flomoapp.com/mine?source=incoming_webhook'
-      // )
     },
     ...mapActions([
       'toggleChanged',

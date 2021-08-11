@@ -24,7 +24,7 @@ export default {
   checking: 'Checking',
   noNewerVersion: 'This is the latest version!',
   updateError: 'Fail to update',
-  codeTheme: 'Code Theme',
-  lightCodeTheme: 'Light Mode Code Theme',
-  darkCodeTheme: 'Dark Mode Code Theme'
+  theme: 'Theme',
+  'Default-Dark': 'Default Dark',
+  'Default-Light': 'Default Light'
 }

@@ -16,5 +16,6 @@ export default {
   wordCount: '字数统计',
   'word:': '词: {word}',
   'paragraph:': '段落: {paragraph}',
-  'character:': '字符: {character}'
+  'character:': '字符: {character}',
+  copyContent: '复制内容'
 }

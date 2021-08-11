@@ -68,7 +68,7 @@ export default {
     },
     ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
     ...mapServerGetters(['currentNote', 'uploadImageUrl', 'currentNoteResources', 'currentNoteResourceUrl']),
-    ...mapClientState(['darkMode', 'enablePreviewEditor'])
+    ...mapClientState(['darkMode', 'enablePreviewEditor', 'theme'])
   },
   methods: {
     getValue: function () {
@@ -223,11 +223,12 @@ export default {
         imageAction: this.uploadImage
       })
 
-      if (this.darkMode) {
-        attachThemeColor('one-dark')
-      } else {
-        attachThemeColor('light')
-      }
+      attachThemeColor(this.theme)
+      // if (this.darkMode) {
+      //   attachThemeColor('one-dark')
+      // } else {
+      //   attachThemeColor('light')
+      // }
 
       this.contentEditor.on('muya-click', (event) => {
         if (event.target.type === 'checkbox') {
@@ -321,12 +322,8 @@ export default {
         debugLogger.Error(e, e.message)
       }
     },
-    darkMode: function (mode) {
-      if (mode) {
-        attachThemeColor('one-dark')
-      } else {
-        attachThemeColor('light')
-      }
+    theme: function (t) {
+      attachThemeColor(t)
     },
     enablePreviewEditor: function (val) {
       document.querySelector('.ag-show-quick-insert-hint').setAttribute('contenteditable', val)

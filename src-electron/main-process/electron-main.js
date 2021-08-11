@@ -9,6 +9,7 @@ import osLocale from 'os-locale'
 import { openNewGitHubIssue, debugInfo, enforceMacOSAppLocation } from 'electron-util'
 import KeyBindings from './keyboard/shortcut'
 import { registerMemocastProtocol } from './utlis/resource-loader'
+import ThemeManager from './utlis/theme-manager'
 import Store from 'electron-store'
 import i18n from './i18n'
 
@@ -16,7 +17,6 @@ const ClientStorage = new Store({
   name: 'ClientFileStorage'
 })
 const { registerApiHandler } = Api
-// console.log(await osLocale())
 
 osLocale().then(locale => {
   const cur = ClientStorage.get('language')
@@ -144,6 +144,7 @@ function createWindow () {
     })
   })
   registerApiHandler()
+  global.themeManager = ThemeManager
   if (isMac) {
     enforceMacOSAppLocation()
   }

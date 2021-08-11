@@ -78,6 +78,18 @@ async function saveTempImage (bundle) {
   return ipcRenderer.invoke(channels.saveTempImage, bundle)
 }
 
+async function loadTheme (name) {
+  return ipcRenderer.invoke(channels.loadTheme, { name })
+}
+
+async function openThemeFolder () {
+  return ipcRenderer.invoke(channels.openThemeFolder)
+}
+
+async function refreshThemeFolder () {
+  return ipcRenderer.invoke(channels.refreshThemeFolder)
+}
+
 async function getLocalFileData (filePath) {
   return ipcRenderer.invoke(channels.getLocalFileData, filePath)
 }
@@ -99,6 +111,9 @@ export {
   remoteRequest,
   getCacheImage,
   saveTempImage,
+  loadTheme,
+  openThemeFolder,
+  refreshThemeFolder,
   getLocalFileData,
   saveUploadedImage
 }

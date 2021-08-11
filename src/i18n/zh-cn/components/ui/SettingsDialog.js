@@ -24,7 +24,7 @@ export default {
   checking: '检查更新中',
   noNewerVersion: '当前已是最新版本 !',
   updateError: '更新失败',
-  codeTheme: '代码主题',
-  lightCodeTheme: '日间模式代码主题',
-  darkCodeTheme: '暗黑模式代码主题'
+  theme: '主题',
+  'Default-Dark': '默认暗色主题',
+  'Default-Light': '默认亮色主题'
 }

@@ -11,6 +11,9 @@ export default {
   remoteRequest: 'remote-request',
   getCacheImage: 'get-cache-image',
   saveTempImage: 'save-temp-image',
+  loadTheme: 'load-theme',
+  openThemeFolder: 'open-theme-folder',
+  refreshThemeFolder: 'refresh-theme-folder',
   getLocalFileData: 'get-local-file-data',
   saveUploadedImage: 'save-uploaded-image'
 }
