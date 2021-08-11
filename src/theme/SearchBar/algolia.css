@@ -6,6 +6,10 @@
  */
 
 /* Bottom border of each suggestion */
+
+.navbar__search {
+    margin-left: 1rem;
+}
 .algolia-docsearch-suggestion {
   border-bottom-color: #3a3dd1;
 }

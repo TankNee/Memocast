@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # 🗺笔记生成思维导图
 
-> 此项功能在 Memocast 2.1.6 及以后提供。
+> 此项功能在 `2.1.6` 及以后提供。
 
 Memocast 使用了优秀的开源项目 [Markmap](https://markmap.js.org/) 来实现思维导图功能！我们使用了如下的组件来实现思维导图的生成与预览。
 

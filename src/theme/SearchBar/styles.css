@@ -21,6 +21,10 @@
   visibility: hidden;
 }
 
+.navbar__search {
+    margin-left: 1rem;
+}
+
 @media (max-width: 360px) {
   .search-bar {
     width: 0 !important;
