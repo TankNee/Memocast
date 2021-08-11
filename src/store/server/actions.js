@@ -18,6 +18,7 @@ import html2canvas from 'html2canvas'
 import debugLogger from 'src/utils/debugLogger'
 
 export async function _getContent (kbGuid, docGuid) {
+  console.time('FetchNote')
   const { info } = await api.KnowledgeBaseApi.getNoteContent({
     kbGuid,
     docGuid,
@@ -25,6 +26,7 @@ export async function _getContent (kbGuid, docGuid) {
       downloadInfo: 1
     }
   })
+  console.timeEnd('FetchNote')
   const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
   const note = ClientFileStorage.getCachedNote(info, cacheKey)
   let result
@@ -246,7 +248,9 @@ export default {
     // })
     const { kbGuid } = state
     const { docGuid } = payload
+    console.time('GetContent')
     const result = await _getContent(kbGuid, docGuid)
+    console.timeEnd('GetContent')
     Loading.hide()
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, false)
     commit(types.UPDATE_CURRENT_NOTE, result)

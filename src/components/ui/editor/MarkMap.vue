@@ -1,9 +1,10 @@
 <template>
-  <div id="mind-container" style="height: 70vh;" @click="containerClickHandler" @contextmenu="contextMenuHandler">
+  <div id="mind-container" style="height: 70vh; background-color: var(--backgroundColor)" @click="containerClickHandler" @contextmenu="contextMenuHandler">
     <svg
       id="mind"
       style="height: 100%; width: 100%;"
       ></svg>
+    <MarkMapToolBar ref="markMapToolBar" :mark-map="markMap" />
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import * as markmap from 'markmap-view'
 import { showContextMenu as showMarkMapContextMenu } from 'src/contextMenu/markMap'
 import bus from '../../bus'
 import events from '../../../constants/events'
+import MarkMapToolBar from '../MarkMapToolBar'
 
 const transformer = new Transformer()
 const { Markmap, loadJS } = markmap
@@ -24,6 +26,7 @@ const {
 
 export default {
   name: 'MarkMap',
+  components: { MarkMapToolBar },
   props: {
     data: {
       type: String,
@@ -47,6 +50,10 @@ export default {
       if (this.markMap) this.markMap.destroy()
       const svgEl = document.querySelector('#mind')
       this.markMap = Markmap.create(svgEl, null, root)
+
+      this.$refs.markMapToolBar.setMarkMap(this.markMap)
+      const containerEl = document.querySelector('#mind-container')
+      this.$refs.markMapToolBar.setContainer(containerEl)
     },
     contextMenuHandler: function (e) {
       showMarkMapContextMenu(e)

@@ -14,6 +14,7 @@ import TableTools from 'src/i18n/zh-cn/components/ui/TableTools'
 import RenderToolBar from 'src/i18n/zh-cn/components/ui/RenderToolBar'
 import RenderLeafBlock from 'src/i18n/zh-cn/components/ui/RenderLeafBlock'
 import UpdateDialog from 'src/i18n/zh-cn/components/ui/UpdateDialog'
+import MarkMapToolBar from 'src/i18n/zh-cn/components/ui/MarkMapToolBar'
 export default {
   ...LoginDialog,
   ...SettingsDialog,
@@ -30,5 +31,6 @@ export default {
   ...TableTools,
   ...RenderToolBar,
   ...RenderLeafBlock,
-  ...UpdateDialog
+  ...UpdateDialog,
+  ...MarkMapToolBar
 }

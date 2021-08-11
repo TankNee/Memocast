@@ -24,7 +24,7 @@ const sanitize = require('sanitize-filename')
  * @param {Function} api 操作函数
  * @returns {Promise<void>}
  */
-async function handleApi (channel, api) {
+export async function handleApi (channel, api) {
   ipcMain.handle(channel, async (event, ...args) => {
     try {
       const ret = await api(event, ...args)

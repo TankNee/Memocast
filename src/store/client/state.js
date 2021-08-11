@@ -17,9 +17,10 @@ export default function () {
     customBody: '',
     shrinkInTray: false,
     noteListVisible: true,
-    flomoApiUrl: '',
     enablePreviewEditor: true,
     rightClickNoteItem: {},
-    rightClickCategoryItem: ''
+    rightClickCategoryItem: '',
+    theme: 'Default-Light',
+    themes: []
   }
 }

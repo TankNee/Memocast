@@ -1,4 +1,3 @@
-import FormData from 'form-data'
 import fs from 'fs'
 import request from 'request'
 import { isBase64, saveBuffer, saveFileInTempPath } from './helper'
@@ -18,7 +17,6 @@ export async function uploadImagesByWiz (imagePaths, options) {
   const results = []
   try {
     for (const image of imagePaths) {
-      const formData = new FormData()
       let buffer, filePath
 
       if (image instanceof Object && isBase64(image.file)) {
@@ -28,10 +26,6 @@ export async function uploadImagesByWiz (imagePaths, options) {
       } else {
         filePath = image
       }
-
-      formData.append('data', fs.createReadStream(filePath))
-      formData.append('kbGuid', kbGuid)
-      formData.append('docGuid', docGuid)
 
       const result = await postRequestAsync(
         `${baseUrl}/ks/resource/upload/${kbGuid}/${docGuid}`,

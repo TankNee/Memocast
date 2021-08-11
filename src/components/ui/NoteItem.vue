@@ -120,7 +120,8 @@ export default {
           message: this.$t('discardNoteHint')
         }).onOk(() => this.getNoteContent({ docGuid: this.docGuid }))
       } else {
-        this.getNoteContent({ docGuid: this.docGuid })
+        console.time('NoteLoadTime')
+        this.getNoteContent({ docGuid: this.docGuid }).then(() => console.timeEnd('NoteLoadTime'))
       }
     },
     ...mapServerActions(['getNoteContent', 'updateNoteInfo'])

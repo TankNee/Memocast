@@ -1,7 +1,7 @@
-import { oneDark, light } from 'src/utils/themeColor'
+import { loadTheme } from 'src/ApiInvoker'
 
-export const railscastsThemes = ['dark', 'material-dark']
-export const oneDarkThemes = ['one-dark']
+export const railscastsThemes = ['Default-Dark']
+export const oneDarkThemes = ['Default-Dark']
 
 const patchTheme = css => {
   return `@media not print {\n${css}\n}`
@@ -17,17 +17,9 @@ export function attachThemeColor (theme) {
     themeStyleEle.id = 'ag-theme'
     document.head.appendChild(themeStyleEle)
   }
-
-  switch (theme) {
-    case 'one-dark': {
-      themeStyleEle.innerHTML = patchTheme(oneDark())
-      break
-    }
-    case 'light' : {
-      themeStyleEle.innerHTML = patchTheme(light())
-      break
-    }
-  }
+  loadTheme(theme).then((themeSource) => {
+    themeStyleEle.innerHTML = patchTheme(themeSource)
+  })
 
   document.body.classList.remove('dark')
   if (isDarkTheme) {
