@@ -1,7 +1,7 @@
 <div align="center">
   <img title="" src="https://img.tanknee.cn/blogpicbed/2021/07/08/20210708fc3b67e797e90.png" alt="AppIcon" align="center" width="185">
   <h1>Memocast</h1>
-  
+
   ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/TankNee/Neeto-Vue/Neeto-Vue%20Release%20Action/master?label=REALSE%20ACTION&style=for-the-badge) ![GitHub Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/latest/total?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/TankNee/Neeto-Vue/total?style=for-the-badge) ![GitHub Release Date](https://img.shields.io/github/release-date/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/TankNee/Neeto-Vue?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/TankNee/Neeto-Vue?style=for-the-badge)
 
 </div>
@@ -13,12 +13,18 @@
   <div>
   <a href="https://www.producthunt.com/posts/memocast?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-memocast" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=305738&theme=light" alt="Memocast - an awesome wiznote client, online note. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
   </div>
-  
+
 ## Download
 
 你可以在 GitHub 的 Release 页面下载最新版本，与此同时，你也可以使用内置的更新按钮获取最新版本，注意 mac 并不支持直接使用内置更新，因为受限于 macOS 的安全策略，所有自动安装的应用应该被有效地签名。
 
 GitHub Release：[Releases · TankNee/Memocast · GitHub](https://github.com/TankNee/Memocast/releases)
+
+## Documentation
+
+你可以在 Memocast 的文档中找到与软件相关的实用用法与介绍。
+
+文档地址：https://www.tanknee.cn/Memocast/
 
 ## Feature
 
