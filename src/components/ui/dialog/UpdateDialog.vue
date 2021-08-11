@@ -15,7 +15,7 @@
       <q-card-section class='hide-scrollbar'>
         <div class='q-pa-md'>
           <p style="font-size: 0.9rem;">
-            <span>{{ `${$t('downloadSize')} ${transferred}/${total}` }}</span>
+            <span>{{ `${$t('downloadSize')} ${transferredAndTotal}` }}</span>
           </p>
           <p style="font-size: 0.9rem;">
             <span>{{ `${$t('downloadSpeed')} ${speed}` }}</span>
@@ -51,7 +51,8 @@ export default {
       downloaded: false,
       speed: '',
       transferred: '',
-      total: ''
+      total: '',
+      transferredAndTotal: ''
     }
   },
   computed: {
@@ -63,9 +64,10 @@ export default {
     downloadingHandler: function (progress) {
       const { percent = 0, bytesPerSecond, transferred, total } = progress
       this.progress = (percent / 100).toFixed(2)
-      this.speed = prettyBytes(bytesPerSecond)
+      this.speed = `${prettyBytes(bytesPerSecond)}/s`
       this.transferred = prettyBytes(transferred)
       this.total = prettyBytes(total)
+      this.transferredAndTotal = `${this.transferred}/${this.total}`
     },
     downloadedHandler: function () {
       this.progress = 1

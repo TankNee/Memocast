@@ -300,6 +300,7 @@ export default {
       this.$q.notify({
         caption: this.$t('getNewerVersion', { version: info.version }),
         message: info.releaseNotes,
+        html: true,
         color: 'positive',
         icon: 'system_update_alt',
         actions: [

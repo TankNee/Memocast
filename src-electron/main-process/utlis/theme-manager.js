@@ -4,6 +4,8 @@ import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
 import { handleApi } from '../api'
+import DefaultDarkTheme from '../assets/css/Default-Dark.dark.js'
+import DefaultLightTheme from '../assets/css/Default-Light.light.js'
 
 const ClientStorage = new Store({
   name: 'ClientFileStorage'
@@ -13,7 +15,8 @@ class ThemeManager {
   themePath
   themes = []
   constructor () {
-    this.themePath = path.join(app.getAppPath(), 'themes')
+    this.themePath = path.join(app.getPath('userData'), 'themes')
+    console.log(this.themePath)
     this.validateThemePath()
     this.initThemes()
     this.registerListener()
@@ -44,13 +47,17 @@ class ThemeManager {
   validateThemePath () {
     if (!fs.existsSync(this.themePath)) {
       fs.mkdirSync(this.themePath)
-      fs.copyFileSync(
-        path.resolve(__dirname, '../assets/css/Default-Dark.dark.css'),
-        path.join(this.themePath, 'Default-Dark.dark.css')
+    }
+    if (!fs.existsSync(path.join(this.themePath, 'Default-Dark.dark.css'))) {
+      fs.writeFileSync(
+        path.join(this.themePath, 'Default-Dark.dark.css'),
+        DefaultDarkTheme
       )
-      fs.copyFileSync(
-        path.resolve(__dirname, '../assets/css/Default-Light.light.css'),
-        path.join(this.themePath, 'Default-Light.light.css')
+    }
+    if (!fs.existsSync(path.join(this.themePath, 'Default-Light.light.css'))) {
+      fs.writeFileSync(
+        path.join(this.themePath, 'Default-Light.light.css'),
+        DefaultLightTheme
       )
     }
   }
