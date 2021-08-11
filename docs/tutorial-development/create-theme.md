@@ -27,6 +27,8 @@ sidebar_position: 2
 
 明亮模式的主题的后缀应该是 `light.css`，而黑暗主题的后缀应该是 `dark.css`，如果命名不规范 Memocast 将会拒绝引入主题样式。
 
+规范主题文件名示例：`Default-Dark.dark.css`，其中 `Default-Dark` 是主题的名字，将会显示在下拉框中。
+
 > Memocast 实现主题的方式实际上就是直接把 CSS 文件的内容插入到一个 `<style>` 标签中，因此你可以在开发者工具中快速调试，效果是完全一样的。
 
 ## CSS 变量
@@ -35,14 +37,14 @@ Memocast 提供了很多的实用 CSS 变量。
 
 ```css
 :root {
-    // 主题背景颜色
+    /* 主题背景颜色 */
   --backgroundColor: #35373e;
-    // 编辑器宽度
+    /* 编辑器宽度 */
   --editorAreaWidth: 90%;
     // 笔记列表的背景颜色
   --activeItemBgColor: rgb(41, 42, 44);
   /*editor*/
-    // 主题颜色，以透明度作为区分
+    /* 主题颜色，以透明度作为区分 */
   --themeColor: rgb(242, 192, 55);
   --themeColor90: rgba(242, 192, 55, .9);
   --themeColor80: rgba(242, 192, 55, .8);
@@ -53,10 +55,10 @@ Memocast 提供了很多的实用 CSS 变量。
   --themeColor30: rgba(242, 192, 55, .3);
   --themeColor20: rgba(242, 192, 55, .2);
   --themeColor10: rgba(242, 192, 55, .1);
-    // 高亮颜色
+    /* 高亮颜色 */
   --highlightColor: rgba(102, 177, 255, .6);
   --selectionColor: rgba(70, 122, 189, .7);
-    // 编辑区域的颜色，具体应用请在开发者工具中搜索
+    /* 编辑区域的颜色，具体应用请在开发者工具中搜索 */
   --editorColor: rgba(222, 222, 222, .7);
   --editorColor80: rgba(222, 222, 222, .8);
   --editorColor60: rgba(222, 222, 222, .6);
