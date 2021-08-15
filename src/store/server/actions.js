@@ -168,10 +168,15 @@ export default {
       'password',
       'url'
     ])
-    this.dispatch('server/login', {
+    const result = await api.AccountServerApi.Login({
       userId,
       password,
       url
+    })
+
+    commit(types.LOGIN, {
+      ...result,
+      isLogin: true
     })
   },
   /**
@@ -349,13 +354,13 @@ export default {
         api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid),
         null
       )
-      Notify.create({
-        color: 'primary',
-        message: i18n.t('saveNoteSuccessfully'),
-        icon: 'check'
-      })
-      await this.dispatch('server/getCategoryNotes')
+      // Notify.create({
+      //   color: 'primary',
+      //   message: i18n.t('saveNoteSuccessfully'),
+      //   icon: 'check'
+      // })
       commit(types.UPDATE_CURRENT_NOTE, result)
+      await this.dispatch('server/getCategoryNotes')
     }
     if (!_.endsWith(title, '.md')) {
       Dialog.create({

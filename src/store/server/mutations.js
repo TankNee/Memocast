@@ -24,7 +24,7 @@ export default {
     }
     const data = { kbGuid, kbServer, lang, email, displayName, userGuid, isLogin }
     Object.assign(state, data)
-    state.currentNote = {}
+    // state.currentNote = {}
     return state
   },
   [types.LOGOUT] (state) {

@@ -1,6 +1,6 @@
 {
   "name": "cn.memocast.app",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Memocast",
   "author": "tanknee <nee@tanknee.cn>",
@@ -16,9 +16,7 @@
     "build-develop": "quasar build -m electron -d",
     "build-publish": "quasar build -m electron -P always",
     "build-all": "quasar build -m electron -T all -P",
-    "build": "quasar build -m electron",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "build": "quasar build -m electron"
   },
   "dependencies": {
     "@altairwei/wiz-markdown": "^1.0.13",
@@ -91,9 +89,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.1.2",
     "html2canvas": "^1.0.0-rc.7",
-    "strip-ansi": "^3.0.1",
-    "vuepress": "^1.8.2",
-    "vuepress-theme-yuu": "^3.1.1"
+    "strip-ansi": "^3.0.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
