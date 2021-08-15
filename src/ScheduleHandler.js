@@ -3,10 +3,9 @@ import api from 'src/utils/api'
 import debugLogger from './utils/debugLogger'
 import ServerFileStorage from './utils/storage/ServerFileStorage'
 const refreshWizToken = (app) => {
-  schedule.scheduleJob('30 * * * * *', async () => {
+  schedule.scheduleJob('30 */12 * * * *', async () => {
     if (!ServerFileStorage.isKeyExistsInLocalStorage('token') || !app.isLogin) return
     try {
-      debugLogger.Log('Keep Token Alive')
       await api.AccountServerApi.keepTokenAlive()
     } catch (e) {
       await app.reLogin()
