@@ -68,7 +68,6 @@
               v-show='dataLoaded && !isOutlineShow && !isSourceMode'
               v-ripple
               key='wordCount'
-              :title="$t('wordCount')"
             >
               <q-tooltip
                 transition-show="fade"
@@ -120,7 +119,7 @@
               :title="enablePreviewEditor ? $t('lock') : $t('unlock')"
             />
             <q-btn
-              icon='save'
+              :icon='saveButtonIcon'
               class='absolute-bottom-right fab-icon cursor-pointer material-icons-round'
               dense
               flat
@@ -196,7 +195,7 @@ export default {
       return [0, 0]
     },
     ...mapServerGetters(['currentNote']),
-    ...mapServerState(['contentsList', 'isCurrentNoteLoading']),
+    ...mapServerState(['contentsList', 'isCurrentNoteLoading', 'noteState']),
     ...mapClientState(['noteListVisible', 'enablePreviewEditor'])
   },
   data () {
@@ -210,7 +209,8 @@ export default {
         word: '0',
         paragraph: '0',
         character: '0'
-      }
+      },
+      saveButtonIcon: 'save'
     }
   },
   methods: {
@@ -277,6 +277,14 @@ export default {
           markdown: this.$refs.muya.getValue(),
           cursor: this.$refs.muya.getCursorPosition()
         }
+      }
+    },
+    noteState: function (val, oldVal) {
+      if (val === 'default' && oldVal === 'changed') {
+        this.saveButtonIcon = 'check'
+        setTimeout(() => {
+          this.saveButtonIcon = 'save'
+        }, 3000)
       }
     }
   }
