@@ -1,5 +1,6 @@
 export default {
   REQUEST_ERROR: 'request.error',
+  RELOGIN: 'relogin',
   INSERT_IMAGE: 'insert.image',
   INSERT_IMAGES: 'insert.images',
   INSERT_TEXT: 'insert.text',

@@ -8,6 +8,8 @@ import ErrorHandler from './ErrorHandler'
 import ScheduleHandler from './ScheduleHandler'
 import ApiHandler from 'src/ApiHandler'
 import { createNamespacedHelpers } from 'vuex'
+import bus from './components/bus'
+import events from './constants/events'
 
 const { RegisterErrorHandler } = ErrorHandler
 const { RegisterScheduleJobs } = ScheduleHandler
@@ -24,8 +26,9 @@ export default {
     RegisterErrorHandler()
     RegisterScheduleJobs(this)
     RegisterApiHandler()
-    this.initClientStore()
+    this.initClientStore().then()
     this.initServerStore().then()
+    bus.$on(events.RELOGIN, this.reLogin)
   },
   methods: {
     ...mapClientActions(['initClientStore']),

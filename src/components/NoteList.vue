@@ -124,9 +124,10 @@ export default {
   computed: {
     thumbStyle () {
       return {
-        backgroundColor: '#E8ECF1',
+        background: '#E8ECF1',
         width: '5px',
-        opacity: 0.75
+        opacity: 0.75,
+        borderRadius: '10px'
       }
     },
 
