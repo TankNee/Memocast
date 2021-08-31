@@ -319,10 +319,9 @@ export default {
     const {
       kbGuid,
       docGuid,
-      category,
-      noteState
+      category
     } = state.currentNote.info
-    if (noteState === 'default') return
+    if (state.noteState === 'default' || state.noteState === 'none') return
     let { title } = state.currentNote.info
     const { resources } = state.currentNote
     const isLite = category.replace(/\//g, '') === 'Lite'
