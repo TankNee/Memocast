@@ -1,6 +1,6 @@
 {
   "name": "cn.memocast.app",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "An Awesome WizNote Desktop Application",
   "productName": "Memocast",
   "author": "tanknee <nee@tanknee.cn>",
@@ -26,6 +26,7 @@
     "cheerio": "^1.0.0-rc.3",
     "core-js": "^3.6.5",
     "dompurify": "^2.0.8",
+    "electron-log": "^4.4.1",
     "electron-serve": "^1.0.0",
     "electron-store": "^6.0.0",
     "electron-unhandled": "^3.0.2",

@@ -36,7 +36,7 @@ export function getTempNoteDir (kbGuid, docGuid, rootDir = 'temp') {
 }
 
 export async function cacheNoteImage (imageUrl, kbGuid, docGuid, resName = 'image.png') {
-  const dir = path.join(getTempNoteDir(kbGuid, docGuid, 'userData'), resName)
+  const dir = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)
   const result = await axios.get(imageUrl, { responseType: 'arraybuffer' })
   fs.writeFileSync(dir, result.data)
   return dir
@@ -50,12 +50,12 @@ export function saveTempImage (file, kbGuid, docGuid) {
 }
 
 export function isResourceExist (kbGuid, docGuid, resName) {
-  const dir = getTempNoteDir(kbGuid, docGuid, 'userData')
+  const dir = getTempNoteDir(kbGuid, docGuid, 'appData')
   return fs.existsSync(path.join(dir, resName))
 }
 
 export function saveBuffer (file, kbGuid, docGuid, resName) {
-  const dir = getTempNoteDir(kbGuid, docGuid, 'userData')
+  const dir = getTempNoteDir(kbGuid, docGuid, 'appData')
   fs.writeFileSync(path.join(dir, resName), file)
   return path.join(dir, resName)
 }
@@ -73,14 +73,14 @@ export function exportImageOfMarkdown (markdown, kbGuid, docGuid, resources = []
   if (!fs.existsSync(path.join(targetDir, 'ExportImage'))) {
     fs.mkdirSync(path.join(targetDir, 'ExportImage'))
   }
-  resources.filter(r => fs.existsSync(path.join(getTempNoteDir(kbGuid, docGuid, 'userData'), r.name))).forEach(r => {
+  resources.filter(r => fs.existsSync(path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), r.name))).forEach(r => {
     const fullName = `memocast://memocast.app/${kbGuid}/${docGuid}/${r.name}`
-    const srcDir = path.join(getTempNoteDir(kbGuid, docGuid, 'userData'), r.name)
+    const srcDir = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), r.name)
     const destDir = path.join(targetDir, 'ExportImage')
     const imageSource = fs.readFileSync(srcDir)
     fs.writeFileSync(path.join(destDir, r.name), imageSource)
     markdown = markdown.replace(fullName, `ExportImage/${r.name}`)
   })
-  // path.join(getTempNoteDir(kbGuid, docGuid, 'userData'), resName)
+  // path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)
   return markdown
 }
