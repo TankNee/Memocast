@@ -13,7 +13,7 @@ const ClientStorage = new Store({
 
 console.log = log.log
 console.error = log.error
-log.transports.file.resolvePath = () => path.join(app.getPath('appData'), 'logs/main.log')
+log.transports.file.resolvePath = () => path.join(app.getPath('userData'), 'logs', new Date().getFullYear().toString(), (new Date().getMonth() + 1).toString(), 'main.log')
 
 async function resourceProtocolHandler (request, callback) {
   // eslint-disable-next-line node/no-deprecated-api
