@@ -21,6 +21,7 @@ export default function () {
     rightClickNoteItem: {},
     rightClickCategoryItem: '',
     theme: 'Default-Light',
-    themes: []
+    themes: [],
+    autoSaveGap: 0
   }
 }

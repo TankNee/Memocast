@@ -133,6 +133,28 @@
                     />
                   </div>
                 </div>
+                <div>
+                  <div class='text-h5 q-mb-md setting-item'>
+                    <span>{{ $t('autoSave') }}</span>
+                    <q-item>
+                      <q-item-section avatar>
+                        <q-icon style="color: var(--themeColor);" name="timer" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-slider
+                          style="color: var(--themeColor);"
+                          :step="30"
+                          :value="autoSaveGap"
+                          @input="autoSaveGapChangeHandler"
+                          :min="0"
+                          :max="240"
+                          label
+                          :label-value="autoSaveGapLabel"
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </div>
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name='server'>
@@ -219,6 +241,10 @@ export default {
         this.$t('orderByNoteTitle')
       ]
     },
+    autoSaveGapLabel: function () {
+      if (this.autoSaveGap === 0) return this.$t('never')
+      return this.autoSaveGap + this.$t('seconds')
+    },
     ...mapState([
       'language',
       'darkMode',
@@ -227,7 +253,8 @@ export default {
       'imageUploadService',
       'noteOrderType',
       'theme',
-      'themes'
+      'themes',
+      'autoSaveGap'
     ])
   },
   methods: {
@@ -265,6 +292,10 @@ export default {
         i => this.$t(i) === type
       )
       this.updateStateAndStore({ noteOrderType: typePlain })
+    },
+    autoSaveGapChangeHandler: function (value) {
+      if (isNaN(value)) return
+      this.toggleChanged({ key: 'autoSaveGap', value: value })
     },
     checkUpdateHandler: function () {
       this.checkUpdate().then(() => {

@@ -60,7 +60,8 @@ export default {
   },
   data () {
     return {
-      contentEditor: {}
+      contentEditor: {},
+      firstTimeLoad: false
     }
   },
   computed: {
@@ -266,8 +267,9 @@ export default {
       })
 
       this.contentEditor.on('change', _.debounce(({ markdown: curData }) => {
-        if (curData.replace(/\s/g, '') === this.currentNote.replace(/\s/g, '') || this.noteState === 'none') {
+        if (curData.replace(/\s/g, '') === this.currentNote.replace(/\s/g, '') || this.noteState === 'none' || this.firstTimeLoad) {
           this.updateNoteState('default')
+          this.firstTimeLoad = false
         } else {
           this.updateNoteState('changed')
           this.updateContentsList(this.contentEditor.getTOC())
@@ -314,6 +316,7 @@ export default {
       try {
         this.contentEditor.focus()
         this.contentEditor.setMarkdown(currentData)
+        this.firstTimeLoad = true
         this.updateContentsList(this.contentEditor.getTOC())
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return

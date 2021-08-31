@@ -26,5 +26,9 @@ export default {
   updateError: '更新失败',
   theme: '主题',
   'Default-Dark': '默认暗色主题',
-  'Default-Light': '默认亮色主题'
+  'Default-Light': '默认亮色主题',
+  autoSave: '自动保存',
+  minutes: '分钟',
+  seconds: '秒',
+  never: '永不'
 }

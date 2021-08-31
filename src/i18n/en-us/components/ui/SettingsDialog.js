@@ -26,5 +26,9 @@ export default {
   updateError: 'Fail to update',
   theme: 'Theme',
   'Default-Dark': 'Default Dark',
-  'Default-Light': 'Default Light'
+  'Default-Light': 'Default Light',
+  autoSave: 'Auto Save',
+  minutes: 'Minutes',
+  seconds: 'Seconds',
+  never: 'Never'
 }
