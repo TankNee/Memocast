@@ -40,7 +40,7 @@
         class="absolute-bottom-right fab-btn"
         v-if="isLogin && !isTagCategory"
       >
-        <q-fab-action
+        <!-- <q-fab-action
           v-if="!isRootCategory"
           :color="color"
           icon="import_export"
@@ -53,7 +53,7 @@
             :content-class="`bg-${color} text-white shadow-4  text-h7`"
             >{{ $t('export') }}</q-tooltip
           >
-        </q-fab-action>
+        </q-fab-action> -->
         <q-fab-action
           v-if="!isRootCategory"
           :color="color"

@@ -878,7 +878,7 @@ export default {
       )
     }
     Loading.hide()
-    await exportMarkdownFile({ content, title })
+    exportMarkdownFile({ content, kbGuid, docGuid, resources, title })
   },
   /**
    * 导出为png

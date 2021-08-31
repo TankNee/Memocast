@@ -5,7 +5,7 @@ import path from 'path'
 import { sendNotification } from './api-invoker'
 import { BrowserWindow } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
-import { cacheNoteImage, saveTempImage, saveBuffer } from './utlis/helper'
+import { cacheNoteImage, saveTempImage, saveBuffer, exportImageOfMarkdown } from './utlis/helper'
 import { uploadImagesByWiz } from './utlis/wiz-resource-helper'
 import { execRequest } from './service/request'
 import i18n from './i18n'
@@ -50,7 +50,7 @@ export default {
     /**
      *  export single note
      */
-    handleApi('export-markdown-file', (event, { content, title }) => {
+    handleApi('export-markdown-file', (event, { content, kbGuid, docGuid, resources, title }) => {
       return dialog.showSaveDialog({
         title: i18n.t('export'),
         defaultPath: path.join(app.getPath('documents'), `${title}`),
@@ -62,6 +62,7 @@ export default {
         ]
       }).then((result) => {
         if (result.canceled) return
+        content = exportImageOfMarkdown(content, kbGuid, docGuid, resources, result.filePath)
         fs.writeFile(result.filePath, content).then(() => {
           sendNotification({
             msg: 'ExportSuccessfully',

@@ -29,7 +29,7 @@ async function resourceProtocolHandler (request, callback) {
       const resource = resources.find(r => r.name === resName)
       resourcePath = await cacheNoteImage(resource.url, kbGuid, docGuid, resName)
     } else {
-      resourcePath = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)
+      resourcePath = path.join(getTempNoteDir(kbGuid, docGuid, 'userData'), resName)
     }
   } catch (error) {
     console.error(error)

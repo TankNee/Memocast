@@ -149,6 +149,7 @@ import events from 'src/constants/events'
 import helper from 'src/utils/helper'
 import { createNamespacedHelpers } from 'vuex'
 import NoteOutlineDrawer from 'components/ui/NoteOutlineDrawer'
+import { initLoadingPageMixins } from '../mixins'
 import Loading from 'components/ui/Loading'
 import Monaco from 'components/ui/editor/Monaco'
 import Muya from 'components/ui/editor/Muya'
@@ -162,6 +163,7 @@ const { mapState: mapClientState, mapActions: mapClientActions } = createNamespa
 // import Sidebar from '../components/Sidebar'
 export default {
   name: 'PageIndex',
+  mixins: [initLoadingPageMixins],
   components: {
     MarkMapDialog,
     Muya,
@@ -264,6 +266,7 @@ export default {
     bus.$on(events.VIEW_SHORTCUT_CALL.sourceMode, this.sourceModeHandler)
     bus.$on(events.GENERATE_MINDMAP, this.generateMindmapHandler)
     bus.$on(events.UPDATE_WORD_COUNT, this.wordCountUpdateHandler)
+    this.$nextTick(this.hideInitLoadingPage)
   },
   watch: {
     isSourceMode: function (val) {

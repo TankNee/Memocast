@@ -26,6 +26,12 @@ export default {
     RegisterErrorHandler()
     RegisterScheduleJobs(this)
     RegisterApiHandler()
+    // Promise.all([this.initClientStore(), this.initServerStore()]).finally(() => {
+    //   const loadingPage = document.querySelector('#loading-page')
+    //   if (loadingPage) {
+    //     loadingPage.style.display = 'none'
+    //   }
+    // })
     this.initClientStore().then()
     this.initServerStore().then()
     bus.$on(events.RELOGIN, this.reLogin)
