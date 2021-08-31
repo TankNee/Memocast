@@ -1,5 +1,5 @@
 import Store from 'electron-store'
-import { app, shell } from 'electron'
+import { app, shell, BrowserWindow } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
@@ -14,6 +14,7 @@ const ClientStorage = new Store({
 class ThemeManager {
   themePath
   themes = []
+  currentTheme = {}
   constructor () {
     this.themePath = path.join(app.getPath('userData'), 'themes')
     console.log(this.themePath)
@@ -62,8 +63,14 @@ class ThemeManager {
     }
   }
 
+  get colorMode () {
+    return this.currentTheme.dark ? 'dark' : 'light'
+  }
+
   loadThemeHandler (event, { name }) {
     const theme = this.themes.find(t => t.name === name)
+    this.currentTheme = theme
+    BrowserWindow.getAllWindows().forEach(win => win.setVibrancy(this.colorMode))
     return fs.readFileSync(path.join(this.themePath, theme.fileName)).toString('utf-8')
   }
 

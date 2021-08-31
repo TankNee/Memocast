@@ -1,5 +1,5 @@
 :root {
-  --backgroundColor: #35373e;
+  --backgroundColor: rgba(53, 55, 62, .83);
   --editorAreaWidth: 90%;
   --activeItemBgColor: rgb(41, 42, 44);
   /*editor*/
@@ -137,6 +137,10 @@ SOFTWARE.
 #mind code {
   color: inherit;
   background: transparent;
+}
+
+.q-drawer {
+  background: rgba(66, 67, 74, .83);
 }
 
 code[class*="language-"],
