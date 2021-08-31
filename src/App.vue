@@ -44,7 +44,7 @@ export default {
       clearInterval(this.autoSaveInterval)
       if (gap === 0 && this.autoSaveInterval !== null) {
         this.autoSaveInterval = null
-      } else {
+      } else if (gap !== 0) {
         this.autoSaveInterval = setInterval(() => {
           bus.$emit(events.NOTE_SHORTCUT_CALL.save)
         }, gap * 1000)

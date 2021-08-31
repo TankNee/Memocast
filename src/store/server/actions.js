@@ -315,6 +315,7 @@ export default {
     commit,
     state
   }, markdown) {
+    if (!state.currentNote.info) return
     const {
       kbGuid,
       docGuid,
