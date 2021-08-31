@@ -315,6 +315,7 @@ export default {
     commit,
     state
   }, markdown) {
+    if (!state.currentNote.info) return
     const {
       kbGuid,
       docGuid,
@@ -878,7 +879,7 @@ export default {
       )
     }
     Loading.hide()
-    await exportMarkdownFile({ content, title })
+    exportMarkdownFile({ content, kbGuid, docGuid, resources, title })
   },
   /**
    * 导出为png

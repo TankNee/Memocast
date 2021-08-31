@@ -91,7 +91,7 @@ export default {
     return helper.generateTagNodeTree(tags)
   },
   activeNote: ({ currentNote }) => ({ docGuid }) => {
-    return currentNote.info && currentNote.info.docGuid === docGuid
+    return currentNote && currentNote.info && currentNote.info.docGuid === docGuid
   },
   uploadImageUrl: ({
     uploadImageUrl,

@@ -13,6 +13,7 @@
   --themeColor30: rgba(242, 192, 55, .3);
   --themeColor20: rgba(242, 192, 55, .2);
   --themeColor10: rgba(242, 192, 55, .1);
+  --scrollBarBgColor: rgba(225, 231, 237, 0.75);
 
   --highlightColor: rgba(102, 177, 255, .6);
   --selectionColor: rgba(70, 122, 189, .7);

@@ -25,7 +25,9 @@ export default {
   flowChart: 'Flow Chart',
   sequenceDiagram: 'Sequence Diagram',
   mermaid: 'Mermaid',
+  markmap: 'Markmap',
   vegaChartSubTitle: 'Render flow chart by vega-lite.js.',
+  markmapSubTitle: 'Render Markmap by markmap-lib',
   flowChartSubTitle: 'Render flow chart by flowchart.js.',
   sequenceDiagramSubTitle: 'Render sequence diagram by js-sequence.',
   mermaidSubTitle: 'Render Diagram by mermaid.'

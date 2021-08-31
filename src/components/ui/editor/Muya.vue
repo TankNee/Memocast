@@ -11,6 +11,7 @@ import { createNamespacedHelpers } from 'vuex'
 import helper from 'src/utils/helper'
 import Muya from 'src/libs/muya/lib'
 import bus from 'components/bus'
+import _ from 'lodash'
 import events from 'src/constants/events'
 import 'src/libs/muya/themes/default.css'
 import TablePicker from 'src/libs/muya/lib/ui/tablePicker'
@@ -59,14 +60,15 @@ export default {
   },
   data () {
     return {
-      contentEditor: {}
+      contentEditor: {},
+      firstTimeLoad: false
     }
   },
   computed: {
     dataLoaded: function () {
       return !helper.isNullOrEmpty(this.currentNote)
     },
-    ...mapServerState(['isCurrentNoteLoading', 'contentsList']),
+    ...mapServerState(['isCurrentNoteLoading', 'contentsList', 'noteState']),
     ...mapServerGetters(['currentNote', 'uploadImageUrl', 'currentNoteResources', 'currentNoteResourceUrl']),
     ...mapClientState(['darkMode', 'enablePreviewEditor', 'theme'])
   },
@@ -230,7 +232,7 @@ export default {
       //   attachThemeColor('light')
       // }
 
-      this.contentEditor.on('muya-click', (event) => {
+      this.contentEditor.on('muya-click', _.debounce((event) => {
         if (event.target.type === 'checkbox') {
           const curData = this.contentEditor.getMarkdown()
           // eslint-disable-next-line eqeqeq
@@ -241,7 +243,7 @@ export default {
             this.updateNoteState('default')
           }
         }
-      })
+      }, 800))
 
       this.contentEditor.on('change', () => this.updateContentsList(this.contentEditor.getTOC()))
 
@@ -254,7 +256,6 @@ export default {
       this.contentEditor.on('selectionChange', changes => {
         const { y } = changes.cursorCoords
 
-        // Used to fix #628: auto scroll cursor to visible if the cursor is too low.
         if (container.clientHeight - y < 100) {
           const editableHeight = container.clientHeight - 100
           if (this.$q.platform.is.mac) {
@@ -265,17 +266,16 @@ export default {
         }
       })
 
-      container.addEventListener('keydown', (e) => {
-        const curData = this.contentEditor.getMarkdown()
-        // eslint-disable-next-line eqeqeq
-        if (curData != this.currentNote) {
+      this.contentEditor.on('change', _.debounce(({ markdown: curData }) => {
+        if (curData.replace(/\s/g, '') === this.currentNote.replace(/\s/g, '') || this.noteState === 'none' || this.firstTimeLoad) {
+          this.updateNoteState('default')
+          this.firstTimeLoad = false
+        } else {
           this.updateNoteState('changed')
           this.updateContentsList(this.contentEditor.getTOC())
-        } else {
-          this.updateNoteState('default')
         }
         this.updateContentsList(this.contentEditor.getTOC())
-      })
+      }, 300, { leading: true }))
 
       bus.$on(events.SCROLL_TO_HEADER, this.scrollToHeaderHandler)
       bus.$on(events.PARAGRAPH_SHORTCUT_CALL, this.paragraphHandler)
@@ -316,6 +316,7 @@ export default {
       try {
         this.contentEditor.focus()
         this.contentEditor.setMarkdown(currentData)
+        this.firstTimeLoad = true
         this.updateContentsList(this.contentEditor.getTOC())
       } catch (e) {
         if (e.message.indexOf('Md2V') !== -1) return
@@ -342,5 +343,6 @@ export default {
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
+  margin-right: 5px;
 }
 </style>

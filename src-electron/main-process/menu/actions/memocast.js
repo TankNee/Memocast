@@ -61,13 +61,13 @@ export const checkUpdates = browserWindow => {
   if (!runningUpdate) {
     runningUpdate = true
     win = browserWindow
-    autoUpdater.checkForUpdates().catch(err => throw err)
+    autoUpdater.checkForUpdates().catch(console.error)
   }
 }
 
 export const needUpdate = (need) => {
   if (need) {
-    autoUpdater.downloadUpdate().catch(err => throw err)
+    autoUpdater.downloadUpdate().catch(console.error)
   } else {
     runningUpdate = false
   }

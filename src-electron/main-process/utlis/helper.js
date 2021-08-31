@@ -66,3 +66,21 @@ export function isBase64 (str) {
   }
   return str.indexOf('data:') !== -1 && str.indexOf('base64') !== -1
 }
+
+export function exportImageOfMarkdown (markdown, kbGuid, docGuid, resources = [], targetDir) {
+  if (resources.length === 0 || !kbGuid || !docGuid || !targetDir) return markdown
+  targetDir = path.parse(targetDir).dir
+  if (!fs.existsSync(path.join(targetDir, 'ExportImage'))) {
+    fs.mkdirSync(path.join(targetDir, 'ExportImage'))
+  }
+  resources.filter(r => fs.existsSync(path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), r.name))).forEach(r => {
+    const fullName = `memocast://memocast.app/${kbGuid}/${docGuid}/${r.name}`
+    const srcDir = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), r.name)
+    const destDir = path.join(targetDir, 'ExportImage')
+    const imageSource = fs.readFileSync(srcDir)
+    fs.writeFileSync(path.join(destDir, r.name), imageSource)
+    markdown = markdown.replace(fullName, `ExportImage/${r.name}`)
+  })
+  // path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)
+  return markdown
+}

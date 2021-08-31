@@ -10,7 +10,7 @@ function registerRequestErrorHandler () {
       message: error.localMessage,
       color: 'red-10',
       caption: i18n.t('requestError'),
-      actions: error.notifyActions,
+      actions: error.notifyAction(),
       icon: 'error'
     })
   })

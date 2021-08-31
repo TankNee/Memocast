@@ -2,7 +2,7 @@
 
 /*Base CSS*/
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
   height: 1px;
 }
 
@@ -11,7 +11,8 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   /* -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); */
-  background: rgba(225, 231, 237, 0.75);
+  background: var(--scrollBarBgColor);
+  margin: 3px;
 }
 
 /*滚动条轨道*/

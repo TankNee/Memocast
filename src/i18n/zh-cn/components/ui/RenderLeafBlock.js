@@ -8,5 +8,6 @@ export default {
   invalidMermaid: '<不合法的Mermaid表达式>',
   invalidFlowChart: '<不合法的流程图表达式>',
   invalidSequence: '<不合法的时序图表达式>',
+  invalidMarkmap: '<不合法的Markmap脑图>',
   invalidVega: '<不合法的Vega表达式>'
 }

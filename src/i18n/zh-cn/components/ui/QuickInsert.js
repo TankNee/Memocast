@@ -24,9 +24,11 @@ export default {
   vegaChart: 'Vega图表',
   flowChart: '流程图',
   sequenceDiagram: '时序图',
-  mermaid: 'Mermaid脑图',
-  vegaChartSubTitle: '从vega-lite.js生成vega图表',
-  flowChartSubTitle: '从flowchart.js生成流程图',
-  sequenceDiagramSubTitle: '从js-sequence生成时序图',
-  mermaidSubTitle: '从mermaid生成脑图'
+  mermaid: 'Mermaid 图',
+  markmap: 'Markmap 思维导图',
+  vegaChartSubTitle: '从 vega-lite.js 生成vega图表',
+  markmapSubTitle: '从 markmap-lib 生成思维导图',
+  flowChartSubTitle: '从 flowchart.js 生成流程图',
+  sequenceDiagramSubTitle: '从 js-sequence 生成时序图',
+  mermaidSubTitle: '从 mermaid 生成图表'
 }

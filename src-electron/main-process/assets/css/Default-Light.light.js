@@ -4,7 +4,6 @@ export default `/* Common CSS use by both light and dark themes */
   --editorAreaWidth: 90%;
   --backgroundColor: #ffffff;
   --activeItemBgColor: rgb(204, 207, 214);
-  /*editor*/
   /*Theme color cluster*/
   --themeColor: rgba(25, 118, 210, 1);
   --themeColor90: rgba(25, 118, 210, .9);
@@ -16,6 +15,7 @@ export default `/* Common CSS use by both light and dark themes */
   --themeColor30: rgba(25, 118, 210, .3);
   --themeColor20: rgba(25, 118, 210, .2);
   --themeColor10: rgba(25, 118, 210, .1);
+  --scrollBarBgColor: rgba(225, 231, 237, 0.75);
 
   --highlightColor: rgba(25, 118, 210, .4);
   --selectionColor: #DAE3E9;

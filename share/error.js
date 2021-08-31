@@ -1,4 +1,6 @@
 import { i18n } from 'boot/i18n'
+import bus from 'src/components/bus'
+import events from 'src/constants/events'
 
 class NeetoError extends Error {
   constructor (message, returnCode, externCode) {
@@ -26,7 +28,21 @@ class NeetoError extends Error {
     return i18n.t(this.returnCode)
   }
 
-  get notifyActions () {
+  notifyAction () {
+    switch (this._returnCode) {
+      case 301:
+        return [
+          {
+            icon: 'refresh',
+            textColor: 'white',
+            handler: () => {
+              bus.$emit(events.RELOGIN)
+            }
+          }
+        ]
+      default:
+        break
+    }
     return null
   }
 }
