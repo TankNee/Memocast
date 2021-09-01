@@ -69,36 +69,16 @@
     >
       <img :src="avatarUrl ? avatarUrl : defaultAvatar" />
     </q-avatar>
-    <q-input
-      dark
-      dense
-      borderless
-      v-model="searchText"
-      input-class="text-right text-grey"
-      class="q-ml-md q-electron-drag--exception search-input"
-      ref="searchInput"
-      style="width: 100px"
-      spellcheck="false"
+
+    <q-avatar
+      size="36px"
+      class="cursor-pointer q-electron-drag--exception"
       :title="$t('search')"
-      @keydown.enter="searchNoteHandler"
+      v-ripple
+      @click="() => $refs.searchDialog.toggle()"
     >
-      <template v-slot:append>
-        <q-icon
-          class="text-grey cursor-pointer"
-          size="19px"
-          v-if="searchText === ''"
-          name="search"
-          @click="$refs.searchInput.focus()"
-        />
-        <q-icon
-          size="19px"
-          v-else
-          name="clear"
-          class="cursor-pointer text-grey"
-          @click="clearInputHandler"
-        />
-      </template>
-    </q-input>
+      <q-icon name="search" />
+    </q-avatar>
     <q-space v-if="!$q.platform.is.mac" />
     <div
       v-if="!$q.platform.is.mac && dataLoaded"
@@ -146,6 +126,7 @@
     </div>
     <LoginDialog ref="loginDialog" />
     <SettingsDialog ref="settingsDialog" />
+    <SearchDialog ref='searchDialog' />
     <TagDialog ref="tagDialog" />
     <SideDrawer ref="sideDrawer" :type="drawerType" />
   </q-bar>
@@ -161,6 +142,7 @@ import defaultAvatarBase64 from 'src/assets/default-avatar'
 import TagDialog from 'components/ui/dialog/TagDialog'
 import bus from 'components/bus'
 import events from 'src/constants/events'
+import SearchDialog from 'components/ui/dialog/SearchDialog'
 const {
   mapState: mapServerState,
   mapGetters: mapServerGetters,
@@ -217,10 +199,9 @@ export default {
       return this.tagsOfCurrentNote.map(t => t.name)
     }
   },
-  components: { TagDialog, SideDrawer, SettingsDialog, LoginDialog },
+  components: { SearchDialog, TagDialog, SideDrawer, SettingsDialog, LoginDialog },
   data () {
     return {
-      searchText: '',
       drawerType: 'category'
     }
   },
@@ -262,10 +243,6 @@ export default {
           })
       }
     },
-    searchNoteHandler: function () {
-      if (helper.isNullOrEmpty(this.searchText)) return
-      this.searchNote(this.searchText)
-    },
     switchViewHandler: function () {
       this.toggleChanged({
         key: 'noteListVisible',
@@ -273,16 +250,12 @@ export default {
       })
       this.$refs.sideDrawer.hide()
     },
-    clearInputHandler: function () {
-      this.searchText = ''
-      this.getCategoryNotes({ category: this.currentCategory })
-    },
     macDoubleClickHandler: function () {
       if (this.$q.platform.is.mac) {
         this.maximize()
       }
     },
-    ...mapServerActions(['logout', 'searchNote', 'getCategoryNotes']),
+    ...mapServerActions(['logout', 'getCategoryNotes']),
     ...mapClientActions(['toggleChanged'])
   },
   mounted () {

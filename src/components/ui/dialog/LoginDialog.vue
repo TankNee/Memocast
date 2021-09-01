@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref='dialog' class='base-dialog' persistent>
+  <q-dialog transition-show='fade' transition-hide='fade' ref='dialog' class='base-dialog' persistent>
     <q-card class='q-dialog base-dialog'>
       <q-toolbar>
         <q-icon

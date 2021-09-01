@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref='dialog' persistent>
+  <q-dialog transition-show='fade' transition-hide='fade' ref='dialog' persistent>
     <q-card style='height: 70vh;min-width: 70vw'>
       <q-toolbar>
         <q-avatar>

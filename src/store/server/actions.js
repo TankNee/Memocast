@@ -1,18 +1,18 @@
 import types from 'src/store/server/types'
 import api from 'src/utils/api'
-import { Notify, Dialog, Loading, QSpinnerGears, Dark } from 'quasar'
+import { Dark, Dialog, Loading, Notify, QSpinnerGears } from 'quasar'
 import helper from 'src/utils/helper'
 import { i18n } from 'boot/i18n'
 import ClientFileStorage from 'src/utils/storage/ClientFileStorage'
 import ServerFileStorage from 'src/utils/storage/ServerFileStorage'
 import _ from 'lodash'
 import {
+  exportFile,
   exportMarkdownFile,
   exportMarkdownFiles,
-  saveTempImage,
-  uploadImages,
   exportPng,
-  exportFile
+  saveTempImage,
+  uploadImages
 } from 'src/ApiInvoker'
 import html2canvas from 'html2canvas'
 import debugLogger from 'src/utils/debugLogger'
@@ -672,15 +672,15 @@ export default {
     state
   }, searchText) {
     const { kbGuid } = state
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
-    const result = await api.KnowledgeBaseApi.searchNote({
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, true)
+    // commit(types.UPDATE_CURRENT_NOTES, result)
+    // commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
+    return await api.KnowledgeBaseApi.searchNote({
       data: {
         ss: searchText
       },
       kbGuid
     })
-    commit(types.UPDATE_CURRENT_NOTES, result)
-    commit(types.UPDATE_CURRENT_NOTES_LOADING_STATE, false)
   },
   async updateContentsList ({ commit }, editorRootElement) {
     const list = await helper.updateContentsList(editorRootElement) || []

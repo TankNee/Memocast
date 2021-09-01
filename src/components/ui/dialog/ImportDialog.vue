@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref="dialog">
+  <q-dialog transition-show='fade' transition-hide='fade' ref="dialog">
     <q-card>
       <q-uploader ref='uploader' :label="$t('restrictedToMarkdown')" multiple accept=".md" flat :factory="factoryFn"/>
       <q-card-actions align="right">

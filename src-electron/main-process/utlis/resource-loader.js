@@ -32,6 +32,7 @@ async function resourceProtocolHandler (request, callback) {
     if (!isResourceExist(kbGuid, docGuid, resName)) {
       const resources = ClientStorage.get('currentResources') || []
       const resource = resources.find(r => r.name === resName)
+      if (!resource) throw new Error('Resource Not Found')
       resourcePath = await cacheNoteImage(resource.url, kbGuid, docGuid, resName)
     } else {
       resourcePath = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)

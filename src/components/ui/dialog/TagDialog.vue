@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref="dialog" class="base-dialog">
+  <q-dialog transition-show='fade' transition-hide='fade' ref="dialog" class="base-dialog">
     <q-card
       class="q-dialog base-dialog"
       style="max-height: 90vh;min-height: 70vh;min-width: 70vw"
