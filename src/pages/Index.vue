@@ -28,7 +28,7 @@
             enter-active-class='animated fadeIn'
             leave-active-class='animated fadeOut'
           >
-            <q-icon
+            <!-- <q-icon
               class='absolute-center material-icons-round'
               size='256px'
               color='#494949'
@@ -42,7 +42,8 @@
                         stroke='none' fill='#9d9d9d' fill-rule='evenodd'></path>
                 </g>
               </svg>
-            </q-icon>
+            </q-icon> -->
+            <Illustration :mode='illustrationMode' key='illustration' />
             <q-btn
               icon='format_align_center'
               dense
@@ -154,6 +155,7 @@ import Loading from 'components/ui/Loading'
 import Monaco from 'components/ui/editor/Monaco'
 import Muya from 'components/ui/editor/Muya'
 import MarkMapDialog from '../components/ui/dialog/MarkMapDialog'
+import Illustration from 'src/components/ui/Illustration.vue'
 
 const {
   mapGetters: mapServerGetters,
@@ -170,7 +172,8 @@ export default {
     Monaco,
     Loading,
     NoteOutlineDrawer,
-    NoteList
+    NoteList,
+    Illustration
   },
   computed: {
     thumbStyle () {
@@ -188,6 +191,11 @@ export default {
     },
     dataLoaded: function () {
       return !helper.isNullOrEmpty(this.currentNote)
+    },
+    illustrationMode: function () {
+      if (this.isCurrentNoteLoading) return 'loading-background'
+      if (this.dataLoaded) return 'none'
+      return 'memocast'
     },
     contentsListLoaded: function () {
       return this.contentsList && !!this.contentsList.length

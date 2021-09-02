@@ -31,6 +31,7 @@ export default {
   },
   NOTE_SHORTCUT_CALL: {
     save: 'note.shortcut.save.call',
+    searchNote: 'note.shortcut.search.note',
     exportNoteAsMarkdown: 'note.shortcut.export.markdown.call',
     exportNoteAsPNG: 'note.shortcut.export.png.call'
   },

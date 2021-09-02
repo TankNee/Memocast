@@ -247,10 +247,6 @@ export default {
     state
   }, payload) {
     commit(types.UPDATE_CURRENT_NOTE_LOADING_STATE, true)
-    // Loading.show({
-    //   spinner: QSpinner,
-    //   delay: 400
-    // })
     const { kbGuid } = state
     const { docGuid } = payload
     console.time('GetContent')

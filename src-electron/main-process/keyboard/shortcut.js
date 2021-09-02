@@ -63,7 +63,8 @@ export default class KeyBindings {
       ['view.lock-mode', 'CmdOrCtrl+Shift+L'],
       ['view.devtool', 'CmdOrCtrl+Shift+P'],
       // Note Shortcut
-      ['note.save', 'CmdOrCtrl+S']
+      ['note.save', 'CmdOrCtrl+S'],
+      ['note.search-note', 'CmdOrCtrl+Shift+F']
     ])
   }
 

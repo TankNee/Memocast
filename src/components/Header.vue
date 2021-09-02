@@ -77,7 +77,7 @@
       v-ripple
       @click="() => $refs.searchDialog.toggle()"
     >
-      <q-icon name="search" />
+      <q-icon style="font-size: 1.1em;" name="pageview" />
     </q-avatar>
     <q-space v-if="!$q.platform.is.mac" />
     <div
@@ -263,6 +263,7 @@ export default {
       this.$refs.loginDialog.toggle()
     }
     bus.$on(events.VIEW_SHORTCUT_CALL.switchView, this.switchViewHandler)
+    bus.$on(events.NOTE_SHORTCUT_CALL.searchNote, () => this.$refs.searchDialog.toggle())
   },
   watch: {
     isLogin: function (currentData) {
