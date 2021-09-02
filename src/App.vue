@@ -10,6 +10,7 @@ import ApiHandler from 'src/ApiHandler'
 import { createNamespacedHelpers } from 'vuex'
 import bus from './components/bus'
 import events from './constants/events'
+import { checkUpdate } from './ApiInvoker'
 
 const { RegisterErrorHandler } = ErrorHandler
 const { RegisterScheduleJobs } = ScheduleHandler
@@ -34,9 +35,10 @@ export default {
     RegisterErrorHandler()
     RegisterScheduleJobs(this)
     RegisterApiHandler()
+    bus.$on(events.RELOGIN, this.reLogin)
+    checkUpdate()
     this.initClientStore().then()
     this.initServerStore().then()
-    bus.$on(events.RELOGIN, this.reLogin)
     this.setupAutoSaveInterval(this.autoSaveGap)
   },
   methods: {

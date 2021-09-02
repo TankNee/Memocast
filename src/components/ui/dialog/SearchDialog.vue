@@ -26,7 +26,7 @@
               style='padding: 0; max-width: 60vw;'
             >
               <q-item-section style='padding: 0;'>
-                <NoteItem :data='scope.opt' :dense='false' :title-wrap='true' />
+                <NoteItem :data='scope.opt' :dense='false' :maxSummaryLength='20' :title-wrap='true' />
               </q-item-section>
             </q-item>
           </template>
@@ -48,7 +48,7 @@ export default {
   name: 'SearchDialog',
   components: { NoteItem },
   computed: {
-    ...mapServerState(['noteState'])
+    ...mapServerState(['noteState', 'currentCategory'])
   },
   data () {
     return {
@@ -59,7 +59,7 @@ export default {
   methods: {
     inputHandler: function (note) {
       if (!note) return
-      const { docGuid } = note
+      const { docGuid, category } = note
       if (this.noteState !== 'default') {
         this.$q.dialog({
           title: this.$t('discardNote'),
@@ -73,7 +73,12 @@ export default {
         }).onOk(() => this.getNoteContent({ docGuid: docGuid }))
       } else {
         console.time('NoteLoadTime')
-        this.getNoteContent({ docGuid: docGuid }).then(() => console.timeEnd('NoteLoadTime'))
+        this.getNoteContent({ docGuid: docGuid }).then(() => {
+          console.timeEnd('NoteLoadTime')
+        })
+      }
+      if (category !== this.currentCategory) {
+        this.updateCurrentCategory({ data: category, type: 'category' })
       }
       this.clearHandler()
       this.$refs.dialog.hide()
@@ -98,7 +103,7 @@ export default {
     toggle: function () {
       return this.$refs.dialog.toggle()
     },
-    ...mapServerActions(['searchNote', 'getNoteContent'])
+    ...mapServerActions(['searchNote', 'getNoteContent', 'updateCurrentCategory'])
   }
 }
 </script>

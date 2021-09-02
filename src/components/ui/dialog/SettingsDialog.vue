@@ -190,7 +190,7 @@ import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import { version } from '../../../../package.json'
-import { needUpdate, openThemeFolder, refreshThemeFolder } from 'src/ApiInvoker'
+import { checkUpdate, needUpdate, openThemeFolder, refreshThemeFolder } from 'src/ApiInvoker'
 import helper from 'src/utils/helper'
 
 const {
@@ -298,7 +298,7 @@ export default {
       this.toggleChanged({ key: 'autoSaveGap', value: value })
     },
     checkUpdateHandler: function () {
-      this.checkUpdate().then(() => {
+      checkUpdate().then(() => {
         this.checkingNotify = this.$q.notify({
           message: this.$t('checking'),
           timeout: 0,
@@ -379,8 +379,7 @@ export default {
     },
     ...mapActions([
       'toggleChanged',
-      'updateStateAndStore',
-      'checkUpdate'
+      'updateStateAndStore'
     ])
   },
   mounted () {
