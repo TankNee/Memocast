@@ -4,6 +4,7 @@ import bus from 'components/bus'
 import events from 'src/constants/events'
 import { i18n } from '../src/boot/i18n'
 import debugLogger from './utils/debugLogger'
+import { quitAndUpdate } from './ApiInvoker'
 
 /**
  * 在本地注册对应的事件句柄，用于解决对应的事件
@@ -93,7 +94,7 @@ export default {
     }).catch(err => throw err)
 
     handleApi('updater-update-not-available', (event, info) => {
-      debugLogger.Log(info)
+      debugLogger.Log('Update Not available', info)
       bus.$emit(events.UPDATE_EVENTS.updateNotAvailable, info)
     }).catch(err => throw err)
 
@@ -104,6 +105,18 @@ export default {
 
     handleApi('updater-update-downloaded', (event, info) => {
       debugLogger.Log(info)
+      Notify.create({
+        color: 'positive',
+        icon: 'check',
+        message: i18n.t('downloadSuccessfully'),
+        actions: [{
+          icon: 'play_for_work',
+          color: 'white',
+          handler: () => {
+            quitAndUpdate()
+          }
+        }]
+      })
       bus.$emit(events.UPDATE_EVENTS.updateDownloaded)
     }).catch(err => throw err)
 

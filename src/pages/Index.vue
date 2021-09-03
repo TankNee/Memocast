@@ -6,6 +6,7 @@
       class='full-width'
       unit='px'
       separator-class='bg-transparent'
+      before-class='overflow-hidden'
       after-class='hide-scrollbar'
     >
       <template v-slot:before>

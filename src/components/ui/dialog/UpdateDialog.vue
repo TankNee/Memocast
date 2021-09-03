@@ -72,18 +72,6 @@ export default {
     downloadedHandler: function () {
       this.progress = 1
       this.downloaded = true
-      this.$q.notify({
-        color: 'positive',
-        icon: 'check',
-        message: this.$t('downloadSuccessfully'),
-        actions: [{
-          icon: 'play_for_work',
-          color: 'white',
-          handler: () => {
-            this.installHandler()
-          }
-        }]
-      })
     },
     installHandler: function () {
       quitAndUpdate()

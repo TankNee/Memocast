@@ -343,7 +343,9 @@ export default {
                 window.open('https://github.com/TankNee/Memocast')
               } else {
                 needUpdate(true)
-                this.$refs.updateDialog.toggle()
+                if (this.$refs.updateDialog) {
+                  this.$refs.updateDialog.toggle()
+                }
               }
             }
           }
@@ -351,16 +353,15 @@ export default {
       })
     },
     updateUnavailableHandler: function (info) {
-      console.log(info)
       if (this.checkingNotify && this.checkingNotify instanceof Function) {
         this.checkingNotify()
         this.checkingNotify = null
       }
-      this.$q.notify({
-        message: this.$t('noNewerVersion'),
-        color: 'green',
-        icon: 'check'
-      })
+      // this.$q.notify({
+      //   message: this.$t('noNewerVersion'),
+      //   color: 'green',
+      //   icon: 'check'
+      // })
     },
     updateErrorHandler: function (err) {
       console.log(err)
