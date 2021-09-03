@@ -13,7 +13,7 @@ const ClientStorage = new Store({
 
 console.log = log.log
 console.error = log.error
-log.transports.file.resolvePath = () => path.join(app.getPath('appData'), 'logs/main.log')
+log.transports.file.resolvePath = () => path.join(app.getPath('userData'), 'logs', new Date().getFullYear().toString(), (new Date().getMonth() + 1).toString(), 'main.log')
 
 async function resourceProtocolHandler (request, callback) {
   // eslint-disable-next-line node/no-deprecated-api
@@ -32,6 +32,7 @@ async function resourceProtocolHandler (request, callback) {
     if (!isResourceExist(kbGuid, docGuid, resName)) {
       const resources = ClientStorage.get('currentResources') || []
       const resource = resources.find(r => r.name === resName)
+      if (!resource) throw new Error('Resource Not Found')
       resourcePath = await cacheNoteImage(resource.url, kbGuid, docGuid, resName)
     } else {
       resourcePath = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)

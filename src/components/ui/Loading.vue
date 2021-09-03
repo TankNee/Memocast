@@ -2,7 +2,7 @@
   <!-- <q-inner-loading :showing="isLoading">
     <q-spinner-ball style="color:var(--themeColor)" size="6em" />
   </q-inner-loading> -->
-  <div class="inner-loading" v-show="isLoading">
+  <div class="inner-loading z-50" v-show="isLoading">
       <div class="spinner">
         <div class="double-bounce1 dot" style="background:var(--themeColor)"></div>
         <div class="double-bounce2 dot" style="background:var(--themeColor)"></div>

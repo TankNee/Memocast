@@ -1,5 +1,4 @@
 import { autoUpdater } from 'electron-updater'
-import { ipcMain, BrowserWindow } from 'electron'
 
 let runningUpdate = false
 let win = null
@@ -40,6 +39,9 @@ autoUpdater.on('update-downloaded', (info) => {
   // not just force close the application.
 
   if (win) {
+    win.setProgressBar(1.0, {
+      mode: 'none'
+    })
     win.webContents.send(
       'updater-update-downloaded',
       info
@@ -50,6 +52,7 @@ autoUpdater.on('update-downloaded', (info) => {
 
 autoUpdater.on('download-progress', (progress) => {
   if (win) {
+    win.setProgressBar(progress.percent / 100)
     win.webContents.send(
       'updater-update-downloading',
       progress

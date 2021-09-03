@@ -75,6 +75,7 @@ function createWindow () {
     height: mainWindowState.height < 400 ? 400 : mainWindowState.height,
     useContentSize: true,
     // transparent: true,
+    vibrancy: ThemeManager.colorMode, // 'light', 'medium-light' etc
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

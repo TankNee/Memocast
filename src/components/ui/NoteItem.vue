@@ -49,6 +49,14 @@ export default {
     dense: {
       type: Boolean,
       default: true
+    },
+    titleWrap: {
+      type: Boolean,
+      default: false
+    },
+    maxTitleLength: {
+      type: Number,
+      default: 25
     }
   },
   data () {
@@ -75,6 +83,13 @@ export default {
     title () {
       if (!helper.isNullOrEmpty(this.data.highlight)) {
         const { highlight: { title = [] } } = this.data
+        const tempTitle = title.join('')
+        if (this.titleWrap) {
+          return tempTitle &&
+          tempTitle.length > this.maxTitleLength
+            ? tempTitle.substring(0, this.maxTitleLength) + '...'
+            : tempTitle
+        }
         return title.join('')
       }
       return this.data.title

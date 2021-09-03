@@ -13,6 +13,13 @@ export default function (keybindings) {
         actions.note(browserWindow, 'save')
       }
     }, {
+      id: 'searchNote',
+      label: i18n.t('searchNote'),
+      accelerator: keybindings.getAccelerator('note.search-note'),
+      click (menuItem, browserWindow) {
+        actions.note(browserWindow, 'searchNote')
+      }
+    }, {
       id: 'exportNote',
       label: i18n.t('export'),
       submenu: [{

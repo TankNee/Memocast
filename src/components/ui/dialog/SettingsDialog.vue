@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref='dialog' persistent>
+  <q-dialog transition-show='fade' transition-hide='fade' ref='dialog' persistent>
     <q-card style='height: 70vh;min-width: 70vw'>
       <q-toolbar>
         <q-avatar>
@@ -190,7 +190,7 @@ import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import { version } from '../../../../package.json'
-import { needUpdate, openThemeFolder, refreshThemeFolder } from 'src/ApiInvoker'
+import { checkUpdate, needUpdate, openThemeFolder, refreshThemeFolder } from 'src/ApiInvoker'
 import helper from 'src/utils/helper'
 
 const {
@@ -298,7 +298,7 @@ export default {
       this.toggleChanged({ key: 'autoSaveGap', value: value })
     },
     checkUpdateHandler: function () {
-      this.checkUpdate().then(() => {
+      checkUpdate().then(() => {
         this.checkingNotify = this.$q.notify({
           message: this.$t('checking'),
           timeout: 0,
@@ -343,7 +343,9 @@ export default {
                 window.open('https://github.com/TankNee/Memocast')
               } else {
                 needUpdate(true)
-                this.$refs.updateDialog.toggle()
+                if (this.$refs.updateDialog) {
+                  this.$refs.updateDialog.toggle()
+                }
               }
             }
           }
@@ -351,16 +353,15 @@ export default {
       })
     },
     updateUnavailableHandler: function (info) {
-      console.log(info)
       if (this.checkingNotify && this.checkingNotify instanceof Function) {
         this.checkingNotify()
         this.checkingNotify = null
       }
-      this.$q.notify({
-        message: this.$t('noNewerVersion'),
-        color: 'green',
-        icon: 'check'
-      })
+      // this.$q.notify({
+      //   message: this.$t('noNewerVersion'),
+      //   color: 'green',
+      //   icon: 'check'
+      // })
     },
     updateErrorHandler: function (err) {
       console.log(err)
@@ -379,8 +380,7 @@ export default {
     },
     ...mapActions([
       'toggleChanged',
-      'updateStateAndStore',
-      'checkUpdate'
+      'updateStateAndStore'
     ])
   },
   mounted () {

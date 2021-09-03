@@ -2,7 +2,7 @@
 :root {
   --titleBarHeight: 32px;
   --editorAreaWidth: 90%;
-  --backgroundColor: #ffffff;
+  --backgroundColor: rgba(255, 255, 255, .7);
   --activeItemBgColor: rgb(204, 207, 214);
   /*Theme color cluster*/
   --themeColor: rgba(25, 118, 210, 1);
@@ -65,6 +65,10 @@
 #mind code {
   color: inherit;
   background: transparent;
+}
+
+.q-drawer {
+  background: rgba(243, 243, 243, .7);
 }
 
 code[class*="language-"],

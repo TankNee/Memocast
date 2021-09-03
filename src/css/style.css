@@ -128,9 +128,9 @@ div.ag-show-quick-insert-hint[contenteditable='false'] {
   user-select: none;
 }
 
-.note-card-dark {
-  border-bottom: 1px solid #35373e;
-}
+/*.note-card-dark {*/
+/*  border-bottom: 1px solid var(--backgroundColor);*/
+/*}*/
 
 .note-item-title,
 .note-item-title-dark {
@@ -261,4 +261,8 @@ body
 
 .bg-darkMode {
   background-color: #f2c037;
+}
+
+.q-drawer--left {
+  background: transparent !important;
 }
