@@ -129,7 +129,7 @@ Memocast 使用了 Quasar 作为框架，Quasar 中有许多的主题色，这�
 - accent
 - dark
 - positive
-- negative-
+- negative
 - info
 - warning
 
