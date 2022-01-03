@@ -22,6 +22,7 @@ export default function () {
     rightClickCategoryItem: '',
     theme: 'Default-Light',
     themes: [],
-    autoSaveGap: 0
+    autoSaveGap: 0,
+    splitterWidth: 15
   }
 }
