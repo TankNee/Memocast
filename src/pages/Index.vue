@@ -21,7 +21,7 @@
       <template v-slot:after>
         <div class='full-height'>
           <div v-show='!isSourceMode && dataLoaded'>
-            <Muya ref='muya' :active='!isSourceMode' :data='tempNoteData' />
+            <Muya ref='muya' :active='!isSourceMode && dataLoaded' :data='tempNoteData' />
           </div>
           <Monaco ref='monaco' v-if='dataLoaded' :active='isSourceMode' :data='tempNoteData' v-show='isSourceMode' />
           <transition-group
