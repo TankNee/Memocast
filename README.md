@@ -20,6 +20,18 @@
 
 GitHub Release：[Releases · TankNee/Memocast · GitHub](https://github.com/TankNee/Memocast/releases)
 
+### Arch Linux
+
+通过 [AUR](https://aur.archlinux.org/packages/memocast-bin/) 安装 Memocast
+
+```
+# AUR helper
+# yay
+yay -S memocast-bin
+# pikaur
+pikaur -S memocast
+```
+我没有测试过上述命令，如果有误请帮我指正。感谢 [yjun123](https://github.com/yjun123) 的帮助。
 ## Documentation
 
 你可以在 Memocast 的文档中找到与软件相关的实用用法与介绍。
