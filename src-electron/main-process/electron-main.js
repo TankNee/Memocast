@@ -12,6 +12,11 @@ import { registerMemocastProtocol } from './utlis/resource-loader'
 import ThemeManager from './utlis/theme-manager'
 import Store from 'electron-store'
 import i18n from './i18n'
+import log from 'electron-log'
+
+console.log = log.log
+console.error = log.error
+log.transports.file.resolvePath = () => path.join(app.getPath('userData'), 'logs', new Date().getFullYear().toString(), (new Date().getMonth() + 1).toString(), 'main.log')
 
 const ClientStorage = new Store({
   name: 'ClientFileStorage'

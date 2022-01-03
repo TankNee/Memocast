@@ -30,5 +30,6 @@ export default {
   autoSave: '自动保存',
   minutes: '分钟',
   seconds: '秒',
-  never: '永不'
+  never: '永不',
+  openLogFiles: '打开日志文件'
 }

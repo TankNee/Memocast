@@ -86,6 +86,10 @@ async function openThemeFolder () {
   return ipcRenderer.invoke(channels.openThemeFolder)
 }
 
+async function openLogFiles () {
+  return ipcRenderer.invoke(channels.openLogFiles)
+}
+
 async function refreshThemeFolder () {
   return ipcRenderer.invoke(channels.refreshThemeFolder)
 }
@@ -113,6 +117,7 @@ export {
   saveTempImage,
   loadTheme,
   openThemeFolder,
+  openLogFiles,
   refreshThemeFolder,
   getLocalFileData,
   saveUploadedImage

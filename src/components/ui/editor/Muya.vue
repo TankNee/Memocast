@@ -226,11 +226,6 @@ export default {
       })
 
       attachThemeColor(this.theme)
-      // if (this.darkMode) {
-      //   attachThemeColor('one-dark')
-      // } else {
-      //   attachThemeColor('light')
-      // }
 
       this.contentEditor.on('muya-click', _.debounce((event) => {
         if (event.target.type === 'checkbox') {

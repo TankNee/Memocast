@@ -30,5 +30,6 @@ export default {
   autoSave: 'Auto Save',
   minutes: 'Minutes',
   seconds: 'Seconds',
-  never: 'Never'
+  never: 'Never',
+  openLogFiles: 'Open Log Files'
 }

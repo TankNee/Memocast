@@ -1,6 +1,6 @@
 <template>
-  <q-dialog transition-show='fade' transition-hide='fade' ref='dialog' persistent>
-    <q-card style='height: 70vh;min-width: 70vw'>
+  <q-dialog transition-show='fade' transition-hide='fade' ref='dialog'>
+    <q-card style='height: 70vh;min-width: 70vw; user-select:none;'>
       <q-toolbar>
         <q-avatar>
           <q-icon
@@ -88,6 +88,20 @@
                       @input="
                         v => toggleChanged({ key: 'noteListDenseMode', value: v })
                       "
+                    />
+                  </div>
+                </div>
+                <q-separator />
+                <div>
+                  <div class='text-h5 q-mb-md setting-item fa-align-center'>
+                    <span>{{ $t('openLogFiles') }}</span>
+                    <q-btn
+                      class='fab-btn'
+                      flat
+                      round
+                      color='primary'
+                      icon='open_in_new'
+                      @click='openLogFilesHandler'
                     />
                   </div>
                 </div>
@@ -190,7 +204,7 @@ import { i18n } from 'boot/i18n'
 import bus from 'components/bus'
 import events from 'src/constants/events'
 import { version } from '../../../../package.json'
-import { checkUpdate, needUpdate, openThemeFolder, refreshThemeFolder } from 'src/ApiInvoker'
+import { checkUpdate, needUpdate, openLogFiles, openThemeFolder, refreshThemeFolder } from 'src/ApiInvoker'
 import helper from 'src/utils/helper'
 
 const {
@@ -377,6 +391,9 @@ export default {
           message: err
         })
       }
+    },
+    openLogFilesHandler: function () {
+      openLogFiles()
     },
     ...mapActions([
       'toggleChanged',

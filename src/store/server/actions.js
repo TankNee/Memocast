@@ -30,7 +30,7 @@ export async function _getContent (kbGuid, docGuid) {
   const cacheKey = api.KnowledgeBaseApi.getCacheKey(kbGuid, docGuid)
   const note = ClientFileStorage.getCachedNote(info, cacheKey)
   let result
-  if (!helper.isNullOrEmpty(note)) {
+  if (note) {
     result = note
   } else {
     result = await api.KnowledgeBaseApi.getNoteContent({

@@ -1,19 +1,14 @@
-import { protocol, app } from 'electron'
+import { protocol } from 'electron'
 import Store from 'electron-store'
 import url from 'url'
 import fs from 'fs-extra'
 import mime from 'mime'
 import path from 'path'
-import log from 'electron-log'
 import { cacheNoteImage, getTempNoteDir, isResourceExist } from './helper'
 
 const ClientStorage = new Store({
   name: 'ClientFileStorage'
 })
-
-console.log = log.log
-console.error = log.error
-log.transports.file.resolvePath = () => path.join(app.getPath('userData'), 'logs', new Date().getFullYear().toString(), (new Date().getMonth() + 1).toString(), 'main.log')
 
 async function resourceProtocolHandler (request, callback) {
   // eslint-disable-next-line node/no-deprecated-api
@@ -38,7 +33,7 @@ async function resourceProtocolHandler (request, callback) {
       resourcePath = path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)
     }
   } catch (error) {
-    log.error(error)
+    console.error(error)
     return callback(error)
   }
   // eslint-disable-next-line standard/no-callback-literal
