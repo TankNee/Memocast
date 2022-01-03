@@ -2,7 +2,7 @@
   <q-page class='flex'>
     <q-splitter
       v-model='splitterWidthValue'
-      :limits='[10, 60]'
+      :limits='splitterLimits'
       class='full-width'
       unit='%'
       separator-class='bg-transparent'
@@ -196,7 +196,8 @@ export default {
       isOutlineShow: false,
       isSourceMode: false,
       isMindmapMode: false,
-      splitterWidthValue: 200,
+      splitterWidthValue: 35,
+      splitterLimits: [0, 60],
       tempNoteData: {},
       wordCount: {
         word: '0',
@@ -285,8 +286,10 @@ export default {
     noteListVisible: function (val) {
       if (!val) {
         this.updateStateAndStore({ splitterWidth: this.splitterWidthValue })
+        this.splitterLimits = [0, 0]
         this.splitterWidthValue = 0
       } else {
+        this.splitterLimits = [10, 60]
         this.splitterWidthValue = this.splitterWidth
       }
     }
