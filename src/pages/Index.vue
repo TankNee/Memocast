@@ -1,10 +1,10 @@
 <template>
   <q-page class='flex'>
     <q-splitter
-      v-model='splitterModel'
-      :limits='splitterLimit'
+      v-model='splitterWidthValue'
+      :limits='[10, 60]'
       class='full-width'
-      unit='px'
+      unit='%'
       separator-class='bg-transparent'
       before-class='overflow-hidden'
       after-class='hide-scrollbar'
@@ -187,20 +187,16 @@ export default {
     contentsListLoaded: function () {
       return this.contentsList && !!this.contentsList.length
     },
-    splitterLimit: function () {
-      if (this.noteListVisible) return [150, 600]
-      return [0, 0]
-    },
     ...mapServerGetters(['currentNote', 'currentNoteInfo']),
     ...mapServerState(['contentsList', 'isCurrentNoteLoading', 'noteState']),
-    ...mapClientState(['noteListVisible', 'enablePreviewEditor'])
+    ...mapClientState(['noteListVisible', 'enablePreviewEditor', 'splitterWidth'])
   },
   data () {
     return {
-      splitterModel: 300,
       isOutlineShow: false,
       isSourceMode: false,
       isMindmapMode: false,
+      splitterWidthValue: 200,
       tempNoteData: {},
       wordCount: {
         word: '0',
@@ -254,7 +250,7 @@ export default {
         message: this.enablePreviewEditor ? this.$t('lockModeOff') : this.$t('lockModeOn')
       })
     },
-    ...mapClientActions(['toggleChanged'])
+    ...mapClientActions(['toggleChanged', 'updateStateAndStore'])
   },
   mounted () {
     bus.$on(events.VIEW_SHORTCUT_CALL.lockMode, this.lockModeHandler)
@@ -262,6 +258,7 @@ export default {
     bus.$on(events.GENERATE_MINDMAP, this.generateMindmapHandler)
     bus.$on(events.UPDATE_WORD_COUNT, this.wordCountUpdateHandler)
     this.$nextTick(this.hideInitLoadingPage)
+    this.splitterWidthValue = this.splitterWidth
   },
   watch: {
     isSourceMode: function (val) {
@@ -283,6 +280,14 @@ export default {
         setTimeout(() => {
           this.saveButtonIcon = 'save'
         }, 3000)
+      }
+    },
+    noteListVisible: function (val) {
+      if (!val) {
+        this.updateStateAndStore({ splitterWidth: this.splitterWidthValue })
+        this.splitterWidthValue = 0
+      } else {
+        this.splitterWidthValue = this.splitterWidth
       }
     }
   }
