@@ -82,7 +82,7 @@ class BaseFileStorage {
   getCachedNote (info, cacheKey) {
     const { dataModified } = info
     const note = this.getItemFromStore(cacheKey)
-    if (helper.isNullOrEmpty(note) || helper.isNullOrEmpty(note.info)) {
+    if (!note || helper.isNullOrEmpty(note.info)) {
       return null
     }
     if (note.info.dataModified === dataModified) {

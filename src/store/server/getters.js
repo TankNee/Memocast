@@ -71,6 +71,9 @@ export default {
 
     return helper.isNullOrEmpty(result) ? `# ${currentNote.info.title}` : result
   },
+  currentNoteInfo: ({ currentNote }) => {
+    return currentNote.info
+  },
   currentNoteResources: ({ currentNote }) => {
     const { resources } = currentNote
     return resources

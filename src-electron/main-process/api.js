@@ -3,12 +3,13 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { sendNotification } from './api-invoker'
-import { BrowserWindow } from 'electron'
+import { BrowserWindow, shell } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
 import { cacheNoteImage, saveTempImage, saveBuffer, exportImageOfMarkdown } from './utlis/helper'
 import { uploadImagesByWiz } from './utlis/wiz-resource-helper'
 import { execRequest } from './service/request'
 import i18n from './i18n'
+import log from 'electron-log'
 
 const { uploadImagesByPicGo } = require('./3rd-part/PicGoUtils')
 
@@ -259,6 +260,11 @@ export default {
 
     handleApi('remote-request', async (e, config) => {
       return execRequest(config)
+    }).catch(err => throw err)
+
+    handleApi('open-log-files', async (e, config) => {
+      console.log(log.transports.file.resolvePath())
+      shell.showItemInFolder(log.transports.file.resolvePath())
     }).catch(err => throw err)
   }
 }

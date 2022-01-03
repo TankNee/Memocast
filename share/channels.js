@@ -13,6 +13,7 @@ export default {
   saveTempImage: 'save-temp-image',
   loadTheme: 'load-theme',
   openThemeFolder: 'open-theme-folder',
+  openLogFiles: 'open-log-files',
   refreshThemeFolder: 'refresh-theme-folder',
   getLocalFileData: 'get-local-file-data',
   saveUploadedImage: 'save-uploaded-image'

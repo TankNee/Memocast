@@ -37,7 +37,7 @@ body {
   overflow: hidden;
   /*background: #ffffff !important;*/
   background: var(--backgroundColor);
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  font-family: HarmonyOS Sans SC, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
