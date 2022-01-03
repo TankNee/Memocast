@@ -208,11 +208,11 @@ kbd {
 
 @media not print {
   #ag-editor-id {
-    max-width: 80%;
+    max-width: 85%;
     min-width: 400px;
     min-height: 100%;
     margin: 0 auto;
-    padding: 20px 50px 100px 50px;
+    padding: 20px 35px 100px 35px;
     box-sizing: border-box;
   }
 
