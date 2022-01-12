@@ -45,7 +45,7 @@
     "joplin-turndown-plugin-gfm": "^1.0.12",
     "katex": "^0.11.1",
     "lodash": "^4.17.21",
-    "markdown-it": "^8.4.2",
+    "markdown-it": "^12.3.2",
     "markdown-it-pangu": "^1.0.2",
     "markmap-lib": "^0.11.6",
     "markmap-view": "^0.2.6",
