@@ -1,26 +1,26 @@
-import bus from 'src/components/bus'
 import events from 'src/constants/events'
+import { packClickFunction } from 'src/contextMenu/utils'
 
 export const copyAsMarkdown = (menuItem, browserWindow) => {
-  bus.$emit(events.EDIT_SHORTCUT_CALL.copyAsMarkdown, 'copyAsMarkdown')
+  return packClickFunction(events.EDIT_SHORTCUT_CALL.copyAsMarkdown, 'copyAsMarkdown')
 }
 
 export const copyAsHtml = (menuItem, browserWindow) => {
-  bus.$emit(events.EDIT_SHORTCUT_CALL.copyAsHtml, 'copyAsHtml')
+  return packClickFunction(events.EDIT_SHORTCUT_CALL.copyAsHtml, 'copyAsHtml')
 }
 
 export const pasteAsPlainText = (menuItem, browserWindow) => {
-  bus.$emit(events.EDIT_SHORTCUT_CALL.pasteAsPlainText, 'pasteAsPlainText')
+  return packClickFunction(events.EDIT_SHORTCUT_CALL.pasteAsPlainText, 'pasteAsPlainText')
 }
 
 export const insertParagraph = location => {
-  bus.$emit(events.EDIT_SHORTCUT_CALL.insertParagraph, location)
+  return packClickFunction(events.EDIT_SHORTCUT_CALL.insertParagraph, location)
 }
 
 export const formatDocumentByPangu = (menuItem, browserWindow) => {
-  bus.$emit(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu)
+  return packClickFunction(events.EDIT_SHORTCUT_CALL.formatDocumentByPangu)
 }
 
 export const generateMindmap = (menuItem, browserWindow) => {
-  bus.$emit(events.GENERATE_MINDMAP)
+  return packClickFunction(events.GENERATE_MINDMAP)
 }

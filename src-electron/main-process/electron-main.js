@@ -84,10 +84,12 @@ function createWindow () {
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
-      nodeIntegration: process.env.QUASAR_NODE_INTEGRATION,
+      nodeIntegration: true,
+      contextIsolation: false,
       nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION,
       webSecurity: false,
-      experimentalFeatures: false
+      experimentalFeatures: false,
+      enableRemoteModule: true
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       // preload: path.resolve(__dirname, 'electron-preload.js')
@@ -154,6 +156,9 @@ function createWindow () {
   if (isMac) {
     enforceMacOSAppLocation()
   }
+
+  require('@electron/remote/main').initialize()
+  require('@electron/remote/main').enable(mainWindow.webContents)
 }
 
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')

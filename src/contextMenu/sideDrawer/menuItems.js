@@ -3,33 +3,25 @@ import * as contextMenu from './actions'
 export const OPEN_CATEGORY = {
   label: 'open',
   id: 'openCategoryMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.openCategory()
-  }
+  click: contextMenu.openCategory()
 }
 
 export const RENAME = {
   label: 'rename',
   id: 'renameCategoryMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.renameCategory()
-  }
+  click: contextMenu.renameCategory()
 }
 
 export const CREATE_CATEGORY = {
   label: 'createCategory',
   id: 'createCategoryMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.createCategory()
-  }
+  click: contextMenu.createCategory()
 }
 
 export const CREATE_NOTE = {
   label: 'createNote',
   id: 'createNoteMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.createNote()
-  }
+  click: contextMenu.createNote()
 }
 
 export const EXPORT = {
@@ -39,9 +31,7 @@ export const EXPORT = {
     {
       label: 'Markdown',
       id: 'exportCategoryAsMarkdownMenuItem',
-      click (menuItem, browserWindow) {
-        contextMenu.exportCategoryAsMarkdown()
-      }
+      click: contextMenu.exportCategoryAsMarkdown()
     }
   ]
 }
@@ -49,9 +39,7 @@ export const EXPORT = {
 export const DELETE = {
   label: 'delete',
   id: 'deleteFolderMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.deleteCategory()
-  }
+  click: contextMenu.deleteCategory()
 }
 
 export const SEPARATOR = {
