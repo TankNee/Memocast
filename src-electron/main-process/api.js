@@ -2,10 +2,10 @@
 // import i18n from 'boot/i18n'
 import fs from 'fs-extra'
 import path from 'path'
-import { sendNotification } from './api-invoker'
-import { BrowserWindow, shell } from 'electron'
+import { sendNotification, triggerRendererContextMenu } from './api-invoker'
+import { BrowserWindow, shell, Menu, MenuItem } from 'electron'
 import { checkUpdates, needUpdate, quitAndInstall } from './menu/actions/memocast'
-import { cacheNoteImage, saveTempImage, saveBuffer, exportImageOfMarkdown } from './utlis/helper'
+import { cacheNoteImage, saveTempImage, saveBuffer, exportImageOfMarkdown, injectClickFunction } from './utlis/helper'
 import { uploadImagesByWiz } from './utlis/wiz-resource-helper'
 import { execRequest } from './service/request'
 import i18n from './i18n'
@@ -260,6 +260,21 @@ export default {
 
     handleApi('remote-request', async (e, config) => {
       return execRequest(config)
+    }).catch(err => throw err)
+
+    handleApi('pop-context-menu', async (e, menuOptions) => {
+      const win = BrowserWindow.fromWebContents(e.sender)
+      const menu = new Menu()
+      let { menuItems, x, y } = menuOptions
+      menuItems = menuItems.map(mi => injectClickFunction(mi, e, triggerRendererContextMenu))
+      menuItems.forEach(item => {
+        menu.append(new MenuItem(item))
+      })
+      menu.popup([{
+        window: win,
+        x: x,
+        y: y
+      }])
     }).catch(err => throw err)
 
     handleApi('open-log-files', async (e, config) => {

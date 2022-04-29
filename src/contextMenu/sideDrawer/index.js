@@ -1,4 +1,3 @@
-import { remote } from 'electron'
 import {
   OPEN_CATEGORY,
   // RENAME,
@@ -10,10 +9,7 @@ import {
 } from './menuItems'
 import { i18n } from 'boot/i18n'
 import helper from 'src/utils/helper'
-const {
-  Menu,
-  MenuItem
-} = remote
+import { popContextMenu } from 'src/ApiInvoker'
 
 /**
  * Show editor context menu.
@@ -23,8 +19,6 @@ const {
  * @param {string} category
  */
 export const showContextMenu = (event, isCurrentCategory, category) => {
-  const menu = new Menu()
-  const win = remote.getCurrentWindow()
   EXPORT.enabled = isCurrentCategory
   if (helper.isNullOrEmpty(category)) {
     EXPORT.enabled = false
@@ -40,12 +34,9 @@ export const showContextMenu = (event, isCurrentCategory, category) => {
     }
   })
 
-  MENU_ITEM.forEach(item => {
-    menu.append(new MenuItem(item))
-  })
-  menu.popup([{
-    window: win,
+  popContextMenu({
     x: event.clientX,
-    y: event.clientY
-  }])
+    y: event.clientY,
+    menuItems: MENU_ITEM
+  }).then(console.log)
 }

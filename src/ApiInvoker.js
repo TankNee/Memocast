@@ -94,6 +94,10 @@ async function refreshThemeFolder () {
   return ipcRenderer.invoke(channels.refreshThemeFolder)
 }
 
+async function popContextMenu (menuOptions) {
+  return ipcRenderer.invoke(channels.popContextMenu, menuOptions)
+}
+
 async function getLocalFileData (filePath) {
   return ipcRenderer.invoke(channels.getLocalFileData, filePath)
 }
@@ -120,5 +124,6 @@ export {
   openLogFiles,
   refreshThemeFolder,
   getLocalFileData,
-  saveUploadedImage
+  saveUploadedImage,
+  popContextMenu
 }

@@ -1,4 +1,3 @@
-import { remote } from 'electron'
 import {
   CUT,
   COPY,
@@ -13,11 +12,7 @@ import {
   GENERATE_MINDMAP
 } from './menuItems'
 import { i18n } from 'boot/i18n'
-
-const {
-  Menu,
-  MenuItem
-} = remote
+import { popContextMenu } from 'src/ApiInvoker'
 
 /**
  * Show editor context menu.
@@ -30,8 +25,6 @@ export const showContextMenu = (event, selection) => {
     start,
     end
   } = selection
-  const menu = new Menu()
-  const win = remote.getCurrentWindow()
   const disableCutAndCopy = start.key === end.key && start.offset === end.offset
   const CONTEXT_ITEMS = [INSERT_BEFORE, INSERT_AFTER, SEPARATOR, CUT, COPY, PASTE, SEPARATOR, COPY_AS_MARKDOWN, COPY_AS_HTML, SEPARATOR, PASTE_AS_PLAIN_TEXT, FORMAT_DOCUMENT_BY_PANGU, SEPARATOR, GENERATE_MINDMAP]
 
@@ -48,12 +41,9 @@ export const showContextMenu = (event, selection) => {
     }
   })
 
-  MENU_ITEM.forEach(item => {
-    menu.append(new MenuItem(item))
-  })
-  menu.popup([{
-    window: win,
+  popContextMenu({
     x: event.clientX,
-    y: event.clientY
-  }])
+    y: event.clientY,
+    menuItems: MENU_ITEM
+  }).then(console.log)
 }

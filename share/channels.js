@@ -16,5 +16,6 @@ export default {
   openLogFiles: 'open-log-files',
   refreshThemeFolder: 'refresh-theme-folder',
   getLocalFileData: 'get-local-file-data',
-  saveUploadedImage: 'save-uploaded-image'
+  saveUploadedImage: 'save-uploaded-image',
+  popContextMenu: 'pop-context-menu'
 }

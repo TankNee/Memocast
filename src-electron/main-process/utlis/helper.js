@@ -84,3 +84,17 @@ export function exportImageOfMarkdown (markdown, kbGuid, docGuid, resources = []
   // path.join(getTempNoteDir(kbGuid, docGuid, 'appData'), resName)
   return markdown
 }
+
+export function injectClickFunction (menuItem, event, callback) {
+  if (!menuItem.click) return menuItem
+  const click = menuItem.click
+  menuItem.click = () => {
+    callback(click.eventName, click.eventData, event)
+  }
+  if (menuItem.submenu) {
+    menuItem.submenu = menuItem.submenu.map(item => {
+      return injectClickFunction(item, callback)
+    })
+  }
+  return menuItem
+}

@@ -179,7 +179,10 @@ module.exports = function (/* ctx */) {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
         productName: 'Memocast',
         mac: {
-          target: ['dmg']
+          target: [{
+            arch: 'universal',
+            target: 'dmg'
+          }]
         }
 
         // OS X / Mac App Store

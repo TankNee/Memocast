@@ -124,6 +124,11 @@ export default {
       debugLogger.Log(error)
       bus.$emit(events.UPDATE_EVENTS.updateError, error)
     }).catch(err => throw err)
+
+    handleApi('pop-context-menu-event', (event, { eventName, eventData }) => {
+      debugLogger.Log({ eventName, eventData })
+      bus.$emit(eventName, eventData)
+    }).catch(err => throw err)
   },
   UnregisterApiHandler () {
     debugLogger.Info('[API Handler] Render Process unregisters handler successfully!')

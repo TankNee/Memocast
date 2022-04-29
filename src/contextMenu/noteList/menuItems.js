@@ -3,25 +3,19 @@ import * as contextMenu from './actions'
 export const RENAME = {
   label: 'rename',
   id: 'renameMenuItem',
-  click (menuItem, browserWindow, sth) {
-    contextMenu.rename()
-  }
+  click: contextMenu.rename()
 }
 
 export const COPY = {
   label: 'copy',
   id: 'copyNoteMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.copy()
-  }
+  click: contextMenu.copy()
 }
 
 export const MOVE = {
   label: 'move',
   id: 'moveNoteMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.move()
-  }
+  click: contextMenu.move()
 }
 
 export const EXPORT = {
@@ -31,16 +25,12 @@ export const EXPORT = {
     {
       label: 'Markdown',
       id: 'exportAsMarkdownMenuItem',
-      click (menuItem, browserWindow) {
-        contextMenu.exportAsMarkdown()
-      }
+      click: contextMenu.exportAsMarkdown()
     },
     {
       label: 'PNG',
       id: 'exportAsPNGMenuItem',
-      click (menuItem, browserWindow) {
-        contextMenu.exportAsPNG()
-      }
+      click: contextMenu.exportAsPNG()
     }
   ]
 }
@@ -48,9 +38,7 @@ export const EXPORT = {
 export const DELETE = {
   label: 'delete',
   id: 'deleteNoteMenuItem',
-  click (menuItem, browserWindow) {
-    contextMenu.deleteNote()
-  }
+  click: contextMenu.deleteNote()
 }
 
 export const SEPARATOR = {

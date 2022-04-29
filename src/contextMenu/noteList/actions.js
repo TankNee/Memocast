@@ -1,26 +1,26 @@
-import bus from 'src/components/bus'
 import events from 'src/constants/events'
+import { packClickFunction } from 'src/contextMenu/utils'
 
 export const rename = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.rename)
+  return packClickFunction(events.NOTE_ITEM_CONTEXT_MENU.rename)
 }
 
 export const copy = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.copy)
+  return packClickFunction(events.NOTE_ITEM_CONTEXT_MENU.copy)
 }
 
 export const move = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.move)
+  return packClickFunction(events.NOTE_ITEM_CONTEXT_MENU.move)
 }
 
 export const exportAsMarkdown = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_SHORTCUT_CALL.exportNoteAsMarkdown)
+  return packClickFunction(events.NOTE_SHORTCUT_CALL.exportNoteAsMarkdown)
 }
 
 export const exportAsPNG = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_SHORTCUT_CALL.exportNoteAsPNG)
+  return packClickFunction(events.NOTE_SHORTCUT_CALL.exportNoteAsPNG)
 }
 
 export const deleteNote = (menuItem, browserWindow) => {
-  bus.$emit(events.NOTE_ITEM_CONTEXT_MENU.delete)
+  return packClickFunction(events.NOTE_ITEM_CONTEXT_MENU.delete)
 }
