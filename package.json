@@ -67,7 +67,7 @@
     "turndown": "^6.0.0",
     "underscore": "^1.9.2",
     "unsplash-js": "^6.0.0",
-    "vega": "^5.10.0",
+    "vega": "^5.23.0",
     "vega-embed": "^6.4.0",
     "vega-lite": "^4.7.0",
     "vue-i18n": "^8.0.0",
