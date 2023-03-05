@@ -74,7 +74,7 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
-    "@quasar/app": "^2.0.0",
+    "@quasar/app": "^2.4.3",
     "babel-eslint": "^10.0.1",
     "consola": "^2.15.0",
     "devtron": "^1.4.0",
